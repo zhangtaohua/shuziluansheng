@@ -1,0 +1,39 @@
+.echarts_tooltip_box {
+  width: auto;
+  height: auto;
+  background-color: black;
+  font-size: 12px;
+  font-family: PingFangSC;
+  font-weight: 400;
+  color: #fefefe;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+}
+
+.echarts_tooltip_item {
+  width: fit-content;
+  height: 1.5rem;
+}
+
+.echarts_tooltip_lable {
+  width: fit-content;
+  height: 100%;
+  min-width: 50px;
+}
+
+.echarts_tooltip_value {
+  width: fit-content;
+  height: 100%;
+  min-width: 50px;
+}
+
+.echarts_down_triangle {
+  display: inline-block;
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid black;
+  bottom: -10px;
+}

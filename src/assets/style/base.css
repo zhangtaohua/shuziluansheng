@@ -1,0 +1,92 @@
+@charset "UTF-8";
+
+/* :root -> 获取根元素html  只有此处颜色值 和 名字是可以对应的 */
+:root {
+  --fsr-24px: 1.5rem;
+  --fsr-22px: 1.375rem;
+  --fsr-20px: 1.25rem;
+  --fsr-18px: 1.125rem;
+  --fsr-16px: 1rem;
+  --fsr-14px: 0.875rem;
+  --fsr-12px: 0.75rem;
+  --fsr-10px: 0.625rem;
+  --c-primary: #00c6ff;
+  --c-secondary: #0072ff;
+  --c-accent: #00ff9d;
+  --c-warning: #ff0058;
+  --c-background: #0a192f;
+  --c-card: rgba(16, 42, 88, 0.7);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  /* rem vw/vh */
+  width: 100vw;
+  margin: 0;
+  font-size: 16px;
+  font-family:
+    "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+
+  /* 禁止用户鼠标在页面上选中文字/图片等 */
+
+  /* user-select: none; */
+  -webkit-tap-highlight-color: transparent;
+  /* webkit是苹果浏览器引擎，tap点击，highlight背景高亮，color颜色，颜色用数值调节 */
+}
+
+* {
+  word-break: keep-all;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+input,
+textarea {
+  outline: none !important;
+  box-shadow: none;
+  appearance: none;
+  /* 去除系统默认的样式 */
+  -webkit-tap-highlight-color: rgb(0 0 0 / 0%);
+  /* 点击高亮的颜色 */
+}
+
+input:focus,
+input,
+textarea:focus {
+  outline: none !important;
+  box-shadow: none;
+  appearance: none;
+  /* 去除系统默认的样式 */
+  -webkit-tap-highlight-color: rgb(0 0 0 / 0%);
+  /* 点击高亮的颜色 */
+}
+
+button:focus {
+  outline: none;
+}

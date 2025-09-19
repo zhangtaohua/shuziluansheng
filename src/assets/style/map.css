@@ -1,0 +1,306 @@
+.map_div_container {
+  width: max-content;
+  height: auto;
+  padding: 1rem;
+  background-color: black;
+}
+
+.map_div_title {
+  width: max-content;
+  height: 2rem;
+  font-size: 1rem;
+  color: white;
+}
+
+.map_charge_spot_container {
+  background-image: url(@/assets/images/lbl_circle.png);
+  position: absolute;
+  background-repeat: no-repeat;
+  user-select: none;
+  z-index: 100000;
+  width: 3rem;
+  height: 1.75rem;
+  background-size: cover;
+  bottom: -2rem;
+  left: -0rem;
+  cursor: default;
+}
+
+.map_charge_spot_board {
+  background-image: url(@/assets/images/lbl_extent.png);
+  top: -5rem;
+  transform: translateX(-35%);
+  width: 11.25rem;
+  height: 3.25rem;
+  padding: .9375rem 0;
+  background-position: 50%;
+  background-size: contain;
+  cursor: pointer;
+  position: absolute;
+  background-repeat: no-repeat;
+}
+
+.map_charge_spot_title {
+  width: 100%;
+  text-align: center;
+  line-height: 1.5rem;
+  color: #beedff;
+  font-size: 0.75rem;
+  margin: 0;
+}
+
+.map_charge_spot_line {
+  position: absolute;
+  top: -2rem;
+  left: 1.5rem;
+  width: 0.125rem;
+  height: 3rem;
+  background: linear-gradient(180deg, #38c9ff, transparent);
+}
+
+.map_charge_spot_line:before {
+  height: 40%;
+  left: .375rem;
+  animation: rise 3s linear 2s infinite;
+  -webkit-animation: rise 3s linear 2s infinite;
+  content: "";
+  display: block;
+  width: .0625rem;
+  background: linear-gradient(180deg, #38c9ff, transparent);
+  position: absolute;
+  cursor: pointer;
+}
+
+.map_charge_spot_line:after {
+  content: "";
+  display: block;
+  width: .0625rem;
+  background: linear-gradient(180deg, #38c9ff, transparent);
+  position: absolute;
+  cursor: pointer;
+  height: 60%;
+  left: -0.3125rem;
+  animation: rise 3s linear infinite;
+  -webkit-animation: rise 3s linear infinite;
+}
+
+@keyframes rise {
+  0% {
+    opacity: 0.1;
+    transform: translate(0, 100%);
+  }
+
+  5% {
+    opacity: 0.3;
+    transform: translate(0, 95%);
+  }
+
+  10% {
+    opacity: 0.6;
+    transform: translate(0, 90%);
+  }
+
+  15% {
+    opacity: 1;
+    transform: translate(0, 85%);
+  }
+
+  75% {
+    opacity: 1;
+    transform: translate(0, 25%);
+  }
+
+  80% {
+    opacity: 0.7;
+    transform: translate(0, 20%);
+  }
+
+  90% {
+    opacity: 0.3;
+    transform: translate(0, 10%);
+  }
+
+  95% {
+    opacity: 0.2;
+    transform: translate(0, 5%);
+  }
+
+  100% {
+    opacity: 0.1;
+    transform: translate(0, 0);
+  }
+}
+
+.mars3d-popup-content-wrapper {
+  border-radius: 1rem;
+}
+
+.map_tip_panel_container {
+  width: auto;
+  height: auto;
+  background: rgba(63, 72, 84, 0.9);
+  border: 1px solid #f70;
+  border-radius: 0.75rem;
+  margin: 0.25rem;
+}
+
+.map_tip_tag_icon {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  width: 0.375rem;
+  height: 0.375rem;
+  background: #fff;
+  border: 1px solid #f70;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.map_tip_close_icon {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: rgb(255 255 255 / 100%);
+  font-size: 0.375rem;
+  cursor: pointer;
+}
+
+.map_tip_close_icon_show {
+  width: 1rem;
+  height: 1rem;
+}
+
+.map_tip_info_box {
+  width: max-content;
+  height: auto;
+  margin: 1.5rem 1.375rem 1rem 1.375rem;
+}
+
+.map_tip_info_label {
+  width: max-content;
+  height: 1.5rem;
+  color: rgb(255 255 255 / 100%);
+  font-weight: 300;
+  font-size: 0.75rem;
+  font-family: "Source Han Sans CN";
+}
+
+.map_tip_info_name {
+  width: max-content;
+  height: 100%;
+  color: rgba(0, 0, 0, 1);
+  font-size: 0.875rem;
+}
+
+.map_drug_table_container {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+
+.map_drug_table_header {
+  width: 100%;
+  height: 1.5rem;
+  background: rgb(33, 33, 33);
+  font-size: 0.875rem;
+  font-family: Source Han Sans CN;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 1);
+  border-radius: 0.25rem 0.25rem 0 0;
+}
+
+.map_drug_table_col_1 {
+  width: 10rem;
+}
+
+.map_drug_table_col_2 {
+  width: 5.5rem;
+}
+
+.map_drug_table_col_3 {
+  width: 5rem;
+}
+
+.map_drug_table_col_4 {
+  width: 5rem;
+}
+
+.map_drug_table_hr_col_2 {
+  color: rgba(221, 172, 2, 1);
+}
+
+.map_drug_tb_bolder {
+  border-right: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.map_drug_table_body {
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  overflow-x: overlay;
+  overflow-y: scroll;
+}
+
+.map_drug_table_list {
+  width: 100%;
+  height: 1.5rem;
+  background: rgb(33, 33, 33);
+  font-size: 0.75rem;
+  font-family: Source Han Sans CN;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 1);
+  flex-shrink: 0;
+}
+
+.map_drug_table_list_odd {
+  width: 100%;
+  height: 2.25rem;
+  background-color: rgba(29, 84, 128, 0.2);
+  font-size: 0.75rem;
+  font-family: Source Han Sans CN;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 1);
+  flex-shrink: 0;
+}
+
+.map_drug_table_list_even {
+  width: 100%;
+  height: 2.25rem;
+  font-size: 0.75rem;
+  font-family: Source Han Sans CN;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 1);
+  flex-shrink: 0;
+}
+
+.map_drug_table_list_item1 {
+  color: rgba(255, 255, 255, 1);
+  padding-left: 0.5rem;
+  overflow: hidden;
+}
+
+.map_drug_table_list_item2 {
+  color: rgba(123, 188, 238, 1);
+  padding-left: 0.5rem;
+  overflow: hidden;
+}
+
+.map_drug_table_list_item3 {
+  color: rgba(255, 255, 255, 1);
+  padding-left: 0.5rem;
+}
+
+.map_drug_table_list_item4 {
+  color: rgba(255, 255, 255, 1);
+}
+
+.list_ellipsis {
+  word-wrap: break-word;
+  word-break: break-all;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
