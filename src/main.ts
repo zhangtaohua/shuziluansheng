@@ -5,6 +5,7 @@ import "./assets/style/flex.css";
 import "./assets/style/general.css";
 import "./assets/style/echart.css";
 import "./assets/style/map.css";
+import '@cyhnkckali/vue3-color-picker/dist/style.css'
 
 import { createApp } from "vue";
 import { createPinia } from "pinia";

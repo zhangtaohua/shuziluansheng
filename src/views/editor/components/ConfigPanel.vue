@@ -3,6 +3,10 @@
     <div class="config_wraper">
       <NumberInputSlider></NumberInputSlider>
       <LineGap></LineGap>
+      <RadioSingleInput></RadioSingleInput>
+      <LineGap></LineGap>
+      <ColorInput></ColorInput>
+      <LineGap></LineGap>
     </div>
   </div>
 </template>
@@ -13,6 +17,8 @@
   // import { useSystemStore } from "@/store/systemConfig";
 
   import NumberInputSlider from "@/components/css/NumberInputSlider.vue";
+  import RadioSingleInput from "@/components/css/RadioSingleInput.vue";
+  import ColorInput from "@/components/css/ColorInput.vue";
   import LineGap from "@/components/css/LineGap.vue";
 </script>
 
