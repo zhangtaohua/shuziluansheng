@@ -7,6 +7,10 @@
       <LineGap></LineGap>
       <ColorInput></ColorInput>
       <LineGap></LineGap>
+      <CheckInput></CheckInput>
+      <LineGap></LineGap>
+      <OptionsInput></OptionsInput>
+      <LineGap></LineGap>
     </div>
   </div>
 </template>
@@ -19,6 +23,8 @@
   import NumberInputSlider from "@/components/css/NumberInputSlider.vue";
   import RadioSingleInput from "@/components/css/RadioSingleInput.vue";
   import ColorInput from "@/components/css/ColorInput.vue";
+  import CheckInput from "@/components/css/CheckInput.vue";
+  import OptionsInput from "@/components/css/OptionsInput.vue";
   import LineGap from "@/components/css/LineGap.vue";
 </script>
 
