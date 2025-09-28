@@ -1,7 +1,10 @@
 <template>
   <div
-    :class="{ [props.vNodeData.className]: true, active_container: isActive }"
-    :style="style"
+    :class="{
+      [divClassNames]: true,
+      active_container: isActive,
+    }"
+    :style="divStyles"
     @dblclick.stop.prevent="setEditorCurrentShapeHd"
     @click.stop.prevent="setEditorCurrentParentCompHd"
   >
@@ -25,8 +28,25 @@
     },
   });
 
-  const style = reactive({
-    ...props.vNodeData.style,
+  const divClassNames = computed(() => {
+    if (props.vNodeData.classNames) {
+      return Object.keys(props.vNodeData.classNames).join(" ");
+    } else {
+      return "";
+    }
+  });
+
+  const divStyles = computed(() => {
+    if (props.vNodeData.styles) {
+      const style = {};
+      const values = Object.values(props.vNodeData.styles);
+      values.forEach((prop: any) => {
+        style[prop.getStyleName()] = prop.getStyleValue();
+      });
+      return style;
+    } else {
+      return {};
+    }
   });
 
   const childrenComps = ref(props.vNodeData.children ? props.vNodeData.children : []);
@@ -60,10 +80,22 @@
         editorConfig.currentShapeOptions.id == props.vNodeData.id
       ) {
         const transform = editorConfig.currentShapeOptions.transform;
-        style.top = transform.y + "px";
-        style.left = transform.x + "px";
-        style.width = transform.width + "px";
-        style.height = transform.height + "px";
+        const styles = props.vNodeData.styles;
+        if (styles.left) {
+          styles.left.value = transform.left;
+        }
+
+        if (styles.top) {
+          styles.top.value = transform.top;
+        }
+
+        if (styles.width) {
+          styles.width.value = transform.width;
+        }
+
+        if (styles.height) {
+          styles.height.value = transform.height;
+        }
       }
     },
     {

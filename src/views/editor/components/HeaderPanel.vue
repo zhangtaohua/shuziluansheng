@@ -1,6 +1,6 @@
 <template>
   <div class="row_nw_fs_ce header_container">
-    <div class="row_nw_ce_ce header_item" @click="addTest2">容器</div>
+    <div class="row_nw_ce_ce header_item" @click="addTest">容器</div>
     <div class="row_nw_ce_ce header_item" @click="addChild">DIV</div>
   </div>
   <!-- <div v-else class="row_nw_center_center header_small" @click="setIsFullView(false)"></div> -->
@@ -15,35 +15,52 @@
   import { nanoid } from "@/utils/common/nanoid";
   import { cloneDeep } from "es-toolkit";
 
+  import {
+    CssWidthOptions,
+    CssHeightOptions,
+    CssTopOptions,
+    CssLeftOptions,
+    CssNamePixel,
+  } from "@/common/cssData/NamePixel.ts";
+  import CssBackgroundColor from "@/common/cssData/BackgroundColor.ts";
+  import { CssPureOptions, CssDisplayOptions, CssPositionOptions } from "@/common/cssData/PureOptions";
+  import { getControlTransform } from "@/common/cssData/globalCss";
+
   const { systemConfig } = useSystemConfigStore();
   const { editorConfig, addEditorComponents, setEditorCurrentParentComp } = useEditorConfigStore();
 
   function addTest() {
+    console.log("divContainerConfig", divContainerConfig);
     const newdivConfig = cloneDeep(divContainerConfig);
-    newdivConfig.style.width = "320px";
-    newdivConfig.style.height = "320px";
-    newdivConfig.transform = {
-      x: 0,
-      y: 0,
-      width: 320,
-      height: 320,
-      rotation: 0,
-    };
+    newdivConfig.styles["width"] = new CssNamePixel(CssWidthOptions);
+    newdivConfig.styles["height"] = new CssNamePixel(CssHeightOptions);
+    newdivConfig.styles["top"] = new CssNamePixel(CssTopOptions);
+    newdivConfig.styles["left"] = new CssNamePixel(CssLeftOptions);
+    newdivConfig.styles["background-color"] = new CssBackgroundColor("rgba(255, 0, 0, 1)");
+    newdivConfig.styles["display"] = new CssPureOptions(CssDisplayOptions);
+    newdivConfig.styles["position"] = new CssPureOptions(CssPositionOptions);
+
+    newdivConfig.styles.width.value = "320";
+    newdivConfig.styles.height.value = "320";
+    newdivConfig.transform = getControlTransform(newdivConfig.styles);
 
     newdivConfig.id = nanoid();
     addEditorComponents(newdivConfig);
 
     const newdivConfig2 = cloneDeep(divContainerConfig);
-    newdivConfig2.style.width = "320px";
-    newdivConfig2.style.height = "320px";
-    newdivConfig2.style.left = "500px";
-    newdivConfig2.transform = {
-      x: 500,
-      y: 0,
-      width: 320,
-      height: 320,
-      rotation: 0,
-    };
+    newdivConfig2.styles["width"] = new CssNamePixel(CssWidthOptions);
+    newdivConfig2.styles["height"] = new CssNamePixel(CssHeightOptions);
+    newdivConfig2.styles["top"] = new CssNamePixel(CssTopOptions);
+    newdivConfig2.styles["left"] = new CssNamePixel(CssLeftOptions);
+    newdivConfig2.styles["background-color"] = new CssBackgroundColor("rgba(255, 255, 0, 1)");
+    newdivConfig2.styles["display"] = new CssPureOptions(CssDisplayOptions);
+    newdivConfig2.styles["position"] = new CssPureOptions(CssPositionOptions);
+
+    newdivConfig2.styles.width.value = "320";
+    newdivConfig2.styles.height.value = "320";
+    newdivConfig2.styles.left.value = "500";
+    newdivConfig2.transform = getControlTransform(newdivConfig2.styles);
+    console.log("newdivConfig2", newdivConfig2);
 
     newdivConfig2.id = nanoid();
     addEditorComponents(newdivConfig2);
@@ -70,7 +87,7 @@
     const newdivConfig2 = cloneDeep(divContainerConfig);
     newdivConfig2.style.width = "160px";
     newdivConfig2.style.height = "160px";
-    newdivConfig2.style.left = "10px";
+    newdivConfig2.style.left = "10";
     newdivConfig2.style.backgroundColor = "rgba(255,255,0,1)";
     newdivConfig2.transform = {
       x: 10,

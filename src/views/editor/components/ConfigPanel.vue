@@ -1,16 +1,10 @@
 <template>
-  <div class="row_nw_ce_ce config_container">
+  <div v-if="isShowProps" class="row_nw_ce_ce config_container">
     <div class="config_wraper">
-      <NumberInputSlider></NumberInputSlider>
-      <LineGap></LineGap>
-      <RadioSingleInput></RadioSingleInput>
-      <LineGap></LineGap>
-      <ColorInput></ColorInput>
-      <LineGap></LineGap>
-      <CheckInput></CheckInput>
-      <LineGap></LineGap>
-      <OptionsInput></OptionsInput>
-      <LineGap></LineGap>
+      <div v-for="scitem in editorConfig.currentParentComp.styles" :key="scitem.id" class="col_nw_ce_ce config_ic_box">
+        <component :is="scitem.tag" :vdata="scitem"></component>
+        <LineGap></LineGap>
+      </div>
     </div>
   </div>
 </template>
@@ -18,14 +12,21 @@
 <script setup lang="ts">
   import { ref, reactive, computed, watch, onUnmounted } from "vue";
   import { useRoute } from "vue-router";
-  // import { useSystemStore } from "@/store/systemConfig";
-
-  import NumberInputSlider from "@/components/css/NumberInputSlider.vue";
-  import RadioSingleInput from "@/components/css/RadioSingleInput.vue";
-  import ColorInput from "@/components/css/ColorInput.vue";
-  import CheckInput from "@/components/css/CheckInput.vue";
-  import OptionsInput from "@/components/css/OptionsInput.vue";
   import LineGap from "@/components/css/LineGap.vue";
+
+  import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
+
+  const { editorConfig, setEditorCurrentShape, setEditorRefreshShape, setEditorCurrentParentComp } =
+    useEditorConfigStore();
+
+  const isShowProps = computed(() => {
+    if (editorConfig.currentParentComp) {
+      console.log("panel", editorConfig.currentParentComp);
+      return true;
+    } else {
+      return false;
+    }
+  });
 </script>
 
 <style scoped lang="scss">
@@ -51,5 +52,10 @@
 
   .config_wraper::-webkit-scrollbar {
     display: none;
+  }
+
+  .config_ic_box {
+    width: 100%;
+    height: auto;
   }
 </style>

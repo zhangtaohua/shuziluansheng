@@ -56,16 +56,15 @@
     disactiveCurrentShape();
     destroyCurrentShape();
     const rect = new Konva.Rect({
-      x: 0,
-      y: height / 2,
-      width: 300,
-      height: 300,
+      x: options.left ?? 0,
+      y: options.top ?? 0,
+      width: options.width ?? 300,
+      height: options.height ?? 300,
       // offsetX: 200,
       fill: "rgba(255, 0, 0, 0.25)",
       stroke: "black",
       strokeWidth: 4,
       draggable: true,
-      ...options,
     });
 
     rect.on("transform", function (event) {
@@ -75,14 +74,14 @@
       let newX = event.target.attrs.x;
       let newY = event.target.attrs.y;
       for (let i = 0; i < parentsShapeTransform.length; i++) {
-        newX = newX - parentsShapeTransform[i].x;
-        newY = newY - parentsShapeTransform[i].y;
+        newX = newX - parentsShapeTransform[i].left;
+        newY = newY - parentsShapeTransform[i].top;
       }
       if (currentShapeTransform) {
         currentShapeTransform.width = newWidth;
         currentShapeTransform.height = newHeight;
-        currentShapeTransform.x = newX;
-        currentShapeTransform.y = newY;
+        currentShapeTransform.left = newX;
+        currentShapeTransform.top = newY;
         editorConfig.currentShapeOptions.transform = {
           ...currentShapeTransform,
         };
@@ -105,12 +104,12 @@
       let newRealX = newX;
       let newRealY = newY;
       for (let i = 0; i < parentsShapeTransform.length; i++) {
-        newRealX = newRealX - parentsShapeTransform[i].x;
-        newRealY = newRealY - parentsShapeTransform[i].y;
+        newRealX = newRealX - parentsShapeTransform[i].left;
+        newRealY = newRealY - parentsShapeTransform[i].top;
       }
       if (currentShapeTransform) {
-        currentShapeTransform.x = newRealX;
-        currentShapeTransform.y = newRealY;
+        currentShapeTransform.left = newRealX;
+        currentShapeTransform.top = newRealY;
         editorConfig.currentShapeOptions.transform = {
           ...currentShapeTransform,
         };
@@ -289,8 +288,8 @@
           visible: true,
         };
         for (let i = 0; i < parentsShapeTransform.length; i++) {
-          shapeOptions.x = shapeOptions.x + parentsShapeTransform[i].x;
-          shapeOptions.y = shapeOptions.y + parentsShapeTransform[i].y;
+          shapeOptions.left = shapeOptions.left + parentsShapeTransform[i].left;
+          shapeOptions.right = shapeOptions.right + parentsShapeTransform[i].right;
         }
         createRect(shapeOptions);
         layer.add(currentShape);

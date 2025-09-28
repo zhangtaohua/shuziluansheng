@@ -99,7 +99,7 @@
 
   const unitOptions = [
     { id: "px", value: "px", title: "px" },
-    { id: "percent", value: "percent", title: "%" },
+    { id: "%", value: "%", title: "%" },
     { id: "vw", value: "vw", title: "vw" },
     { id: "vh", value: "vh", title: "vh" },
   ];
