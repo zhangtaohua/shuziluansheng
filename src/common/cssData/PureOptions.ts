@@ -1,6 +1,6 @@
 import { nanoid } from "@/utils/common/nanoid";
 
-export class CssPureOptions {
+export class CssPureOptionsInput {
   public id = "css_pure_options_" + nanoid(10);
   public name = "pure_options";
   public vueName = "pureOptions";
@@ -10,6 +10,7 @@ export class CssPureOptions {
   public _value = "";
   public description = "";
   public options = [];
+  public isEnable = true;
 
   constructor(options: any) {
     this.id = options.id ? options.id : "css_" + options.name + "_" + nanoid(10);
@@ -21,6 +22,7 @@ export class CssPureOptions {
 
     this._value = options.value;
     this.options = options.options;
+    this.isEnable = options.isEnable ?? true;
   }
 
   get value() {
@@ -59,7 +61,8 @@ export class CssPureOptions {
     return this.name;
   }
 }
-export default CssPureOptions;
+
+export default CssPureOptionsInput;
 
 export const CssDisplayOptions = {
   name: "display",
@@ -67,6 +70,7 @@ export const CssDisplayOptions = {
   labelZh: "显示",
   labelEn: "display",
   tag: "OptionsInput",
+  isEnable: true,
 
   // real default value is static
   value: "flex",
@@ -125,8 +129,9 @@ export const CssPositionOptions = {
   name: "position",
   vueName: "position",
   labelZh: "位置",
-  labelEn: "位置",
+  labelEn: "position",
   tag: "OptionsInput",
+  isEnable: false,
 
   // real default value is static
   value: "absolute",
@@ -156,4 +161,70 @@ export const CssPositionOptions = {
   // position: revert;
   // position: revert-layer;
   // position: unset;
+};
+
+export const CssfontWeightOptions = {
+  name: "font-weight",
+  vueName: "fontWeight",
+  labelZh: "字体粗细",
+  labelEn: "font weight",
+  tag: "OptionsInput",
+  isEnable: true,
+
+  value: "normal",
+  options: [
+    { id: "normal", value: "normal", titleZh: "正常值", titleEn: "normal", default: true },
+    { id: "bold", value: "bold", titleZh: "粗体", titleEn: "bold", default: false },
+
+    { id: "lighter", value: "lighter", titleZh: "相对更细", titleEn: "lighter", default: false },
+    { id: "bolder", value: "bolder", titleZh: "相对更粗", titleEn: "bolder", default: false },
+
+    { id: "100", value: "100", titleZh: "100", titleEn: "100", default: false },
+    { id: "200", value: "200", titleZh: "200", titleEn: "200", default: false },
+    { id: "300", value: "300", titleZh: "300", titleEn: "300", default: false },
+    { id: "400", value: "400", titleZh: "400", titleEn: "400", default: false },
+    { id: "500", value: "500", titleZh: "500", titleEn: "500", default: false },
+    { id: "600", value: "600", titleZh: "600", titleEn: "600", default: false },
+    { id: "700", value: "700", titleZh: "700", titleEn: "700", default: false },
+    { id: "800", value: "800", titleZh: "800", titleEn: "800", default: false },
+    { id: "900", value: "900", titleZh: "900", titleEn: "900", default: false },
+    { id: "1000", value: "1000", titleZh: "1000", titleEn: "1000", default: false },
+    { id: "1100", value: "1100", titleZh: "1100", titleEn: "1100", default: false },
+    { id: "1200", value: "1200", titleZh: "1200", titleEn: "1200", default: false },
+
+    { id: "inherit", value: "inherit", titleZh: "继承", titleEn: "inherit", default: false },
+    { id: "initial", value: "initial", titleZh: "初始", titleEn: "initial", default: false },
+    { id: "unset", value: "unset", titleZh: "取消设置", titleEn: "unset", default: false },
+  ],
+};
+
+export const CssfontStyleOptions = {
+  name: "font-style",
+  vueName: "fontStyle",
+  labelZh: "字体样式",
+  labelEn: "font style",
+  tag: "OptionsInput",
+  isEnable: true,
+
+  value: "normal",
+  options: [
+    { id: "normal", value: "normal", titleZh: "常规", titleEn: "normal", default: true },
+    { id: "italic", value: "italic", titleZh: "斜体", titleEn: "italic", default: false },
+
+    // font-style: oblique;
+    // font-style: oblique 10deg;
+    // Valid values are degree values of -90deg to 90deg inclusive. If an angle is not specified, an angle of 14 degrees is used.
+    { id: "oblique", value: "oblique", titleZh: "oblique", titleEn: "oblique", default: false },
+    {
+      id: "oblique-neg-14deg",
+      value: "oblique -14deg",
+      titleZh: "oblique -14deg",
+      titleEn: "oblique -14deg",
+      default: false,
+    },
+
+    { id: "inherit", value: "inherit", titleZh: "继承", titleEn: "inherit", default: false },
+    { id: "initial", value: "initial", titleZh: "初始", titleEn: "initial", default: false },
+    { id: "unset", value: "unset", titleZh: "取消设置", titleEn: "unset", default: false },
+  ],
 };

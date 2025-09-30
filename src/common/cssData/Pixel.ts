@@ -8,6 +8,7 @@ export default class CssNamePixel {
   private _min = 0;
   private _max = 500;
   private _step = 1;
+  public isEnable = true;
 
   // constructor(value: number = 1920, unit: "px" | "%" | "vw" | "vh" = "px", min = -1, max = -1, step = 1) {
   //   this._value = value;
@@ -29,6 +30,7 @@ export default class CssNamePixel {
   constructor(options: any) {
     this._value = options.value;
     this.unit = options.unit;
+    this.isEnable = options.isEnable ?? true;
 
     if (options.max != undefined && options.min != undefined && options.max > options.min) {
       this._max = options.max;

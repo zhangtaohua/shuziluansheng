@@ -11,6 +11,14 @@
         <label class="row_nw_fs_fe props_ogi_label">{{ currentStyle.labelEn }}</label>
       </div>
     </div>
+    <div v-if="isShowColorPanel" class="props_color_pbox">
+      <ColorInputBase
+        :color="currentStyle.value"
+        :disabled="!currentStyle.isEnable"
+        @onChange="updateColorHd"
+      ></ColorInputBase>
+    </div>
+
     <div class="row_nw_ce_ce props_optionsbox">
       <div
         class="row_nw_sb_ce props_labelboxs"
@@ -18,7 +26,7 @@
         @click="toggleIsShowOptions"
       >
         <div class="row_nw_fs_ce props_labelinboxs" :class="{ props_labelinboxs_disabled: !currentStyle.isEnable }">
-          {{ currentStyle.value ? currentStyle.value : "请选择" }}
+          {{ currentOptValue ? currentOptValue : "请选择" }}
         </div>
         <div class="row_nw_ce_ce props_labeldown">
           <div
@@ -41,7 +49,7 @@
             v-for="opt in currentStyle.options"
             :key="opt.value"
             class="row_nw_fs_ce props_label_bigitem"
-            :class="{ props_label_bigitem_act: currentStyle.value == opt.value }"
+            :class="{ props_label_bigitem_act: currentOptValue == opt.value }"
             @click.stop.prevent="setOptions(opt)"
           >
             {{ opt.value }}
@@ -54,6 +62,8 @@
 
 <script setup lang="ts">
   import { ref, reactive, onMounted, computed } from "vue";
+  import ColorInputBase from "./ColorInputBase.vue";
+
   import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
 
   const props = defineProps({
@@ -68,13 +78,14 @@
     },
   });
 
-  const { editorConfig, setEditorRefreshShape } = useEditorConfigStore();
+  const { editorConfig } = useEditorConfigStore();
   let id = "";
   let name = "";
   let currentStyle = {};
   const isEnable = ref(false);
-
   const isShowOp = ref(false);
+  const isShowColorPanel = ref(false);
+  const currentOptValue = ref(null);
 
   function init() {
     if (props.vdata && props.vdata.id && props.vdata.name) {
@@ -84,9 +95,17 @@
       if (styles[name] && styles[name].id === id) {
         isEnable.value = true;
         currentStyle = styles[name];
+        if (currentStyle.isColorValue) {
+          currentOptValue.value = "value";
+          isShowColorPanel.value = true;
+        } else {
+          currentOptValue.value = styles[name].value;
+          isShowColorPanel.value = false;
+        }
       } else {
         isEnable.value = false;
         currentStyle = null;
+        currentOptValue.value = null;
       }
     }
   }
@@ -107,10 +126,28 @@
     }
   }
 
+  let oldColor = null;
   function setOptions(opt: any) {
-    currentStyle.value = opt.value;
     isShowOp.value = false;
-    setEditorRefreshShape();
+    currentOptValue.value = opt.value;
+    if (opt.value == "value") {
+      let color = "rgba(255, 0, 0, 0.5)";
+      if (oldColor) {
+        color = oldColor;
+      } else if (currentStyle.defaultColor) {
+        color = currentStyle.defaultColor;
+      }
+      updateColorHd(color);
+      isShowColorPanel.value = true;
+    } else {
+      isShowColorPanel.value = false;
+      currentStyle.value = opt.value;
+    }
+  }
+
+  function updateColorHd(color) {
+    currentStyle.value = color;
+    oldColor = color;
   }
 
   let disTime = null;
@@ -167,6 +204,12 @@
     color: rgba(230, 230, 230, 1);
     font-size: 0.75rem;
     font-weight: 400;
+  }
+
+  .props_color_pbox {
+    width: 100%;
+    height: auto;
+    margin-bottom: 0.75rem;
   }
 
   .props_optionsbox {

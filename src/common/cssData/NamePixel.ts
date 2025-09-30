@@ -27,6 +27,7 @@ export const CssWidthOptions = {
   tag: "NumberInputSlider",
   value: 200,
   unit: "px",
+  isEnable: true,
 };
 
 export const CssMaxWidthOptions = {
@@ -37,6 +38,7 @@ export const CssMaxWidthOptions = {
   tag: "NumberInputSlider",
   value: 200,
   unit: "px",
+  isEnable: true,
 };
 
 export const CssMinWidthOptions = {
@@ -47,6 +49,7 @@ export const CssMinWidthOptions = {
   tag: "NumberInputSlider",
   value: 200,
   unit: "px",
+  isEnable: true,
 };
 
 export const CssHeightOptions = {
@@ -57,6 +60,7 @@ export const CssHeightOptions = {
   tag: "NumberInputSlider",
   value: 200,
   unit: "px",
+  isEnable: true,
 };
 
 export const CssMaxHeightOptions = {
@@ -67,6 +71,7 @@ export const CssMaxHeightOptions = {
   tag: "NumberInputSlider",
   value: 200,
   unit: "px",
+  isEnable: true,
 };
 
 export const CssMinHeightOptions = {
@@ -77,6 +82,7 @@ export const CssMinHeightOptions = {
   tag: "NumberInputSlider",
   value: 200,
   unit: "px",
+  isEnable: true,
 };
 
 export const CssFontSizeOptions = {
@@ -89,6 +95,20 @@ export const CssFontSizeOptions = {
   unit: "px",
   max: 300,
   min: 8,
+  isEnable: true,
+};
+
+export const CssLineHeightOptions = {
+  name: "line-height",
+  vueName: "lineHeight",
+  labelZh: "行高",
+  labelEn: "line height",
+  tag: "NumberInputSlider",
+  value: 16,
+  unit: "px",
+  max: 100,
+  min: 0,
+  isEnable: true,
 };
 
 export const CssTopOptions = {
@@ -101,6 +121,7 @@ export const CssTopOptions = {
   unit: "px",
   max: 2000,
   min: -1000,
+  isEnable: true,
 };
 
 export const CssLeftOptions = {
@@ -113,6 +134,7 @@ export const CssLeftOptions = {
   unit: "px",
   max: 2000,
   min: -1000,
+  isEnable: true,
 };
 
 export class CssNamePixel {
@@ -128,6 +150,7 @@ export class CssNamePixel {
   private _min = 0;
   private _max = 5000;
   private _step = 1;
+  public isEnable = true;
 
   constructor(options: any) {
     this.id = options.id ? options.id : "css_" + options.name + "_" + nanoid(10);
@@ -139,6 +162,7 @@ export class CssNamePixel {
 
     this._value = options.value;
     this.unit = options.unit;
+    this.isEnable = options.isEnable ?? true;
 
     if (options.max != undefined && options.min != undefined && options.max > options.min) {
       this._max = options.max;

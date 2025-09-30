@@ -1,47 +1,35 @@
 <template>
-  <div v-if="isEnable" class="col_nw_fs_fs props_container">
-    <div
-      v-if="isShowOp && currentStyle.options && currentStyle.options.length"
-      class="row_nw_fs_ce props_options_mask"
-      @click="setIsShowOptions(false)"
-    ></div>
+  <div class="col_nw_fs_fs props_container">
     <div class="row_nw_fs_ce props_box">
       <div class="row_nw_fs_ce wh_auto_100p">
-        <label class="row_nw_fs_ce props_ch_label">{{ currentStyle.labelZh }}</label>
-        <label class="row_nw_fs_fe props_ogi_label">{{ currentStyle.labelEn }}</label>
+        <label class="row_nw_fs_ce props_ch_label">{{ props.vdata.labelZh }}</label>
+        <label class="row_nw_fs_fe props_ogi_label">{{ props.vdata.labelEn }}</label>
       </div>
     </div>
+
     <div class="row_nw_ce_ce props_optionsbox">
-      <div
-        class="row_nw_sb_ce props_labelboxs"
-        :class="{ props_labelboxs_disabled: !currentStyle.isEnable }"
-        @click="toggleIsShowOptions"
-      >
-        <div class="row_nw_fs_ce props_labelinboxs" :class="{ props_labelinboxs_disabled: !currentStyle.isEnable }">
-          {{ currentStyle.value ? currentStyle.value : "请选择" }}
+      <div class="row_nw_sb_ce props_labelboxs" @click="toggleIsShowOptions">
+        <div class="row_nw_fs_ce props_labelinboxs">
+          {{ state.value ? state.value : "请选择" }}
         </div>
         <div class="row_nw_ce_ce props_labeldown">
           <div
             class="props_input_downarrow"
-            :class="{
-              props_input_downarrow_disabled: !currentStyle.isEnable,
-              props_labeldownup_show: isShowOp,
-              props_labeldown_show: !isShowOp,
-            }"
+            :class="isShowOp ? 'props_labeldownup_show' : 'props_labeldown_show'"
           ></div>
         </div>
 
         <div
-          v-if="isShowOp && currentStyle.options && currentStyle.options.length"
+          v-if="isShowOp && props.vdata.options && props.vdata.options.length"
           class="col_nw_fs_ce props_biglabelopts"
           @mouseenter="clearDisTime"
           @mouseleave="hiddenOp"
         >
           <div
-            v-for="opt in currentStyle.options"
+            v-for="opt in props.vdata.options"
             :key="opt.value"
             class="row_nw_fs_ce props_label_bigitem"
-            :class="{ props_label_bigitem_act: currentStyle.value == opt.value }"
+            :class="{ props_label_bigitem_act: state.value == opt.value }"
             @click.stop.prevent="setOptions(opt)"
           >
             {{ opt.value }}
@@ -54,40 +42,39 @@
 
 <script setup lang="ts">
   import { ref, reactive, onMounted, computed } from "vue";
-  import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
+
+  const emit = defineEmits(["onChange"]);
 
   const props = defineProps({
     vdata: {
       type: Object,
       default() {
         return {
-          id: "",
-          name: "",
+          labelZh: "显示",
+          labelEn: "display",
+          name: "display",
+          value: "",
+          options: [
+            { id: "block", value: "block", titleZh: "块", titleEn: "块" },
+            { id: "flex", value: "flex", titleZh: "flex", titleEn: "flex" },
+            { id: "grid", value: "grid", titleZh: "grid", titleEn: "grid" },
+          ],
         };
       },
     },
   });
 
-  const { editorConfig, setEditorRefreshShape } = useEditorConfigStore();
-  let id = "";
-  let name = "";
-  let currentStyle = {};
-  const isEnable = ref(false);
+  const state = reactive({
+    name: "",
+    value: false,
+  });
 
   const isShowOp = ref(false);
 
   function init() {
-    if (props.vdata && props.vdata.id && props.vdata.name) {
-      const styles = editorConfig.currentParentComp.styles;
-      id = props.vdata.id;
-      name = props.vdata.name;
-      if (styles[name] && styles[name].id === id) {
-        isEnable.value = true;
-        currentStyle = styles[name];
-      } else {
-        isEnable.value = false;
-        currentStyle = null;
-      }
+    if (props.vdata && props.vdata.name) {
+      state.name = props.vdata.name;
+      state.value = props.vdata.value;
     }
   }
 
@@ -96,21 +83,16 @@
   });
 
   function toggleIsShowOptions() {
-    if (currentStyle && currentStyle.isEnable) {
-      isShowOp.value = !isShowOp.value;
-    }
-  }
-
-  function setIsShowOptions(isShow) {
-    if (currentStyle && currentStyle.isEnable) {
-      isShowOp.value = isShow;
-    }
+    isShowOp.value = !isShowOp.value;
   }
 
   function setOptions(opt: any) {
-    currentStyle.value = opt.value;
+    state.value = opt.value;
     isShowOp.value = false;
-    setEditorRefreshShape();
+    emit("onChange", {
+      name: state.name,
+      values: state.value,
+    });
   }
 
   let disTime = null;
@@ -136,19 +118,9 @@
     background-color: transparent;
   }
 
-  .props_options_mask {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 3;
-  }
-
   .props_box {
     width: 100%;
-    height: 2.5rem;
+    height: 1.5rem;
   }
 
   .props_ch_label {
@@ -157,7 +129,6 @@
     color: rgba(255, 255, 255, 1);
     font-size: 0.875rem;
     font-weight: 500;
-    margin-right: 0.5rem;
     margin-left: 0.25rem;
   }
 
@@ -192,15 +163,6 @@
     outline: 1px solid rgba(15, 55, 175, 1);
   }
 
-  .props_labelboxs_disabled {
-    background-color: rgba(0, 0, 0, 0.3);
-    cursor: not-allowed;
-  }
-
-  .props_labelboxs_disabled:hover {
-    outline: none;
-  }
-
   .props_labelinboxs {
     width: calc(100% - 2rem);
     height: 100%;
@@ -208,11 +170,7 @@
     font-weight: 400;
     font-size: 0.875rem;
     color: rgba(255, 255, 255, 1);
-    padding-left: 0.75rem;
-  }
-
-  .props_labelinboxs_disabled {
-    color: rgba(255, 255, 255, 0.8);
+    padding-left: 0.5rem;
   }
 
   .props_labeldown {
@@ -229,11 +187,6 @@
     border-left: 0.5rem solid transparent;
     cursor: pointer;
     transition: all 0.5s;
-  }
-
-  .props_input_downarrow_disabled {
-    border-top: 0.5rem solid rgba(255, 255, 255, 0.5);
-    cursor: not-allowed;
   }
 
   .props_labeldownup_show {

@@ -1,54 +1,71 @@
 <template>
-  <div v-if="isEnable" class="col_nw_fs_fs props_container" @mouseleave="setIsShowArrow(false)">
-    <div class="row_nw_sb_ce props_box">
-      <div class="row_nw_fs_ce props_lbox">
-        <label class="row_nw_fs_ce props_ch_label">{{ currentStyle.labelZh }}</label>
-        <label class="row_nw_fs_fe props_ogi_label">{{ currentStyle.labelEn }}</label>
+  <div class="col_nw_fs_fs props_container" @mouseleave="setIsShowArrow(false)">
+    <div class="row_nw_fs_ce props_box">
+      <div class="row_nw_fs_ce wh_auto_100p">
+        <label class="row_nw_fs_ce props_ch_label">{{ props.vdata.labelZh }}</label>
+        <label class="row_nw_fs_fe props_ogi_label">{{ props.vdata.labelEn }}</label>
       </div>
+    </div>
 
-      <div class="row_nw_fs_ce props_input_nbox">
-        <div v-show="currentStyle.unit == 'px'" class="row_nw_fs_ce props_input_rem">{{ rem }}</div>
+    <div class="row_nw_sb_ce props_input_nbox">
+      <div class="row_nw_fs_ce wh_auto_100p">
         <div
           class="row_nw_fs_ce props_input_box"
-          :class="{ props_input_box_act: isShowArrow, props_input_box_disabled: !currentStyle.isEnable }"
+          :class="{ props_input_box_act: isShowArrow }"
           @mouseover="setIsShowArrow(true)"
         >
           <input
             type="number"
-            v-model="currentStyle.value"
-            :min="currentStyle.min"
-            :max="currentStyle.max"
-            :step="currentStyle.step"
+            v-model="state.value"
+            :min="state.min"
+            :max="state.max"
+            :step="state.step"
             class="row_nw_fs_fs props_input"
             placeholder="0"
             @focus="setIsShowArrow(true)"
             @blur="onBlur"
-            :disabled="!currentStyle.isEnable"
           />
-          <div v-show="isShowArrow && currentStyle.isEnable" class="props_input_uparrow" @click="plusNumber"></div>
-          <div v-show="isShowArrow && currentStyle.isEnable" class="props_input_downarrow" @click="reduceNuber"></div>
+          <div v-show="isShowArrow" class="props_input_uparrow" @click="plusNumber"></div>
+          <div v-show="isShowArrow" class="props_input_downarrow" @click="reduceNuber"></div>
+        </div>
+        <div v-show="state.unit == 'px'" class="row_nw_fs_ce props_input_rem">{{ rem }}</div>
+      </div>
+
+      <div class="row_nw_fs_ce prop_input_wraper">
+        <div v-for="(item, index) in unitOptions" :key="'radio_' + index" class="row_nw_fs_ce radio_content">
+          <input
+            :id="item.id"
+            v-model="state.unit"
+            class="radio_input"
+            type="radio"
+            name="cssUnit"
+            :value="item.value"
+            @change="updateMinMax"
+          />
+          <label
+            :for="item.id"
+            class="row_nw_fs_ce radio_label"
+            :class="{ radio_label_checked: item.value === state.unit }"
+          >
+            <span class="radio_span" :class="{ radio_span_checked: item.value === state.unit }"></span>
+            {{ item.title }}
+          </label>
         </div>
       </div>
     </div>
-
     <div class="row_nw_ce_ce props_input_sbox" @mouseover="setIsShowArrow(true)">
       <div class="props_input_slider_after"></div>
       <div class="props_input_slider_outbefore">
-        <div
-          class="props_input_slider_before"
-          :class="{ props_input_slider_before_disabled: !currentStyle.isEnable }"
-          :style="sliderBStyle"
-        ></div>
+        <div class="props_input_slider_before" :style="sliderBStyle"></div>
       </div>
       <input
         type="range"
-        v-model="currentStyle.value"
-        :min="currentStyle.min"
-        :max="currentStyle.max"
-        :step="currentStyle.step"
+        v-model="state.value"
+        :min="state.min"
+        :max="state.max"
+        :step="state.step"
         class="props_input_slider"
         @change="sliderChangeHd"
-        :disabled="!currentStyle.isEnable"
       />
     </div>
   </div>
@@ -56,46 +73,52 @@
 
 <script setup lang="ts">
   import { ref, reactive, onMounted, computed, watch, nextTick } from "vue";
-  import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
+
+  const emit = defineEmits(["onChange"]);
 
   const props = defineProps({
     vdata: {
       type: Object,
       default() {
         return {
-          id: "",
+          labelZh: "预览",
+          labelEn: "Enable Preview",
           name: "",
+          value: "",
+          // min: 0,
+          // max: 5000,
+          // step: 1,
         };
       },
     },
   });
 
-  const { editorConfig, setEditorRefreshShape } = useEditorConfigStore();
-  let id = "";
-  let name = "";
-  let currentStyle = {};
-  const isEnable = ref(false);
-
   const rem = computed(() => {
-    if (currentStyle) {
-      return (currentStyle.value / 16).toFixed(3) + "rem";
-    } else {
-      return "0rem";
-    }
+    return (state.value / 16).toFixed(3) + "rem";
+  });
+
+  const unitOptions = [
+    { id: "px", value: "px", title: "px" },
+    { id: "%", value: "%", title: "%" },
+    { id: "vw", value: "vw", title: "vw" },
+    { id: "vh", value: "vh", title: "vh" },
+  ];
+
+  const state = reactive({
+    name: "",
+    value: 0,
+    min: 0,
+    max: 5000,
+    step: 1,
+    unit: "px",
   });
 
   const sliderBStyle = computed(() => {
-    if (currentStyle) {
-      const per = ((currentStyle.value - currentStyle.min) / (currentStyle.max - currentStyle.min)) * 100;
-      if (per >= 0 && per <= 100) {
-        return {
-          width: per + "%",
-        };
-      } else {
-        return {
-          width: "0%",
-        };
-      }
+    const per = ((state.value - state.min) / (state.max - state.min)) * 100;
+    if (per >= 0 && per <= 100) {
+      return {
+        width: per + "%",
+      };
     } else {
       return {
         width: "0%",
@@ -108,18 +131,44 @@
     isShowArrow.value = isShow;
   }
 
-  function init() {
-    if (props.vdata && props.vdata.id && props.vdata.name) {
-      const styles = editorConfig.currentParentComp.styles;
-      id = props.vdata.id;
-      name = props.vdata.name;
-      if (styles[name] && styles[name].id === id) {
-        isEnable.value = true;
-        currentStyle = styles[name];
+  function updateMinMax() {
+    if (props.vdata.min === undefined) {
+      state.min = 0;
+    } else {
+      state.min = +props.vdata.min;
+    }
+
+    if (props.vdata.max === undefined) {
+      if (state.unit === "px") {
+        state.max = 5000;
       } else {
-        isEnable.value = false;
-        currentStyle = null;
+        state.max = 300;
       }
+      if (state.value > state.max) {
+        state.value = state.max;
+      }
+    } else {
+      state.max = +props.vdata.max;
+    }
+
+    if (props.vdata.step === undefined) {
+      state.step = 1;
+    } else {
+      state.step = +props.vdata.step;
+    }
+  }
+
+  function init() {
+    if (props.vdata && props.vdata.name) {
+      state.name = props.vdata.name;
+      state.value = props.vdata.value;
+
+      if (props.vdata.unit === undefined) {
+        state.unit = "px";
+      } else {
+        state.unit = props.vdata.unit;
+      }
+      updateMinMax();
     }
   }
 
@@ -128,33 +177,27 @@
   });
 
   function plusNumber() {
-    if (currentStyle && currentStyle.isEnable) {
-      const oldValue = currentStyle.value;
-      let newValue = currentStyle.value + currentStyle.step;
-      if (newValue > currentStyle.max) {
-        newValue = currentStyle.max;
-      }
-      if (oldValue === newValue) {
-        return;
-      }
-      currentStyle.value = newValue;
-      setEditorRefreshShape();
+    const oldValue = state.value;
+    let newValue = state.value + state.step;
+    if (newValue > state.max) {
+      newValue = state.max;
     }
+    if (oldValue === newValue) {
+      return;
+    }
+    state.value = newValue;
   }
 
   function reduceNuber() {
-    if (currentStyle && currentStyle.isEnable) {
-      const oldValue = currentStyle.value;
-      let newValue = currentStyle.value - currentStyle.step;
-      if (newValue < currentStyle.min) {
-        newValue = currentStyle.min;
-      }
-      if (oldValue === newValue) {
-        return;
-      }
-      currentStyle.value = newValue;
-      setEditorRefreshShape();
+    const oldValue = state.value;
+    let newValue = state.value - state.step;
+    if (newValue < state.min) {
+      newValue = state.min;
     }
+    if (oldValue === newValue) {
+      return;
+    }
+    state.value = newValue;
   }
 
   function onBlur() {
@@ -162,11 +205,24 @@
   }
 
   function sliderChangeHd() {
-    if (currentStyle && currentStyle.isEnable) {
-      currentStyle.value = +currentStyle.value;
-      setEditorRefreshShape();
-    }
+    state.value = +state.value;
   }
+
+  watch(
+    state,
+    () => {
+      console.log("onChange", {
+        name: state.name,
+        value: +state.value,
+        remValue: state.value / 16,
+        unit: state.unit,
+      });
+    },
+    {
+      immediate: false,
+      deep: false,
+    },
+  );
 </script>
 
 <style scoped>
@@ -178,19 +234,14 @@
 
   .props_box {
     width: 100%;
-    height: 2.5rem;
-  }
-
-  .props_lbox {
-    width: max-content;
-    height: 100%;
+    height: 1.5rem;
   }
 
   .props_ch_label {
     width: max-content;
     height: 100%;
     color: rgba(255, 255, 255, 1);
-    font-size: 1rem;
+    font-size: 0.875rem;
     font-weight: 500;
     margin-right: 0.5rem;
     margin-left: 0.25rem;
@@ -199,20 +250,20 @@
   .props_ogi_label {
     width: max-content;
     height: 1rem;
-    color: rgba(200, 200, 200, 1);
-    font-size: 0.875rem;
+    color: rgba(230, 230, 230, 1);
+    font-size: 0.75rem;
     font-weight: 400;
   }
 
   .props_input_nbox {
-    width: max-content;
+    width: 100%;
     height: 2.5rem;
   }
 
   .props_input_box {
     position: relative;
     width: 7.5rem;
-    height: calc(100% - 0.25rem);
+    height: 100%;
     background-color: rgba(0, 0, 0, 1);
     border-radius: 2rem;
     margin-right: 0.5rem;
@@ -221,11 +272,6 @@
 
   .props_input_box_act {
     outline: 1px solid rgba(15, 55, 175, 1);
-  }
-
-  .props_input_box_disabled {
-    outline: 1px solid rgba(15, 55, 175, 0.5);
-    cursor: not-allowed;
   }
 
   .props_input {
@@ -240,10 +286,6 @@
     border: none;
     -moz-appearance: textfield;
     margin-left: 0.25rem;
-  }
-
-  .props_input:disabled {
-    cursor: not-allowed;
   }
 
   .props_input::placeholder {
@@ -295,11 +337,68 @@
   .props_input_rem {
     width: max-content;
     height: 100%;
-    color: rgba(200, 200, 200, 1);
-    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.75rem;
     font-weight: 400;
     margin-right: 0.5rem;
-    padding-top: 0.5rem;
+  }
+
+  .prop_input_wraper {
+    width: max-content;
+    height: 100%;
+    min-height: 2rem;
+    flex-wrap: wrap;
+    background-color: transparent;
+    align-self: flex-end;
+  }
+
+  .radio_content {
+    width: auto;
+    height: 2rem;
+    margin: 0 0.625rem 0 0.25rem;
+    background-color: transparent;
+    cursor: pointer;
+  }
+
+  .radio_input {
+    display: none;
+  }
+
+  .radio_label {
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 400;
+    font-size: 0.875rem;
+    cursor: pointer;
+  }
+
+  .radio_span {
+    width: 1rem;
+    height: 1rem;
+    margin: 0 0.375rem 0 0;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  .radio_label:hover .radio_span {
+    transform: scale(1.2);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+  }
+
+  .radio_span_checked {
+    background: rgba(15, 55, 175, 1);
+    box-shadow: 0 0 0 0.125rem rgba(255, 255, 255, 1) inset;
+    border: none;
+    cursor: pointer;
+  }
+
+  .radio_label_checked {
+    color: rgba(255, 255, 255, 1);
+    font-weight: 500;
+    font-size: 0.875rem;
+    cursor: pointer;
   }
 
   .props_input_sbox {
@@ -327,10 +426,6 @@
     height: 100%;
     background-color: rgba(15, 55, 175, 1);
     border-radius: 1rem 0 0 1rem;
-  }
-
-  .props_input_slider_before_disabled {
-    background-color: rgba(15, 55, 175, 0.5);
   }
 
   .props_input_slider_after {
@@ -388,9 +483,5 @@
   .props_input_slider:active::-webkit-slider-thumb {
     transform: scale(1.2);
     transition: 0.2s;
-  }
-
-  .props_input_slider:disabled {
-    cursor: not-allowed;
   }
 </style>

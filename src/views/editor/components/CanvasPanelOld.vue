@@ -70,19 +70,6 @@
 
     rect.on("transform", function (event) {
       console.log("transform", event);
-      const { isCanModifyLeft, isCanModifyTop, isCanModifyWidth, isCanModifyHeight } = currentShapeTransform;
-      if (!isCanModifyHeight || !isCanModifyWidth) {
-        tr.stopTransform();
-      }
-
-      const oldWidth = rect.width();
-      const oldHeight = rect.height();
-
-      const oldLeft = rect.x();
-      const oldTop = rect.y();
-
-      console.log("transform", oldWidth, oldHeight, oldLeft, oldTop);
-
       const newWidth = rect.width() * rect.scaleX();
       const newHeight = rect.height() * rect.scaleY();
       let newX = event.target.attrs.x;
@@ -92,56 +79,25 @@
         newY = newY - parentsShapeTransform[i].top;
       }
       if (currentShapeTransform) {
-        if (isCanModifyWidth) {
-          currentShapeTransform.width = newWidth;
-        }
-        if (isCanModifyHeight) {
-          currentShapeTransform.height = newHeight;
-        }
-        if (isCanModifyLeft && isCanModifyWidth && isCanModifyHeight) {
-          currentShapeTransform.left = newX;
-        }
-        if (isCanModifyTop && isCanModifyWidth && isCanModifyHeight) {
-          currentShapeTransform.top = newY;
-        }
+        currentShapeTransform.width = newWidth;
+        currentShapeTransform.height = newHeight;
+        currentShapeTransform.left = newX;
+        currentShapeTransform.top = newY;
         editorConfig.currentShapeOptions.transform = {
           ...currentShapeTransform,
         };
         setEditorRefreshComp();
       }
-      if (isCanModifyWidth) {
-        rect.setAttrs({
-          width: newWidth,
-          scaleX: 1,
-        });
-      } else {
-        rect.setAttrs({
-          width: oldWidth,
-          scaleX: 1,
-          // x: oldLeft,
-          y: oldTop,
-        });
-      }
-
-      if (isCanModifyHeight) {
-        rect.setAttrs({
-          height: newHeight,
-          scaleY: 1,
-        });
-      } else {
-        rect.setAttrs({
-          height: oldHeight,
-          scaleY: 1,
-          x: oldLeft,
-          y: oldTop,
-        });
-      }
+      rect.setAttrs({
+        width: newWidth,
+        height: newHeight,
+        scaleX: 1,
+        scaleY: 1,
+      });
     });
 
     rect.on("dragmove", function (event) {
       console.log("dragmove", event);
-      const { isCanModifyLeft, isCanModifyTop, isCanModifyWidth, isCanModifyHeight } = currentShapeTransform;
-
       const { x, y } = event.target.attrs;
       const { gapX, gapY } = editorConfig.grid;
       const newX = getPosXY(x, gapX);
@@ -153,29 +109,18 @@
         newRealY = newRealY - parentsShapeTransform[i].top;
       }
       if (currentShapeTransform) {
-        if (isCanModifyLeft) {
-          currentShapeTransform.left = newRealX;
-        }
-        if (isCanModifyTop) {
-          currentShapeTransform.top = newRealY;
-        }
-
+        currentShapeTransform.left = newRealX;
+        currentShapeTransform.top = newRealY;
         editorConfig.currentShapeOptions.transform = {
           ...currentShapeTransform,
         };
         setEditorRefreshComp();
       }
 
-      if (isCanModifyLeft) {
-        rect.setAttrs({
-          x: newX,
-        });
-      }
-      if (isCanModifyTop) {
-        rect.setAttrs({
-          y: newY,
-        });
-      }
+      rect.setAttrs({
+        x: newX,
+        y: newY,
+      });
     });
 
     // textNode.on("dblclick dbltap", () => {

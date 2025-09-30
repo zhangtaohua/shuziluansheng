@@ -1,6 +1,7 @@
 import { reactive } from "vue";
 import { defineStore } from "pinia";
 import Storage from "@/utils/storage/storage";
+import { getControlTransform } from "@/common/cssData/globalCss";
 
 const EDITOR_CONFIG_KEY = "EDITOR_CONFIG_KEY";
 
@@ -42,6 +43,7 @@ export function getParentComponentTransforms(components: any, parentId: string, 
       if (i == 0) {
         key = parentPath[i];
         comp = comp[key];
+        comp.transform = getControlTransform(comp.styles);
         if (comp) {
           trans.push({
             ...comp.transform,
@@ -51,6 +53,7 @@ export function getParentComponentTransforms(components: any, parentId: string, 
         if (comp.children) {
           key = key + SMC + parentPath[i];
           comp = comp.children[key];
+          comp.transform = getControlTransform(comp.styles);
           if (comp) {
             trans.push({
               ...comp.transform,

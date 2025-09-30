@@ -12,19 +12,29 @@
   import { useSystemConfigStore } from "@/stores/systemConfig";
   import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
   import divContainerConfig from "@/common/data/divContainerConfig.js";
+  import divTextContainerConfig from "@/common/data/divTextConfig.js";
+
   import { nanoid } from "@/utils/common/nanoid";
   import { cloneDeep } from "es-toolkit";
 
   import {
+    CssNamePixel,
     CssWidthOptions,
     CssHeightOptions,
     CssTopOptions,
     CssLeftOptions,
-    CssNamePixel,
+    CssFontSizeOptions,
+    CssLineHeightOptions,
   } from "@/common/cssData/NamePixel.ts";
-  import CssBackgroundColor from "@/common/cssData/BackgroundColor.ts";
-  import { CssPureOptions, CssDisplayOptions, CssPositionOptions } from "@/common/cssData/PureOptions";
-  import { getControlTransform } from "@/common/cssData/globalCss";
+  import { CssColorOptionsInput, CssBackgroundColorOptions } from "@/common/cssData/NameColorOptions";
+  import { CssColorInput, CssColorOptions } from "@/common/cssData/NameColor";
+  import {
+    CssPureOptionsInput,
+    CssDisplayOptions,
+    CssPositionOptions,
+    CssfontWeightOptions,
+    CssfontStyleOptions,
+  } from "@/common/cssData/PureOptions";
 
   const { systemConfig } = useSystemConfigStore();
   const { editorConfig, addEditorComponents, setEditorCurrentParentComp } = useEditorConfigStore();
@@ -36,13 +46,14 @@
     newdivConfig.styles["height"] = new CssNamePixel(CssHeightOptions);
     newdivConfig.styles["top"] = new CssNamePixel(CssTopOptions);
     newdivConfig.styles["left"] = new CssNamePixel(CssLeftOptions);
-    newdivConfig.styles["background-color"] = new CssBackgroundColor("rgba(255, 0, 0, 1)");
-    newdivConfig.styles["display"] = new CssPureOptions(CssDisplayOptions);
-    newdivConfig.styles["position"] = new CssPureOptions(CssPositionOptions);
+    newdivConfig.styles["background-color"] = new CssColorOptionsInput({
+      ...CssBackgroundColorOptions,
+    });
+    newdivConfig.styles["display"] = new CssPureOptionsInput(CssDisplayOptions);
+    newdivConfig.styles["position"] = new CssPureOptionsInput(CssPositionOptions);
 
     newdivConfig.styles.width.value = "320";
     newdivConfig.styles.height.value = "320";
-    newdivConfig.transform = getControlTransform(newdivConfig.styles);
 
     newdivConfig.id = nanoid();
     addEditorComponents(newdivConfig);
@@ -52,31 +63,53 @@
     newdivConfig2.styles["height"] = new CssNamePixel(CssHeightOptions);
     newdivConfig2.styles["top"] = new CssNamePixel(CssTopOptions);
     newdivConfig2.styles["left"] = new CssNamePixel(CssLeftOptions);
-    newdivConfig2.styles["background-color"] = new CssBackgroundColor("rgba(255, 255, 0, 1)");
-    newdivConfig2.styles["display"] = new CssPureOptions(CssDisplayOptions);
-    newdivConfig2.styles["position"] = new CssPureOptions(CssPositionOptions);
+    newdivConfig2.styles["background-color"] = new CssColorOptionsInput({
+      ...CssBackgroundColorOptions,
+      value: "rgba(255,255,0,1)",
+    });
+    newdivConfig2.styles["display"] = new CssPureOptionsInput(CssDisplayOptions);
+    newdivConfig2.styles["position"] = new CssPureOptionsInput(CssPositionOptions);
 
     newdivConfig2.styles.width.value = "320";
     newdivConfig2.styles.height.value = "320";
     newdivConfig2.styles.left.value = "500";
-    newdivConfig2.transform = getControlTransform(newdivConfig2.styles);
     console.log("newdivConfig2", newdivConfig2);
 
     newdivConfig2.id = nanoid();
     addEditorComponents(newdivConfig2);
+
+    const textConfig = cloneDeep(divTextContainerConfig);
+    textConfig.styles["width"] = new CssNamePixel({
+      ...CssWidthOptions,
+      value: "auto",
+    });
+    textConfig.styles["height"] = new CssNamePixel({
+      ...CssHeightOptions,
+      value: "auto",
+    });
+    textConfig.styles["top"] = new CssNamePixel(CssTopOptions);
+    textConfig.styles["left"] = new CssNamePixel(CssLeftOptions);
+    textConfig.styles["background-color"] = new CssColorOptionsInput({
+      ...CssBackgroundColorOptions,
+      value: "rgba(255,0,255,1)",
+    });
+    textConfig.styles["position"] = new CssPureOptionsInput(CssPositionOptions);
+
+    textConfig.styles["font-size"] = new CssNamePixel(CssFontSizeOptions);
+    textConfig.styles["line-height"] = new CssNamePixel(CssLineHeightOptions);
+    textConfig.styles["color"] = new CssColorInput({
+      ...CssColorOptions,
+      value: "rgba(255,255,0,1)",
+    });
+    textConfig.styles["font-weight"] = new CssPureOptionsInput(CssfontWeightOptions);
+    textConfig.styles["font-style"] = new CssPureOptionsInput(CssfontStyleOptions);
+    addEditorComponents(textConfig);
   }
 
   function addTest2() {
     const newdivConfig = cloneDeep(divContainerConfig);
     newdivConfig.style.width = "320px";
     newdivConfig.style.height = "320px";
-    newdivConfig.transform = {
-      x: 0,
-      y: 0,
-      width: 320,
-      height: 320,
-      rotation: 0,
-    };
 
     newdivConfig.id = nanoid();
 
@@ -89,13 +122,7 @@
     newdivConfig2.style.height = "160px";
     newdivConfig2.style.left = "10";
     newdivConfig2.style.backgroundColor = "rgba(255,255,0,1)";
-    newdivConfig2.transform = {
-      x: 10,
-      y: 0,
-      width: 160,
-      height: 160,
-      rotation: 0,
-    };
+
     newdivConfig2.id = nanoid();
 
     addEditorComponents(newdivConfig2);
@@ -108,13 +135,7 @@
     newdivConfig3.style.height = "60px";
     newdivConfig3.style.left = "10px";
     newdivConfig3.style.backgroundColor = "rgba(0,255,0,1)";
-    newdivConfig3.transform = {
-      x: 10,
-      y: 0,
-      width: 60,
-      height: 60,
-      rotation: 0,
-    };
+
     newdivConfig3.id = nanoid();
 
     addEditorComponents(newdivConfig3);
@@ -126,13 +147,7 @@
 
     newdivConfig.style.width = "600px";
     newdivConfig.style.height = "600px";
-    newdivConfig.transform = {
-      x: 0,
-      y: 0,
-      width: 600,
-      height: 600,
-      rotation: 0,
-    };
+
     addEditorComponents(newdivConfig);
   }
 
@@ -140,13 +155,6 @@
     const newdivConfig = cloneDeep(divContainerConfig);
     newdivConfig.style.width = "320px";
     newdivConfig.style.height = "320px";
-    newdivConfig.transform = {
-      x: 0,
-      y: 0,
-      width: 320,
-      height: 320,
-      rotation: 0,
-    };
 
     newdivConfig.id = nanoid();
     addEditorComponents(newdivConfig);
