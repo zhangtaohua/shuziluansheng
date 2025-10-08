@@ -189,8 +189,6 @@ export const CssfontWeightOptions = {
     { id: "800", value: "800", titleZh: "800", titleEn: "800", default: false },
     { id: "900", value: "900", titleZh: "900", titleEn: "900", default: false },
     { id: "1000", value: "1000", titleZh: "1000", titleEn: "1000", default: false },
-    { id: "1100", value: "1100", titleZh: "1100", titleEn: "1100", default: false },
-    { id: "1200", value: "1200", titleZh: "1200", titleEn: "1200", default: false },
 
     { id: "inherit", value: "inherit", titleZh: "继承", titleEn: "inherit", default: false },
     { id: "initial", value: "initial", titleZh: "初始", titleEn: "initial", default: false },

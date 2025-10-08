@@ -13,6 +13,7 @@
   import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
   import divContainerConfig from "@/common/data/divContainerConfig.js";
   import divTextContainerConfig from "@/common/data/divTextConfig.js";
+  import divImageContainerConfig from "@/common/data/divImageConfig.js";
 
   import { nanoid } from "@/utils/common/nanoid";
   import { cloneDeep } from "es-toolkit";
@@ -25,6 +26,7 @@
     CssLeftOptions,
     CssFontSizeOptions,
     CssLineHeightOptions,
+    CssTextEllipseLines,
   } from "@/common/cssData/NamePixel.ts";
   import { CssColorOptionsInput, CssBackgroundColorOptions } from "@/common/cssData/NameColorOptions";
   import { CssColorInput, CssColorOptions } from "@/common/cssData/NameColor";
@@ -35,6 +37,8 @@
     CssfontWeightOptions,
     CssfontStyleOptions,
   } from "@/common/cssData/PureOptions";
+
+  import { CssCheckedInput, CssBackgroundClipTextOptions } from "@/common/cssData/NameChecked";
 
   const { systemConfig } = useSystemConfigStore();
   const { editorConfig, addEditorComponents, setEditorCurrentParentComp } = useEditorConfigStore();
@@ -103,7 +107,32 @@
     });
     textConfig.styles["font-weight"] = new CssPureOptionsInput(CssfontWeightOptions);
     textConfig.styles["font-style"] = new CssPureOptionsInput(CssfontStyleOptions);
+    textConfig.styles["text-ellipse-lines"] = new CssNamePixel(CssTextEllipseLines);
+    textConfig.styles["background-clip-text"] = new CssCheckedInput(CssBackgroundClipTextOptions);
+    textConfig.id = nanoid();
     addEditorComponents(textConfig);
+
+
+    const imageConfig = cloneDeep(divImageContainerConfig);
+    imageConfig.styles["width"] = new CssNamePixel(CssWidthOptions);
+    imageConfig.styles["height"] = new CssNamePixel(CssHeightOptions);
+    imageConfig.styles["top"] = new CssNamePixel(CssTopOptions);
+    imageConfig.styles["left"] = new CssNamePixel(CssLeftOptions);
+    imageConfig.styles["background-color"] = new CssColorOptionsInput({
+      ...CssBackgroundColorOptions,
+      value: "rgba(255,255,0,1)",
+    });
+    imageConfig.styles["position"] = new CssPureOptionsInput(CssPositionOptions);
+
+    imageConfig.styles.width.value = "320";
+    imageConfig.styles.height.value = "320";
+    imageConfig.styles.left.value = "10";
+    imageConfig.styles.top.value = "500";
+    imageConfig.image = "https://img-baofun.zhhainiao.com/pcwallpaper_ugc/static/bd26f78c344b3ad6afef7b12b1421227.jpg?x-oss-process=image%2fresize%2cm_lfit%2cw_1920%2ch_1080";
+    console.log("imageConfig", imageConfig);
+
+    imageConfig.id = nanoid();
+    addEditorComponents(imageConfig);
   }
 
   function addTest2() {

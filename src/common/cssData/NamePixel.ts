@@ -137,6 +137,19 @@ export const CssLeftOptions = {
   isEnable: true,
 };
 
+export const CssTextEllipseLines = {
+  name: "text-ellipse-lines",
+  vueName: "text-ellipse-lines",
+  labelZh: "文本省略行数",
+  labelEn: "text ellipse lines",
+  tag: "NumberInputSlider",
+  value: 0,
+  unit: "lines",
+  max: 10,
+  min: 0,
+  isEnable: true,
+};
+
 export class CssNamePixel {
   public id = "css_name_px_" + nanoid(10);
   public name = "name";

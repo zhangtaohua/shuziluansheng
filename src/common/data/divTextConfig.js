@@ -5,7 +5,7 @@ export const divTextContainerConfig = {
   parentId: "",
   tag: "CommonDivText",
   h5Tag: "span",
-  text: "London. Michaelmas term lately over,London. Michaelmas term lately over,London. Michaelmas term lately over,London. Michaelmas term lately over,London. Michaelmas term lately over,",
+  text: "London. Michaelmas term lately over,London.London. Michaelmas term lately over,London.London. Michaelmas term lately over,London.London. Michaelmas term lately over,London. Michaelmas term lately over,London. Michaelmas term lately over,London. Michaelmas term lately over,London. Michaelmas term lately over,",
   locked: false,
   children: null,
   classNames: null,

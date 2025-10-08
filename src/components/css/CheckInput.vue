@@ -1,7 +1,7 @@
 <template>
   <div class="row_nw_fs_ce props_container">
     <div class="row_nw_fs_ce props_input_box">
-      <input type="checkbox" v-model="state.value" class="row_nw_fs_fs props_input" @change="onChange" />
+      <input type="checkbox" v-model="currentStyle.value" class="row_nw_fs_fs props_input" @change="onChange" />
     </div>
     <div class="row_nw_fs_ce wh_auto_100p">
       <label class="row_nw_fs_ce props_ch_label">{{ props.vdata.labelZh }}</label>
@@ -12,32 +12,38 @@
 
 <script setup lang="ts">
   import { ref, reactive, onMounted, computed } from "vue";
-
-  const emit = defineEmits(["onInput", "onBlur", "onChange"]);
+  import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
 
   const props = defineProps({
     vdata: {
       type: Object,
       default() {
         return {
-          labelZh: "预览",
-          labelEn: "Enable Preview",
+          id: "",
           name: "",
-          value: "",
         };
       },
     },
   });
 
-  const state = reactive({
-    name: "",
-    value: false,
-  });
+  const { editorConfig, setEditorRefreshShape } = useEditorConfigStore();
+  let id = "";
+  let name = "";
+  let currentStyle = {};
+  const isEnable = ref(false);
 
   function init() {
-    if (props.vdata && props.vdata.name) {
-      state.name = props.vdata.name;
-      state.value = props.vdata.value;
+    if (props.vdata && props.vdata.id && props.vdata.name) {
+      const styles = editorConfig.currentParentComp.styles;
+      id = props.vdata.id;
+      name = props.vdata.name;
+      if (styles[name] && styles[name].id === id) {
+        isEnable.value = true;
+        currentStyle = styles[name];
+      } else {
+        isEnable.value = false;
+        currentStyle = null;
+      }
     }
   }
 
@@ -45,18 +51,12 @@
     init();
   });
 
-  function onChange() {
-    emit("onChange", {
-      name: state.name,
-      values: state.value,
-    });
-  }
 </script>
 
 <style scoped>
   .props_container {
     width: 100%;
-    height: 2rem;
+    height: 2.5rem;
     background-color: transparent;
   }
 
@@ -65,6 +65,7 @@
     width: 3rem;
     height: 100%;
     /* background-color: rgba(0, 0, 0, 1); */
+    margin-left: 0.125rem;
   }
 
   input[type="checkbox"] {

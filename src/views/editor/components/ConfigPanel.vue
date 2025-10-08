@@ -5,6 +5,10 @@
         <component :is="scitem.tag" :vdata="scitem"></component>
         <LineGap></LineGap>
       </div>
+      <div v-if="editorConfig.currentParentComp.text" class="col_nw_ce_ce config_ic_box">
+        <TextInput></TextInput>
+        <LineGap></LineGap>
+      </div>
     </div>
   </div>
 </template>
