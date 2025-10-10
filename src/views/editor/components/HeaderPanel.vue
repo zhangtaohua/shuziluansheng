@@ -1,7 +1,7 @@
 <template>
   <div class="row_nw_fs_ce header_container">
     <div class="row_nw_ce_ce header_item" @click="addTest">容器</div>
-    <div class="row_nw_ce_ce header_item" @click="addChild">DIV</div>
+    <div class="row_nw_ce_ce header_item" @click="addBillboard">Billboard</div>
   </div>
   <!-- <div v-else class="row_nw_center_center header_small" @click="setIsFullView(false)"></div> -->
 </template>
@@ -11,12 +11,15 @@
   import { useRoute } from "vue-router";
   import { useSystemConfigStore } from "@/stores/systemConfig";
   import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
-  import divContainerConfig from "@/common/data/divContainerConfig.js";
-  import divTextContainerConfig from "@/common/data/divTextConfig.js";
-  import divImageContainerConfig from "@/common/data/divImageConfig.js";
+  import divContainerConfig from "@/h5/divData/divContainerConfig.js";
+  import divTextContainerConfig from "@/h5/divData/divTextConfig.js";
+  import divImageContainerConfig from "@/h5/divData/divImageConfig.js";
+  import divCesiumContainerConfig from "@/h5/divData/divCesiumConfig.js";
 
   import { nanoid } from "@/utils/common/nanoid";
   import { cloneDeep } from "es-toolkit";
+
+  import * as csMap from "./CommonDivCesium.ts";
 
   import {
     CssNamePixel,
@@ -27,21 +30,24 @@
     CssFontSizeOptions,
     CssLineHeightOptions,
     CssTextEllipseLines,
-  } from "@/common/cssData/NamePixel.ts";
-  import { CssColorOptionsInput, CssBackgroundColorOptions } from "@/common/cssData/NameColorOptions";
-  import { CssColorInput, CssColorOptions } from "@/common/cssData/NameColor";
+  } from "@/h5/cssData/NamePixel.ts";
+  import { CssColorOptionsInput, CssBackgroundColorOptions } from "@/h5/cssData/NameColorOptions";
+  import { CssColorInput, CssColorOptions } from "@/h5/cssData/NameColor";
   import {
     CssPureOptionsInput,
     CssDisplayOptions,
     CssPositionOptions,
     CssfontWeightOptions,
     CssfontStyleOptions,
-  } from "@/common/cssData/PureOptions";
+    CssObjectFitOptions,
+  } from "@/h5/cssData/PureOptions";
 
-  import { CssCheckedInput, CssBackgroundClipTextOptions } from "@/common/cssData/NameChecked";
+  import { CssCheckedInput, CssBackgroundClipTextOptions } from "@/h5/cssData/NameChecked";
 
   const { systemConfig } = useSystemConfigStore();
   const { editorConfig, addEditorComponents, setEditorCurrentParentComp } = useEditorConfigStore();
+
+  import czmlBillboard from "@/czml/schema/entity/billboard.ts";
 
   function addTest() {
     console.log("divContainerConfig", divContainerConfig);
@@ -112,7 +118,6 @@
     textConfig.id = nanoid();
     addEditorComponents(textConfig);
 
-
     const imageConfig = cloneDeep(divImageContainerConfig);
     imageConfig.styles["width"] = new CssNamePixel(CssWidthOptions);
     imageConfig.styles["height"] = new CssNamePixel(CssHeightOptions);
@@ -123,16 +128,45 @@
       value: "rgba(255,255,0,1)",
     });
     imageConfig.styles["position"] = new CssPureOptionsInput(CssPositionOptions);
+    imageConfig.styles["object-fit"] = new CssPureOptionsInput(CssObjectFitOptions);
 
     imageConfig.styles.width.value = "320";
     imageConfig.styles.height.value = "320";
     imageConfig.styles.left.value = "10";
     imageConfig.styles.top.value = "500";
-    imageConfig.image = "https://img-baofun.zhhainiao.com/pcwallpaper_ugc/static/bd26f78c344b3ad6afef7b12b1421227.jpg?x-oss-process=image%2fresize%2cm_lfit%2cw_1920%2ch_1080";
+    imageConfig.image =
+      "https://img-baofun.zhhainiao.com/pcwallpaper_ugc/static/bd26f78c344b3ad6afef7b12b1421227.jpg?x-oss-process=image%2fresize%2cm_lfit%2cw_1920%2ch_1080";
     console.log("imageConfig", imageConfig);
 
     imageConfig.id = nanoid();
     addEditorComponents(imageConfig);
+
+    const cesiumConfig = cloneDeep(divCesiumContainerConfig);
+    cesiumConfig.styles["width"] = new CssNamePixel(CssWidthOptions);
+    cesiumConfig.styles["height"] = new CssNamePixel(CssHeightOptions);
+    cesiumConfig.styles["top"] = new CssNamePixel(CssTopOptions);
+    cesiumConfig.styles["left"] = new CssNamePixel(CssLeftOptions);
+    cesiumConfig.styles["background-color"] = new CssColorOptionsInput({
+      ...CssBackgroundColorOptions,
+      value: "rgba(255,255,0,1)",
+    });
+
+    cesiumConfig.styles["position"] = new CssPureOptionsInput(CssPositionOptions);
+
+    cesiumConfig.styles.width.value = "600";
+    cesiumConfig.styles.height.value = "600";
+    cesiumConfig.styles.left.value = "400";
+    cesiumConfig.styles.top.value = "400";
+
+    cesiumConfig.id = nanoid();
+    addEditorComponents(cesiumConfig);
+  }
+
+  function addBillboard() {
+    const billboardOpt = new czmlBillboard();
+    console.log("billboardOpt", billboardOpt);
+    csMap.addCzmlGraphicLayer(billboardOpt);
+    setEditorCurrentParentComp(billboardOpt);
   }
 
   function addTest2() {

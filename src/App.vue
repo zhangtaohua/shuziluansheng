@@ -1,14 +1,19 @@
 <template>
-  <div class="app_container">
-    <!-- <VantaBackEffect></VantaBackEffect> -->
-    <!-- <BackEarth></BackEarth>  -->
-    <router-view v-if="refreshRouter" />
-  </div>
+  <el-config-provider>
+    <div class="app_container">
+      <!-- <VantaBackEffect></VantaBackEffect> -->
+      <!-- <BackEarth></BackEarth>  -->
+      <router-view v-if="refreshRouter" />
+    </div>
+  </el-config-provider>
 </template>
 
 <script setup lang="ts">
   import { ref, nextTick, provide } from "vue";
   import { useWindowResize } from "@/hooks/useWindowSize";
+
+  import { ElConfigProvider } from "element-plus";
+
   // import VantaBackEffect from "@/components/common/VantaBackEffect.vue";
   // import BackEarth from "@/components/common/BackEarth.vue";
 

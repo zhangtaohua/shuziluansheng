@@ -42,6 +42,16 @@ yarn lint
 
 https://www.shadcn-vue.com/docs/installation/vite
 
+https://reka-ui.com/docs/overview/getting-started
+
+https://vuetifyjs.com/en/
+
+https://unocss.dev/guide/
+
 初始化 `npx shadcn-vue@latest init`
 
 使用 `npx shadcn-vue@latest add button`
+
+css values
+
+https://github.com/ben-eb/css-values

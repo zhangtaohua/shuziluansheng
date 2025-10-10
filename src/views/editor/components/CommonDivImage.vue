@@ -9,9 +9,11 @@
     @dblclick.stop.prevent="setEditorCurrentShapeHd"
     @click.stop.prevent="setEditorCurrentParentCompHd"
   >
-    <img style="width: 100%; height: 100%"
+    <img
+      style="width: 100%; height: 100%"
+      :style="imageStyles"
       v-if="props.vNodeData.image"
-    :src="props.vNodeData.image"
+      :src="props.vNodeData.image"
     />
   </div>
 </template>
@@ -37,6 +39,23 @@
       return Object.keys(props.vNodeData.classNames).join(" ");
     } else {
       return "";
+    }
+  });
+
+  const imageStyles = computed(() => {
+    if (props.vNodeData.styles) {
+      const style = {};
+      if (props.vNodeData.styles && props.vNodeData.styles["object-fit"]) {
+        const prop = props.vNodeData.styles["object-fit"];
+        style[prop.getStyleName()] = prop.getStyleValue();
+      }
+      if (props.vNodeData.styles && props.vNodeData.styles["object-position"]) {
+        const prop = props.vNodeData.styles["object-position"];
+        style[prop.getStyleName()] = prop.getStyleValue();
+      }
+      return style;
+    } else {
+      return {};
     }
   });
 
@@ -113,5 +132,4 @@
     outline: 1px solid rgba(235, 3, 3, 1);
     box-shadow: 0 0 10px rgba(235, 3, 3, 0.5);
   }
-
 </style>

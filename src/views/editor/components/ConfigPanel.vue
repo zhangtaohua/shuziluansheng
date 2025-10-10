@@ -1,6 +1,9 @@
 <template>
   <div v-if="isShowProps" class="row_nw_ce_ce config_container">
-    <div class="config_wraper">
+    <div
+      v-if="editorConfig.currentParentComp && editorConfig.currentParentComp.componentType == 'html'"
+      class="config_wraper"
+    >
       <div v-for="scitem in editorConfig.currentParentComp.styles" :key="scitem.id" class="col_nw_ce_ce config_ic_box">
         <component :is="scitem.tag" :vdata="scitem"></component>
         <LineGap></LineGap>
@@ -10,13 +13,27 @@
         <LineGap></LineGap>
       </div>
     </div>
+
+    <div
+      v-if="editorConfig.currentParentComp && editorConfig.currentParentComp.componentType == 'czml'"
+      class="config_wraper"
+    >
+      <div
+        v-for="scitem in editorConfig.currentParentComp.properties"
+        :key="scitem.id"
+        class="col_nw_ce_ce config_ic_box"
+      >
+        <component :is="scitem.tag" :vdata="scitem"></component>
+        <LineGap></LineGap>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
   import { ref, reactive, computed, watch, onUnmounted } from "vue";
   import { useRoute } from "vue-router";
-  import LineGap from "@/components/css/LineGap.vue";
+  import LineGap from "@/h5/components/LineGap.vue";
 
   import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
 
@@ -25,7 +42,7 @@
 
   const isShowProps = computed(() => {
     if (editorConfig.currentParentComp) {
-      console.log("panel", editorConfig.currentParentComp);
+      console.log("configPanel", editorConfig.currentParentComp);
       return true;
     } else {
       return false;

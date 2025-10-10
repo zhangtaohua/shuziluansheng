@@ -18,7 +18,7 @@
   import Konva from "konva";
   import { useSystemConfigStore } from "@/stores/systemConfig";
   import { useEditorConfigStore, globalEditor, getParentComponentTransforms } from "@/stores/editorConfig";
-  import { getControlTransform } from "@/common/cssData/globalCss";
+  import { getControlTransform } from "@/h5/cssData/globalCss";
 
   const { systemConfig } = useSystemConfigStore();
   const { editorConfig, setEditorRefreshComp, setEditorCurrentParentComp } = useEditorConfigStore();

@@ -1,7 +1,7 @@
 import { reactive } from "vue";
 import { defineStore } from "pinia";
 import Storage from "@/utils/storage/storage";
-import { getControlTransform } from "@/common/cssData/globalCss";
+import { getControlTransform } from "@/h5/cssData/globalCss";
 
 const EDITOR_CONFIG_KEY = "EDITOR_CONFIG_KEY";
 

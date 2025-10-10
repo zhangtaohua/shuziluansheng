@@ -6,6 +6,8 @@ import "./assets/style/general.css";
 import "./assets/style/echart.css";
 import "./assets/style/map.css";
 import "@cyhnkckali/vue3-color-picker/dist/style.css";
+import "element-plus/theme-chalk/dark/css-vars.css";
+import "./assets/style/elvars.css";
 
 import { createApp } from "vue";
 import { createPinia } from "pinia";
@@ -15,15 +17,19 @@ import "default-passive-events";
 import CommonDiv from "@/views/editor/components/CommonDiv.vue";
 import CommonDivText from "@/views/editor/components/CommonDivText.vue";
 import CommonDivImage from "@/views/editor/components/CommonDivImage.vue";
+import CommonDivCesium from "@/views/editor/components/CommonDivCesium.vue";
 
 // 属性设置
-import NumberInputSlider from "@/components/css/NumberInputSlider.vue";
-import RadioSingleInput from "@/components/css/RadioSingleInput.vue";
-import ColorInput from "@/components/css/ColorInput.vue";
-import ColorOptionsInput from "@/components/css/ColorOptionsInput.vue";
-import CheckInput from "@/components/css/CheckInput.vue";
-import OptionsInput from "@/components/css/OptionsInput.vue";
-import TextInput from "@/components/css/TextInput.vue";
+import NumberInputSlider from "@/h5/components/NumberInputSlider.vue";
+import RadioSingleInput from "@/h5/components/RadioSingleInput.vue";
+import ColorInput from "@/h5/components/ColorInput.vue";
+import ColorOptionsInput from "@/h5/components/ColorOptionsInput.vue";
+import CheckInput from "@/h5/components/CheckInput.vue";
+import OptionsInput from "@/h5/components/OptionsInput.vue";
+import TextInput from "@/h5/components/TextInput.vue";
+
+// 以下是 czml 相关的
+import CzmlShowPropInput from "@/czml/components/CzmlShowPropInput.vue";
 
 import App from "./App.vue";
 import router from "./router";
@@ -38,6 +44,7 @@ app.mount("#app");
 app.component("CommonDiv", CommonDiv);
 app.component("CommonDivText", CommonDivText);
 app.component("CommonDivImage", CommonDivImage);
+app.component("CommonDivCesium", CommonDivCesium);
 
 app.component("NumberInputSlider", NumberInputSlider);
 app.component("RadioSingleInput", RadioSingleInput);
@@ -46,3 +53,6 @@ app.component("ColorOptionsInput", ColorOptionsInput);
 app.component("CheckInput", CheckInput);
 app.component("OptionsInput", OptionsInput);
 app.component("TextInput", TextInput);
+
+// czml 组件注册
+app.component("CzmlShowPropInput", CzmlShowPropInput);

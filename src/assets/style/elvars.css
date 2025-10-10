@@ -1,0 +1,4 @@
+html.dark {
+  /* custom dark bg color */
+  --el-color-primary: rgba(15, 55, 175, 1);
+}
