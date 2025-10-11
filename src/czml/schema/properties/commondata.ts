@@ -1,10 +1,22 @@
+export const CZMLPUREVALUE = "PureValue";
+export const CZMLINTERVALSVALUE = "Intervals";
+export const CZMLCOMPOSITEVALUE = "CompositeValues";
+export const CZMLSAMPLEDVALUE = "SampledPropertyValues";
+export const defaultTimeFormatStr = "YYYY-MM-DD HH:mm:ss";
+
 export const propValueTypesOptions = [
-  { id: "PureValue", value: "PureValue", label: "纯数值", labelZh: "纯数值", labelEn: "pure value" },
-  { id: "Intervals", value: "Intervals", label: "间隔值", labelZh: "间隔值", labelEn: "intervals" },
-  { id: "CompositeValues", value: "CompositeValues", label: "复合值", labelZh: "复合值", labelEn: "composite values" },
+  { id: CZMLPUREVALUE, value: CZMLPUREVALUE, label: "纯数值", labelZh: "纯数值", labelEn: "pure value" },
+  { id: CZMLINTERVALSVALUE, value: CZMLINTERVALSVALUE, label: "间隔值", labelZh: "间隔值", labelEn: "intervals" },
   {
-    id: "SampledPropertyValues",
-    value: "SampledPropertyValues",
+    id: CZMLCOMPOSITEVALUE,
+    value: CZMLCOMPOSITEVALUE,
+    label: "复合值",
+    labelZh: "复合值",
+    labelEn: "composite values",
+  },
+  {
+    id: CZMLSAMPLEDVALUE,
+    value: CZMLSAMPLEDVALUE,
     label: "采样值",
     labelZh: "采样值",
     labelEn: "sampled property values",
@@ -12,30 +24,30 @@ export const propValueTypesOptions = [
 ];
 
 export const propPureValueOption = {
-  id: "PureValue",
-  value: "PureValue",
+  id: CZMLPUREVALUE,
+  value: CZMLPUREVALUE,
   label: "纯数值",
   labelZh: "纯数值",
   labelEn: "pure value",
 };
 
 export const propIntervalsOption = {
-  id: "Intervals",
-  value: "Intervals",
+  id: CZMLINTERVALSVALUE,
+  value: CZMLINTERVALSVALUE,
   label: "间隔值",
   labelZh: "间隔值",
   labelEn: "intervals",
 };
 export const propCompositeValuesOption = {
-  id: "CompositeValues",
-  value: "CompositeValues",
+  id: CZMLCOMPOSITEVALUE,
+  value: CZMLCOMPOSITEVALUE,
   label: "复合值",
   labelZh: "复合值",
   labelEn: "composite values",
 };
 export const propSampledPropertyValuesOption = {
-  id: "SampledPropertyValues",
-  value: "SampledPropertyValues",
+  id: CZMLSAMPLEDVALUE,
+  value: CZMLSAMPLEDVALUE,
   label: "采样值",
   labelZh: "采样值",
   labelEn: "sampled property values",

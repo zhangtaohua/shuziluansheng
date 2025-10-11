@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@cyhnkckali/vue3-color-picker": "^2.1.5",
+    "@element-plus/icons-vue": "^2.3.2",
     "@tailwindcss/vite": "^4.1.12",
     "axios": "^1.11.0",
     "chroma-js": "^3.1.2",
@@ -56,6 +57,8 @@
     "eslint-plugin-vue": "~10.3.0",
     "jiti": "^2.4.2",
     "npm-run-all2": "^8.0.4",
+    "postcss": "^8.5.6",
+    "postcss-pxtorem": "^6.1.0",
     "prettier": "3.6.2",
     "sass": "^1.92.1",
     "typescript": "~5.8.0",

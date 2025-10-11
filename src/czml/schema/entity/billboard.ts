@@ -1,5 +1,9 @@
 import { nanoid } from "@/utils/common/nanoid";
 import czmlShowProp from "../properties/ShowProp";
+import czmlUriProp from "../properties/UriProp";
+import czmlStringProp from "../properties/StringProp";
+
+import colorsvg from "@/assets/images/icons/colors.svg";
 
 export class czmlBillboard {
   public id = "czml_entity_billboard_" + nanoid(10);
@@ -9,19 +13,86 @@ export class czmlBillboard {
     "A billboard, or viewport-aligned image. The billboard is positioned in the scene by the `position` property. A billboard is sometimes called a marker.";
   public type = "object";
   public componentType = "czml";
+  public flyTo = true;
+
+  public data = [
+    {
+      version: "1.0",
+      id: "document",
+      clock: {
+        interval: "2019-03-27T05:57:05.33299999999871943Z/2019-03-28T05:57:47.33299999999871943Z",
+        currentTime: "2019-03-27T05:57:05.33299999999871943Z",
+        multiplier: 1,
+      },
+    },
+    {
+      id: "油田联合站",
+      position: {
+        cartographicDegrees: [121.92203, 23.896242, 1.99],
+      },
+      billboard: {
+        image: colorsvg,
+        scale: 1.0,
+
+        rotation: 1.3,
+        horizontalOrigin: "CENTER",
+        verticalOrigin: "CENTER",
+
+        show: true,
+        sizeInMeters: false,
+        width: 32,
+        height: 32,
+        // scaleByDistance: {
+        //   nearFarScalar: [1.0, 2.0, 10000.0, 3.0],
+        // },
+        // translucencyByDistance: {
+        //   nearFarScalar: [1.0, 1.0, 10000.0, 0.0],
+        // },
+        // pixelOffsetScaleByDistance: {
+        //   nearFarScalar: [1.0, 20.0, 10000.0, 30.0],
+        // },
+      },
+    },
+  ];
 
   public properties = {
+    id: new czmlStringProp({
+      name: "id",
+      labelZh: "标示",
+      labelEn: "id",
+      value: "billboard_id_init" + nanoid(10),
+      isEnable: true,
+      description:
+        "The ID of the object described by this packet. IDs do not need to be GUIDs, but they do need to uniquely identify a single object within a CZML source and any other CZML sources loaded into the same scope. If this property is not specified, the client will automatically generate a unique one. However, this prevents later packets from referring to this object in order to add more data to it.",
+    }),
+    name: new czmlStringProp({
+      name: "name",
+      labelZh: "名称",
+      labelEn: "name",
+      value: "billboard_name_init" + nanoid(10),
+      isEnable: true,
+      description: "The name of the object. It does not have to be unique and is intended for user consumption.",
+    }),
+    description: new czmlStringProp({
+      name: "description",
+      labelZh: "描述",
+      labelEn: "description",
+      value: "billboard_description_init" + nanoid(10),
+      isEnable: true,
+      description: "An HTML description of the object.",
+    }),
+    position: [],
     show: new czmlShowProp({
       $ref: "Boolean.json",
       description: "Whether or not the billboard is shown.",
       default: true,
     }),
-    image: {
+    image: new czmlUriProp({
       $ref: "Uri.json",
       description:
         'The URI of the image displayed on the billboard. For broadest client compatibility, the URI should be accessible via Cross-Origin Resource Sharing (CORS). The URI may also be a <a href="https://developer.mozilla.org/en/data_URIs">data URI</a>.',
       czmlRequiredForDisplay: true,
-    },
+    }),
     scale: {
       $ref: "Double.json",
       description:

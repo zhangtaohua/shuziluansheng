@@ -105,16 +105,57 @@
     },
   );
 
+  let hasClickedCzmlObj = false;
+
+  const mapClickHandler = (event) => {
+    console.log("map 鼠标单击", event);
+    if (event.czmObject) {
+      // event.stopPropagation();
+      hasClickedCzmlObj = true;
+      const layer = event.layer;
+      if (layer instanceof mars3d.layer.CzmlLayer) {
+        const options = layer.options;
+        setEditorCurrentParentComp(options);
+      }
+    } else {
+      hasClickedCzmlObj = false;
+    }
+  };
+
+  const mapCanvasClickHandler = (event) => {
+    if (hasClickedCzmlObj) {
+      event.stopPropagation();
+      event.preventDefault(); // Prevent default behavior, like selecting credit text
+    }
+  };
+
+  const addMapEventHd = () => {
+    if (csMap.map) {
+      csMap.map.on(mars3d.EventType.click, mapClickHandler);
+      csMap.viewer.canvas.addEventListener("click", mapCanvasClickHandler);
+    }
+  };
+
+  const removeMapEventHd = () => {
+    if (csMap.map) {
+      csMap.map.off(mars3d.EventType.click, mapClickHandler);
+      csMap.viewer.canvas.removeEventListener("click", mapCanvasClickHandler);
+    }
+  };
+
   onMounted(() => {
     csMap.initMap(props.vNodeData.id);
     csMap.csBaseMap.addBgLayer(tiandituZh);
     csMap.createGraphicLayer();
+    addMapEventHd();
+
     // setTimeout(() => {
     //   addGarphicLayerEvent();
     // }, 200);
   });
 
   onUnmounted(() => {
+    removeMapEventHd();
     csMap.destroyMap();
   });
 </script>

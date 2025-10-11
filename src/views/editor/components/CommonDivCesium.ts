@@ -365,6 +365,7 @@ export function showVuePopup(options) {
   }
 }
 
+// export function addCzmlGraphicLayer(options: any, callback) {
 export function addCzmlGraphicLayer(options: any) {
   if (map) {
     const czmlGraphicLayer = new mars3d.layer.CzmlLayer(options);
@@ -373,6 +374,16 @@ export function addCzmlGraphicLayer(options: any) {
       layer: czmlGraphicLayer,
       options,
     });
+
+    // czmlGraphicLayer.on(mars3d.EventType.click, function (event) {
+    //   console.log("单击了图层", event);
+    //   // event.stopPropagation();
+    //   if (callback) {
+    //     if (event.target && event.target.options) {
+    //       callback(event.target.options);
+    //     }
+    //   }
+    // });
   }
 }
 

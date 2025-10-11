@@ -52,7 +52,7 @@
     },
     initValue: {
       type: String,
-      default: "pattern",
+      default: "PureValue",
     },
   });
 

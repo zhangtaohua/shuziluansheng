@@ -9,7 +9,7 @@ import {
   propIntervalsOption,
 } from "./commondata";
 
-export class czmlShowProp {
+export class czmlUriProp {
   public id = "czml_prop_show_" + nanoid(10);
   public name = "show";
   public labelZh = "显示";
@@ -71,4 +71,4 @@ export class czmlShowProp {
   }
 }
 
-export default czmlShowProp;
+export default czmlUriProp;

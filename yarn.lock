@@ -276,7 +276,7 @@
   resolved "https://registry.npmmirror.com/@cyhnkckali/vue3-color-picker/-/vue3-color-picker-2.1.5.tgz#f2fea5e2be98c63d770e475514495dcf55f2d62b"
   integrity sha512-vFNUPZxn6+htojmj7rUGjQAV0BYALa73DqTn5M72xTsMLNJKwlkOX+TGMzVUDslkYIAwH9AtWbS+PLDMzkudLw==
 
-"@element-plus/icons-vue@^2.3.1":
+"@element-plus/icons-vue@^2.3.1", "@element-plus/icons-vue@^2.3.2":
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/@element-plus/icons-vue/-/icons-vue-2.3.2.tgz#7e9cb231fb738b2056f33e22c3a29e214b538dcf"
   integrity sha512-OzIuTaIfC8QXEPmJvB4Y4kw34rSXdCJzxcD1kFStBvr8bK6X1zQAYDo0CNMjojnfTqRQCJ0I7prlErcoRiET2A==
@@ -2923,6 +2923,11 @@ pkg-types@^2.3.0:
     confbox "^0.2.2"
     exsolve "^1.0.7"
     pathe "^2.0.3"
+
+postcss-pxtorem@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/postcss-pxtorem/-/postcss-pxtorem-6.1.0.tgz#7e6410e30426adef53bad6c4c5f00cd5f586937c"
+  integrity sha512-ROODSNci9ADal3zUcPHOF/K83TiCgNSPXQFSbwyPHNV8ioHIE4SaC+FPOufd8jsr5jV2uIz29v1Uqy1c4ov42g==
 
 postcss-selector-parser@^6.0.15:
   version "6.1.2"

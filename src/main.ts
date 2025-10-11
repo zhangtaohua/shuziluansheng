@@ -8,6 +8,7 @@ import "./assets/style/map.css";
 import "@cyhnkckali/vue3-color-picker/dist/style.css";
 import "element-plus/theme-chalk/dark/css-vars.css";
 import "./assets/style/elvars.css";
+import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 
 import { createApp } from "vue";
 import { createPinia } from "pinia";
@@ -30,11 +31,17 @@ import TextInput from "@/h5/components/TextInput.vue";
 
 // 以下是 czml 相关的
 import CzmlShowPropInput from "@/czml/components/CzmlShowPropInput.vue";
+import CzmlStringPorpInput from "@/czml/components/CzmlStringPropInput.vue";
+import CzmlUriPropInput from "@/czml/components/CzmlUriPropInput.vue";
 
 import App from "./App.vue";
 import router from "./router";
 
 const app = createApp(App);
+
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  app.component(key, component);
+}
 
 app.use(createPinia());
 app.use(router);
@@ -56,3 +63,5 @@ app.component("TextInput", TextInput);
 
 // czml 组件注册
 app.component("CzmlShowPropInput", CzmlShowPropInput);
+app.component("CzmlStringPorpInput", CzmlStringPorpInput);
+app.component("CzmlUriPropInput", CzmlUriPropInput);
