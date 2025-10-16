@@ -10,35 +10,42 @@ import {
 } from "./commondata";
 
 export class czmlUriProp {
-  public id = "czml_prop_show_" + nanoid(10);
-  public name = "show";
-  public labelZh = "显示";
-  public labelEn = "show";
-  public description = "Whether or not the object is shown.";
-  public tag = "CzmlShowPropInput";
+  public id = "czml_prop_uri_" + nanoid(10);
+  public name = "uri";
+  public labelZh = "链接";
+  public labelEn = "uri";
+  public description = "A URI value. The URI can optionally vary with time.";
+  public tag = "CzmlUriPropInput";
   // purevalue -> true false,
   // intervals ->
-  public _value = true;
+  public _value = "";
   public _valueType = CZMLPUREVALUE; // "PureValue" "Intervals" "CompositeValues" "SampledPropertyValues"
-  public default = true;
+  public default = "";
   public isEnable = true;
   // public availability = "";
 
-  public _oldPureValue = true;
+  public _oldPureValue = "";
   public _oldIntervalValue = [
     {
       // dayjs().toISOString()
       startTime: dayjs().format(defaultTimeFormatStr),
       endTime: dayjs().format(defaultTimeFormatStr),
-      boolean: true,
+      value: "", // -> "uri": "image2.png"
     },
   ];
 
   public valueTypesOptions = [{ ...propPureValueOption }, { ...propIntervalsOption }];
 
   constructor(options: any) {
-    this.description = options.description ?? options.description;
-    this.default = options.default;
+    if (options.name) {
+      this.name = options.name;
+    }
+    if (options.description) {
+      this.description = options.description;
+    }
+    if (options.default) {
+      this.default = options.default;
+    }
     this.isEnable = options.isEnable ?? true;
   }
 

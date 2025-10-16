@@ -8,11 +8,12 @@
     </div>
 
     <div class="row_nw_ce_ce props_input_sbox" :class="{ props_input_sbox_act: isFoucus }">
-      <input
+      <textarea
         :id="currentProp.id"
         :name="currentProp.id"
         class="props_input"
         v-model="currentText"
+        rows="5"
         @focus="setIsFoucus(true)"
         @blur="
           () => {
@@ -21,7 +22,7 @@
           }
         "
         @input="textChangeHd"
-      />
+      ></textarea>
     </div>
   </div>
 </template>
@@ -119,7 +120,7 @@
     position: relative;
     width: calc(100% - 0.25rem);
     margin-left: 0.125rem;
-    height: 2rem;
+    height: auto;
     background-color: rgba(0, 0, 0, 1);
     border-radius: 0.5rem;
   }
@@ -136,7 +137,7 @@
   .props_input {
     align-self: flex-start;
     width: 100%;
-    height: 2rem;
+    height: auto;
     padding: 0.5rem 0.5rem;
     color: rgba(255, 255, 255, 1);
     font-size: 0.875rem;

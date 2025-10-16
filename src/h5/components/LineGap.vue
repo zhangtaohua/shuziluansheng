@@ -18,7 +18,7 @@
 <style scoped>
   .props_line_gap {
     width: 100%;
-    border-bottom: 0.125rem groove rgba(0, 0, 0, 0.5);
+    border-bottom: 0.125rem groove rgba(255, 255, 255, 0.5);
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
   }

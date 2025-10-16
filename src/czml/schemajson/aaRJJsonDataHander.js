@@ -41,6 +41,7 @@ function processJSONFiles(directory) {
 
     // 用于存储所有properties的合并结果
     const mergedProperties = {};
+    const unMergedProperties = {};
     let processedCount = 0;
 
     // 处理每个JSON文件
@@ -56,6 +57,28 @@ function processJSONFiles(directory) {
         if (jsonData.properties && typeof jsonData.properties === "object") {
           // 将properties中的键值对合并到结果对象中
           Object.assign(mergedProperties, jsonData.properties);
+          const keys = Object.keys(jsonData.properties);
+          for (let i = 0; i < keys.length; i++) {
+            const key = keys[i];
+            console.log("key", key);
+            if (unMergedProperties[key]) {
+              let j = 1;
+              while (true) {
+                let newKey = key + j;
+                console.log("newKey", newKey, unMergedProperties[newKey]);
+
+                if (unMergedProperties[newKey]) {
+                  j = j + 1;
+                } else {
+                  console.log("newKey2");
+                  unMergedProperties[newKey] = jsonData.properties[key];
+                  break;
+                }
+              }
+            } else {
+              unMergedProperties[key] = jsonData.properties[key];
+            }
+          }
           processedCount++;
           console.log(`已处理文件: ${path.basename(filePath)}`);
         }
@@ -77,9 +100,21 @@ function processJSONFiles(directory) {
       },
     };
 
+    const unMergeresult = {
+      unmergedProperties: unMergedProperties,
+      summary: {
+        totalFilesProcessed: processedCount,
+        totalKeyValuePairs: Object.keys(unMergedProperties).length,
+        processedAt: new Date().toISOString(),
+      },
+    };
+
     // 写入结果文件
-    const outputPath = path.join(directory, "result.json");
-    fs.writeFileSync(outputPath, JSON.stringify(result, null, 2), "utf8");
+    // const outputPath = path.join(directory, "result.json");
+    // fs.writeFileSync(outputPath, JSON.stringify(result, null, 2), "utf8");
+
+    const unmergeOutputPath = path.join(directory, "aaaunMergeResult.json");
+    fs.writeFileSync(unmergeOutputPath, JSON.stringify(unMergeresult, null, 2), "utf8");
 
     console.log(`结果已写入: ${outputPath}`);
   } catch (error) {

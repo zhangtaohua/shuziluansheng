@@ -1,23 +1,15 @@
 <template>
   <div class="row_nw_fs_fs props_container">
-    <div v-for="(item, index) in options" :key="'radio_' + item.id" class="row_nw_fs_ce radio_content">
-      <input
-        :id="item.id"
-        v-model="currentValue"
-        class="radio_input"
-        type="radio"
-        :name="name"
-        :value="item.value"
-        @change="onChange"
-      />
-      <label
-        :for="item.id"
-        class="row_nw_fs_ce radio_label"
-        :class="{ radio_label_checked: item.value === currentValue }"
-      >
-        <span class="radio_span" :class="{ radio_span_checked: item.value === currentValue }"></span>
-        <span class="radio_span_zh">{{ item.labelZh }}</span>
-        <span class="radio_span_en">{{ item.labelEn }}</span>
+    <div
+      v-for="(item, index) in options"
+      :key="'radio_tab_' + item.id"
+      class="row_nw_fs_ce radio_tab_content"
+      :class="{ radio_tab_content_checked: item.value === currentValue }"
+      @click="onChange(item)"
+    >
+      <label class="row_nw_fs_ce radio_tab_label" :class="{ radio_tab_label_checked: item.value === currentValue }">
+        <span class="row_nw_fs_ce radio_tab_span_zh">{{ item.labelZh }}</span>
+        <span class="row_nw_fs_ce radio_tab_span_en">{{ item.labelEn }}</span>
       </label>
     </div>
   </div>
@@ -73,7 +65,8 @@
     currentValue.value = props.initValue;
   }
 
-  function onChange() {
+  function onChange(item: any) {
+    currentValue.value = item.value;
     emit("onChange", currentValue.value);
   }
 </script>
@@ -81,74 +74,51 @@
 <style scoped>
   .props_container {
     width: 100%;
-    height: 2rem;
+    height: auto;
     background-color: transparent;
   }
 
-  .radio_content {
+  .radio_tab_content {
     width: auto;
-    height: 100%;
-    margin: 0 0.625rem 0 0.25rem;
+    height: 2.5rem;
     background-color: transparent;
     cursor: pointer;
+    margin-right: 0.5rem;
+    padding: 0 0.5rem;
   }
 
-  .radio_input {
-    display: none;
+  .radio_tab_content_checked {
+    background-color: rgba(0, 0, 0, 1);
+    border-radius: 0.5rem 0.5rem 0 0;
   }
 
-  .radio_label {
-    color: rgba(255, 255, 255, 0.8);
+  .radio_tab_label {
+    color: rgba(255, 255, 255, 0.75);
     font-weight: 400;
     font-size: 0.875rem;
     cursor: pointer;
   }
 
-  .radio_span {
-    width: 1rem;
-    height: 1rem;
-    margin: 0 0.375rem 0 0;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 50%;
-    cursor: pointer;
-    transition: 0.2s;
-  }
-
-  .radio_label:hover .radio_span {
-    transform: scale(1.2);
-    border: 1px solid rgba(255, 255, 255, 0.8);
-    cursor: pointer;
-  }
-
-  .radio_span_checked {
-    background: rgba(15, 55, 175, 1);
-    box-shadow: 0 0 0 0.125rem rgba(255, 255, 255, 1) inset;
-    border: none;
-    cursor: pointer;
-  }
-
-  .radio_label_checked {
+  .radio_tab_label_checked {
     color: rgba(255, 255, 255, 1);
     font-weight: 500;
     font-size: 0.875rem;
     cursor: pointer;
   }
 
-  .radio_span_zh {
+  .radio_tab_span_zh {
     width: max-content;
     height: 100%;
-    color: rgba(255, 255, 255, 1);
     font-size: 0.875rem;
     font-weight: 500;
     margin-right: 0.5rem;
-    margin-left: 0.25rem;
   }
 
-  .radio_span_en {
+  .radio_tab_span_en {
     width: max-content;
-    height: 1rem;
-    color: rgba(230, 230, 230, 1);
+    height: 100%;
     font-size: 0.75rem;
     font-weight: 400;
+    padding-top: 0.25rem;
   }
 </style>

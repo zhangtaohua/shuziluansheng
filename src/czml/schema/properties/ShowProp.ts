@@ -30,15 +30,22 @@ export class czmlShowProp {
       // dayjs().toISOString()
       startTime: dayjs().format(defaultTimeFormatStr),
       endTime: dayjs().format(defaultTimeFormatStr),
-      boolean: true,
+      value: "", // -> "boolean"
     },
   ];
 
   public valueTypesOptions = [{ ...propPureValueOption }, { ...propIntervalsOption }];
 
   constructor(options: any) {
-    this.description = options.description ?? options.description;
-    this.default = options.default;
+    if (options.name) {
+      this.name = options.name;
+    }
+    if (options.description) {
+      this.description = options.description;
+    }
+    if (options.default) {
+      this.default = options.default;
+    }
     this.isEnable = options.isEnable ?? true;
   }
 

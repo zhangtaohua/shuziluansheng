@@ -32,7 +32,11 @@ import TextInput from "@/h5/components/TextInput.vue";
 // 以下是 czml 相关的
 import CzmlShowPropInput from "@/czml/components/CzmlShowPropInput.vue";
 import CzmlStringPorpInput from "@/czml/components/CzmlStringPropInput.vue";
+import CzmlTextPropInput from "@/czml/components/CzmlTextPropInput.vue";
 import CzmlUriPropInput from "@/czml/components/CzmlUriPropInput.vue";
+import CzmlPureOptionsInput from "@/czml/components/CzmlPureOptionsInput.vue";
+import CzmlPositionPropInput from "@/czml/components/CzmlPositionPropInput.vue";
+import CzmlCartesian3Input from "@/czml/components/CzmlCartesian3Input.vue";
 
 import App from "./App.vue";
 import router from "./router";
@@ -64,4 +68,8 @@ app.component("TextInput", TextInput);
 // czml 组件注册
 app.component("CzmlShowPropInput", CzmlShowPropInput);
 app.component("CzmlStringPorpInput", CzmlStringPorpInput);
+app.component("CzmlTextPropInput", CzmlTextPropInput);
 app.component("CzmlUriPropInput", CzmlUriPropInput);
+app.component("CzmlPureOptionsInput", CzmlPureOptionsInput);
+app.component("CzmlPositionPropInput", CzmlPositionPropInput);
+app.component("CzmlCartesian3Input", CzmlCartesian3Input);

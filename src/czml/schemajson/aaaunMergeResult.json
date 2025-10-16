@@ -1,0 +1,2584 @@
+{
+  "unmergedProperties": {
+    "unitCartesian": {
+      "$ref": "Values/UnitCartesian3Value.json",
+      "description": "The axis specified as a three-dimensional unit magnitude Cartesian value `[X, Y, Z]`, in world coordinates."
+    },
+    "unitSpherical": {
+      "$ref": "Values/UnitSphericalValue.json",
+      "description": "The axis specified as a unit spherical value `[Clock, Cone]`, in radians. The clock angle is measured in the XY plane from the positive X axis toward the positive Y axis. The cone angle is the angle from the positive Z axis toward the negative Z axis."
+    },
+    "reference": {
+      "$ref": "Values/ReferenceValue.json",
+      "description": "The axis specified as a reference to another property."
+    },
+    "velocityReference": {
+      "$ref": "Values/VelocityReferenceValue.json",
+      "description": "The axis specified as the normalized velocity vector of a position property. The reference must be to a `position` property."
+    },
+    "arcType": {
+      "$ref": "Values/ArcTypeValue.json",
+      "description": "The arc type."
+    },
+    "reference1": {
+      "$ref": "Values/ReferenceValue.json",
+      "description": "The arc type specified as a reference to another property."
+    },
+    "number": {
+      "$ref": "Values/DoubleValue.json",
+      "description": "The articulation value."
+    },
+    "reference2": {
+      "$ref": "Values/ReferenceValue.json",
+      "description": "The articulation value specified as a reference to another property."
+    },
+    "cartesian2": {
+      "$ref": "Values/Cartesian2Value.json",
+      "description": "The background padding specified as a two-dimensional Cartesian value `[X, Y]`, in pixels, where X is the horizontal padding, and Y is the vertical padding."
+    },
+    "reference3": {
+      "$ref": "Values/ReferenceValue.json",
+      "description": "The background padding specified as a reference to another property."
+    },
+    "show": {
+      "$ref": "Boolean.json",
+      "description": "Whether or not the billboard is shown.",
+      "default": true
+    },
+    "image": {
+      "$ref": "Uri.json",
+      "description": "The URI of the image displayed on the billboard. For broadest client compatibility, the URI should be accessible via Cross-Origin Resource Sharing (CORS). The URI may also be a <a href=\"https://developer.mozilla.org/en/data_URIs\">data URI</a>.",
+      "czmlRequiredForDisplay": true
+    },
+    "scale": {
+      "$ref": "Double.json",
+      "description": "The scale of the billboard. The scale is multiplied with the pixel size of the billboard's `image`. For example, if the scale is 2.0, the billboard will be rendered with twice the number of pixels, in each direction, of the `image`.",
+      "default": 1
+    },
+    "pixelOffset": {
+      "$ref": "PixelOffset.json",
+      "description": "The offset, in viewport pixels, of the billboard origin from the `position`. A pixel offset is the number of pixels up and to the right to place the billboard, relative to the `position`.",
+      "default": "[0.0, 0.0]"
+    },
+    "eyeOffset": {
+      "$ref": "EyeOffset.json",
+      "description": "The eye offset of the billboard, which is the offset in eye coordinates at which to place the billboard relative to the `position` property. Eye coordinates are a left-handed coordinate system where the X-axis points toward the viewer's right, the Y-axis points up, and the Z-axis points into the screen.",
+      "default": "[0.0, 0.0, 0.0]"
+    },
+    "horizontalOrigin": {
+      "$ref": "HorizontalOrigin.json",
+      "description": "The horizontal origin of the billboard, which determines whether the billboard image is left-, center-, or right-aligned with the `position`.",
+      "default": "CENTER"
+    },
+    "verticalOrigin": {
+      "$ref": "VerticalOrigin.json",
+      "description": "The vertical origin of the billboard, which determines whether the billboard image is bottom-, center-, or top-aligned with the `position`.",
+      "default": "CENTER"
+    },
+    "heightReference": {
+      "$ref": "HeightReference.json",
+      "description": "The height reference of the billboard, which indicates if the position is relative to terrain or not.",
+      "default": "NONE"
+    },
+    "color": {
+      "$ref": "Color.json",
+      "description": "The color of the billboard. This color value is multiplied with the values of the billboard's `image` to produce the final color.",
+      "default": "white"
+    },
+    "rotation": {
+      "$ref": "Double.json",
+      "description": "The rotation of the billboard, in radians, counter-clockwise from the alignedAxis.",
+      "default": 0
+    },
+    "alignedAxis": {
+      "$ref": "AlignedAxis.json",
+      "description": "The aligned axis is the unit vector, in world coordinates, that the billboard up vector points towards. The default is the zero vector, which means the billboard is aligned to the screen up vector.",
+      "default": "[0.0, 0.0, 0.0]"
+    },
+    "sizeInMeters": {
+      "$ref": "Boolean.json",
+      "description": "Whether this billboard's size (`width` and `height`) should be measured in meters, otherwise size is measured in pixels.",
+      "default": false
+    },
+    "width": {
+      "$ref": "Double.json",
+      "description": "The width of the billboard, in pixels (or meters, if `sizeInMeters` is true). By default, the native width of the image is used."
+    },
+    "height": {
+      "$ref": "Double.json",
+      "description": "The height of the billboard, in pixels (or meters, if `sizeInMeters` is true). By default, the native height of the image is used."
+    },
+    "scaleByDistance": {
+      "$ref": "NearFarScalar.json",
+      "description": "How the billboard's scale should change based on the billboard's distance from the camera. This scalar value will be multiplied by `scale`."
+    },
+    "translucencyByDistance": {
+      "$ref": "NearFarScalar.json",
+      "description": "How the billboard's translucency should change based on the billboard's distance from the camera. This scalar value should range from 0 to 1."
+    },
+    "pixelOffsetScaleByDistance": {
+      "$ref": "NearFarScalar.json",
+      "description": "How the billboard's pixel offset should change based on the billboard's distance from the camera. This scalar value will be multiplied by `pixelOffset`."
+    },
+    "imageSubRegion": {
+      "$ref": "BoundingRectangle.json",
+      "description": "A sub-region of the image which will be used for the billboard, rather than the entire image, measured in pixels from the bottom-left."
+    },
+    "distanceDisplayCondition": {
+      "$ref": "DistanceDisplayCondition.json",
+      "description": "The display condition specifying the distance from the camera at which this billboard will be displayed."
+    },
+    "disableDepthTestDistance": {
+      "$ref": "Double.json",
+      "description": "The distance from the camera at which to disable the depth test. This can be used to prevent clipping against terrain, for example. When set to zero, the depth test is always applied. When set to Infinity, the depth test is never applied.",
+      "default": 0
+    },
+    "boolean": {
+      "$ref": "Values/BooleanValue.json",
+      "description": "The boolean value."
+    },
+    "reference4": {
+      "$ref": "Values/ReferenceValue.json",
+      "description": "The boolean specified as a reference to another property."
+    },
+    "boundingRectangle": {
+      "$ref": "Values/BoundingRectangleValue.json",
+      "description": "The bounding rectangle specified as `[X, Y, Width, Height]`."
+    },
+    "reference5": {
+      "$ref": "Values/ReferenceValue.json",
+      "description": "The bounding rectangle specified as a reference to another property."
+    },
+    "show1": {
+      "$ref": "Boolean.json",
+      "description": "Whether or not the box is shown.",
+      "default": true
+    },
+    "dimensions": {
+      "$ref": "BoxDimensions.json",
+      "description": "The dimensions of the box.",
+      "czmlRequiredForDisplay": true
+    },
+    "heightReference1": {
+      "$ref": "HeightReference.json",
+      "description": "The height reference of the box, which indicates if the position is relative to terrain or not.",
+      "default": "NONE"
+    },
+    "fill": {
+      "$ref": "Boolean.json",
+      "description": "Whether or not the box is filled.",
+      "default": true
+    },
+    "material": {
+      "$ref": "Material.json",
+      "description": "The material to display on the surface of the box.",
+      "default": "solid white"
+    },
+    "outline": {
+      "$ref": "Boolean.json",
+      "description": "Whether or not the box is outlined.",
+      "default": false
+    },
+    "outlineColor": {
+      "$ref": "Color.json",
+      "description": "The color of the box outline.",
+      "default": "black"
+    },
+    "outlineWidth": {
+      "$ref": "Double.json",
+      "description": "The width of the box outline.",
+      "default": 1
+    },
+    "shadows": {
+      "$ref": "ShadowMode.json",
+      "description": "Whether or not the box casts or receives shadows.",
+      "default": "DISABLED"
+    },
+    "distanceDisplayCondition1": {
+      "$ref": "DistanceDisplayCondition.json",
+      "description": "The display condition specifying the distance from the camera at which this box will be displayed."
+    },
+    "cartesian": {
+      "$ref": "Values/Cartesian3Value.json",
+      "description": "The dimensions specified as a three-dimensional Cartesian value `[X, Y, Z]`, with X representing width, Y representing depth, and Z representing height, in world coordinates in meters."
+    },
+    "reference6": {
+      "$ref": "Values/ReferenceValue.json",
+      "description": "The dimensions specified as a reference to another property."
+    },
+    "evenColor": {
+      "$ref": "Color.json",
+      "description": "The even color.",
+      "default": "white"
+    },
+    "oddColor": {
+      "$ref": "Color.json",
+      "description": "The odd color.",
+      "default": "black"
+    },
+    "repeat": {
+      "$ref": "Repeat.json",
+      "description": "The number of times the tiles repeat along each axis.",
+      "default": "[2, 2]"
+    },
+    "classificationType": {
+      "$ref": "Values/ClassificationTypeValue.json",
+      "description": "The classification type, which indicates whether a classification affects terrain, 3D Tiles, or both."
+    },
+    "reference7": {
+      "$ref": "Values/ReferenceValue.json",
+      "description": "The classification type specified as a reference to another property."
+    },
+    "currentTime": {
+      "$ref": "Values/TimeValue.json",
+      "description": "The current time, specified in ISO8601 format."
+    },
+    "multiplier": {
+      "description": "The multiplier. When `step` is set to `TICK_DEPENDENT`, this is the number of seconds to advance each tick. When `step` is set to `SYSTEM_CLOCK_DEPENDENT`, this is multiplied by the elapsed system time between ticks. This value is ignored in `SYSTEM_CLOCK` mode.",
+      "type": "number",
+      "default": 1
+    },
+    "range": {
+      "$ref": "Values/ClockRangeValue.json",
+      "description": "The behavior when the current time reaches its start or end times.",
+      "default": "LOOP_STOP"
+    },
+    "step": {
+      "$ref": "Values/ClockStepValue.json",
+      "description": "How the current time advances each tick.",
+      "default": "SYSTEM_CLOCK_MULTIPLIER"
+    },
+    "rgba": {
+      "$ref": "Values/RgbaValue.json",
+      "description": "The color specified as an array of color components `[Red, Green, Blue, Alpha]` where each component is an integer in the range 0-255."
+    },
+    "rgbaf": {
+      "$ref": "Values/RgbafValue.json",
+      "description": "The color specified as an array of color components `[Red, Green, Blue, Alpha]` where each component is a double in the range 0.0-1.0."
+    },
+    "reference8": {
+      "$ref": "Values/ReferenceValue.json",
+      "description": "The color specified as a reference to another property."
+    },
+    "colorBlendMode": {
+      "$ref": "Values/ColorBlendModeValue.json",
+      "description": "The color blend mode."
+    },
+    "reference9": {
+      "$ref": "Values/ReferenceValue.json",
+      "description": "The color blend mode specified as a reference to another property."
+    },
+    "cornerType": {
+      "$ref": "Values/CornerTypeValue.json",
+      "description": "The corner style."
+    },
+    "reference10": {
+      "$ref": "Values/ReferenceValue.json",
+      "description": "The corner style specified as a reference to another property."
+    },
+    "show2": {
+      "$ref": "Boolean.json",
+      "description": "Whether or not the corridor is shown.",
+      "default": true
+    },
+    "positions": {
+      "$ref": "PositionList.json",
+      "description": "The array of positions defining the centerline of the corridor.",
+      "czmlRequiredForDisplay": true
+    },
+    "width1": {
+      "$ref": "Double.json",
+      "description": "The width of the corridor, which is the distance between the edges of the corridor.",
+      "czmlRequiredForDisplay": true
+    },
+    "height1": {
+      "$ref": "Double.json",
+      "description": "The height of the corridor, which is the altitude of the corridor relative to the surface.",
+      "default": 0
+    },
+    "heightReference2": {
+      "$ref": "HeightReference.json",
+      "description": "The height reference of the corridor, which indicates if `height` is relative to terrain or not.",
+      "default": "NONE"
+    },
+    "extrudedHeight": {
+      "$ref": "Double.json",
+      "description": "The extruded height of the corridor, which is the altitude of the corridor's extruded face relative to the surface."
+    },
+    "extrudedHeightReference": {
+      "$ref": "HeightReference.json",
+      "description": "The extruded height reference of the corridor, which indicates if `extrudedHeight` is relative to terrain or not.",
+      "default": "NONE"
+    },
+    "cornerType1": {
+      "$ref": "CornerType.json",
+      "description": "The style of the corners of the corridor.",
+      "default": "ROUNDED"
+    },
+    "granularity": {
+      "$ref": "Double.json",
+      "description": "The sampling distance, in radians.",
+      "default": "π / 180.0"
+    },
+    "fill1": {
+      "$ref": "Boolean.json",
+      "description": "Whether or not the corridor is filled.",
+      "default": true
+    },
+    "material1": {
+      "$ref": "Material.json",
+      "description": "The material to display on the surface of the corridor.",
+      "default": "solid white"
+    },
+    "outline1": {
+      "$ref": "Boolean.json",
+      "description": "Whether or not the corridor is outlined.",
+      "default": false
+    },
+    "outlineColor1": {
+      "$ref": "Color.json",
+      "description": "The color of the corridor outline.",
+      "default": "black"
+    },
+    "outlineWidth1": {
+      "$ref": "Double.json",
+      "description": "The width of the corridor outline.",
+      "default": 1
+    },
+    "shadows1": {
+      "$ref": "ShadowMode.json",
+      "description": "Whether or not the corridor casts or receives shadows.",
+      "default": "DISABLED"
+    },
+    "distanceDisplayCondition2": {
+      "$ref": "DistanceDisplayCondition.json",
+      "description": "The display condition specifying the distance from the camera at which this corridor will be displayed."
+    },
+    "classificationType1": {
+      "$ref": "ClassificationType.json",
+      "description": "Whether a classification affects terrain, 3D Tiles, or both.",
+      "default": "BOTH"
+    },
+    "zIndex": {
+      "$ref": "Integer.json",
+      "description": "The z-index of the corridor, used for ordering ground geometry. Only has an effect if the corridor is constant, and `height` and `extrudedHeight` are not specified.",
+      "default": "0"
+    },
+    "boolean1": {
+      "$ref": "Values/BooleanValue.json",
+      "description": "The property specified as a boolean value."
+    },
+    "boundingRectangle1": {
+      "$ref": "Values/BoundingRectangleValue.json",
+      "description": "The property specified as `[X, Y, Width, Height]`."
+    },
+    "cartesian1": {
+      "$ref": "Values/Cartesian3Value.json",
+      "description": "The property specified as a three-dimensional Cartesian value `[X, Y, Z]`."
+    },
+    "cartographicRadians": {
+      "$ref": "Values/CartographicRadiansValue.json",
+      "description": "The property specified in Cartographic WGS84 coordinates, `[Longitude, Latitude, Height]`, where Longitude and Latitude are in radians and Height is in meters."
+    },
+    "cartographicDegrees": {
+      "$ref": "Values/CartographicDegreesValue.json",
+      "description": "The property specified in Cartographic WGS84 coordinates, `[Longitude, Latitude, Height]`, where Longitude and Latitude are in degrees and Height is in meters."
+    },
+    "cartesian21": {
+      "$ref": "Values/Cartesian2Value.json",
+      "description": "The property specified as a two-dimensional Cartesian value `[X, Y]`."
+    },
+    "unitCartesian1": {
+      "$ref": "Values/UnitCartesian3Value.json",
+      "description": "The property specified as a three-dimensional unit magnitude Cartesian value `[X, Y, Z]`."
+    },
+    "spherical": {
+      "$ref": "Values/SphericalValue.json",
+      "description": "The property specified as a spherical value `[Clock, Cone, Magnitude]`. The clock angle is measured in the XY plane from the positive X axis toward the positive Y axis. The cone angle is the angle from the positive Z axis toward the negative Z axis."
+    },
+    "unitSpherical1": {
+      "$ref": "Values/UnitSphericalValue.json",
+      "description": "The property specified as a unit spherical value `[Clock, Cone]`. The clock angle is measured in the XY plane from the positive X axis toward the positive Y axis. The cone angle is the angle from the positive Z axis toward the negative Z axis."
+    },
+    "rgba1": {
+      "$ref": "Values/RgbaValue.json",
+      "description": "The property specified as an array of color components `[Red, Green, Blue, Alpha]` where each component is an integer in the range 0-255."
+    },
+    "rgbaf1": {
+      "$ref": "Values/RgbafValue.json",
+      "description": "The property specified as an array of color components `[Red, Green, Blue, Alpha]` where each component is a double in the range 0.0-1.0."
+    },
+    "colorBlendMode1": {
+      "$ref": "Values/ColorBlendModeValue.json",
+      "description": "The property specified as a color blend mode."
+    },
+    "cornerType2": {
+      "$ref": "Values/CornerTypeValue.json",
+      "description": "The property specified as a corner style."
+    },
+    "heightReference3": {
+      "$ref": "Values/HeightReferenceValue.json",
+      "description": "The property specified as a height reference."
+    },
+    "horizontalOrigin1": {
+      "$ref": "Values/HorizontalOriginValue.json",
+      "description": "The property specified as a horizontal origin."
+    },
+    "labelStyle": {
+      "$ref": "Values/LabelStyleValue.json",
+      "description": "The property specified as a label style."
+    },
+    "number1": {
+      "$ref": "Values/DoubleValue.json",
+      "description": "The property specified as a number."
+    },
+    "nearFarScalar": {
+      "$ref": "Values/NearFarScalarValue.json",
+      "description": "The property specified as four values `[NearDistance, NearValue, FarDistance, FarValue]`."
+    },
+    "unitQuaternion": {
+      "$ref": "Values/UnitQuaternionValue.json",
+      "description": "The property specified as a 4-dimensional unit magnitude quaternion, specified as `[X, Y, Z, W]`."
+    },
+    "shadowMode": {
+      "$ref": "Values/ShadowModeValue.json",
+      "description": "The property specified as a shadow mode."
+    },
+    "string": {
+      "$ref": "Values/StringValue.json",
+      "description": "The property specified as a string."
+    },
+    "stripeOrientation": {
+      "$ref": "Values/StripeOrientationValue.json",
+      "description": "The property specified as an orientation of stripes in the stripe material."
+    },
+    "wsen": {
+      "$ref": "Values/CartographicRectangleRadiansValue.json",
+      "description": "The property specified as a Cartographic rectangle `[WestLongitude, SouthLatitude, EastLongitude, NorthLatitude]`, with values in radians."
+    },
+    "wsenDegrees": {
+      "$ref": "Values/CartographicRectangleDegreesValue.json",
+      "description": "The property specified as a Cartographic rectangle `[WestLongitude, SouthLatitude, EastLongitude, NorthLatitude]`, with values in degrees."
+    },
+    "uri": {
+      "$ref": "Values/UriValue.json",
+      "description": "The property specified as a URI."
+    },
+    "verticalOrigin1": {
+      "$ref": "Values/VerticalOriginValue.json",
+      "description": "The property specified as a vertical origin."
+    },
+    "show3": {
+      "$ref": "Boolean.json",
+      "description": "Whether or not the cylinder is shown.",
+      "default": true
+    },
+    "length": {
+      "$ref": "Double.json",
+      "description": "The length of the cylinder.",
+      "czmlRequiredForDisplay": true
+    },
+    "topRadius": {
+      "$ref": "Double.json",
+      "description": "The radius of the top of the cylinder.",
+      "czmlRequiredForDisplay": true
+    },
+    "bottomRadius": {
+      "$ref": "Double.json",
+      "description": "The radius of the bottom of the cylinder.",
+      "czmlRequiredForDisplay": true
+    },
+    "heightReference4": {
+      "$ref": "HeightReference.json",
+      "description": "The height reference of the cylinder, which indicates if the position is relative to terrain or not.",
+      "default": "NONE"
+    },
+    "fill2": {
+      "$ref": "Boolean.json",
+      "description": "Whether or not the cylinder is filled.",
+      "default": true
+    },
+    "material2": {
+      "$ref": "Material.json",
+      "description": "The material to display on the surface of the cylinder.",
+      "default": "solid white"
+    },
+    "outline2": {
+      "$ref": "Boolean.json",
+      "description": "Whether or not the cylinder is outlined.",
+      "default": false
+    },
+    "outlineColor2": {
+      "$ref": "Color.json",
+      "description": "The color of the cylinder outline.",
+      "default": "black"
+    },
+    "outlineWidth2": {
+      "$ref": "Double.json",
+      "description": "The width of the cylinder outline.",
+      "default": 1
+    },
+    "numberOfVerticalLines": {
+      "$ref": "Integer.json",
+      "description": "The number of vertical lines to draw along the perimeter for the outline.",
+      "default": 16
+    },
+    "slices": {
+      "$ref": "Integer.json",
+      "description": "The number of edges around the perimeter of the cylinder.",
+      "default": 128
+    },
+    "shadows2": {
+      "$ref": "ShadowMode.json",
+      "description": "Whether or not the cylinder casts or receives shadows.",
+      "default": "DISABLED"
+    },
+    "distanceDisplayCondition3": {
+      "$ref": "DistanceDisplayCondition.json",
+      "description": "The display condition specifying the distance from the camera at which this cylinder will be displayed."
+    },
+    "delete": {
+      "description": "Whether the client should delete existing samples or interval data for this property. Data will be deleted for the containing interval, or if there is no containing interval, then all data. If true, all other properties in this property will be ignored.",
+      "type": "boolean"
+    },
+    "spherical1": {
+      "$ref": "Values/SphericalValue.json",
+      "description": "The direction specified as a spherical value `[Clock, Cone, Magnitude]`, with angles in radians and magnitude in meters. The clock angle is measured in the XY plane from the positive X axis toward the positive Y axis. The cone angle is the angle from the positive Z axis toward the negative Z axis."
+    },
+    "unitSpherical2": {
+      "$ref": "Values/UnitSphericalValue.json",
+      "description": "The direction specified as a unit spherical value `[Clock, Cone]`, in radians. The clock angle is measured in the XY plane from the positive X axis toward the positive Y axis. The cone angle is the angle from the positive Z axis toward the negative Z axis."
+    },
+    "cartesian3": {
+      "$ref": "Values/Cartesian3Value.json",
+      "description": "The direction specified as a three-dimensional Cartesian value `[X, Y, Z]`, in world coordinates in meters."
+    },
+    "unitCartesian2": {
+      "$ref": "Values/UnitCartesian3Value.json",
+      "description": "The direction specified as a three-dimensional unit magnitude Cartesian value `[X, Y, Z]`, in world coordinates in meters."
+    },
+    "reference11": {
+      "$ref": "Values/ReferenceValue.json",
+      "description": "The direction specified as a reference to another property."
+    },
+    "spherical2": {
+      "$ref": "Values/SphericalListValue.json",
+      "description": "The list of directions specified as spherical values `[Clock, Cone, Magnitude, Clock, Cone, Magnitude, ...]`, with angles in radians and magnitude in meters. The clock angle is measured in the XY plane from the positive X axis toward the positive Y axis. The cone angle is the angle from the positive Z axis toward the negative Z axis."
+    },
+    "unitSpherical3": {
+      "$ref": "Values/UnitSphericalListValue.json",
+      "description": "The list of directions specified as unit spherical values `[Clock, Cone, Clock, Cone, ...]`, in radians. The clock angle is measured in the XY plane from the positive X axis toward the positive Y axis. The cone angle is the angle from the positive Z axis toward the negative Z axis."
+    },
+    "cartesian4": {
+      "$ref": "Values/Cartesian3ListValue.json",
+      "description": "The list of directions specified as three-dimensional Cartesian values `[X, Y, Z, X, Y, Z, ...]`, in world coordinates in meters."
+    },
+    "unitCartesian3": {
+      "$ref": "Values/UnitCartesian3ListValue.json",
+      "description": "The list of directions specified as three-dimensional unit magnitude Cartesian values, `[X, Y, Z, X, Y, Z, ...]`, in world coordinates in meters."
+    },
+    "distanceDisplayCondition4": {
+      "$ref": "Values/DistanceDisplayConditionValue.json",
+      "description": "The value specified as two values `[NearDistance, FarDistance]`, with distances in meters."
+    },
+    "reference12": {
+      "$ref": "Values/ReferenceValue.json",
+      "description": "The value specified as a reference to another property."
+    },
+    "number2": {
+      "$ref": "Values/DoubleValue.json",
+      "description": "The number."
+    },
+    "reference13": {
+      "$ref": "Values/ReferenceValue.json",
+      "description": "The number specified as a reference to another property."
+    },
+    "array": {
+      "$ref": "Values/DoubleListValue.json",
+      "description": "The list of values specified as an array of numbers."
+    },
+    "references": {
+      "$ref": "Values/ReferenceListValue.json",
+      "description": "The list of values specified as references. Each reference is to a property that defines a single value, which may change with time."
+    },
+    "show4": {
+      "$ref": "Boolean.json",
+      "description": "Whether or not the ellipse is shown.",
+      "default": true
+    },
+    "semiMajorAxis": {
+      "$ref": "Double.json",
+      "description": "The length of the ellipse's semi-major axis in meters.",
+      "czmlRequiredForDisplay": true
+    },
+    "semiMinorAxis": {
+      "$ref": "Double.json",
+      "description": "The length of the ellipse's semi-minor axis in meters.",
+      "czmlRequiredForDisplay": true
+    },
+    "height2": {
+      "$ref": "Double.json",
+      "description": "The altitude of the ellipse relative to the surface.",
+      "default": "0.0"
+    },
+    "heightReference5": {
+      "$ref": "HeightReference.json",
+      "description": "The height reference of the ellipse, which indicates if `height` is relative to terrain or not.",
+      "default": "NONE"
+    },
+    "extrudedHeight1": {
+      "$ref": "Double.json",
+      "description": "The altitude of the ellipse's extruded face relative to the surface."
+    },
+    "extrudedHeightReference1": {
+      "$ref": "HeightReference.json",
+      "description": "The extruded height reference of the ellipse, which indicates if `extrudedHeight` is relative to terrain or not.",
+      "default": "NONE"
+    },
+    "rotation1": {
+      "$ref": "Double.json",
+      "description": "The angle from north (counter-clockwise) in radians.",
+      "default": "0.0"
+    },
+    "stRotation": {
+      "$ref": "Double.json",
+      "description": "The rotation of any applied texture coordinates.",
+      "default": "0.0"
+    },
+    "granularity1": {
+      "$ref": "Double.json",
+      "description": "The sampling distance, in radians.",
+      "default": "π / 180.0"
+    },
+    "fill3": {
+      "$ref": "Boolean.json",
+      "description": "Whether or not the ellipse is filled.",
+      "default": true
+    },
+    "material3": {
+      "$ref": "Material.json",
+      "description": "The material to use to fill the ellipse.",
+      "default": "solid white"
+    },
+    "outline3": {
+      "$ref": "Boolean.json",
+      "description": "Whether or not the ellipse is outlined.",
+      "default": false
+    },
+    "outlineColor3": {
+      "$ref": "Color.json",
+      "description": "The color of the ellipse outline.",
+      "default": "black"
+    },
+    "outlineWidth3": {
+      "$ref": "Double.json",
+      "description": "The width of the ellipse outline.",
+      "default": 1
+    },
+    "numberOfVerticalLines1": {
+      "$ref": "Integer.json",
+      "description": "The number of vertical lines to use when outlining an extruded ellipse.",
+      "default": "16"
+    },
+    "shadows3": {
+      "$ref": "ShadowMode.json",
+      "description": "Whether or not the ellipse casts or receives shadows.",
+      "default": "DISABLED"
+    },
+    "distanceDisplayCondition5": {
+      "$ref": "DistanceDisplayCondition.json",
+      "description": "The display condition specifying at what distance from the camera this ellipse will be displayed."
+    },
+    "classificationType2": {
+      "$ref": "ClassificationType.json",
+      "description": "Whether a classification affects terrain, 3D Tiles, or both.",
+      "default": "BOTH"
+    },
+    "zIndex1": {
+      "$ref": "Integer.json",
+      "description": "The z-index of the ellipse, used for ordering ground geometry. Only has an effect if the ellipse is constant, and `height` and `extrudedHeight` are not specified.",
+      "default": "0"
+    },
+    "show5": {
+      "$ref": "Boolean.json",
+      "description": "Whether or not the ellipsoid is shown.",
+      "default": true
+    },
+    "radii": {
+      "$ref": "EllipsoidRadii.json",
+      "description": "The radii of the ellipsoid.",
+      "czmlRequiredForDisplay": true
+    },
+    "innerRadii": {
+      "$ref": "EllipsoidRadii.json",
+      "description": "The inner radii of the ellipsoid."
+    },
+    "minimumClock": {
+      "$ref": "Double.json",
+      "description": "The minimum clock angle of the ellipsoid.",
+      "default": 0
+    },
+    "maximumClock": {
+      "$ref": "Double.json",
+      "description": "The maximum clock angle of the ellipsoid.",
+      "default": "2π"
+    },
+    "minimumCone": {
+      "$ref": "Double.json",
+      "description": "The minimum cone angle of the ellipsoid.",
+      "default": 0
+    },
+    "maximumCone": {
+      "$ref": "Double.json",
+      "description": "The maximum cone angle of the ellipsoid.",
+      "default": "π"
+    },
+    "heightReference6": {
+      "$ref": "HeightReference.json",
+      "description": "The height reference of the ellipsoid, which indicates if the position is relative to terrain or not.",
+      "default": "NONE"
+    },
+    "fill4": {
+      "$ref": "Boolean.json",
+      "description": "Whether or not the ellipsoid is filled.",
+      "default": true
+    },
+    "material4": {
+      "$ref": "Material.json",
+      "description": "The material to display on the surface of the ellipsoid.",
+      "default": "solid white"
+    },
+    "outline4": {
+      "$ref": "Boolean.json",
+      "description": "Whether or not the ellipsoid is outlined.",
+      "default": false
+    },
+    "outlineColor4": {
+      "$ref": "Color.json",
+      "description": "The color of the ellipsoid outline.",
+      "default": "black"
+    },
+    "outlineWidth4": {
+      "$ref": "Double.json",
+      "description": "The width of the ellipsoid outline.",
+      "default": 1
+    },
+    "stackPartitions": {
+      "$ref": "Integer.json",
+      "description": "The number of times to partition the ellipsoid into stacks.",
+      "default": 64
+    },
+    "slicePartitions": {
+      "$ref": "Integer.json",
+      "description": "The number of times to partition the ellipsoid into radial slices.",
+      "default": 64
+    },
+    "subdivisions": {
+      "$ref": "Integer.json",
+      "description": "The number of samples per outline ring, determining the granularity of the curvature.",
+      "default": 128
+    },
+    "shadows4": {
+      "$ref": "ShadowMode.json",
+      "description": "Whether or not the ellipsoid casts or receives shadows.",
+      "default": "DISABLED"
+    },
+    "distanceDisplayCondition6": {
+      "$ref": "DistanceDisplayCondition.json",
+      "description": "The display condition specifying at what distance from the camera this ellipsoid will be displayed."
+    },
+    "cartesian5": {
+      "$ref": "Values/Cartesian3Value.json",
+      "description": "The radii specified as a three-dimensional Cartesian value `[X, Y, Z]`, in world coordinates in meters."
+    },
+    "reference14": {
+      "$ref": "Values/ReferenceValue.json",
+      "description": "The radii specified as a reference to another property."
+    },
+    "show6": {
+      "$ref": "../../Boolean.json",
+      "description": "Whether or not the entire conical sensor is shown.",
+      "default": true
+    },
+    "innerHalfAngle": {
+      "$ref": "../../Double.json",
+      "description": "The inner half angle of the cone.",
+      "default": 0
+    },
+    "outerHalfAngle": {
+      "$ref": "../../Double.json",
+      "description": "The outer half angle of the cone.",
+      "default": "π"
+    },
+    "minimumClockAngle": {
+      "$ref": "../../Double.json",
+      "description": "The minimum clock angle limit of the cone.",
+      "default": 0
+    },
+    "maximumClockAngle": {
+      "$ref": "../../Double.json",
+      "description": "The maximum clock angle limit of the cone.",
+      "default": "2π"
+    },
+    "radius": {
+      "$ref": "../../Double.json",
+      "description": "The radial limit of the sensor.",
+      "default": "Infinity"
+    },
+    "showIntersection": {
+      "$ref": "../../Boolean.json",
+      "description": "Whether or not the intersection of the sensor with the Earth is shown.",
+      "default": true
+    },
+    "intersectionColor": {
+      "$ref": "../../Color.json",
+      "description": "The color of the intersection of the sensor with the Earth.",
+      "default": "white"
+    },
+    "intersectionWidth": {
+      "$ref": "../../Double.json",
+      "description": "The width of the intersection in pixels.",
+      "default": 1
+    },
+    "showLateralSurfaces": {
+      "$ref": "../../Boolean.json",
+      "description": "Whether or not the lateral surfaces, i.e., the outer sides of the sensor, are shown.",
+      "default": true
+    },
+    "lateralSurfaceMaterial": {
+      "$ref": "../../Material.json",
+      "description": "The material to use for the sensor's lateral surface, i.e., the outer sides of the sensor.",
+      "default": "solid white"
+    },
+    "showEllipsoidSurfaces": {
+      "$ref": "../../Boolean.json",
+      "description": "Whether or not ellipsoid surfaces are shown.",
+      "default": true
+    },
+    "ellipsoidSurfaceMaterial": {
+      "$ref": "../../Material.json",
+      "description": "The material to use for the sensor's ellipsoid surfaces.",
+      "default": "solid white"
+    },
+    "showEllipsoidHorizonSurfaces": {
+      "$ref": "../../Boolean.json",
+      "description": "Whether or not ellipsoid horizon surfaces are shown.",
+      "default": true
+    },
+    "ellipsoidHorizonSurfaceMaterial": {
+      "$ref": "../../Material.json",
+      "description": "The material to use for the sensor's ellipsoid horizon surfaces.",
+      "default": "solid white"
+    },
+    "showDomeSurfaces": {
+      "$ref": "../../Boolean.json",
+      "description": "Whether or not dome surfaces are shown.",
+      "default": true
+    },
+    "domeSurfaceMaterial": {
+      "$ref": "../../Material.json",
+      "description": "The material to use for the sensor's dome surfaces.",
+      "default": "solid white"
+    },
+    "portionToDisplay": {
+      "$ref": "../../Extensions/AGI/SensorVolumePortionToDisplay.json",
+      "description": "What part of the sensor should be displayed.",
+      "default": "COMPLETE"
+    },
+    "environmentConstraint": {
+      "$ref": "../../Boolean.json",
+      "description": "Whether or not the sensor will be occluded by objects in the current view of the environment, e.g. visible terrain or models.",
+      "default": false
+    },
+    "showEnvironmentOcclusion": {
+      "$ref": "../../Boolean.json",
+      "description": "Whether or not the portion of the terrain occluded by the environment will be drawn with a separate material.",
+      "default": false
+    },
+    "environmentOcclusionMaterial": {
+      "$ref": "../../Material.json",
+      "description": "The material to use for the portion of the sensor occluded by the environment.",
+      "default": "solid white"
+    },
+    "showEnvironmentIntersection": {
+      "$ref": "../../Boolean.json",
+      "description": "Whether or not a line showing where the sensor intersects the environment will be drawn.",
+      "default": false
+    },
+    "environmentIntersectionColor": {
+      "$ref": "../../Color.json",
+      "description": "The color of the intersection line between the sensor and the environment.",
+      "default": "white"
+    },
+    "environmentIntersectionWidth": {
+      "$ref": "../../Double.json",
+      "description": "The width in meters of the intersection line between the sensor and the environment.",
+      "default": 5
+    },
+    "showThroughEllipsoid": {
+      "$ref": "../../Boolean.json",
+      "description": "Whether or not a sensor intersecting the ellipsoid is drawn through the ellipsoid and potentially out to the other side.",
+      "default": false
+    },
+    "showViewshed": {
+      "$ref": "../../Boolean.json",
+      "description": "Whether or not the viewshed of the sensor will be drawn.",
+      "default": false
+    },
+    "viewshedVisibleColor": {
+      "$ref": "../../Color.json",
+      "description": "The color of the scene geometry that is visible to the sensor.",
+      "default": "lime, 50% transparent"
+    },
+    "viewshedOccludedColor": {
+      "$ref": "../../Color.json",
+      "description": "The color of the scene geometry that is not visible to the sensor.",
+      "default": "red, 50% transparent"
+    },
+    "viewshedResolution": {
+      "$ref": "../../Integer.json",
+      "description": "The resolution in pixels of the viewshed.",
+      "default": 2048
+    },
+    "show7": {
+      "$ref": "../../Boolean.json",
+      "description": "Whether or not the entire custom sensor is shown.",
+      "default": true
+    },
+    "directions": {
+      "$ref": "../../DirectionList.json",
+      "description": "The list of directions defining the custom sensor.",
+      "czmlRequiredForDisplay": true
+    },
+    "radius1": {
+      "$ref": "../../Double.json",
+      "description": "The radial limit of the sensor.",
+      "default": "Infinity"
+    },
+    "showIntersection1": {
+      "$ref": "../../Boolean.json",
+      "description": "Whether or not the intersection of the sensor with the Earth is shown.",
+      "default": true
+    },
+    "intersectionColor1": {
+      "$ref": "../../Color.json",
+      "description": "The color of the intersection of the sensor with the Earth.",
+      "default": "white"
+    },
+    "intersectionWidth1": {
+      "$ref": "../../Double.json",
+      "description": "The width of the intersection in pixels.",
+      "default": 1
+    },
+    "showLateralSurfaces1": {
+      "$ref": "../../Boolean.json",
+      "description": "Whether or not the lateral surfaces, i.e., the outer sides of the sensor, are shown.",
+      "default": true
+    },
+    "lateralSurfaceMaterial1": {
+      "$ref": "../../Material.json",
+      "description": "The material to use for the sensor's lateral surface, i.e., the outer sides of the sensor.",
+      "default": "solid white"
+    },
+    "showEllipsoidSurfaces1": {
+      "$ref": "../../Boolean.json",
+      "description": "Whether or not ellipsoid surfaces are shown.",
+      "default": true
+    },
+    "ellipsoidSurfaceMaterial1": {
+      "$ref": "../../Material.json",
+      "description": "The material to use for the sensor's ellipsoid surfaces.",
+      "default": "solid white"
+    },
+    "showEllipsoidHorizonSurfaces1": {
+      "$ref": "../../Boolean.json",
+      "description": "Whether or not ellipsoid horizon surfaces are shown.",
+      "default": true
+    },
+    "ellipsoidHorizonSurfaceMaterial1": {
+      "$ref": "../../Material.json",
+      "description": "The material to use for the sensor's ellipsoid horizon surfaces.",
+      "default": "solid white"
+    },
+    "showDomeSurfaces1": {
+      "$ref": "../../Boolean.json",
+      "description": "Whether or not dome surfaces are shown.",
+      "default": true
+    },
+    "domeSurfaceMaterial1": {
+      "$ref": "../../Material.json",
+      "description": "The material to use for the sensor's dome surfaces.",
+      "default": "solid white"
+    },
+    "portionToDisplay1": {
+      "$ref": "../../Extensions/AGI/SensorVolumePortionToDisplay.json",
+      "description": "What part of the sensor should be displayed.",
+      "default": "COMPLETE"
+    },
+    "environmentConstraint1": {
+      "$ref": "../../Boolean.json",
+      "description": "Whether or not the sensor will be occluded by objects in the current view of the environment, e.g. visible terrain or models.",
+      "default": false
+    },
+    "showEnvironmentOcclusion1": {
+      "$ref": "../../Boolean.json",
+      "description": "Whether or not the portion of the terrain occluded by the environment will be drawn with a separate material.",
+      "default": false
+    },
+    "environmentOcclusionMaterial1": {
+      "$ref": "../../Material.json",
+      "description": "The material to use for the portion of the sensor occluded by the environment.",
+      "default": "solid white"
+    },
+    "showEnvironmentIntersection1": {
+      "$ref": "../../Boolean.json",
+      "description": "Whether or not a line showing where the sensor intersects the environment will be drawn.",
+      "default": false
+    },
+    "environmentIntersectionColor1": {
+      "$ref": "../../Color.json",
+      "description": "The color of the intersection line between the sensor and the environment.",
+      "default": "white"
+    },
+    "environmentIntersectionWidth1": {
+      "$ref": "../../Double.json",
+      "description": "The width in meters of the intersection line between the sensor and the environment.",
+      "default": 5
+    },
+    "showThroughEllipsoid1": {
+      "$ref": "../../Boolean.json",
+      "description": "Whether or not a sensor intersecting the ellipsoid is drawn through the ellipsoid and potentially out to the other side.",
+      "default": false
+    },
+    "showViewshed1": {
+      "$ref": "../../Boolean.json",
+      "description": "Whether or not the viewshed of the sensor will be drawn.",
+      "default": false
+    },
+    "viewshedVisibleColor1": {
+      "$ref": "../../Color.json",
+      "description": "The color of the scene geometry that is visible to the sensor.",
+      "default": "lime, 50% transparent"
+    },
+    "viewshedOccludedColor1": {
+      "$ref": "../../Color.json",
+      "description": "The color of the scene geometry that is not visible to the sensor.",
+      "default": "red, 50% transparent"
+    },
+    "viewshedResolution1": {
+      "$ref": "../../Integer.json",
+      "description": "The resolution in pixels of the viewshed.",
+      "default": 2048
+    },
+    "show8": {
+      "$ref": "../../Boolean.json",
+      "description": "Whether or not the fan is shown.",
+      "default": true
+    },
+    "directions1": {
+      "$ref": "../../DirectionList.json",
+      "description": "The list of directions defining the fan.",
+      "czmlRequiredForDisplay": true
+    },
+    "radius2": {
+      "$ref": "../../Double.json",
+      "description": "The radial limit of the fan. If `perDirectionRadius` is false, then this value is required."
+    },
+    "perDirectionRadius": {
+      "$ref": "../../Boolean.json",
+      "description": "Whether the magnitude of each direction is used instead of a constant radius.",
+      "default": false
+    },
+    "material5": {
+      "$ref": "../../Material.json",
+      "description": "The material to display on the surface of the fan.",
+      "default": "solid white"
+    },
+    "fill5": {
+      "$ref": "../../Boolean.json",
+      "description": "Whether or not the fan is filled.",
+      "default": true
+    },
+    "outline5": {
+      "$ref": "../../Boolean.json",
+      "description": "Whether or not the fan is outlined.",
+      "default": false
+    },
+    "outlineColor5": {
+      "$ref": "../../Color.json",
+      "description": "The color of the fan outline.",
+      "default": "black"
+    },
+    "outlineWidth5": {
+      "$ref": "../../Double.json",
+      "description": "The width of the fan outline.",
+      "default": 1
+    },
+    "numberOfRings": {
+      "$ref": "../../Integer.json",
+      "description": "The number of outline rings to draw, starting from the outer edge and equidistantly spaced towards the center.",
+      "default": 6
+    },
+    "show9": {
+      "$ref": "../../Boolean.json",
+      "description": "Whether or not the entire rectangular pyramid sensor is shown.",
+      "default": true
+    },
+    "xHalfAngle": {
+      "$ref": "../../Double.json",
+      "description": "The X half angle.",
+      "default": "π / 2"
+    },
+    "yHalfAngle": {
+      "$ref": "../../Double.json",
+      "description": "The Y half angle.",
+      "default": "π / 2"
+    },
+    "radius3": {
+      "$ref": "../../Double.json",
+      "description": "The radial limit of the sensor.",
+      "default": "Infinity"
+    },
+    "showIntersection2": {
+      "$ref": "../../Boolean.json",
+      "description": "Whether or not the intersection of the sensor with the Earth is shown.",
+      "default": true
+    },
+    "intersectionColor2": {
+      "$ref": "../../Color.json",
+      "description": "The color of the intersection of the sensor with the Earth.",
+      "default": "white"
+    },
+    "intersectionWidth2": {
+      "$ref": "../../Double.json",
+      "description": "The width of the intersection in pixels.",
+      "default": 1
+    },
+    "showLateralSurfaces2": {
+      "$ref": "../../Boolean.json",
+      "description": "Whether or not the lateral surfaces, i.e., the outer sides of the sensor, are shown.",
+      "default": true
+    },
+    "lateralSurfaceMaterial2": {
+      "$ref": "../../Material.json",
+      "description": "The material to use for the sensor's lateral surface, i.e., the outer sides of the sensor.",
+      "default": "solid white"
+    },
+    "showEllipsoidSurfaces2": {
+      "$ref": "../../Boolean.json",
+      "description": "Whether or not ellipsoid surfaces are shown.",
+      "default": true
+    },
+    "ellipsoidSurfaceMaterial2": {
+      "$ref": "../../Material.json",
+      "description": "The material to use for the sensor's ellipsoid surfaces.",
+      "default": "solid white"
+    },
+    "showEllipsoidHorizonSurfaces2": {
+      "$ref": "../../Boolean.json",
+      "description": "Whether or not ellipsoid horizon surfaces are shown.",
+      "default": true
+    },
+    "ellipsoidHorizonSurfaceMaterial2": {
+      "$ref": "../../Material.json",
+      "description": "The material to use for the sensor's ellipsoid horizon surfaces.",
+      "default": "solid white"
+    },
+    "showDomeSurfaces2": {
+      "$ref": "../../Boolean.json",
+      "description": "Whether or not dome surfaces are shown.",
+      "default": true
+    },
+    "domeSurfaceMaterial2": {
+      "$ref": "../../Material.json",
+      "description": "The material to use for the sensor's dome surfaces.",
+      "default": "solid white"
+    },
+    "portionToDisplay2": {
+      "$ref": "../../Extensions/AGI/SensorVolumePortionToDisplay.json",
+      "description": "What part of the sensor should be displayed.",
+      "default": "COMPLETE"
+    },
+    "environmentConstraint2": {
+      "$ref": "../../Boolean.json",
+      "description": "Whether or not the sensor will be occluded by objects in the current view of the environment, e.g. visible terrain or models.",
+      "default": false
+    },
+    "showEnvironmentOcclusion2": {
+      "$ref": "../../Boolean.json",
+      "description": "Whether or not the portion of the terrain occluded by the environment will be drawn with a separate material.",
+      "default": false
+    },
+    "environmentOcclusionMaterial2": {
+      "$ref": "../../Material.json",
+      "description": "The material to use for the portion of the sensor occluded by the environment.",
+      "default": "solid white"
+    },
+    "showEnvironmentIntersection2": {
+      "$ref": "../../Boolean.json",
+      "description": "Whether or not a line showing where the sensor intersects the environment will be drawn.",
+      "default": false
+    },
+    "environmentIntersectionColor2": {
+      "$ref": "../../Color.json",
+      "description": "The color of the intersection line between the sensor and the environment.",
+      "default": "white"
+    },
+    "environmentIntersectionWidth2": {
+      "$ref": "../../Double.json",
+      "description": "The width in meters of the intersection line between the sensor and the environment.",
+      "default": 5
+    },
+    "showThroughEllipsoid2": {
+      "$ref": "../../Boolean.json",
+      "description": "Whether or not a sensor intersecting the ellipsoid is drawn through the ellipsoid and potentially out to the other side.",
+      "default": false
+    },
+    "showViewshed2": {
+      "$ref": "../../Boolean.json",
+      "description": "Whether or not the viewshed of the sensor will be drawn.",
+      "default": false
+    },
+    "viewshedVisibleColor2": {
+      "$ref": "../../Color.json",
+      "description": "The color of the scene geometry that is visible to the sensor.",
+      "default": "lime, 50% transparent"
+    },
+    "viewshedOccludedColor2": {
+      "$ref": "../../Color.json",
+      "description": "The color of the scene geometry that is not visible to the sensor.",
+      "default": "red, 50% transparent"
+    },
+    "viewshedResolution2": {
+      "$ref": "../../Integer.json",
+      "description": "The resolution in pixels of the viewshed.",
+      "default": 2048
+    },
+    "portionToDisplay3": {
+      "$ref": "../../Extensions/AGI/SensorVolumePortionToDisplayValue.json",
+      "description": "The part of a sensor to display."
+    },
+    "reference15": {
+      "$ref": "../../Values/ReferenceValue.json",
+      "description": "The part of a sensor to display, specified as a reference to another property."
+    },
+    "show10": {
+      "$ref": "../../Boolean.json",
+      "description": "Whether or not the vector is shown.",
+      "default": true
+    },
+    "color1": {
+      "$ref": "../../Color.json",
+      "description": "The color of the vector.",
+      "default": "white"
+    },
+    "direction": {
+      "$ref": "../../Direction.json",
+      "description": "The direction of the vector.",
+      "czmlRequiredForDisplay": true
+    },
+    "length1": {
+      "$ref": "../../Double.json",
+      "description": "The graphical length of the vector, in meters.",
+      "default": 1
+    },
+    "minimumLengthInPixels": {
+      "$ref": "../../Double.json",
+      "description": "The minimum graphical length of the vector in pixels.",
+      "default": 0
+    },
+    "cartesian6": {
+      "$ref": "Values/Cartesian3Value.json",
+      "description": "The eye offset specified as a three-dimensional Cartesian value `[X, Y, Z]`, in eye coordinates in meters. If the array has three elements, the eye offset is constant. If it has four or more elements, they are time-tagged samples arranged as `[Time, X, Y, Z, Time, X, Y, Z, ...]`, where Time is an ISO 8601 date and time string or seconds since epoch."
+    },
+    "reference16": {
+      "$ref": "Values/ReferenceValue.json",
+      "description": "The eye offset specified as a reference to another property."
+    },
+    "font": {
+      "$ref": "Values/FontValue.json",
+      "description": "The font, specified using the same syntax as the CSS \"font\" property."
+    },
+    "reference17": {
+      "$ref": "Values/ReferenceValue.json",
+      "description": "The font specified as a reference to another property."
+    },
+    "color2": {
+      "$ref": "Color.json",
+      "description": "The color of the surface.",
+      "default": "white"
+    },
+    "cellAlpha": {
+      "$ref": "Double.json",
+      "description": "The alpha value for the space between grid lines. This will be combined with the color alpha.",
+      "default": 0.1
+    },
+    "lineCount": {
+      "$ref": "LineCount.json",
+      "description": "The number of grid lines along each axis.",
+      "default": "[8, 8]"
+    },
+    "lineThickness": {
+      "$ref": "LineThickness.json",
+      "description": "The thickness of grid lines along each axis, in pixels.",
+      "default": "[1.0, 1.0]"
+    },
+    "lineOffset": {
+      "$ref": "LineOffset.json",
+      "description": "The offset of grid lines along each axis, as a percentage from 0 to 1.",
+      "default": "[0.0, 0.0]"
+    },
+    "heightReference7": {
+      "$ref": "Values/HeightReferenceValue.json",
+      "description": "The height reference."
+    },
+    "reference18": {
+      "$ref": "Values/ReferenceValue.json",
+      "description": "The height reference specified as a reference to another property."
+    },
+    "horizontalOrigin2": {
+      "$ref": "Values/HorizontalOriginValue.json",
+      "description": "The horizontal origin."
+    },
+    "reference19": {
+      "$ref": "Values/ReferenceValue.json",
+      "description": "The horizontal origin specified as a reference to another property."
+    },
+    "image1": {
+      "$ref": "Uri.json",
+      "description": "The image to display on the surface."
+    },
+    "repeat1": {
+      "$ref": "Repeat.json",
+      "description": "The number of times the image repeats along each axis.",
+      "default": "[1, 1]"
+    },
+    "color3": {
+      "$ref": "Color.json",
+      "description": "The color of the image. This color value is multiplied with the image to produce the final color.",
+      "default": "white"
+    },
+    "transparent": {
+      "$ref": "Boolean.json",
+      "description": "Whether or not the image has transparency.",
+      "default": false
+    },
+    "number3": {
+      "$ref": "Values/IntegerValue.json",
+      "description": "The integer."
+    },
+    "reference20": {
+      "$ref": "Values/ReferenceValue.json",
+      "description": "The integer specified as a reference to another property."
+    },
+    "epoch": {
+      "description": "The epoch to use for times specified as seconds since an epoch.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "interpolationAlgorithm": {
+      "description": "The interpolation algorithm to use when interpolating. Valid values are \"LINEAR\", \"LAGRANGE\", and \"HERMITE\".",
+      "type": "string",
+      "default": "LINEAR"
+    },
+    "interpolationDegree": {
+      "description": "The degree of interpolation to use when interpolating.",
+      "type": "number",
+      "default": 1
+    },
+    "forwardExtrapolationType": {
+      "description": "The type of extrapolation to perform when a value is requested at a time after any available samples. Valid values are \"NONE\", \"HOLD\", and \"EXTRAPOLATE\".",
+      "type": "string",
+      "default": "NONE"
+    },
+    "forwardExtrapolationDuration": {
+      "description": "The amount of time to extrapolate forward before the property becomes undefined. A value of 0 will extrapolate forever.",
+      "type": "number",
+      "default": 0
+    },
+    "backwardExtrapolationType": {
+      "description": "The type of extrapolation to perform when a value is requested at a time before any available samples. Valid values are \"NONE\", \"HOLD\", and \"EXTRAPOLATE\".",
+      "type": "string",
+      "default": "NONE"
+    },
+    "backwardExtrapolationDuration": {
+      "description": "The amount of time to extrapolate backward before the property becomes undefined. A value of 0 will extrapolate forever.",
+      "type": "number",
+      "default": 0
+    },
+    "show11": {
+      "$ref": "Boolean.json",
+      "description": "Whether or not the label is shown.",
+      "default": true
+    },
+    "text": {
+      "$ref": "String.json",
+      "description": "The text displayed by the label. The newline character (\\n) indicates line breaks."
+    },
+    "font1": {
+      "$ref": "Font.json",
+      "description": "The font to use for the label.",
+      "default": "30px sans-serif"
+    },
+    "style": {
+      "$ref": "LabelStyle.json",
+      "description": "The style of the label.",
+      "default": "FILL"
+    },
+    "scale1": {
+      "$ref": "Double.json",
+      "description": "The scale of the label. The scale is multiplied with the pixel size of the label's text. For example, if the scale is 2.0, the label will be rendered with twice the number of pixels, in each direction, of the text.",
+      "default": 1
+    },
+    "showBackground": {
+      "$ref": "Boolean.json",
+      "description": "Whether or not a background behind the label is shown.",
+      "default": false
+    },
+    "backgroundColor": {
+      "$ref": "Color.json",
+      "description": "The color of the background behind the label.",
+      "default": "[0.165, 0.165, 0.165, 0.8]"
+    },
+    "backgroundPadding": {
+      "$ref": "BackgroundPadding.json",
+      "description": "The amount of padding between the text and the label's background.",
+      "default": "[7, 5]"
+    },
+    "pixelOffset1": {
+      "$ref": "PixelOffset.json",
+      "description": "The offset, in viewport pixels, of the label origin from the `position`. A pixel offset is the number of pixels up and to the right to place the label, relative to the `position`.",
+      "default": "[0.0, 0.0]"
+    },
+    "eyeOffset1": {
+      "$ref": "EyeOffset.json",
+      "description": "The eye offset of the label, which is the offset in eye coordinates at which to place the label relative to the `position` property. Eye coordinates are a left-handed coordinate system where the X-axis points toward the viewer's right, the Y-axis points up, and the Z-axis points into the screen.",
+      "default": "[0.0, 0.0, 0.0]"
+    },
+    "horizontalOrigin3": {
+      "$ref": "HorizontalOrigin.json",
+      "description": "The horizontal origin of the label. It controls whether the label is left-, center-, or right-aligned with the `position`.",
+      "default": "CENTER"
+    },
+    "verticalOrigin2": {
+      "$ref": "VerticalOrigin.json",
+      "description": "The vertical origin of the label. It controls whether the label image is bottom-, center-, or top-aligned with the `position`.",
+      "default": "CENTER"
+    },
+    "heightReference8": {
+      "$ref": "HeightReference.json",
+      "description": "The height reference of the label, which indicates if the position is relative to terrain or not.",
+      "default": "NONE"
+    },
+    "fillColor": {
+      "$ref": "Color.json",
+      "description": "The fill color of the label.",
+      "default": "white"
+    },
+    "outlineColor6": {
+      "$ref": "Color.json",
+      "description": "The outline color of the label.",
+      "default": "black"
+    },
+    "outlineWidth6": {
+      "$ref": "Double.json",
+      "description": "The outline width of the label.",
+      "default": 1
+    },
+    "translucencyByDistance1": {
+      "$ref": "NearFarScalar.json",
+      "description": "How the label's translucency should change based on the label's distance from the camera. This scalar value should range from 0 to 1."
+    },
+    "pixelOffsetScaleByDistance1": {
+      "$ref": "NearFarScalar.json",
+      "description": "How the label's pixel offset should change based on the label's distance from the camera. This scalar value will be multiplied by `pixelOffset`."
+    },
+    "scaleByDistance1": {
+      "$ref": "NearFarScalar.json",
+      "description": "How the label's scale should change based on the label's distance from the camera. This scalar value will be multiplied by `scale`."
+    },
+    "distanceDisplayCondition7": {
+      "$ref": "DistanceDisplayCondition.json",
+      "description": "The display condition specifying the distance from the camera at which this label will be displayed."
+    },
+    "disableDepthTestDistance1": {
+      "$ref": "Double.json",
+      "description": "The distance from the camera at which to disable the depth test. This can be used to prevent clipping against terrain, for example. When set to zero, the depth test is always applied. When set to Infinity, the depth test is never applied.",
+      "default": 0
+    },
+    "labelStyle1": {
+      "$ref": "Values/LabelStyleValue.json",
+      "description": "The label style."
+    },
+    "reference21": {
+      "$ref": "Values/ReferenceValue.json",
+      "description": "The label style specified as a reference to another property."
+    },
+    "cartesian22": {
+      "$ref": "Values/Cartesian2Value.json",
+      "description": "The number of grid lines along each axis."
+    },
+    "reference22": {
+      "$ref": "Values/ReferenceValue.json",
+      "description": "The number of grid lines along each axis specified as a reference to another property."
+    },
+    "cartesian23": {
+      "$ref": "Values/Cartesian2Value.json",
+      "description": "The offset of grid lines along each axis, specified as a percentage from 0 to 1."
+    },
+    "reference23": {
+      "$ref": "Values/ReferenceValue.json",
+      "description": "The offset of grid lines along each axis specified as a reference to another property."
+    },
+    "cartesian24": {
+      "$ref": "Values/Cartesian2Value.json",
+      "description": "The thickness specified as a two-dimensional Cartesian value `[X, Y]`, in pixels."
+    },
+    "reference24": {
+      "$ref": "Values/ReferenceValue.json",
+      "description": "The thickness specified as a reference to another property."
+    },
+    "solidColor": {
+      "$ref": "SolidColorMaterial.json",
+      "description": "A material that fills the surface with a solid color, which may be translucent."
+    },
+    "image2": {
+      "$ref": "ImageMaterial.json",
+      "description": "A material that fills the surface with an image."
+    },
+    "grid": {
+      "$ref": "GridMaterial.json",
+      "description": "A material that fills the surface with a grid."
+    },
+    "stripe": {
+      "$ref": "StripeMaterial.json",
+      "description": "A material that fills the surface with alternating colors."
+    },
+    "checkerboard": {
+      "$ref": "CheckerboardMaterial.json",
+      "description": "A material that fills the surface with a checkerboard pattern."
+    },
+    "show12": {
+      "$ref": "Boolean.json",
+      "description": "Whether or not the model is shown.",
+      "default": true
+    },
+    "gltf": {
+      "$ref": "Uri.json",
+      "description": "The URI of a <a href=\"https://github.com/KhronosGroup/glTF\">glTF</a> model. For broadest client compatibility, the URI should be accessible via Cross-Origin Resource Sharing (CORS). The URI may also be a <a href=\"https://developer.mozilla.org/en/data_URIs\">data URI</a>.",
+      "czmlRequiredForDisplay": true
+    },
+    "scale2": {
+      "$ref": "Double.json",
+      "description": "The scale of the model.",
+      "default": 1
+    },
+    "minimumPixelSize": {
+      "$ref": "Double.json",
+      "description": "The approximate minimum pixel size of the model regardless of zoom.",
+      "default": 0
+    },
+    "maximumScale": {
+      "$ref": "Double.json",
+      "description": "The maximum scale size of the model. This is used as an upper limit for `minimumPixelSize`."
+    },
+    "incrementallyLoadTextures": {
+      "$ref": "Boolean.json",
+      "description": "Whether or not the model can be rendered before all textures have loaded.",
+      "default": true
+    },
+    "runAnimations": {
+      "$ref": "Boolean.json",
+      "description": "Whether or not to run all animations defined in the glTF model.",
+      "default": true
+    },
+    "shadows5": {
+      "$ref": "ShadowMode.json",
+      "description": "Whether or not the model casts or receives shadows.",
+      "default": "ENABLED"
+    },
+    "heightReference9": {
+      "$ref": "HeightReference.json",
+      "description": "The height reference of the model, which indicates if the position is relative to terrain or not.",
+      "default": "NONE"
+    },
+    "silhouetteColor": {
+      "$ref": "Color.json",
+      "description": "The color of the silhouette drawn around the model.",
+      "default": "red"
+    },
+    "silhouetteSize": {
+      "$ref": "Double.json",
+      "description": "The size, in pixels, of the silhouette drawn around the model.",
+      "default": 0
+    },
+    "color4": {
+      "$ref": "Color.json",
+      "description": "The color to blend with the model's rendered color.",
+      "default": "white"
+    },
+    "colorBlendMode2": {
+      "$ref": "ColorBlendMode.json",
+      "description": "The mode to use for blending between `color` and the model's color.",
+      "default": "HIGHLIGHT"
+    },
+    "colorBlendAmount": {
+      "$ref": "Double.json",
+      "description": "The color strength when `colorBlendMode` is `MIX`. A value of 0.0 results in the model's rendered color while a value of 1.0 results in a solid color, with any value in-between resulting in a mix of the two.",
+      "default": 0.5
+    },
+    "distanceDisplayCondition8": {
+      "$ref": "DistanceDisplayCondition.json",
+      "description": "The display condition specifying at what distance from the camera this model will be displayed."
+    },
+    "nodeTransformations": {
+      "$ref": "NodeTransformations.json",
+      "czmlExamples": [
+        "Examples/ModelNodeTransformations.json"
+      ]
+    },
+    "articulations": {
+      "$ref": "Articulations.json",
+      "czmlExamples": [
+        "Examples/ModelArticulations.json"
+      ]
+    },
+    "nearFarScalar1": {
+      "$ref": "Values/NearFarScalarValue.json",
+      "description": "The value specified as four values `[NearDistance, NearValue, FarDistance, FarValue]`, with distances in eye coordinates in meters."
+    },
+    "reference25": {
+      "$ref": "Values/ReferenceValue.json",
+      "description": "The value specified as a reference to another property."
+    },
+    "translation": {
+      "$ref": "Translation.json",
+      "description": "The translation to apply to the model node.",
+      "default": "[0.0, 0.0, 0.0]"
+    },
+    "rotation2": {
+      "$ref": "Rotation.json",
+      "description": "The rotation to apply to the model node.",
+      "default": "[0.0, 0.0, 0.0, 1.0]"
+    },
+    "scale3": {
+      "$ref": "Scale.json",
+      "description": "The scaling to apply to the model node.",
+      "default": "[1.0, 1.0, 1.0]"
+    },
+    "unitQuaternion1": {
+      "$ref": "Values/UnitQuaternionValue.json",
+      "description": "The orientation specified as a 4-dimensional unit magnitude quaternion, specified as `[X, Y, Z, W]`."
+    },
+    "reference26": {
+      "$ref": "Values/ReferenceValue.json",
+      "description": "The orientation specified as a reference to another property."
+    },
+    "velocityReference1": {
+      "$ref": "Values/VelocityReferenceValue.json",
+      "description": "The orientation specified as the normalized velocity vector of a position property. The reference must be to a `position` property."
+    },
+    "id": {
+      "description": "The ID of the object described by this packet. IDs do not need to be GUIDs, but they do need to uniquely identify a single object within a CZML source and any other CZML sources loaded into the same scope. If this property is not specified, the client will automatically generate a unique one. However, this prevents later packets from referring to this object in order to add more data to it.",
+      "type": "string"
+    },
+    "delete1": {
+      "description": "Whether the client should delete all existing data for this object, identified by ID. If true, all other properties in this packet will be ignored.",
+      "type": "boolean"
+    },
+    "name": {
+      "description": "The name of the object. It does not have to be unique and is intended for user consumption.",
+      "type": "string"
+    },
+    "parent": {
+      "description": "The ID of the parent object, if any.",
+      "type": "string"
+    },
+    "description": {
+      "$ref": "String.json",
+      "description": "An HTML description of the object."
+    },
+    "clock": {
+      "$ref": "Clock.json",
+      "description": "The clock settings for the entire data set. Only valid on the document object."
+    },
+    "version": {
+      "description": "The CZML version being written. Only valid on the document object.",
+      "type": "string"
+    },
+    "availability": {
+      "$ref": "Values/TimeIntervalCollectionValue.json",
+      "description": "The set of time intervals over which data for an object is available. The property can be a single string specifying a single interval, or an array of strings representing intervals. A later CZML packet can update this availability if it changes or is found to be incorrect. For example, an SGP4 propagator may initially report availability for all time, but then later the propagator throws an exception and the availability can be adjusted to end at that time. If this optional property is not present, the object is assumed to be available for all time. Availability is scoped to a particular CZML stream, so two different streams can list different availability for a single object. Within a single stream, the last availability stated for an object is the one in effect and any availabilities in previous packets are ignored. If an object is not available at a time, the client will not draw that object.",
+      "default": "0000-00-00T00:00:00Z/9999-12-31T24:00:00Z"
+    },
+    "properties": {
+      "$ref": "CustomProperties.json",
+      "description": "A set of custom properties for this object."
+    },
+    "position": {
+      "$ref": "Position.json",
+      "description": "The position of the object in the world. The position has no direct visual representation, but it is used to locate billboards, labels, and other graphical items attached to the object.",
+      "czmlExamples": [
+        "Examples/SimplePosition.json",
+        "Examples/TimeVaryingPosition.json"
+      ]
+    },
+    "orientation": {
+      "$ref": "Orientation.json",
+      "description": "The orientation of the object in the world. The orientation has no direct visual representation, but it is used to orient models, cones, pyramids, and other graphical items attached to the object."
+    },
+    "viewFrom": {
+      "$ref": "ViewFrom.json",
+      "description": "A suggested camera location when viewing this object. The property is specified as a Cartesian position in the East (x), North (y), Up (z) reference frame relative to the object's position."
+    },
+    "billboard": {
+      "$ref": "Billboard.json",
+      "description": "A billboard, or viewport-aligned image, sometimes called a marker. The billboard is positioned in the scene by the `position` property."
+    },
+    "box": {
+      "$ref": "Box.json",
+      "description": "A box, which is a closed rectangular cuboid. The box is positioned and oriented using the `position` and `orientation` properties."
+    },
+    "corridor": {
+      "$ref": "Corridor.json",
+      "description": "A corridor, which is a shape defined by a centerline and width."
+    },
+    "cylinder": {
+      "$ref": "Cylinder.json",
+      "description": "A cylinder, truncated cone, or cone defined by a length, top radius, and bottom radius. The cylinder is positioned and oriented using the `position` and `orientation` properties."
+    },
+    "ellipse": {
+      "$ref": "Ellipse.json",
+      "description": "An ellipse, which is a closed curve on the surface of the Earth. The ellipse is positioned using the `position` property."
+    },
+    "ellipsoid": {
+      "$ref": "Ellipsoid.json",
+      "description": "An ellipsoid, which is a closed quadric surface that is a three-dimensional analogue of an ellipse. The ellipsoid is positioned and oriented using the `position` and `orientation` properties."
+    },
+    "label": {
+      "$ref": "Label.json",
+      "description": "A string of text. The label is positioned in the scene by the `position` property."
+    },
+    "model": {
+      "$ref": "Model.json",
+      "description": "A 3D model. The model is positioned and oriented using the `position` and `orientation` properties."
+    },
+    "path": {
+      "$ref": "Path.json",
+      "description": "A path, which is a polyline defined by the motion of an object over time. The possible vertices of the path are specified by the `position` property."
+    },
+    "point": {
+      "$ref": "Point.json",
+      "description": "A point, or viewport-aligned circle. The point is positioned in the scene by the `position` property."
+    },
+    "polygon": {
+      "$ref": "Polygon.json",
+      "description": "A polygon, which is a closed figure on the surface of the Earth."
+    },
+    "polyline": {
+      "$ref": "Polyline.json",
+      "description": "A polyline, which is a line in the scene composed of multiple segments."
+    },
+    "polylineVolume": {
+      "$ref": "PolylineVolume.json",
+      "description": "A polyline with a volume, defined as a 2D shape extruded along a polyline."
+    },
+    "rectangle": {
+      "$ref": "Rectangle.json",
+      "description": "A cartographic rectangle, which conforms to the curvature of the globe and can be placed along the surface or at altitude."
+    },
+    "tileset": {
+      "$ref": "Tileset.json",
+      "description": "A 3D Tiles tileset."
+    },
+    "wall": {
+      "$ref": "Wall.json",
+      "description": "A two-dimensional wall which conforms to the curvature of the globe and can be placed along the surface or at altitude."
+    },
+    "agi_conicSensor": {
+      "$ref": "Extensions/AGI/ConicSensor.json",
+      "description": "A conical sensor volume taking into account occlusion of an ellipsoid, i.e., the globe. The sensor is positioned and oriented using the `position` and `orientation` properties."
+    },
+    "agi_customPatternSensor": {
+      "$ref": "Extensions/AGI/CustomPatternSensor.json",
+      "description": "A custom sensor volume taking into account occlusion of an ellipsoid, i.e., the globe. The sensor is positioned and oriented using the `position` and `orientation` properties."
+    },
+    "agi_rectangularSensor": {
+      "$ref": "Extensions/AGI/RectangularSensor.json",
+      "description": "A rectangular pyramid sensor volume taking into account occlusion of an ellipsoid, i.e., the globe. The sensor is positioned and oriented using the `position` and `orientation` properties."
+    },
+    "agi_fan": {
+      "$ref": "Extensions/AGI/Fan.json",
+      "description": "Defines a fan, which starts at a point or apex and extends in a specified list of directions from the apex. Each pair of directions forms a face of the fan extending to the specified radius. The fan is positioned and oriented using the `position` and `orientation` properties."
+    },
+    "agi_vector": {
+      "$ref": "Extensions/AGI/Vector.json",
+      "description": "Defines a graphical vector that originates at the `position` property and extends in the provided direction for the provided length. The vector is positioned using the `position` property."
+    },
+    "show13": {
+      "$ref": "Boolean.json",
+      "description": "Whether or not the path is shown.",
+      "default": true
+    },
+    "leadTime": {
+      "$ref": "Double.json",
+      "description": "The time ahead of the animation time, in seconds, to show the path. The time will be limited to not exceed the object's availability. By default, the value is unlimited, which effectively results in drawing the entire available path of the object."
+    },
+    "trailTime": {
+      "$ref": "Double.json",
+      "description": "The time behind the animation time, in seconds, to show the path. The time will be limited to not exceed the object's availability. By default, the value is unlimited, which effectively results in drawing the entire available path of the object."
+    },
+    "width2": {
+      "$ref": "Double.json",
+      "description": "The width of the path line.",
+      "default": 1
+    },
+    "resolution": {
+      "$ref": "Double.json",
+      "description": "The maximum step-size, in seconds, used to sample the path. If the `position` property has data points farther apart than resolution specifies, additional samples will be computed, creating a smoother path.",
+      "default": 60
+    },
+    "material6": {
+      "$ref": "PolylineMaterial.json",
+      "description": "The material to use to draw the path.",
+      "default": "solid white"
+    },
+    "distanceDisplayCondition9": {
+      "$ref": "DistanceDisplayCondition.json",
+      "description": "The display condition specifying at what distance from the camera this path will be displayed."
+    },
+    "cartesian25": {
+      "$ref": "Values/Cartesian2Value.json",
+      "description": "The pixel offset specified as a two-dimensional Cartesian value `[X, Y]`, in viewport coordinates in pixels, where X is pixels to the right and Y is pixels up."
+    },
+    "reference27": {
+      "$ref": "Values/ReferenceValue.json",
+      "description": "The pixel offset specified as a reference to another property."
+    },
+    "show14": {
+      "$ref": "Boolean.json",
+      "description": "Whether or not the point is shown.",
+      "default": true
+    },
+    "pixelSize": {
+      "$ref": "Double.json",
+      "description": "The size of the point, in pixels.",
+      "default": 1
+    },
+    "heightReference10": {
+      "$ref": "HeightReference.json",
+      "description": "The height reference of the point, which indicates if the position is relative to terrain or not.",
+      "default": "NONE"
+    },
+    "color5": {
+      "$ref": "Color.json",
+      "description": "The color of the point.",
+      "default": "white"
+    },
+    "outlineColor7": {
+      "$ref": "Color.json",
+      "description": "The color of the outline of the point.",
+      "default": "black"
+    },
+    "outlineWidth7": {
+      "$ref": "Double.json",
+      "description": "The width of the outline of the point.",
+      "default": 0
+    },
+    "scaleByDistance2": {
+      "$ref": "NearFarScalar.json",
+      "description": "How the point's scale should change based on the point's distance from the camera. This scalar value will be multiplied by `pixelSize`."
+    },
+    "translucencyByDistance2": {
+      "$ref": "NearFarScalar.json",
+      "description": "How the point's translucency should change based on the point's distance from the camera. This scalar value should range from 0 to 1."
+    },
+    "distanceDisplayCondition10": {
+      "$ref": "DistanceDisplayCondition.json",
+      "description": "The display condition specifying the distance from the camera at which this point will be displayed."
+    },
+    "disableDepthTestDistance2": {
+      "$ref": "Double.json",
+      "description": "The distance from the camera at which to disable the depth test. This can be used to prevent clipping against terrain, for example. When set to zero, the depth test is always applied. When set to Infinity, the depth test is never applied.",
+      "default": 0
+    },
+    "show15": {
+      "$ref": "Boolean.json",
+      "description": "Whether or not the polygon is shown.",
+      "default": true
+    },
+    "positions1": {
+      "$ref": "PositionList.json",
+      "description": "The array of positions defining a simple polygon.",
+      "czmlRequiredForDisplay": true
+    },
+    "holes": {
+      "$ref": "PositionListOfLists.json",
+      "description": "The array of arrays of positions defining holes in the polygon."
+    },
+    "arcType1": {
+      "$ref": "ArcType.json",
+      "description": "The type of arc that should connect the positions of the polygon.",
+      "default": "GEODESIC"
+    },
+    "height3": {
+      "$ref": "Double.json",
+      "description": "The height of the polygon when `perPositionHeight` is false.",
+      "default": 0
+    },
+    "heightReference11": {
+      "$ref": "HeightReference.json",
+      "description": "The height reference of the polygon, which indicates if `height` is relative to terrain or not.",
+      "default": "NONE"
+    },
+    "extrudedHeight2": {
+      "$ref": "Double.json",
+      "description": "The extruded height of the polygon."
+    },
+    "extrudedHeightReference2": {
+      "$ref": "HeightReference.json",
+      "description": "The extruded height reference of the polygon, which indicates if `extrudedHeight` is relative to terrain or not.",
+      "default": "NONE"
+    },
+    "stRotation1": {
+      "$ref": "Double.json",
+      "description": "The rotation of any applied texture. A positive rotation is counter-clockwise.",
+      "default": 0
+    },
+    "granularity2": {
+      "$ref": "Double.json",
+      "description": "The sampling distance, in radians.",
+      "default": "π / 180.0"
+    },
+    "fill6": {
+      "$ref": "Boolean.json",
+      "description": "Whether or not the polygon is filled.",
+      "default": true
+    },
+    "material7": {
+      "$ref": "Material.json",
+      "description": "The material to use to fill the polygon.",
+      "default": "solid white"
+    },
+    "outline6": {
+      "$ref": "Boolean.json",
+      "description": "Whether or not the polygon is outlined.",
+      "default": false
+    },
+    "outlineColor8": {
+      "$ref": "Color.json",
+      "description": "The color of the polygon outline.",
+      "default": "black"
+    },
+    "outlineWidth8": {
+      "$ref": "Double.json",
+      "description": "The width of the polygon outline.",
+      "default": 1
+    },
+    "perPositionHeight": {
+      "$ref": "Boolean.json",
+      "description": "Whether to use the height of each position to define the polygon or to use `height` as a constant height above the surface.",
+      "default": false
+    },
+    "closeTop": {
+      "$ref": "Boolean.json",
+      "description": "Whether to close the top of the polygon.",
+      "default": true
+    },
+    "closeBottom": {
+      "$ref": "Boolean.json",
+      "description": "Whether to close the bottom of the polygon.",
+      "default": true
+    },
+    "shadows6": {
+      "$ref": "ShadowMode.json",
+      "description": "Whether or not the polygon casts or receives shadows.",
+      "default": "DISABLED"
+    },
+    "distanceDisplayCondition11": {
+      "$ref": "DistanceDisplayCondition.json",
+      "description": "The display condition specifying the distance from the camera at which this polygon will be displayed."
+    },
+    "classificationType3": {
+      "$ref": "ClassificationType.json",
+      "description": "Whether a classification affects terrain, 3D Tiles, or both.",
+      "default": "BOTH"
+    },
+    "zIndex2": {
+      "$ref": "Integer.json",
+      "description": "The z-index of the polygon, used for ordering ground geometry. Only has an effect if the polygon is constant, and `height` and `extrudedHeight` are not specified.",
+      "default": "0"
+    },
+    "show16": {
+      "$ref": "Boolean.json",
+      "description": "Whether or not the polyline is shown.",
+      "default": true
+    },
+    "positions2": {
+      "$ref": "PositionList.json",
+      "description": "The array of positions defining the polyline as a line strip.",
+      "czmlRequiredForDisplay": true
+    },
+    "arcType2": {
+      "$ref": "ArcType.json",
+      "description": "The type of arc that should connect the positions of the polyline.",
+      "default": "GEODESIC"
+    },
+    "width3": {
+      "$ref": "Double.json",
+      "description": "The width of the polyline.",
+      "default": 1
+    },
+    "granularity3": {
+      "$ref": "Double.json",
+      "description": "The sampling distance, in radians.",
+      "default": "π / 180.0"
+    },
+    "material8": {
+      "$ref": "PolylineMaterial.json",
+      "description": "The material to use to draw the polyline.",
+      "default": "solid white"
+    },
+    "followSurface": {
+      "$ref": "Boolean.json",
+      "description": "Whether or not the positions are connected as great arcs (the default) or as straight lines. This property has been superseded by `arcType`, which should be used instead.",
+      "default": true
+    },
+    "shadows7": {
+      "$ref": "ShadowMode.json",
+      "description": "Whether or not the polyline casts or receives shadows.",
+      "default": "DISABLED"
+    },
+    "depthFailMaterial": {
+      "$ref": "PolylineMaterial.json",
+      "description": "The material to use to draw the polyline when it is below the terrain."
+    },
+    "distanceDisplayCondition12": {
+      "$ref": "DistanceDisplayCondition.json",
+      "description": "The display condition specifying at what distance from the camera this polyline will be displayed."
+    },
+    "clampToGround": {
+      "$ref": "Boolean.json",
+      "description": "Whether or not the polyline should be clamped to the ground.",
+      "default": false
+    },
+    "classificationType4": {
+      "$ref": "ClassificationType.json",
+      "description": "Whether a classification affects terrain, 3D Tiles, or both.",
+      "default": "BOTH"
+    },
+    "zIndex3": {
+      "$ref": "Integer.json",
+      "description": "The z-index of the polyline, used for ordering ground geometry. Only has an effect if the polyline is constant, and `clampToGround` is true.",
+      "default": "0"
+    },
+    "color6": {
+      "$ref": "Color.json",
+      "description": "The color of the surface.",
+      "default": "white"
+    },
+    "color7": {
+      "$ref": "Color.json",
+      "description": "The color of the dashes on the line.",
+      "default": "white"
+    },
+    "gapColor": {
+      "$ref": "Color.json",
+      "description": "The color of the gaps between dashes on the line.",
+      "default": "transparent"
+    },
+    "dashLength": {
+      "$ref": "Double.json",
+      "description": "The length in screen-space pixels of a single dash and gap pattern.",
+      "default": 16
+    },
+    "dashPattern": {
+      "$ref": "Integer.json",
+      "description": "A 16-bit bitfield representing which portions along a single dashLength are the dash (1) and which are the gap (0). The default value, 255 (0000000011111111), indicates 50% gap followed by 50% dash.",
+      "default": 255
+    },
+    "color8": {
+      "$ref": "Color.json",
+      "description": "The color of the surface.",
+      "default": "white"
+    },
+    "glowPower": {
+      "$ref": "Double.json",
+      "description": "The strength of the glow.",
+      "default": 0.25
+    },
+    "taperPower": {
+      "$ref": "Double.json",
+      "description": "The strength of the tapering effect.  1.0 and higher means no tapering.",
+      "default": 1
+    },
+    "solidColor1": {
+      "$ref": "SolidColorMaterial.json",
+      "description": "A material that fills the line with a solid color, which may be translucent."
+    },
+    "polylineOutline": {
+      "$ref": "PolylineOutlineMaterial.json",
+      "description": "A material that fills the line with a color and outline."
+    },
+    "polylineArrow": {
+      "$ref": "PolylineArrowMaterial.json",
+      "description": "A material that fills the line with an arrow."
+    },
+    "polylineDash": {
+      "$ref": "PolylineDashMaterial.json",
+      "description": "A material that fills the line with a pattern of dashes."
+    },
+    "polylineGlow": {
+      "$ref": "PolylineGlowMaterial.json",
+      "description": "A material that fills the line with a glowing color."
+    },
+    "image3": {
+      "$ref": "ImageMaterial.json",
+      "description": "A material that fills the line with an image."
+    },
+    "grid1": {
+      "$ref": "GridMaterial.json",
+      "description": "A material that fills the line with a grid."
+    },
+    "stripe1": {
+      "$ref": "StripeMaterial.json",
+      "description": "A material that fills the line with alternating colors."
+    },
+    "checkerboard1": {
+      "$ref": "CheckerboardMaterial.json",
+      "description": "A material that fills the line with a checkerboard pattern."
+    },
+    "color9": {
+      "$ref": "Color.json",
+      "description": "The color of the surface.",
+      "default": "white"
+    },
+    "outlineColor9": {
+      "$ref": "Color.json",
+      "description": "The color of the surface outline.",
+      "default": "black"
+    },
+    "outlineWidth9": {
+      "$ref": "Double.json",
+      "description": "The width of the outline.",
+      "default": 1
+    },
+    "show17": {
+      "$ref": "Boolean.json",
+      "description": "Whether or not the volume is shown.",
+      "default": true
+    },
+    "positions3": {
+      "$ref": "PositionList.json",
+      "description": "The array of positions defining the center of the polyline volume.",
+      "czmlRequiredForDisplay": true
+    },
+    "shape": {
+      "$ref": "Shape.json",
+      "description": "The array of positions defining the shape of the volume to be extruded.",
+      "czmlRequiredForDisplay": true
+    },
+    "cornerType3": {
+      "$ref": "CornerType.json",
+      "description": "The style of the corners of the volume.",
+      "default": "ROUNDED"
+    },
+    "granularity4": {
+      "$ref": "Double.json",
+      "description": "The sampling distance, in radians.",
+      "default": "π / 180.0"
+    },
+    "fill7": {
+      "$ref": "Boolean.json",
+      "description": "Whether or not the volume is filled.",
+      "default": true
+    },
+    "material9": {
+      "$ref": "Material.json",
+      "description": "The material to use to fill the volume.",
+      "default": "solid white"
+    },
+    "outline7": {
+      "$ref": "Boolean.json",
+      "description": "Whether or not the volume is outlined.",
+      "default": false
+    },
+    "outlineColor10": {
+      "$ref": "Color.json",
+      "description": "The color of the volume outline.",
+      "default": "black"
+    },
+    "outlineWidth10": {
+      "$ref": "Double.json",
+      "description": "The width of the volume outline.",
+      "default": 1
+    },
+    "shadows8": {
+      "$ref": "ShadowMode.json",
+      "description": "Whether or not the volume casts or receives shadows.",
+      "default": "DISABLED"
+    },
+    "distanceDisplayCondition13": {
+      "$ref": "DistanceDisplayCondition.json",
+      "description": "The display condition specifying the distance from the camera at which this volume will be displayed."
+    },
+    "referenceFrame": {
+      "description": "The reference frame in which cartesian positions are specified. Possible values are \"FIXED\" and \"INERTIAL\".",
+      "type": "string",
+      "default": "FIXED"
+    },
+    "cartesian7": {
+      "$ref": "Values/Cartesian3Value.json",
+      "description": "The position specified as a three-dimensional Cartesian value, `[X, Y, Z]`, in meters relative to the `referenceFrame`."
+    },
+    "cartographicRadians1": {
+      "$ref": "Values/CartographicRadiansValue.json",
+      "description": "The position specified in Cartographic WGS84 coordinates, `[Longitude, Latitude, Height]`, where Longitude and Latitude are in radians and Height is in meters.",
+      "czmlExamples": [
+        "Examples/PositionCartographicRadians.json"
+      ]
+    },
+    "cartographicDegrees1": {
+      "$ref": "Values/CartographicDegreesValue.json",
+      "description": "The position specified in Cartographic WGS84 coordinates, `[Longitude, Latitude, Height]`, where Longitude and Latitude are in degrees and Height is in meters.",
+      "czmlExamples": [
+        "Examples/PositionCartographicDegrees.json"
+      ]
+    },
+    "cartesianVelocity": {
+      "$ref": "Values/Cartesian3VelocityValue.json",
+      "description": "The position and velocity specified as a three-dimensional Cartesian value and its derivative, `[X, Y, Z, dX, dY, dZ]`, in meters relative to the `referenceFrame`."
+    },
+    "reference28": {
+      "$ref": "Values/ReferenceValue.json",
+      "description": "The position specified as a reference to another property."
+    },
+    "referenceFrame1": {
+      "description": "The reference frame in which cartesian positions are specified. Possible values are \"FIXED\" and \"INERTIAL\".",
+      "type": "string",
+      "default": "FIXED"
+    },
+    "cartesian8": {
+      "$ref": "Values/Cartesian3ListValue.json",
+      "description": "The list of positions specified as three-dimensional Cartesian values, `[X, Y, Z, X, Y, Z, ...]`, in meters relative to the `referenceFrame`."
+    },
+    "cartographicRadians2": {
+      "$ref": "Values/CartographicRadiansListValue.json",
+      "description": "The list of positions specified in Cartographic WGS84 coordinates, `[Longitude, Latitude, Height, Longitude, Latitude, Height, ...]`, where Longitude and Latitude are in radians and Height is in meters."
+    },
+    "cartographicDegrees2": {
+      "$ref": "Values/CartographicDegreesListValue.json",
+      "description": "The list of positions specified in Cartographic WGS84 coordinates, `[Longitude, Latitude, Height, Longitude, Latitude, Height, ...]`, where Longitude and Latitude are in degrees and Height is in meters."
+    },
+    "references1": {
+      "$ref": "Values/ReferenceListValue.json",
+      "description": "The list of positions specified as references. Each reference is to a property that defines a single position, which may change with time."
+    },
+    "cartesian9": {
+      "$ref": "Values/Cartesian3ListOfListsValue.json",
+      "description": "The list of lists of positions specified as three-dimensional Cartesian values, `[X, Y, Z, X, Y, Z, ...]`, in meters relative to the `referenceFrame`."
+    },
+    "cartographicRadians3": {
+      "$ref": "Values/CartographicRadiansListOfListsValue.json",
+      "description": "The list of lists of positions specified in Cartographic WGS84 coordinates, `[Longitude, Latitude, Height, Longitude, Latitude, Height, ...]`, where Longitude and Latitude are in radians and Height is in meters."
+    },
+    "cartographicDegrees3": {
+      "$ref": "Values/CartographicDegreesListOfListsValue.json",
+      "description": "The list of lists of positions specified in Cartographic WGS84 coordinates, `[Longitude, Latitude, Height, Longitude, Latitude, Height, ...]`, where Longitude and Latitude are in degrees and Height is in meters."
+    },
+    "references2": {
+      "$ref": "Values/ReferenceListOfListsValue.json",
+      "description": "The list of lists of positions specified as references. Each reference is to a property that defines a single position, which may change with time."
+    },
+    "show18": {
+      "$ref": "Boolean.json",
+      "description": "Whether or not the rectangle is shown.",
+      "default": true
+    },
+    "coordinates": {
+      "$ref": "RectangleCoordinates.json",
+      "description": "The coordinates of the rectangle.",
+      "czmlRequiredForDisplay": true
+    },
+    "height4": {
+      "$ref": "Double.json",
+      "description": "The height of the rectangle.",
+      "default": 0
+    },
+    "heightReference12": {
+      "$ref": "HeightReference.json",
+      "description": "The height reference of the rectangle, which indicates if `height` is relative to terrain or not.",
+      "default": "NONE"
+    },
+    "extrudedHeight3": {
+      "$ref": "Double.json",
+      "description": "The extruded height of the rectangle."
+    },
+    "extrudedHeightReference3": {
+      "$ref": "HeightReference.json",
+      "description": "The extruded height reference of the rectangle, which indicates if `extrudedHeight` is relative to terrain or not.",
+      "default": "NONE"
+    },
+    "rotation3": {
+      "$ref": "Double.json",
+      "description": "The rotation of the rectangle clockwise from north.",
+      "default": 0
+    },
+    "stRotation2": {
+      "$ref": "Double.json",
+      "description": "The rotation of any applied texture. A positive rotation is counter-clockwise.",
+      "default": 0
+    },
+    "granularity5": {
+      "$ref": "Double.json",
+      "description": "The sampling distance, in radians.",
+      "default": "π / 180.0"
+    },
+    "fill8": {
+      "$ref": "Boolean.json",
+      "description": "Whether or not the rectangle is filled.",
+      "default": true
+    },
+    "material10": {
+      "$ref": "Material.json",
+      "description": "The material to display on the surface of the rectangle.",
+      "default": "solid white"
+    },
+    "outline8": {
+      "$ref": "Boolean.json",
+      "description": "Whether or not the rectangle is outlined.",
+      "default": false
+    },
+    "outlineColor11": {
+      "$ref": "Color.json",
+      "description": "The color of the rectangle outline.",
+      "default": "black"
+    },
+    "outlineWidth11": {
+      "$ref": "Double.json",
+      "description": "The width of the rectangle outline.",
+      "default": 1
+    },
+    "shadows9": {
+      "$ref": "ShadowMode.json",
+      "description": "Whether or not the rectangle casts or receives shadows.",
+      "default": "DISABLED"
+    },
+    "distanceDisplayCondition14": {
+      "$ref": "DistanceDisplayCondition.json",
+      "description": "The display condition specifying at what distance from the camera this rectangle will be displayed."
+    },
+    "classificationType5": {
+      "$ref": "ClassificationType.json",
+      "description": "Whether a classification affects terrain, 3D Tiles, or both.",
+      "default": "BOTH"
+    },
+    "zIndex4": {
+      "$ref": "Integer.json",
+      "description": "The z-index of the rectangle, used for ordering ground geometry. Only has an effect if the rectangle is constant, and `height` and `extrudedHeight` are not specified.",
+      "default": "0"
+    },
+    "wsen1": {
+      "$ref": "Values/CartographicRectangleRadiansValue.json",
+      "description": "The set of coordinates specified as Cartographic values `[WestLongitude, SouthLatitude, EastLongitude, NorthLatitude]`, with values in radians."
+    },
+    "wsenDegrees1": {
+      "$ref": "Values/CartographicRectangleDegreesValue.json",
+      "description": "The set of coordinates specified as Cartographic values `[WestLongitude, SouthLatitude, EastLongitude, NorthLatitude]`, with values in degrees."
+    },
+    "reference29": {
+      "$ref": "Values/ReferenceValue.json",
+      "description": "The set of coordinates specified as a reference to another property."
+    },
+    "cartesian26": {
+      "$ref": "Values/Cartesian2Value.json",
+      "description": "The number of times the image repeats along each axis."
+    },
+    "reference30": {
+      "$ref": "Values/ReferenceValue.json",
+      "description": "The number of times the image repeats specified as a reference to another property."
+    },
+    "unitQuaternion2": {
+      "$ref": "Values/UnitQuaternionValue.json",
+      "description": "The rotation specified as a 4-dimensional unit magnitude quaternion, specified as `[X, Y, Z, W]`."
+    },
+    "reference31": {
+      "$ref": "Values/ReferenceValue.json",
+      "description": "The rotation specified as a reference to another property."
+    },
+    "cartesian10": {
+      "$ref": "Values/Cartesian3Value.json",
+      "description": "The scale specified as a three-dimensional Cartesian value `[X, Y, Z]`."
+    },
+    "reference32": {
+      "$ref": "Values/ReferenceValue.json",
+      "description": "The scale specified as a reference to another property."
+    },
+    "shadowMode1": {
+      "$ref": "Values/ShadowModeValue.json",
+      "description": "The shadow mode."
+    },
+    "reference33": {
+      "$ref": "Values/ReferenceValue.json",
+      "description": "The shadow mode specified as a reference to another property."
+    },
+    "cartesian27": {
+      "$ref": "Values/Cartesian2ListValue.json",
+      "description": "The list of positions specified as two-dimensional Cartesian values `[X, Y, X, Y, ...]`."
+    },
+    "color10": {
+      "$ref": "Color.json",
+      "description": "The color of the surface.",
+      "default": "white"
+    },
+    "string1": {
+      "$ref": "Values/StringValue.json",
+      "description": "The string value."
+    },
+    "reference34": {
+      "$ref": "Values/ReferenceValue.json",
+      "description": "The string specified as a reference to another property."
+    },
+    "orientation1": {
+      "$ref": "StripeOrientation.json",
+      "description": "The value indicating if the stripes are horizontal or vertical.",
+      "default": "HORIZONTAL"
+    },
+    "evenColor1": {
+      "$ref": "Color.json",
+      "description": "The even color.",
+      "default": "white"
+    },
+    "oddColor1": {
+      "$ref": "Color.json",
+      "description": "The odd color.",
+      "default": "black"
+    },
+    "offset": {
+      "$ref": "Double.json",
+      "description": "The value indicating where in the pattern to begin drawing, with 0.0 being the beginning of the even color, 1.0 the beginning of the odd color, 2.0 being the even color again, and any multiple or fractional values being in between.",
+      "default": 0
+    },
+    "repeat2": {
+      "$ref": "Double.json",
+      "description": "The number of times the stripes repeat.",
+      "default": 1
+    },
+    "stripeOrientation1": {
+      "$ref": "Values/StripeOrientationValue.json",
+      "description": "The orientation of stripes in the stripe material."
+    },
+    "reference35": {
+      "$ref": "Values/ReferenceValue.json",
+      "description": "The orientation of stripes specified as a reference to another property."
+    },
+    "show19": {
+      "$ref": "Boolean.json",
+      "description": "Whether or not the tileset is shown.",
+      "default": true
+    },
+    "uri1": {
+      "$ref": "Uri.json",
+      "description": "The URI of a 3D tiles tileset. For broadest client compatibility, the URI should be accessible via Cross-Origin Resource Sharing (CORS).",
+      "czmlRequiredForDisplay": true
+    },
+    "maximumScreenSpaceError": {
+      "$ref": "Double.json",
+      "description": "The maximum screen space error used to drive level of detail refinement."
+    },
+    "cartesian11": {
+      "$ref": "Values/Cartesian3Value.json",
+      "description": "The translation specified as a three-dimensional Cartesian value `[X, Y, Z]`, in meters."
+    },
+    "reference36": {
+      "$ref": "Values/ReferenceValue.json",
+      "description": "The translation specified as a reference to another property."
+    },
+    "uri2": {
+      "$ref": "Values/UriValue.json",
+      "description": "The URI value."
+    },
+    "reference37": {
+      "$ref": "Values/ReferenceValue.json",
+      "description": "The URI specified as a reference to another property."
+    },
+    "verticalOrigin3": {
+      "$ref": "Values/VerticalOriginValue.json",
+      "description": "The vertical origin."
+    },
+    "reference38": {
+      "$ref": "Values/ReferenceValue.json",
+      "description": "The vertical origin specified as a reference to another property."
+    },
+    "cartesian12": {
+      "$ref": "Values/Cartesian3Value.json",
+      "description": "The offset specified as a three-dimensional Cartesian value `[X, Y, Z]`."
+    },
+    "reference39": {
+      "$ref": "Values/ReferenceValue.json",
+      "description": "The offset specified as a reference to another property."
+    },
+    "show20": {
+      "$ref": "Boolean.json",
+      "description": "Whether or not the wall is shown.",
+      "default": true
+    },
+    "positions4": {
+      "$ref": "PositionList.json",
+      "description": "The array of positions defining the centerline of the wall.",
+      "czmlRequiredForDisplay": true
+    },
+    "minimumHeights": {
+      "$ref": "DoubleList.json",
+      "description": "The list of heights to be used for the bottom of the wall, instead of the surface."
+    },
+    "maximumHeights": {
+      "$ref": "DoubleList.json",
+      "description": "The list of heights to be used for the top of the wall, instead of the height of each position."
+    },
+    "granularity6": {
+      "$ref": "Double.json",
+      "description": "The sampling distance, in radians.",
+      "default": "π / 180.0"
+    },
+    "fill9": {
+      "$ref": "Boolean.json",
+      "description": "Whether or not the wall is filled.",
+      "default": true
+    },
+    "material11": {
+      "$ref": "Material.json",
+      "description": "The material to display on the surface of the wall.",
+      "default": "solid white"
+    },
+    "outline9": {
+      "$ref": "Boolean.json",
+      "description": "Whether or not the wall is outlined.",
+      "default": false
+    },
+    "outlineColor12": {
+      "$ref": "Color.json",
+      "description": "The color of the wall outline.",
+      "default": "black"
+    },
+    "outlineWidth12": {
+      "$ref": "Double.json",
+      "description": "The width of the wall outline.",
+      "default": 1
+    },
+    "shadows10": {
+      "$ref": "ShadowMode.json",
+      "description": "Whether or not the wall casts or receives shadows.",
+      "default": "DISABLED"
+    },
+    "distanceDisplayCondition15": {
+      "$ref": "DistanceDisplayCondition.json",
+      "description": "The display condition specifying at what distance from the camera this wall will be displayed."
+    }
+  },
+  "summary": {
+    "totalFilesProcessed": 83,
+    "totalKeyValuePairs": 557,
+    "processedAt": "2025-10-15T04:06:58.851Z"
+  }
+}

@@ -12,12 +12,12 @@
       </div>
 
       <div class="row_nw_fs_ce props_radioinbox">
-        <RjRadioInput
+        <RjRadioTabInput
           :name="currentProp.id"
           :options="currentProp.valueTypesOptions"
           :initValue="currentProp.valueType"
           @onChange="valueTypesOptionChangedHd"
-        ></RjRadioInput>
+        ></RjRadioTabInput>
       </div>
     </div>
 
@@ -56,7 +56,7 @@
         </div>
 
         <div class="row_nw_fs_ce props_it_input_box">
-          <input type="checkbox" v-model="inval.boolean" class="row_nw_fs_fs props_input" />
+          <input type="checkbox" v-model="inval.value" class="row_nw_fs_fs props_input" />
           <div class="row_nw_fs_ce wh_auto_100p">
             <label class="row_nw_fs_ce props_inch_label">使能显示</label>
             <label class="row_nw_fs_fe props_inogi_label">Enable Show</label>
@@ -90,7 +90,7 @@
 <script setup lang="ts">
   import { ref, reactive, onMounted, computed, watch, nextTick } from "vue";
   import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
-  import RjRadioInput from "@/components/form/RjRadioInput.vue";
+  import RjRadioTabInput from "@/components/form/RjRadioTabInput.vue";
   import { defaultTimeFormatStr } from "@/czml/schema/properties/commondata";
   import { cloneDeep } from "es-toolkit";
   import { isArray } from "es-toolkit/compat";
@@ -110,8 +110,8 @@
   });
 
   const { editorConfig, setEditorRefreshShape } = useEditorConfigStore();
-  let id = "";
-  let name = "";
+  const id = "";
+  const name = "";
   const currentProp = ref({});
   const isEnable = ref(false);
   const intervalsVales = ref([]);
@@ -131,17 +131,12 @@
 
   function init() {
     if (props.vdata && props.vdata.id && props.vdata.name) {
-      const properties = editorConfig.currentParentComp.properties;
-      id = props.vdata.id;
-      name = props.vdata.name;
-      if (properties[name] && properties[name].id === id) {
-        isEnable.value = true;
-        currentProp.value = properties[name];
-      } else {
-        isEnable.value = false;
-        currentProp.value = {};
-      }
-      console.log("show input", id, name, currentProp);
+      console.log("show_props", props.vdata);
+      isEnable.value = true;
+      currentProp.value = props.vdata;
+    } else {
+      isEnable.value = false;
+      currentProp.value = {};
     }
   }
 
@@ -236,7 +231,6 @@
   .props_radiobox {
     width: 100%;
     height: auto;
-    margin-bottom: 0.75rem;
   }
 
   .props_radiobox_title {
@@ -266,15 +260,15 @@
   .props_radioinbox {
     width: 100%;
     height: auto;
-    margin-bottom: 0.5rem;
   }
 
   .props_input_box {
     position: relative;
     width: 100%;
-    height: 2rem;
-    /* background-color: rgba(0, 0, 0, 1); */
-    margin-left: 0.125rem;
+    height: 3.5rem;
+    background-color: rgba(0, 0, 0, 1);
+    padding-top: 0.75rem;
+    border-radius: 0 0 0.5rem 0.5rem;
   }
 
   input[type="checkbox"] {
@@ -380,6 +374,9 @@
     width: 100%;
     height: auto;
     margin-bottom: 0.25rem;
+    background-color: rgba(0, 0, 0, 1);
+    padding: 1rem 0.5rem 0.5rem 0.5rem;
+    border-radius: 0.5rem;
   }
 
   .props_it_itembox {
@@ -413,7 +410,6 @@
     width: 100%;
     height: 2rem;
     /* background-color: rgba(0, 0, 0, 1); */
-    margin-left: 0.125rem;
   }
 
   .props_it_actbox {
