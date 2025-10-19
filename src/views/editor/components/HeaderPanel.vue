@@ -47,7 +47,7 @@
   const { systemConfig } = useSystemConfigStore();
   const { editorConfig, addEditorComponents, setEditorCurrentParentComp } = useEditorConfigStore();
 
-  import czmlBillboard from "@/czml/schema/entities/billboard.ts";
+  import CzmlDataMaker from "@/czml/schema/packets/maker.ts";
 
   function addTest() {
     console.log("divContainerConfig", divContainerConfig);
@@ -159,14 +159,14 @@
     cesiumConfig.styles.top.value = "400";
 
     cesiumConfig.id = nanoid();
-    addEditorComponents(cesiumConfig);
+    // addEditorComponents(cesiumConfig);
   }
 
   function addBillboard() {
-    const billboardOpt = new czmlBillboard();
-    console.log("billboardOpt", billboardOpt);
-    csMap.addCzmlGraphicLayer(billboardOpt);
-    setEditorCurrentParentComp(billboardOpt);
+    const czmlOpt = new CzmlDataMaker();
+    console.log("czmlOpt", czmlOpt);
+    // csMap.addCzmlGraphicLayer(czmlOpt);
+    setEditorCurrentParentComp(czmlOpt);
   }
 
   function addTest2() {

@@ -8,9 +8,11 @@
     </div>
 
     <div class="row_nw_ce_ce props_input_sbox"
-    :class="{ props_input_sbox_act: isFoucus }">
+    :class="{ props_input_sbox_act: isFoucus,
+      props_input_sbox_disabled: !currentComp.isEnabl}">
       <textarea :id="currentComp.id" :name="currentComp.id" class="props_input"
       v-model="currentText" rows="5"
+      :disabled="!currentComp.isEnable"
       @focus="setIsFoucus(true)"
       @blur="() => {setIsFoucus(false); textChangeHd()}"
       @input="textChangeHd"

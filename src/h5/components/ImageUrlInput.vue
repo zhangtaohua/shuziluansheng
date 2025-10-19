@@ -7,8 +7,14 @@
       </div>
     </div>
 
-    <div class="row_nw_ce_ce props_input_sbox" :class="{ props_input_sbox_act: isFoucus }">
-      <input :id="currentComp.id" :name="currentComp.id" class="props_input" v-model="currentImageUrl" rows="5" @focus="setIsFoucus(true)"
+    <div class="row_nw_ce_ce props_input_sbox"
+    :class="{ props_input_sbox_act: isFoucus,
+      props_input_sbox_disabled: !currentComp.isEnable
+     }">
+      <input :id="currentComp.id" :name="currentComp.id"
+      class="props_input" v-model="currentImageUrl" rows="5"
+        :disabled="!currentComp.isEnable"
+        @focus="setIsFoucus(true)"
         @blur="() => { setIsFoucus(false); imageUrlChangeHd() }">
       </input>
     </div>

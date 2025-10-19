@@ -7,12 +7,15 @@
       </div>
     </div>
 
-    <div class="row_nw_ce_ce props_input_sbox" :class="{ props_input_sbox_act: isFoucus }">
+    <div class="row_nw_ce_ce props_input_sbox"
+    :class="{ props_input_sbox_act: isFoucus,
+      props_input_box_disabled: !currentProp.isEnable }">
       <input
         :id="currentProp.id"
         :name="currentProp.id"
         class="props_input"
         v-model="currentText"
+        :disabled="!currentProp.isEnable"
         @focus="setIsFoucus(true)"
         @blur="
           () => {

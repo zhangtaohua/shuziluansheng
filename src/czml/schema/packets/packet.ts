@@ -1,4 +1,5 @@
 import { nanoid } from "@/utils/common/nanoid";
+import czmlBooleanProp from "../properties/BooleanProp";
 import czmlStringProp from "../properties/StringProp";
 import czmlTextProp from "../properties/TextProp";
 import czmlPositionProp from "../properties/PositionProp";
@@ -8,12 +9,37 @@ import czmlBillboard from "../entities/billboard";
 export class czmlPacket {
   public id = "czml_entity_packet_" + nanoid(10);
   public name = "packet";
+  public labelZh = "包";
+  public labelEn = "packet";
   public title = "packet";
   public description = "Describes the graphical properties of a single object in a scene, such as a single aircraft.";
   public type = "object";
   public componentType = "czml"; // 是 czml html three(3d)
   public flyTo = true;
   public isEnable = true;
+  public isUsed = true; // for can used
+  public isExpand = true; // for UI
+
+  constructor(options: any) {
+    if(!options) {
+      return;
+    }
+    if (options.id) {
+      this.id = options.id;
+    }
+    if(options.name) {
+      this.name = options.name;
+    }
+    if(options.labelZh) {
+      this.labelZh = options.labelZh;
+    }
+    if(options.labelEn) {
+      this.labelEn = options.labelEn;
+    }
+    if (options.description) {
+      this.description = options.description;
+    }
+  }
 
   public properties = {
     id: new czmlStringProp({
@@ -25,12 +51,19 @@ export class czmlPacket {
       isUsed: true,
       description:
         "The ID of the object described by this packet. IDs do not need to be GUIDs, but they do need to uniquely identify a single object within a CZML source and any other CZML sources loaded into the same scope. If this property is not specified, the client will automatically generate a unique one. However, this prevents later packets from referring to this object in order to add more data to it.",
+      type: "string",
     }),
-    delete: {
+    delete: new czmlBooleanProp({
+      name: "delete",
+      labelZh: "删除",
+      labelEn: "delete",
+      value: false,
+      isEnable: true,
+      isUsed: true,
       description:
         "Whether the client should delete all existing data for this object, identified by ID. If true, all other properties in this packet will be ignored.",
       type: "boolean",
-    },
+    }),
     name: new czmlStringProp({
       name: "name",
       labelZh: "名称",
@@ -40,10 +73,16 @@ export class czmlPacket {
       isUsed: true,
       description: "The name of the object. It does not have to be unique and is intended for user consumption.",
     }),
-    parent: {
-      description: "The ID of the parent object, if any.",
+    parent: new czmlStringProp({
+      name: "parent",
+      labelZh: "父级",
+      labelEn: "parent",
+      value: "billboard_parent_id_init" + nanoid(10),
+      isEnable: true,
+      isUsed: true,
+      description:"The ID of the parent object, if any.",
       type: "string",
-    },
+    }),
     description: new czmlTextProp({
       name: "description",
       labelZh: "描述",
@@ -57,10 +96,16 @@ export class czmlPacket {
       $ref: "Clock.json",
       description: "The clock settings for the entire data set. Only valid on the document object.",
     },
-    version: {
+    version: new czmlStringProp({
+      name: "version",
+      labelZh: "版本号",
+      labelEn: "version",
+      value: "1.0",
+      isEnable: true,
+      isUsed: true,
       description: "The CZML version being written. Only valid on the document object.",
       type: "string",
-    },
+    }),
     availability: {
       $ref: "Values/TimeIntervalCollectionValue.json",
       description:

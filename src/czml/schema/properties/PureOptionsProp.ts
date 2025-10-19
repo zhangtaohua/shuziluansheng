@@ -13,6 +13,7 @@ export class czmlPureOptionsProp {
   public default = "";
   public options = [];
   public isEnable = true;
+  public isEntity = false;
   // public availability = "";
 
   constructor(options: any) {

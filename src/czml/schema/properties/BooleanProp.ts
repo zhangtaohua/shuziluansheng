@@ -1,33 +1,35 @@
 import { nanoid } from "@/utils/common/nanoid";
 
-export class czmlTextProp {
-  public id = "czml_prop_text_" + nanoid(10);
-  public name = "text";
-  public labelZh = "文本";
-  public labelEn = "text";
-  public description = "The big string value.";
-  public tag = "CzmlTextPropInput";
+export class czmlBooleanProp {
+  public id = "czml_prop_bool_" + nanoid(10);
+  public name = "boolean";
+  public labelZh = "布尔值";
+  public labelEn = "boolean";
+  public description = "The boolean value.";
+  public tag = "CzmlBooleanPorpInput";
   public _value = true;
   public _valueType = "string";
-  public default = "";
+  public default = true;
   public isEnable = true;
   public isEntity = false;
 
-  // public availability = "";
-
   constructor(options: any) {
     this.id = options.id ? options.id : "czml_prop_" + options.name + "_" + nanoid(10);
-    this.name = options.name;
+
+    if (options.name) {
+      this.name = options.name;
+    }
     this.labelZh = options.labelZh ? options.labelZh : options.name;
     this.labelEn = options.labelEn ? options.labelEn : options.name;
+
     if (options.description) {
       this.description = options.description;
     }
 
-    this.tag = options.tag ? options.tag : "CzmlTextPropInput";
+    this.tag = options.tag ? options.tag : "CzmlBooleanPropInput";
 
-    this._value = options.value;
-    this.default = options.default ? options.default : "";
+    this._value = options.value ?? true;
+    this.default = options.default ?? true;
     this.isEnable = options.isEnable ?? true;
   }
 
@@ -48,4 +50,5 @@ export class czmlTextProp {
   }
 }
 
-export default czmlTextProp;
+export default czmlBooleanProp;
+

@@ -12,6 +12,8 @@ export class czmlPositionProp {
   public description = "Defines a position. The position can optionally vary over time.";
   public tag = "CzmlPositionPropInput";
   public isEnable = true;
+  public isEntity = false;
+
   // public availability = "";
 
   public properties = {

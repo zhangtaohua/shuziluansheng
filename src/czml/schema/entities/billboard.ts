@@ -8,6 +8,8 @@ import czmlPositionProp from "../properties/PositionProp";
 export class czmlBillboard {
   public id = "czml_entity_billboard_" + nanoid(10);
   public name = "billboard";
+  public labelZh = "广告牌";
+  public labelEn = "billboard";
   public title = "Billboard";
   public description =
     "A billboard, or viewport-aligned image. The billboard is positioned in the scene by the `position` property. A billboard is sometimes called a marker.";
@@ -15,6 +17,8 @@ export class czmlBillboard {
   public componentType = "czml";
   public flyTo = false;
   public isEnable = true;
+  public isExpand = true;
+  public isEntity = true;
 
   public properties = {
     id: new czmlStringProp({
