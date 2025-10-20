@@ -22,6 +22,8 @@ export class czmlUriProp {
   public _valueType = CZMLPUREVALUE; // "PureValue" "Intervals" "CompositeValues" "SampledPropertyValues"
   public default = "";
   public isEnable = true;
+  public isEntity = false;
+
   // public availability = "";
 
   public _oldPureValue = "";

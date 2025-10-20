@@ -5,6 +5,8 @@ import czmlTextProp from "../properties/TextProp";
 export class czmlDocument {
   public id = "czml_entity_document_" + nanoid(10);
   public name = "document";
+  public labelZh = "文本";
+  public labelEn = "document";
   public title = "document";
   public description = "Describes a CZML document.";
   public type = "object";
@@ -12,6 +14,28 @@ export class czmlDocument {
   public flyTo = false;
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
+  public isExpand = true; // for UI
+
+  constructor(options: any) {
+    if(!options) {
+      return;
+    }
+    if (options.id) {
+      this.id = options.id;
+    }
+    if(options.name) {
+      this.name = options.name;
+    }
+    if(options.labelZh) {
+      this.labelZh = options.labelZh;
+    }
+    if(options.labelEn) {
+      this.labelEn = options.labelEn;
+    }
+    if (options.description) {
+      this.description = options.description;
+    }
+  }
 
   public properties = {
     id: new czmlStringProp({

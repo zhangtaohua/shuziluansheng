@@ -1,9 +1,10 @@
 <template>
   <div class="row_nw_fs_ce props_container">
     <div class="row_nw_fs_ce props_input_box">
-      <input type="checkbox" v-model="currentStyle.value"
+      <input type="checkbox"
       class="row_nw_fs_fs props_input"
-      :disabled="!currentStyle.isEnable"
+      :disabled="!currentProp.isEnable"
+      v-model="currentProp.value"
       @change="onChange" />
     </div>
     <div class="row_nw_fs_ce wh_auto_100p">
@@ -32,21 +33,17 @@
   const { editorConfig, setEditorRefreshShape } = useEditorConfigStore();
   let id = "";
   let name = "";
-  let currentStyle = {};
+  let currentProp = {};
   const isEnable = ref(false);
 
   function init() {
     if (props.vdata && props.vdata.id && props.vdata.name) {
-      const styles = editorConfig.currentParentComp.styles;
-      id = props.vdata.id;
-      name = props.vdata.name;
-      if (styles[name] && styles[name].id === id) {
-        isEnable.value = true;
-        currentStyle = styles[name];
-      } else {
-        isEnable.value = false;
-        currentStyle = null;
-      }
+      console.log("boolean_props", props.vdata);
+      isEnable.value = true;
+      currentProp.value = props.vdata;
+    } else {
+      isEnable.value = false;
+      currentProp.value = {};
     }
   }
 

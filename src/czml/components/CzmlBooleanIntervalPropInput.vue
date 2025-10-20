@@ -26,6 +26,7 @@
         type="checkbox"
         class="row_nw_fs_fs props_input"
         :checked="currentProp.value"
+        :disabled="!currentStyle.isEnable"
         @change="pureValueChangeHd"
       />
       <div class="row_nw_fs_ce wh_auto_100p">
@@ -334,6 +335,10 @@
 
   input[type="checkbox"]:checked:after {
     background-color: rgba(15, 55, 175, 1);
+  }
+
+  input[type="checkbox"]:disabled {
+    cursor: not-allowed;
   }
 
   .has-cube-spin-animation {

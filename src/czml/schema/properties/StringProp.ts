@@ -11,6 +11,7 @@ export class czmlStringProp {
   public _valueType = "string";
   public default = "";
   public isEnable = true;
+  public isEntity = false;
   // public availability = "";
 
   constructor(options: any) {

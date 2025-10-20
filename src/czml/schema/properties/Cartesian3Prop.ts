@@ -14,6 +14,7 @@ export class czmlCartesian3Prop {
   public unit = "meters";
   public isEnable = true;
   public isWithTime = false;
+  public isEntity = false;
 
   constructor(options: any) {
     this.id = options.id ? options.id : "czml_pure_options_prop_" + options.name + "_" + nanoid(10);

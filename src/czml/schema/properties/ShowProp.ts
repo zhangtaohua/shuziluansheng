@@ -15,7 +15,7 @@ export class czmlShowProp {
   public labelZh = "显示";
   public labelEn = "show";
   public description = "Whether or not the object is shown.";
-  public tag = "CzmlShowPropInput";
+  public tag = "CzmlBooleanIntervalPropInput";
   // purevalue -> true false,
   // intervals ->
   public _value = true;
@@ -33,6 +33,8 @@ export class czmlShowProp {
       value: "", // -> "boolean"
     },
   ];
+
+  public isEntity = false;
 
   public valueTypesOptions = [{ ...propPureValueOption }, { ...propIntervalsOption }];
 
