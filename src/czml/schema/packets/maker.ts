@@ -60,3 +60,5 @@ export class CzmlDataMaker {
   // 1 要可以手动增加packet;
   public properties = [new czmlDocument(), new czmlPacket()];
 }
+
+export default CzmlDataMaker;

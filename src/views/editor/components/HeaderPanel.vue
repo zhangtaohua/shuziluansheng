@@ -47,7 +47,7 @@
   const { systemConfig } = useSystemConfigStore();
   const { editorConfig, addEditorComponents, setEditorCurrentParentComp } = useEditorConfigStore();
 
-  import czmlBillboard from "@/czml/schema/entities/billboard.ts";
+  import CzmlDataMaker from "@/czml/schema/packets/maker";
 
   function addTest() {
     console.log("divContainerConfig", divContainerConfig);
