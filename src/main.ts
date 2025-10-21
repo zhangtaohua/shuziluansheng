@@ -32,12 +32,28 @@ import TextInput from "@/h5/components/TextInput.vue";
 // 以下是 czml 相关的
 import CzmlBooleanPropInput from "@/czml/components/CzmlBooleanPropInput.vue";
 import CzmlBooleanIntervalPropInput from "@/czml/components/CzmlBooleanIntervalPropInput.vue";
-import CzmlStringPorpInput from "@/czml/components/CzmlStringPropInput.vue";
-import CzmlTextPropInput from "@/czml/components/CzmlTextPropInput.vue";
-import CzmlUriPropInput from "@/czml/components/CzmlUriPropInput.vue";
-import CzmlPureOptionsInput from "@/czml/components/CzmlPureOptionsInput.vue";
+
+import CzmlCartesian3PropInput from "@/czml/components/CzmlCartesian3PropInput.vue";
+import CzmlClockPropInput from "@/czml/components/CzmlClockPropInput.vue";
+import CzmlCustomPropertiesPropInput from "@/czml/components/CzmlCustomPropertiesPropInput.vue";
+
+import CzmlNumberSliderPropInput from "@/czml/components/CzmlNumberSliderPropInput.vue";
+
+import CzmlOptionsPurePropInput from "@/czml/components/CzmlOptionsPurePropInput.vue";
+import CzmlOrientationPropInput from "@/czml/components/CzmlOrientationPropInput.vue";
+
 import CzmlPositionPropInput from "@/czml/components/CzmlPositionPropInput.vue";
-import CzmlCartesian3Input from "@/czml/components/CzmlCartesian3Input.vue";
+import CzmlQuaternionPropInput from "@/czml/components/CzmlQuaternionPropInput.vue";
+
+import CzmlStringPropInput from "@/czml/components/CzmlStringPropInput.vue";
+
+import CzmlTextPropInput from "@/czml/components/CzmlTextPropInput.vue";
+
+import CzmlTimeCollectionPropInput from "./czml/components/CzmlTimeCollectionPropInput.vue";
+import CzmlTimeIntervalPropInput from "./czml/components/CzmlTimeIntervalPropInput.vue";
+import CzmlTimePurePropInput from "./czml/components/CzmlTimePurePropInput.vue";
+
+import CzmlUriPropInput from "@/czml/components/CzmlUriPropInput.vue";
 
 import App from "./App.vue";
 import router from "./router";
@@ -69,9 +85,25 @@ app.component("TextInput", TextInput);
 // czml 组件注册
 app.component("CzmlBooleanPropInput", CzmlBooleanPropInput);
 app.component("CzmlBooleanIntervalPropInput", CzmlBooleanIntervalPropInput);
-app.component("CzmlStringPorpInput", CzmlStringPorpInput);
-app.component("CzmlTextPropInput", CzmlTextPropInput);
-app.component("CzmlUriPropInput", CzmlUriPropInput);
-app.component("CzmlPureOptionsInput", CzmlPureOptionsInput);
+
+app.component("CzmlCartesian3PropInput", CzmlCartesian3PropInput);
+app.component("CzmlClockPropInput", CzmlClockPropInput);
+app.component("CzmlCustomPropertiesPropInput", CzmlCustomPropertiesPropInput);
+
+app.component("CzmlNumberSliderPropInput", CzmlNumberSliderPropInput);
+
+app.component("CzmlOptionsPurePropInput", CzmlOptionsPurePropInput);
+app.component("CzmlOrientationPropInput", CzmlOrientationPropInput);
+
 app.component("CzmlPositionPropInput", CzmlPositionPropInput);
-app.component("CzmlCartesian3Input", CzmlCartesian3Input);
+app.component("CzmlQuaternionPropInput", CzmlQuaternionPropInput);
+
+app.component("CzmlStringPropInput", CzmlStringPropInput);
+
+app.component("CzmlTextPropInput", CzmlTextPropInput);
+
+app.component("CzmlTimeCollectionPropInput", CzmlTimeCollectionPropInput);
+app.component("CzmlTimeIntervalPropInput", CzmlTimeIntervalPropInput);
+app.component("CzmlTimePurePropInput", CzmlTimePurePropInput);
+
+app.component("CzmlUriPropInput", CzmlUriPropInput);

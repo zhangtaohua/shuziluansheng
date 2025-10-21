@@ -1,66 +1,30 @@
 <template>
   <div v-if="isEnable" class="col_nw_fs_fs props_container">
     <div class="row_nw_fs_ce props_title_box">
-      <label class="row_nw_fs_ce props_ch_label">{{ props.vdata.labelZh }}</label>
-      <label class="row_nw_fs_fe props_ogi_label">{{ props.vdata.labelEn }}</label>
+      <label class="row_nw_fs_ce props_ch_label">{{ currentProp.labelZh }}</label>
+      <label class="row_nw_fs_fe props_ogi_label">{{ currentProp.labelEn }}</label>
     </div>
-
-    <div class="col_nw_fs_fs props_radiobox">
-      <div class="row_nw_fs_ce props_radiobox_title">
-        <label class="row_nw_fs_ce props_radioch_label">数值类型</label>
-        <label class="row_nw_fs_fe props_radioogi_label">value type</label>
-      </div>
-
-      <div class="row_nw_fs_ce props_radioinbox">
-        <RjRadioTabInput
-          :name="currentProp.id"
-          :options="currentProp.valueTypesOptions"
-          :initValue="currentProp.valueType"
-          @onChange="valueTypesOptionChangedHd"
-        ></RjRadioTabInput>
-      </div>
-    </div>
-
-    <div v-if="currentProp.valueType == 'PureValue'" class="row_nw_fs_ce props_input_box">
-      <input
-        type="checkbox"
-        class="row_nw_fs_fs props_input"
-        :checked="currentProp.value"
-        :disabled="!currentProp.isEnable"
-        @change="pureValueChangeHd"
-      />
-      <div class="row_nw_fs_ce wh_auto_100p">
-        <label class="row_nw_fs_ce props_inch_label">使能显示</label>
-        <label class="row_nw_fs_fe props_inogi_label">Enable Show</label>
-      </div>
-    </div>
-    <div v-else-if="currentProp.valueType == 'Intervals'" class="col_nw_fs_fs props_it_box">
-      <div v-for="inval in intervalsVales" :key="inval.startTime" class="col_nw_fs_fs props_it_itembox">
+    <div class="col_nw_fs_fs props_it_box">
+      <div v-for="inval in intervalsVales" :key="inval.key" class="col_nw_fs_fs props_it_itembox">
         <div class="row_nw_fs_ce props_it_tbox">
-          <span class="row_nw_fs_ce props_it_tlabel">startTime:</span>
+          <span class="row_nw_fs_ce props_it_tlabel">key:</span>
           <div class="row_nw_fs_ce props_it_tinputbox">
-            <el-date-picker
-              v-model="inval.startTime"
-              type="datetime"
-              placeholder="Select start datetime"
-              :format="defaultTimeFormatStr"
-              :value-format="defaultTimeFormatStr"
-            />
+            <el-input v-model="inval.key" placeholder="key" />
           </div>
         </div>
 
         <div class="row_nw_fs_ce props_it_tbox">
-          <span class="row_nw_fs_ce props_it_tlabel">endTime:</span>
+          <span class="row_nw_fs_ce props_it_tlabel">value:</span>
           <div class="row_nw_fs_ce props_it_tinputbox">
-            <el-date-picker v-model="inval.endTime" type="datetime" placeholder="Select end datetime" />
+            <el-input v-model="inval.value" placeholder="value" />
           </div>
         </div>
 
         <div class="row_nw_fs_ce props_it_input_box">
-          <input type="checkbox" v-model="inval.value" class="row_nw_fs_fs props_input" />
+          <input type="checkbox" v-model="inval.isJson" class="row_nw_fs_fs props_input" />
           <div class="row_nw_fs_ce wh_auto_100p">
-            <label class="row_nw_fs_ce props_inch_label">使能显示</label>
-            <label class="row_nw_fs_fe props_inogi_label">Enable Show</label>
+            <label class="row_nw_fs_ce props_inch_label">是否</label>
+            <label class="row_nw_fs_fe props_inogi_label">is JSON</label>
           </div>
         </div>
       </div>
@@ -94,7 +58,7 @@
   import RjRadioTabInput from "@/components/form/RjRadioTabInput.vue";
   import { defaultTimeFormatStr } from "@/czml/schema/properties/commondata";
   import { cloneDeep } from "es-toolkit";
-  import { isArray } from "es-toolkit/compat";
+  import { isArray, values } from "es-toolkit/compat";
   import dayjs from "dayjs";
 
   //  这个props 就是相当于 new czmlShowProp()的值
@@ -117,27 +81,15 @@
   const isEnable = ref(false);
   const intervalsVales = ref([]);
 
-  function valueTypesOptionChangedHd(value: string) {
-    if (currentProp.value) {
-      currentProp.value.valueType = value;
-    }
-  }
-
-  function pureValueChangeHd(event) {
-    console.log("pureValueChangeHd", event, currentProp.value.value);
-    if (currentProp.value) {
-      currentProp.value.value = event.target.checked;
-    }
-  }
-
   function init() {
     if (props.vdata && props.vdata.id && props.vdata.name) {
-      console.log("show_props", props.vdata);
       isEnable.value = true;
       currentProp.value = props.vdata;
+      intervalsVales.value = cloneDeep(currentProp.value.value);
     } else {
       isEnable.value = false;
       currentProp.value = {};
+      intervalsVales.value = [];
     }
   }
 
@@ -146,9 +98,9 @@
       const last = intervalsVales.value.length - 1;
       console.log("last", last);
       intervalsVales.value.push({
-        startTime: intervalsVales.value[last].endTime,
-        endTime: dayjs().format(defaultTimeFormatStr),
-        boolean: true,
+        key: "",
+        value: "",
+        isJson: false,
       });
     }
   };
@@ -164,24 +116,6 @@
   onMounted(() => {
     init();
   });
-
-  watch(
-    () => currentProp.value.valueType,
-    () => {
-      nextTick(() => {
-        console.log("currentProp.valueType", currentProp.value);
-        if (currentProp.value && currentProp.value.valueType == "Intervals") {
-          intervalsVales.value = cloneDeep(currentProp.value.value);
-        } else {
-          intervalsVales.value = [];
-        }
-      });
-    },
-    {
-      immediate: false,
-      deep: false,
-    },
-  );
 
   watch(
     intervalsVales,
@@ -256,20 +190,6 @@
     font-size: 0.75rem;
     font-weight: 400;
     margin-top: 0.25rem;
-  }
-
-  .props_radioinbox {
-    width: 100%;
-    height: auto;
-  }
-
-  .props_input_box {
-    position: relative;
-    width: 100%;
-    height: 3.5rem;
-    background-color: rgba(0, 0, 0, 1);
-    padding-top: 0.75rem;
-    border-radius: 0 0 0.5rem 0.5rem;
   }
 
   input[type="checkbox"] {
@@ -406,7 +326,7 @@
   }
 
   .props_it_tinputbox {
-    width: max-content;
+    width: calc(100% - 5rem);
     height: 2rem;
   }
 

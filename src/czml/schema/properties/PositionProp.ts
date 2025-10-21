@@ -1,7 +1,7 @@
 import { nanoid } from "@/utils/common/nanoid";
 import dayjs from "dayjs";
 
-import { czmlPureOptionsProp, CzmlReferenceFrameOptions } from "./PureOptionsProp";
+import { czmlOptionsPureProp, CzmlReferenceFrameOptions } from "./OptionsPureProp";
 import { czmlStringProp, czmlReferenceValueOptions } from "./StringProp";
 
 export class czmlPositionProp {
@@ -17,7 +17,7 @@ export class czmlPositionProp {
   // public availability = "";
 
   public properties = {
-    referenceFrame: new czmlPureOptionsProp(CzmlReferenceFrameOptions),
+    referenceFrame: new czmlOptionsPureProp(CzmlReferenceFrameOptions),
     // cartesian: new ,
     // cartographicRadians: new ,
     // cartographicDegrees: new ,

@@ -3,6 +3,9 @@ import czmlBooleanProp from "../properties/BooleanProp";
 import czmlStringProp from "../properties/StringProp";
 import czmlTextProp from "../properties/TextProp";
 import czmlPositionProp from "../properties/PositionProp";
+import { czmlTimeCollectionProp, czmlAvailabilityOptions } from "../properties/TimeCollectionProp";
+import { czmlCustomPropertiesProp, czmlCustomPropertiesOptions } from "../properties/CustomPropertiesProp";
+import { czmlOrientationProp } from "../properties/OrientationProp.ts";
 
 import czmlBillboard from "../entities/billboard";
 
@@ -21,19 +24,19 @@ export class czmlPacket {
   public isExpand = true; // for UI
 
   constructor(options: any) {
-    if(!options) {
+    if (!options) {
       return;
     }
     if (options.id) {
       this.id = options.id;
     }
-    if(options.name) {
+    if (options.name) {
       this.name = options.name;
     }
-    if(options.labelZh) {
+    if (options.labelZh) {
       this.labelZh = options.labelZh;
     }
-    if(options.labelEn) {
+    if (options.labelEn) {
       this.labelEn = options.labelEn;
     }
     if (options.description) {
@@ -80,7 +83,7 @@ export class czmlPacket {
       value: "billboard_parent_id_init" + nanoid(10),
       isEnable: true,
       isUsed: true,
-      description:"The ID of the parent object, if any.",
+      description: "The ID of the parent object, if any.",
       type: "string",
     }),
     description: new czmlTextProp({
@@ -92,30 +95,34 @@ export class czmlPacket {
       isUsed: true,
       description: "An HTML description of the object.",
     }),
-    clock: {
-      $ref: "Clock.json",
-      description: "The clock settings for the entire data set. Only valid on the document object.",
-    },
-    version: new czmlStringProp({
-      name: "version",
-      labelZh: "版本号",
-      labelEn: "version",
-      value: "1.0",
-      isEnable: true,
-      isUsed: true,
-      description: "The CZML version being written. Only valid on the document object.",
-      type: "string",
-    }),
-    availability: {
+    // clock: {
+    //   $ref: "Clock.json",
+    //   description: "The clock settings for the entire data set. Only valid on the document object.",
+    // },
+    // version: new czmlStringProp({
+    //   name: "version",
+    //   labelZh: "版本号",
+    //   labelEn: "version",
+    //   value: "1.0",
+    //   isEnable: true,
+    //   isUsed: true,
+    //   description: "The CZML version being written. Only valid on the document object.",
+    //   type: "string",
+    // }),
+    availability: new czmlTimeCollectionProp({
+      ...czmlAvailabilityOptions,
       $ref: "Values/TimeIntervalCollectionValue.json",
       description:
         "The set of time intervals over which data for an object is available. The property can be a single string specifying a single interval, or an array of strings representing intervals. A later CZML packet can update this availability if it changes or is found to be incorrect. For example, an SGP4 propagator may initially report availability for all time, but then later the propagator throws an exception and the availability can be adjusted to end at that time. If this optional property is not present, the object is assumed to be available for all time. Availability is scoped to a particular CZML stream, so two different streams can list different availability for a single object. Within a single stream, the last availability stated for an object is the one in effect and any availabilities in previous packets are ignored. If an object is not available at a time, the client will not draw that object.",
       default: "0000-00-00T00:00:00Z/9999-12-31T24:00:00Z",
-    },
-    properties: {
+      isEnable: true,
+      isUsed: false,
+    }),
+    properties: new czmlCustomPropertiesProp({
+      ...czmlCustomPropertiesOptions,
       $ref: "CustomProperties.json",
       description: "A set of custom properties for this object.",
-    },
+    }),
     position: new czmlPositionProp({
       $ref: "Position.json",
       description:
@@ -124,11 +131,11 @@ export class czmlPacket {
       default: null,
       isUsed: true,
     }),
-    orientation: {
+    orientation: new czmlOrientationProp({
       $ref: "Orientation.json",
       description:
         "The orientation of the object in the world. The orientation has no direct visual representation, but it is used to orient models, cones, pyramids, and other graphical items attached to the object.",
-    },
+    }),
     viewFrom: {
       $ref: "ViewFrom.json",
       description:

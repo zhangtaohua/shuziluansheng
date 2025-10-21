@@ -6,7 +6,7 @@ export class czmlStringProp {
   public labelZh = "字符串";
   public labelEn = "string";
   public description = "The string value.";
-  public tag = "CzmlStringPorpInput";
+  public tag = "CzmlStringPropInput";
   public _value = true;
   public _valueType = "string";
   public default = "";
@@ -23,7 +23,7 @@ export class czmlStringProp {
       this.description = options.description;
     }
 
-    this.tag = options.tag ? options.tag : "CzmlStringPorpInput";
+    this.tag = options.tag ? options.tag : "CzmlStringPropInput";
 
     this._value = options.value;
     this.default = options.default ? options.default : "";

@@ -13,20 +13,20 @@ import {
 } from "./commondata.ts";
 import czmlInterpolatableProp from "./InterpolatablePropertyProp.ts";
 
-export class czmlCartesian3Prop {
-  public id = "czml_cartesian3_prop_" + nanoid(10);
-  public name = "cartesian3";
-  public vueName = "cartesian3";
-  public labelZh = "三值";
-  public labelEn = "cartesian3";
+export class czmlUnitQuaternionProp {
+  public id = "czml_unit_quaternion_prop_" + nanoid(10);
+  public name = "unitQuaternion";
+  public vueName = "unitQuaternion";
+  public labelZh = "单位四元数";
+  public labelEn = "unit quaternion";
   public description =
-    "A three-dimensional Cartesian value specified as `[X, Y, Z]`. If the array has three elements, the value is constant. If it has four or more elements, they are time-tagged samples arranged as `[Time, X, Y, Z, Time, X, Y, Z, ...]`, where Time is an ISO 8601 date and time string or seconds since epoch.";
-  public tag = "CzmlCartesian3PropInput";
-  public _value = [0, 0, 0];
-  public _oldPureValue = [0, 0, 0];
-  public _oldSecondsValue = [0, 0, 0, 0];
-  public _oldTimestringValue = [dayjs().format(defaultTimeFormatStr), 0, 0, 0];
-  public default = [0, 0, 0];
+    "A set of 4-dimensional coordinates used to represent rotation in 3-dimensional space, specified as `[X, Y, Z, W]`. If the array has four elements, the value is constant. If it has five or more elements, they are time-tagged samples arranged as `[Time, X, Y, Z, W, Time, X, Y, Z, W, ...]`, where Time is an ISO 8601 date and time string or seconds since epoch.";
+  public tag = "CzmlQuaternionPropInput";
+  public _value = [0, 0, 0, 0];
+  public _oldPureValue = [0, 0, 0, 0];
+  public _oldSecondsValue = [[0, 0, 0, 0, 0]];
+  public _oldTimestringValue = [[dayjs().format(defaultTimeFormatStr), 0, 0, 0, 0]];
+  public default = [0, 0, 0, 0];
   public unit = "meters";
   public isEnable = true;
   public isEntity = false;
@@ -39,7 +39,10 @@ export class czmlCartesian3Prop {
   public timeTypeOptions = propValuesTimeTypeOptions;
 
   constructor(options: any) {
-    this.id = options.id ? options.id : "czml_cartesian3_prop_" + options.name + "_" + nanoid(10);
+    if (!options) {
+      return;
+    }
+    this.id = options.id ? options.id : "czml_unit_quaternion_prop_" + options.name + "_" + nanoid(10);
     this.name = options.name;
     this.vueName = options.vueName ? options.vueName : options.name;
     this.labelZh = options.labelZh ? options.labelZh : options.name;
@@ -73,6 +76,8 @@ export class czmlCartesian3Prop {
     return this._timeType;
   }
 
+  // TODO
+  // 优化点,是不是选择了插值算法就要限制不可以选择纯数据类型了.
   set timeType(newValue) {
     if (newValue != this._timeType) {
       let __oldvalue = [];
@@ -121,4 +126,4 @@ export class czmlCartesian3Prop {
   }
 }
 
-export default czmlCartesian3Prop;
+export default czmlUnitQuaternionProp;

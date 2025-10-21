@@ -15,6 +15,7 @@ declare module 'vue' {
     EchartsOptionBase: typeof import('./src/components/echarts/EchartsOptionBase.vue')['default']
     ElDatePicker: typeof import('element-plus/es')['ElDatePicker']
     ElIcon: typeof import('element-plus/es')['ElIcon']
+    ElInput: typeof import('element-plus/es')['ElInput']
     EllipsisTextScroll: typeof import('./src/components/common/EllipsisTextScroll.vue')['default']
     LatitudeBaseInput: typeof import('./src/components/lnglat/LatitudeBaseInput.vue')['default']
     LongitudeBaseInput: typeof import('./src/components/lnglat/LongitudeBaseInput.vue')['default']
