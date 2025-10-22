@@ -2,6 +2,7 @@
   <div class="row_nw_fs_ce header_container">
     <div class="row_nw_ce_ce header_item" @click="addTest">容器</div>
     <div class="row_nw_ce_ce header_item" @click="addBillboard">Billboard</div>
+    <div class="row_nw_ce_ce header_item" @click="getCzml">getCzml</div>
   </div>
   <!-- <div v-else class="row_nw_center_center header_small" @click="setIsFullView(false)"></div> -->
 </template>
@@ -167,6 +168,14 @@
     console.log("czmlOpt", czmlOpt);
     // csMap.addCzmlGraphicLayer(czmlOpt);
     setEditorCurrentParentComp(czmlOpt);
+  }
+
+  function getCzml() {
+    if (editorConfig && editorConfig.currentParentComp) {
+      console.log("czml obj", editorConfig.currentParentComp);
+
+      console.log("czml data", editorConfig.currentParentComp.getCzmlData());
+    }
   }
 
   function addTest2() {

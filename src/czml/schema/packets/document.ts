@@ -5,15 +5,14 @@ import czmlClockProp from "../properties/ClockProp";
 import { czmlTimeCollectionProp, czmlAvailabilityOptions } from "../properties/TimeCollectionProp";
 
 export class czmlDocument {
-  public id = "czml_entity_document_" + nanoid(10);
+  public id = "czml_packet_document_" + nanoid(10);
   public name = "document";
   public labelZh = "文本";
   public labelEn = "document";
-  public title = "document";
+  public title = "Document";
   public description = "Describes a CZML document.";
-  public type = "object";
-  public componentType = "czml"; // 是 czml html three(3d)
-  public flyTo = false;
+  public type = "packet";
+  public componentType = "czml#packet";
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
   public isExpand = true; // for UI
@@ -100,6 +99,24 @@ export class czmlDocument {
       isUsed: false,
     }),
   };
+  // end properties
+
+  public getCzmlData() {
+    const czmlData = {};
+    const keys = Object.keys(this.properties);
+
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i];
+      const prop = this.properties[key];
+      if (prop.getCzmlName) {
+        const propKey = prop.getCzmlName();
+        const propValue = prop.getCzmlValue();
+        czmlData[propKey] = propValue;
+      }
+    }
+
+    return czmlData;
+  }
 }
 
 export default czmlDocument;

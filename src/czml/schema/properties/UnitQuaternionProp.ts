@@ -14,22 +14,29 @@ import {
 import czmlInterpolatableProp from "./InterpolatablePropertyProp.ts";
 
 export class czmlUnitQuaternionProp {
-  public id = "czml_unit_quaternion_prop_" + nanoid(10);
+  public id = "czml_prop_unit_quaternion_" + nanoid(10);
   public name = "unitQuaternion";
-  public vueName = "unitQuaternion";
   public labelZh = "单位四元数";
   public labelEn = "unit quaternion";
+  public title = "Unit Quaternion";
   public description =
     "A set of 4-dimensional coordinates used to represent rotation in 3-dimensional space, specified as `[X, Y, Z, W]`. If the array has four elements, the value is constant. If it has five or more elements, they are time-tagged samples arranged as `[Time, X, Y, Z, W, Time, X, Y, Z, W, ...]`, where Time is an ISO 8601 date and time string or seconds since epoch.";
+  public type = "property";
+  public componentType = "czml#packet#property";
   public tag = "CzmlQuaternionPropInput";
+  public unit = "meters";
   public _value = [0, 0, 0, 0];
+  public _valueType = "";
   public _oldPureValue = [0, 0, 0, 0];
   public _oldSecondsValue = [[0, 0, 0, 0, 0]];
   public _oldTimestringValue = [[dayjs().format(defaultTimeFormatStr), 0, 0, 0, 0]];
   public default = [0, 0, 0, 0];
-  public unit = "meters";
-  public isEnable = true;
-  public isEntity = false;
+  public isEnable = true; // for can edit
+  public isUsed = true; // for can used
+  public isExpand = true; // for UI
+  public _isEntity = false;
+  public isCombinedProperty = false;
+  public isComplexProperty = true;
 
   public _interpolationType = CZMLVALUESNOTINTERPOLATE;
   public interpolationOptions = propValuesInterpolateOptions;
@@ -42,11 +49,28 @@ export class czmlUnitQuaternionProp {
     if (!options) {
       return;
     }
-    this.id = options.id ? options.id : "czml_unit_quaternion_prop_" + options.name + "_" + nanoid(10);
-    this.name = options.name;
-    this.vueName = options.vueName ? options.vueName : options.name;
-    this.labelZh = options.labelZh ? options.labelZh : options.name;
-    this.labelEn = options.labelEn ? options.labelEn : options.name;
+
+    if (options.id) {
+      this.id = options.id;
+    } else if (options.name) {
+      this.id = "czml_prop_unit_quaternion_" + options.name + "_" + nanoid(10);
+    }
+
+    if (options.name) {
+      this.name = options.name;
+    }
+
+    if (options.labelZh) {
+      this.labelZh = options.labelZh;
+    }
+
+    if (options.labelEn) {
+      this.labelEn = options.labelEn;
+    }
+
+    if (options.title) {
+      this.title = options.title;
+    }
 
     if (options.description) {
       this.description = options.description;
@@ -56,12 +80,17 @@ export class czmlUnitQuaternionProp {
       this.tag = options.tag;
     }
 
+    if (options.value) {
+      this._value = options.value;
+    }
+
     if (options.default) {
       this.default = options.default;
     }
 
-    this._value = options.value;
     this.isEnable = options.isEnable ?? true;
+    this.isUsed = options.isUsed ?? true;
+    this.isExpand = options.isExpand ?? true;
   }
 
   get value() {
@@ -70,6 +99,22 @@ export class czmlUnitQuaternionProp {
 
   set value(newValue) {
     this._value = newValue;
+  }
+
+  get valueType() {
+    return this._valueType;
+  }
+
+  set valueType(newValue) {
+    return;
+  }
+
+  get isEntity() {
+    return this._isEntity;
+  }
+
+  set isEntity(newValue) {
+    return;
   }
 
   get timeType() {
@@ -123,6 +168,20 @@ export class czmlUnitQuaternionProp {
         this._interpolationType = newValue;
       }, 50);
     }
+  }
+
+  public getCzmlName() {
+    return this.name;
+  }
+
+  public getCzmlValue() {
+    return this._value;
+  }
+
+  public getCzmlData() {
+    return {
+      [this.name]: this.getCzmlValue(),
+    };
   }
 }
 

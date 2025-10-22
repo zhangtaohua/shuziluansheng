@@ -34,13 +34,16 @@ import CzmlBooleanPropInput from "@/czml/components/CzmlBooleanPropInput.vue";
 import CzmlBooleanIntervalPropInput from "@/czml/components/CzmlBooleanIntervalPropInput.vue";
 
 import CzmlCartesian3PropInput from "@/czml/components/CzmlCartesian3PropInput.vue";
-import CzmlClockPropInput from "@/czml/components/CzmlClockPropInput.vue";
+import CzmlCartesian3PurePropInput from "@/czml/components/CzmlCartesian3PurePropInput.vue";
+import CzmlCombinePropInput from "@/czml/components/CzmlCombinePropInput.vue";
 import CzmlCustomPropertiesPropInput from "@/czml/components/CzmlCustomPropertiesPropInput.vue";
+
+import CzmlEntityRender from "@/czml/components/CzmlEntityRender.vue";
 
 import CzmlNumberSliderPropInput from "@/czml/components/CzmlNumberSliderPropInput.vue";
 
 import CzmlOptionsPurePropInput from "@/czml/components/CzmlOptionsPurePropInput.vue";
-import CzmlOrientationPropInput from "@/czml/components/CzmlOrientationPropInput.vue";
+import CzmlPackagesRender from "@/czml/components/CzmlPackagesRender.vue";
 
 import CzmlPositionPropInput from "@/czml/components/CzmlPositionPropInput.vue";
 import CzmlQuaternionPropInput from "@/czml/components/CzmlQuaternionPropInput.vue";
@@ -87,14 +90,16 @@ app.component("CzmlBooleanPropInput", CzmlBooleanPropInput);
 app.component("CzmlBooleanIntervalPropInput", CzmlBooleanIntervalPropInput);
 
 app.component("CzmlCartesian3PropInput", CzmlCartesian3PropInput);
-app.component("CzmlClockPropInput", CzmlClockPropInput);
+app.component("CzmlCartesian3PurePropInput", CzmlCartesian3PurePropInput);
+app.component("CzmlCombinePropInput", CzmlCombinePropInput);
 app.component("CzmlCustomPropertiesPropInput", CzmlCustomPropertiesPropInput);
+app.component("CzmlEntityRender", CzmlEntityRender);
 
 app.component("CzmlNumberSliderPropInput", CzmlNumberSliderPropInput);
 
 app.component("CzmlOptionsPurePropInput", CzmlOptionsPurePropInput);
-app.component("CzmlOrientationPropInput", CzmlOrientationPropInput);
 
+app.component("CzmlPackagesRender", CzmlPackagesRender);
 app.component("CzmlPositionPropInput", CzmlPositionPropInput);
 app.component("CzmlQuaternionPropInput", CzmlQuaternionPropInput);
 

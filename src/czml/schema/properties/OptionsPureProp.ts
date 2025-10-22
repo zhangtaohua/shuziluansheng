@@ -1,37 +1,74 @@
 import { nanoid } from "@/utils/common/nanoid";
 
 export class czmlOptionsPureProp {
-  public id = "czml_pure_options_prop_" + nanoid(10);
+  public id = "czml_prop_pure_options_" + nanoid(10);
   public name = "pure_options";
-  public vueName = "pureOptions";
   public labelZh = "纯选择式";
   public labelEn = "pure options";
+  public title = "Pure Options";
   public description = "The pure options select.";
+  public type = "property";
+  public componentType = "czml#packet#property";
   public tag = "CzmlOptionsPurePropInput";
-  public _value = true;
+  public _value = "";
   public _valueType = "string";
   public default = "";
   public options = [];
-  public isEnable = true;
-  public isEntity = false;
-  // public availability = "";
+  public isEnable = true; // for can edit
+  public isUsed = true; // for can used
+  public isExpand = true; // for UI
+  public _isEntity = false;
+  public isCombinedProperty = false;
+  public isComplexProperty = false;
 
   constructor(options: any) {
-    this.id = options.id ? options.id : "czml_pure_options_prop_" + options.name + "_" + nanoid(10);
-    this.name = options.name;
-    this.vueName = options.vueName ? options.vueName : options.name;
-    this.labelZh = options.labelZh ? options.labelZh : options.name;
-    this.labelEn = options.labelEn ? options.labelEn : options.name;
+    if (!options) {
+      return;
+    }
+
+    if (options.id) {
+      this.id = options.id;
+    } else if (options.name) {
+      this.id = "czml_prop_pure_options_" + options.name + "_" + nanoid(10);
+    }
+
+    if (options.name) {
+      this.name = options.name;
+    }
+
+    if (options.labelZh) {
+      this.labelZh = options.labelZh;
+    }
+
+    if (options.labelEn) {
+      this.labelEn = options.labelEn;
+    }
+
+    if (options.title) {
+      this.title = options.title;
+    }
+
     if (options.description) {
       this.description = options.description;
     }
 
-    this.tag = options.tag ? options.tag : "CzmlOptionsPurePropInput";
+    if (options.tag) {
+      this.tag = options.tag;
+    }
 
-    this._value = options.value;
-    this.options = options.options;
-    this.default = options.default ? options.default : "";
+    if (options.value) {
+      this._value = options.value;
+    }
+
+    if (options.default) {
+      this.default = options.default;
+    }
+
     this.isEnable = options.isEnable ?? true;
+    this.isUsed = options.isUsed ?? true;
+    this.isExpand = options.isExpand ?? true;
+
+    this.options = options.options;
   }
 
   get value() {
@@ -47,7 +84,29 @@ export class czmlOptionsPureProp {
   }
 
   set valueType(newValue) {
-    this._valueType = newValue;
+    return;
+  }
+
+  get isEntity() {
+    return this._isEntity;
+  }
+
+  set isEntity(newValue) {
+    return;
+  }
+
+  getCzmlName() {
+    return this.name;
+  }
+
+  getCzmlValue() {
+    return this._value;
+  }
+
+  getCzmlData() {
+    return {
+      [this.name]: this._value,
+    };
   }
 }
 

@@ -14,22 +14,34 @@ import {
 import czmlInterpolatableProp from "./InterpolatablePropertyProp.ts";
 
 export class czmlCartesian3Prop {
-  public id = "czml_cartesian3_prop_" + nanoid(10);
+  public id = "czml_prop_cartesian3_" + nanoid(10);
   public name = "cartesian3";
-  public vueName = "cartesian3";
-  public labelZh = "三值";
+  public labelZh = "XYZ坐标";
   public labelEn = "cartesian3";
+  public title = "Cartesian3";
   public description =
     "A three-dimensional Cartesian value specified as `[X, Y, Z]`. If the array has three elements, the value is constant. If it has four or more elements, they are time-tagged samples arranged as `[Time, X, Y, Z, Time, X, Y, Z, ...]`, where Time is an ISO 8601 date and time string or seconds since epoch.";
+
+  public type = "property";
+  public componentType = "czml#packet#property";
+
   public tag = "CzmlCartesian3PropInput";
+
+  public unit = "meters";
   public _value = [0, 0, 0];
   public _oldPureValue = [0, 0, 0];
   public _oldSecondsValue = [0, 0, 0, 0];
   public _oldTimestringValue = [dayjs().format(defaultTimeFormatStr), 0, 0, 0];
+
+  public _valueType = "cartesian3-time-tagged";
   public default = [0, 0, 0];
-  public unit = "meters";
-  public isEnable = true;
-  public isEntity = false;
+
+  public isEnable = true; // for can edit
+  public isUsed = true; // for can used
+  public isExpand = true; // for UI
+  public _isEntity = false;
+  public isCombinedProperty = false;
+  public isComplexProperty = true;
 
   public _interpolationType = CZMLVALUESNOTINTERPOLATE;
   public interpolationOptions = propValuesInterpolateOptions;
@@ -39,11 +51,31 @@ export class czmlCartesian3Prop {
   public timeTypeOptions = propValuesTimeTypeOptions;
 
   constructor(options: any) {
-    this.id = options.id ? options.id : "czml_cartesian3_prop_" + options.name + "_" + nanoid(10);
-    this.name = options.name;
-    this.vueName = options.vueName ? options.vueName : options.name;
-    this.labelZh = options.labelZh ? options.labelZh : options.name;
-    this.labelEn = options.labelEn ? options.labelEn : options.name;
+    if (!options) {
+      return;
+    }
+
+    if (options.id) {
+      this.id = options.id;
+    } else if (options.name) {
+      this.id = "czml_prop_cartesian3_" + options.name + "_" + nanoid(10);
+    }
+
+    if (options.name) {
+      this.name = options.name;
+    }
+
+    if (options.labelZh) {
+      this.labelZh = options.labelZh;
+    }
+
+    if (options.labelEn) {
+      this.labelEn = options.labelEn;
+    }
+
+    if (options.title) {
+      this.title = options.title;
+    }
 
     if (options.description) {
       this.description = options.description;
@@ -53,12 +85,17 @@ export class czmlCartesian3Prop {
       this.tag = options.tag;
     }
 
+    if (options.value) {
+      this._value = options.value;
+    }
+
     if (options.default) {
       this.default = options.default;
     }
 
-    this._value = options.value;
     this.isEnable = options.isEnable ?? true;
+    this.isUsed = options.isUsed ?? true;
+    this.isExpand = options.isExpand ?? true;
   }
 
   get value() {
@@ -67,6 +104,22 @@ export class czmlCartesian3Prop {
 
   set value(newValue) {
     this._value = newValue;
+  }
+
+  get valueType() {
+    return this._valueType;
+  }
+
+  set valueType(newValue) {
+    return;
+  }
+
+  get isEntity() {
+    return this._isEntity;
+  }
+
+  set isEntity(newValue) {
+    return;
   }
 
   get timeType() {
@@ -118,6 +171,20 @@ export class czmlCartesian3Prop {
         this._interpolationType = newValue;
       }, 50);
     }
+  }
+
+  getCzmlName() {
+    return this.name;
+  }
+
+  getCzmlValue() {
+    return this._value;
+  }
+
+  getCzmlData() {
+    return {
+      [this.name]: this._value,
+    };
   }
 }
 

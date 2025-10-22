@@ -1,3 +1,4 @@
+// 应该后期可以删除 用 properties下的
 import { nanoid } from "@/utils/common/nanoid";
 
 export class czmlBooleanValue {

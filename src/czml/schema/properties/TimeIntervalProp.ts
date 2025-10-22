@@ -8,30 +8,64 @@ export class czmlTimeIntervalProp {
   public name = "interval";
   public labelZh = "时间间隔";
   public labelEn = "interval";
+  public title = "Time Interval";
   public description = "The current time, specified in ISO8601 format.";
+  public type = "property";
+  public componentType = "czml#packet#property";
   public tag = "CzmlTimeIntervalPropInput";
   public _startTime = dayjs().format(defaultTimeFormatStr);
   public _endTime = dayjs().format(defaultTimeFormatStr);
   public _valueType = "";
   public default = "";
-  public isEnable = true;
-  public isEntity = false;
-
-  // public availability = "";
+  public isEnable = true; // for can edit
+  public isUsed = true; // for can used
+  public isExpand = true; // for UI
+  public _isEntity = false;
+  public isCombinedProperty = false;
+  public isComplexProperty = false;
 
   constructor(options: any) {
-    this.id = options.id ? options.id : "czml_prop_time_interval_" + options.name + "_" + nanoid(10);
+    if (!options) {
+      return;
+    }
+
+    if (options.id) {
+      this.id = options.id;
+    } else if (options.name) {
+      this.id = "czml_prop_time_interval_" + options.name + "_" + nanoid(10);
+    }
+
     if (options.name) {
       this.name = options.name;
     }
-    this.labelZh = options.labelZh ? options.labelZh : options.name;
-    this.labelEn = options.labelEn ? options.labelEn : options.name;
+
+    if (options.labelZh) {
+      this.labelZh = options.labelZh;
+    }
+
+    if (options.labelEn) {
+      this.labelEn = options.labelEn;
+    }
+
+    if (options.title) {
+      this.title = options.title;
+    }
+
     if (options.description) {
       this.description = options.description;
     }
 
-    this.tag = options.tag ? options.tag : "CzmlTimeIntervalPropInput";
+    if (options.tag) {
+      this.tag = options.tag;
+    }
+
+    if (options.default) {
+      this.default = options.default;
+    }
+
     this.isEnable = options.isEnable ?? true;
+    this.isUsed = options.isUsed ?? true;
+    this.isExpand = options.isExpand ?? true;
   }
 
   get startTime() {
@@ -57,15 +91,37 @@ export class czmlTimeIntervalProp {
   set valueType(newValue) {
     this._valueType = newValue;
   }
+
+  get isEntity() {
+    return this._isEntity;
+  }
+
+  set isEntity(newValue) {
+    return;
+  }
+
+  public getCzmlName() {
+    return this.name;
+  }
+
+  public getCzmlValue() {
+    const startTimeStr = dayjs(this.startTime).toISOString();
+    const endTimeStr = dayjs(this.endTime).toISOString();
+    return `${startTimeStr}/${endTimeStr}`;
+  }
+
+  public getCzmlData() {
+    return {
+      [this.name]: this.getCzmlValue(),
+    };
+  }
 }
 
 export default czmlTimeIntervalProp;
 
 export const czmlClockIntervalOptions = {
   name: "interval",
-  vueName: "interval",
   labelZh: "时间间隔",
   labelEn: "interval",
-  tag: "CzmlTimeIntervalPropInput",
   isEnable: true,
 };

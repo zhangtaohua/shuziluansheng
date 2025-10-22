@@ -1,10 +1,13 @@
 <template>
   <div class="row_nw_fs_ce props_container">
     <div class="row_nw_fs_ce props_input_box">
-      <input type="checkbox" v-model="currentStyle.value"
-      class="row_nw_fs_fs props_input"
-      :disabled="!currentStyle.isEnable"
-      @change="onChange" />
+      <input
+        type="checkbox"
+        v-model="currentStyle.value"
+        class="row_nw_fs_fs props_input"
+        :disabled="!currentStyle.isEnable"
+        @change="onChange"
+      />
     </div>
     <div class="row_nw_fs_ce wh_auto_100p">
       <label class="row_nw_fs_ce props_ch_label">{{ props.vdata.labelZh }}</label>
@@ -53,7 +56,6 @@
   onMounted(() => {
     init();
   });
-
 </script>
 
 <style scoped>
@@ -159,7 +161,7 @@
     width: max-content;
     height: 100%;
     color: rgba(255, 255, 255, 1);
-    font-size: 1rem;
+    font-size: var(--czml-fs-pp-zh);
     font-weight: 500;
     margin-right: 0.5rem;
   }
@@ -168,7 +170,7 @@
     width: max-content;
     height: 1rem;
     color: rgba(230, 230, 230, 1);
-    font-size: 0.75rem;
+    font-size: var(--czml-fs-pp-en);
     font-weight: 400;
     margin-top: 0.25rem;
   }

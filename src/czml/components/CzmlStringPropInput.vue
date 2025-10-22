@@ -7,9 +7,10 @@
       </div>
     </div>
 
-    <div class="row_nw_ce_ce props_input_sbox"
-    :class="{ props_input_sbox_act: isFoucus,
-      props_input_box_disabled: !currentProp.isEnable }">
+    <div
+      class="row_nw_ce_ce props_input_sbox"
+      :class="{ props_input_sbox_act: isFoucus, props_input_box_disabled: !currentProp.isEnable }"
+    >
       <input
         :id="currentProp.id"
         :name="currentProp.id"
@@ -104,7 +105,7 @@
     width: max-content;
     height: 100%;
     color: rgba(255, 255, 255, 1);
-    font-size: 1rem;
+    font-size: var(--czml-fs-pp-zh);
     font-weight: 500;
     margin-right: 0.5rem;
     margin-left: 0.25rem;
@@ -114,7 +115,7 @@
     width: max-content;
     height: 1rem;
     color: rgba(200, 200, 200, 1);
-    font-size: 0.875rem;
+    font-size: var(--czml-fs-pp-en);
     font-weight: 400;
   }
 

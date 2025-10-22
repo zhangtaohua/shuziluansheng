@@ -1,24 +1,26 @@
 import { nanoid } from "@/utils/common/nanoid";
 
-export class czmlStringProp {
-  public id = "czml_prop_string_" + nanoid(10);
-  public name = "string";
-  public labelZh = "字符串";
-  public labelEn = "string";
-  public title = "String";
-  public description = "The string value.";
+export class czmlBooleanPureProp {
+  public id = "czml_prop_bool_" + nanoid(10);
+  public name = "boolean";
+  public labelZh = "布尔值";
+  public labelEn = "boolean";
+  public title = "Boolean";
+  public description = "The boolean value.";
   public type = "property";
   public componentType = "czml#packet#property";
-  public tag = "CzmlStringPropInput";
-  public _value = "";
-  public _valueType = "string";
-  public default = "";
+  public tag = "CzmlBooleanPorpInput";
+  public _value = true;
+  public _valueType = "boolean";
+  public default = true;
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
   public isExpand = true; // for UI
   public _isEntity = false;
   public isCombinedProperty = false;
   public isComplexProperty = false;
+
+  // public availability = "";
 
   constructor(options: any) {
     if (!options) {
@@ -28,7 +30,7 @@ export class czmlStringProp {
     if (options.id) {
       this.id = options.id;
     } else if (options.name) {
-      this.id = "czml_prop_string_" + options.name + "_" + nanoid(10);
+      this.id = "czml_prop_bool_" + options.name + "_" + nanoid(10);
     }
 
     if (options.name) {
@@ -59,10 +61,7 @@ export class czmlStringProp {
       this._value = options.value;
     }
 
-    if (options.default) {
-      this.default = options.default;
-    }
-
+    this.default = options.default ?? true;
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
     this.isExpand = options.isExpand ?? true;
@@ -107,14 +106,4 @@ export class czmlStringProp {
   }
 }
 
-export default czmlStringProp;
-
-export const czmlReferenceValueOptions = {
-  name: "reference",
-  labelZh: "参考值",
-  labelEn: "reference",
-  value: "reference_init" + nanoid(10),
-  isEnable: true,
-  description:
-    "Represents a reference to another property. References can be used to specify that two properties on different objects are in fact, the same property.",
-};
+export default czmlBooleanPureProp;

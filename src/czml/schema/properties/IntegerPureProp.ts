@@ -3,10 +3,12 @@ import { nanoid } from "@/utils/common/nanoid";
 export class czmlIntegerPureProp {
   public id = "czml_prop_integer_pure_" + nanoid(10);
   public name = "integer";
-  public vueName = "integer";
   public labelZh = "整数";
   public labelEn = "integer";
+  public title = "Integer";
   public description = "An integer number.";
+  public type = "property";
+  public componentType = "czml#packet#property";
   public tag = "CzmlNumberInputSlider";
   public _value = 1;
   public _valueType = "number";
@@ -14,31 +16,63 @@ export class czmlIntegerPureProp {
   private _min = 0;
   private _max = 100;
   private _step = 1;
-  public isEnable = true;
-  public isEntity = false;
-
-  // public availability = "";
+  public isEnable = true; // for can edit
+  public isUsed = true; // for can used
+  public isExpand = true; // for UI
+  public _isEntity = false;
+  public isCombinedProperty = false;
+  public isComplexProperty = false;
 
   constructor(options: any) {
-    this.id = options.id ? options.id : "czml_prop_integer_pure_" + options.name + "_" + nanoid(10);
-    this.name = options.name;
-    this.labelZh = options.labelZh ? options.labelZh : options.name;
-    this.labelEn = options.labelEn ? options.labelEn : options.name;
+    if (!options) {
+      return;
+    }
+
+    if (options.id) {
+      this.id = options.id;
+    } else if (options.name) {
+      this.id = "czml_prop_integer_pure_" + options.name + "_" + nanoid(10);
+    }
+
+    if (options.name) {
+      this.name = options.name;
+    }
+
+    if (options.labelZh) {
+      this.labelZh = options.labelZh;
+    }
+
+    if (options.labelEn) {
+      this.labelEn = options.labelEn;
+    }
+
+    if (options.title) {
+      this.title = options.title;
+    }
+
     if (options.description) {
       this.description = options.description;
     }
 
-    this.tag = options.tag ? options.tag : "CzmlNumberInputSlider";
+    if (options.tag) {
+      this.tag = options.tag;
+    }
 
     if (options.value) {
       this._value = options.value;
     }
-    this.default = options.default ? options.default : "";
-    this.isEnable = options.isEnable ?? true;
 
-    if (options.max != undefined && options.min != undefined && options.max > options.min) {
-      this._max = options.max;
-      this._min = options.min;
+    if (options.default) {
+      this.default = options.default;
+    }
+
+    this.isEnable = options.isEnable ?? true;
+    this.isUsed = options.isUsed ?? true;
+    this.isExpand = options.isExpand ?? true;
+
+    if (options.max != undefined && options.min != undefined && +options.max > +options.min) {
+      this._max = +options.max;
+      this._min = +options.min;
     }
 
     if (options.step) {
@@ -59,7 +93,15 @@ export class czmlIntegerPureProp {
   }
 
   set valueType(newValue) {
-    this._valueType = newValue;
+    return;
+  }
+
+  get isEntity() {
+    return this._isEntity;
+  }
+
+  set isEntity(newValue) {
+    return;
   }
 
   get min() {
@@ -92,6 +134,20 @@ export class czmlIntegerPureProp {
 
   set step(newStep) {
     this._step = newStep;
+  }
+
+  getCzmlName() {
+    return this.name;
+  }
+
+  getCzmlValue() {
+    return this._value;
+  }
+
+  getCzmlData() {
+    return {
+      [this.name]: this._value,
+    };
   }
 }
 

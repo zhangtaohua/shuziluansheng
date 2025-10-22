@@ -1,18 +1,17 @@
 import { nanoid } from "@/utils/common/nanoid";
 
-import { czmlOptionsPureProp, CzmlClockRangeOptions, CzmlClockStepOptions } from "./OptionsPureProp.ts";
-import { czmlDoublePureProp, czmlClockMultiplierOptions } from "./DoublePureProp.ts";
-import { czmlTimePureProp, czmlClockCurrentTimeOptions } from "./TimePureProp.ts";
-import { czmlTimeIntervalProp, czmlClockIntervalOptions } from "./TimeIntervalProp.ts";
+import czmlStringProp from "../properties/StringProp";
+import czmlCartesian3PureProp from "../properties/Cartesian3PureProp";
 
-export class czmlClockProp {
-  public id = "czml_prop_clock_" + nanoid(10);
-  public name = "clock";
-  public labelZh = "时钟";
-  public labelEn = "clock";
-  public title = "Clock";
+export class czmlViewFromProp {
+  public id = "czml_prop_view_from_" + nanoid(10);
+  public name = "viewFrom";
+  public labelZh = "视觉参考";
+  public labelEn = "view from";
+  public title = "View From";
+
   public description =
-    "Initial settings for a simulated clock when a document is loaded. The start and stop time are configured using the interval property.";
+    "A suggested initial camera position offset when tracking this object, specified as a Cartesian position. Typically defined in the East (x), North (y), Up (z) reference frame relative to the object's position, but may use another frame depending on the object's velocity.";
   public type = "property";
   public componentType = "czml#packet#property";
   public tag = "CzmlCombinePropInput";
@@ -24,11 +23,17 @@ export class czmlClockProp {
   public isComplexProperty = false;
 
   public properties = {
-    interval: new czmlTimeIntervalProp(czmlClockIntervalOptions),
-    currentTime: new czmlTimePureProp(czmlClockCurrentTimeOptions),
-    multiplier: new czmlDoublePureProp(czmlClockMultiplierOptions),
-    range: new czmlOptionsPureProp(CzmlClockRangeOptions),
-    step: new czmlOptionsPureProp(CzmlClockStepOptions),
+    cartesian: new czmlCartesian3PureProp(null),
+    reference: new czmlStringProp({
+      name: "reference",
+      labelZh: "参考",
+      labelEn: "reference",
+      value: "",
+      isEnable: true,
+      isUsed: true,
+      $ref: "Values/ReferenceValue.json",
+      description: "The orientation specified as a reference to another property.",
+    }),
   };
 
   constructor(options: any) {
@@ -107,4 +112,4 @@ export class czmlClockProp {
   }
 }
 
-export default czmlClockProp;
+export default czmlViewFromProp;

@@ -1,18 +1,24 @@
 import { nanoid } from "@/utils/common/nanoid";
 
-export class czmlStringProp {
-  public id = "czml_prop_string_" + nanoid(10);
-  public name = "string";
-  public labelZh = "字符串";
-  public labelEn = "string";
-  public title = "String";
-  public description = "The string value.";
+export class czmlCartesian3PureProp {
+  public id = "czml_prop_cartesian3_pure_" + nanoid(10);
+  public name = "cartesian3";
+  public labelZh = "XYZ坐标";
+  public labelEn = "cartesian3";
+  public title = "Cartesian3";
+
+  public description =
+    "A three-dimensional Cartesian value specified as `[X, Y, Z]`. If the array has three elements, the value is constant.";
+
   public type = "property";
   public componentType = "czml#packet#property";
-  public tag = "CzmlStringPropInput";
-  public _value = "";
-  public _valueType = "string";
-  public default = "";
+  public tag = "CzmlCartesian3PurePropInput";
+
+  public unit = "meters";
+  public _value = [0, 0, 0];
+  public _valueType = "Cartesian3";
+
+  public default = [0, 0, 0];
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
   public isExpand = true; // for UI
@@ -28,7 +34,7 @@ export class czmlStringProp {
     if (options.id) {
       this.id = options.id;
     } else if (options.name) {
-      this.id = "czml_prop_string_" + options.name + "_" + nanoid(10);
+      this.id = "czml_prop_cartesian3_pure_" + options.name + "_" + nanoid(10);
     }
 
     if (options.name) {
@@ -107,14 +113,4 @@ export class czmlStringProp {
   }
 }
 
-export default czmlStringProp;
-
-export const czmlReferenceValueOptions = {
-  name: "reference",
-  labelZh: "参考值",
-  labelEn: "reference",
-  value: "reference_init" + nanoid(10),
-  isEnable: true,
-  description:
-    "Represents a reference to another property. References can be used to specify that two properties on different objects are in fact, the same property.",
-};
+export default czmlCartesian3PureProp;

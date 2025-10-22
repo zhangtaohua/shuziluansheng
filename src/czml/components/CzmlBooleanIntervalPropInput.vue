@@ -1,8 +1,8 @@
 <template>
   <div v-if="isEnable" class="col_nw_fs_fs props_container">
     <div class="row_nw_fs_ce props_title_box">
-      <label class="row_nw_fs_ce props_ch_label">{{ props.vdata.labelZh }}</label>
-      <label class="row_nw_fs_fe props_ogi_label">{{ props.vdata.labelEn }}</label>
+      <label class="row_nw_fs_ce props_ch_label">{{ currentProp.labelZh }}</label>
+      <label class="row_nw_fs_fe props_ogi_label">{{ currentProp.labelEn }}</label>
     </div>
 
     <div class="col_nw_fs_fs props_radiobox">
@@ -215,7 +215,7 @@
     width: max-content;
     height: 100%;
     color: rgba(255, 255, 255, 1);
-    font-size: 1rem;
+    font-size: var(--czml-fs-pp-zh);
     font-weight: 500;
     margin-right: 0.5rem;
   }
@@ -224,7 +224,7 @@
     width: max-content;
     height: 1rem;
     color: rgba(230, 230, 230, 1);
-    font-size: 0.75rem;
+    font-size: var(--czml-fs-pp-en);
     font-weight: 400;
     margin-top: 0.25rem;
   }
@@ -244,8 +244,8 @@
     width: max-content;
     height: 100%;
     color: rgba(255, 255, 255, 1);
-    font-size: 0.875rem;
-    font-weight: 500;
+    font-size: var(--czml-fs-ppl-zh);
+    font-weight: 400;
     margin-right: 0.5rem;
   }
 
@@ -253,7 +253,7 @@
     width: max-content;
     height: 1rem;
     color: rgba(230, 230, 230, 1);
-    font-size: 0.75rem;
+    font-size: var(--czml-fs-ppl-en);
     font-weight: 400;
     margin-top: 0.25rem;
   }
@@ -360,7 +360,7 @@
     width: max-content;
     height: 100%;
     color: rgba(255, 255, 255, 1);
-    font-size: 1rem;
+    font-size: var(--czml-fs-pp-zh);
     font-weight: 500;
     margin-right: 0.5rem;
   }
@@ -369,7 +369,7 @@
     width: max-content;
     height: 1rem;
     color: rgba(230, 230, 230, 1);
-    font-size: 0.75rem;
+    font-size: var(--czml-fs-pp-en);
     font-weight: 400;
     margin-top: 0.25rem;
   }
@@ -400,7 +400,7 @@
     width: 4rem;
     height: 100%;
     color: rgba(255, 255, 255, 1);
-    font-size: 0.875rem;
+    font-size: var(--czml-fs-label);
     font-weight: 500;
     margin-right: 0.5rem;
   }

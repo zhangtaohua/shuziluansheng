@@ -13,46 +13,57 @@ export class czmlBillboard {
   public title = "Billboard";
   public description =
     "A billboard, or viewport-aligned image. The billboard is positioned in the scene by the `position` property. A billboard is sometimes called a marker.";
-  public type = "object";
-  public componentType = "czml";
-  public flyTo = false;
-  public isEnable = true;
-  public isExpand = true;
-  public isEntity = true;
+  public type = "entity";
+  public componentType = "czml#packet#entity";
+  public tag = "CzmlEntityRender";
+  public isEnable = true; // for can edit
+  public isUsed = true; // for can used
+  public isExpand = true; // for UI
+  public _isEntity = true;
+  public isCombinedProperty = false;
+  public isComplexProperty = false;
+
+  constructor(options: any) {
+    if (!options) {
+      return;
+    }
+
+    if (options.id) {
+      this.id = options.id;
+    } else if (options.name) {
+      this.id = "czml_entity_billboard_" + options.name + "_" + nanoid(10);
+    }
+
+    if (options.name) {
+      this.name = options.name;
+    }
+
+    if (options.labelZh) {
+      this.labelZh = options.labelZh;
+    }
+
+    if (options.labelEn) {
+      this.labelEn = options.labelEn;
+    }
+
+    if (options.title) {
+      this.title = options.title;
+    }
+
+    if (options.description) {
+      this.description = options.description;
+    }
+
+    if (options.tag) {
+      this.tag = options.tag;
+    }
+
+    this.isEnable = options.isEnable ?? true;
+    this.isUsed = options.isUsed ?? true;
+    this.isExpand = options.isExpand ?? true;
+  }
 
   public properties = {
-    id: new czmlStringProp({
-      name: "id",
-      labelZh: "标示",
-      labelEn: "id",
-      value: "billboard_id_init" + nanoid(10),
-      isEnable: true,
-      description:
-        "The ID of the object described by this packet. IDs do not need to be GUIDs, but they do need to uniquely identify a single object within a CZML source and any other CZML sources loaded into the same scope. If this property is not specified, the client will automatically generate a unique one. However, this prevents later packets from referring to this object in order to add more data to it.",
-    }),
-    name: new czmlStringProp({
-      name: "name",
-      labelZh: "名称",
-      labelEn: "name",
-      value: "billboard_name_init" + nanoid(10),
-      isEnable: true,
-      description: "The name of the object. It does not have to be unique and is intended for user consumption.",
-    }),
-    description: new czmlTextProp({
-      name: "description",
-      labelZh: "描述",
-      labelEn: "description",
-      value: this.description,
-      isEnable: true,
-      description: "An HTML description of the object.",
-    }),
-    position: new czmlPositionProp({
-      $ref: "Position.json",
-      description:
-        "The position of the object in the world. The position has no direct visual representation, but it is used to locate billboards, labels, and other graphical items attached to the object.",
-      czmlExamples: ["Examples/SimplePosition.json", "Examples/TimeVaryingPosition.json"],
-      default: null,
-    }),
     show: new czmlShowProp({
       $ref: "Boolean.json",
       description: "Whether or not the billboard is shown.",
@@ -166,6 +177,42 @@ export class czmlBillboard {
       default: 0.0,
     },
   };
+  // end properties
+
+  get isEntity() {
+    return this._isEntity;
+  }
+
+  set isEntity(newValue) {
+    return;
+  }
+
+  public getCzmlName() {
+    return this.name;
+  }
+
+  public getCzmlValue() {
+    const czmlData = {};
+    const keys = Object.keys(this.properties);
+
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i];
+      const prop = this.properties[key];
+      if (prop.getCzmlName) {
+        const propKey = prop.getCzmlName();
+        const propValue = prop.getCzmlValue();
+        czmlData[propKey] = propValue;
+      }
+    }
+
+    return czmlData;
+  }
+
+  public getCzmlData() {
+    return {
+      [this.name]: this.getCzmlValue(),
+    };
+  }
 }
 
 export default czmlBillboard;

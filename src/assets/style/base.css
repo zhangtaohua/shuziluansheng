@@ -2,6 +2,8 @@
 
 /* :root -> 获取根元素html  只有此处颜色值 和 名字是可以对应的 */
 :root {
+  --fsr-28px: 1.75rem;
+  --fsr-26px: 1.625rem;
   --fsr-24px: 1.5rem;
   --fsr-22px: 1.375rem;
   --fsr-20px: 1.25rem;
@@ -16,6 +18,32 @@
   --c-warning: #ff0058;
   --c-background: #0a192f;
   --c-card: rgba(16, 42, 88, 0.7);
+
+  --czml-fs-p-zh: 1.75rem;
+  --czml-fs-p-en: 1.5rem;
+
+  --czml-fs-e-zh: 1.5rem;
+  --czml-fs-e-en: 1.25rem;
+
+  --czml-fs-c-zh: 1.25rem;
+  --czml-fs-c-en: 1.125rem;
+
+  --czml-fs-pp-zh: 1rem;
+  --czml-fs-pp-en: 0.875rem;
+
+  --czml-fs-ppl-zh: 0.875rem;
+  --czml-fs-ppl-en: 0.75rem;
+
+  --czml-fs-label: 0.875rem;
+  --czml-fs-sl-label: 1.5rem;
+  --czml-fs-value: 0.875rem;
+
+  --h5-fs-pp-zh: 1rem;
+  --h5-fs-pp-en: 0.875rem;
+
+  --h5-fs-label: 0.875rem;
+  --h5-fs-sl-label: 1.5rem;
+  --h5-fs-value: 0.875rem;
 }
 
 *,

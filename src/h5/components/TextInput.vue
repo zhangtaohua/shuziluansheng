@@ -7,17 +7,26 @@
       </div>
     </div>
 
-    <div class="row_nw_ce_ce props_input_sbox"
-    :class="{ props_input_sbox_act: isFoucus,
-      props_input_sbox_disabled: !currentComp.isEnabl}">
-      <textarea :id="currentComp.id" :name="currentComp.id" class="props_input"
-      v-model="currentText" rows="5"
-      :disabled="!currentComp.isEnable"
-      @focus="setIsFoucus(true)"
-      @blur="() => {setIsFoucus(false); textChangeHd()}"
-      @input="textChangeHd"
-      >
-    </textarea>
+    <div
+      class="row_nw_ce_ce props_input_sbox"
+      :class="{ props_input_sbox_act: isFoucus, props_input_sbox_disabled: !currentComp.isEnabl }"
+    >
+      <textarea
+        :id="currentComp.id"
+        :name="currentComp.id"
+        class="props_input"
+        v-model="currentText"
+        rows="5"
+        :disabled="!currentComp.isEnable"
+        @focus="setIsFoucus(true)"
+        @blur="
+          () => {
+            setIsFoucus(false);
+            textChangeHd();
+          }
+        "
+        @input="textChangeHd"
+      ></textarea>
     </div>
   </div>
 </template>
@@ -28,12 +37,12 @@
 
   const { editorConfig, setEditorRefreshShape } = useEditorConfigStore();
   const currentText = ref("");
-  let currentComp =  null;
+  let currentComp = null;
   const isEnable = ref(false);
   const isFoucus = ref(false);
 
   function init() {
-    if(editorConfig.currentParentComp && editorConfig.currentParentComp.text) {
+    if (editorConfig.currentParentComp && editorConfig.currentParentComp.text) {
       isEnable.value = true;
       currentText.value = editorConfig.currentParentComp.text;
       currentComp = editorConfig.currentParentComp;
@@ -80,7 +89,7 @@
     width: max-content;
     height: 100%;
     color: rgba(255, 255, 255, 1);
-    font-size: 1rem;
+    font-size: var(--czml-fs-pp-zh);
     font-weight: 500;
     margin-right: 0.5rem;
     margin-left: 0.25rem;
@@ -90,7 +99,7 @@
     width: max-content;
     height: 1rem;
     color: rgba(200, 200, 200, 1);
-    font-size: 0.875rem;
+    font-size: var(--czml-fs-pp-en);
     font-weight: 400;
   }
 

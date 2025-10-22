@@ -5,7 +5,10 @@ export class czmlDoublePureProp {
   public name = "double";
   public labelZh = "浮点数";
   public labelEn = "double";
+  public title = "Double";
   public description = "A floating-point number.";
+  public type = "property";
+  public componentType = "czml#packet#property";
   public tag = "CzmlNumberSliderPropInput";
   public _value = 1.0;
   public _valueType = "number";
@@ -13,31 +16,63 @@ export class czmlDoublePureProp {
   private _min = 0;
   private _max = 50;
   private _step = 0.1;
-  public isEnable = true;
-  public isEntity = false;
-
-  // public availability = "";
+  public isEnable = true; // for can edit
+  public isUsed = true; // for can used
+  public isExpand = true; // for UI
+  public _isEntity = false;
+  public isCombinedProperty = false;
+  public isComplexProperty = false;
 
   constructor(options: any) {
-    this.id = options.id ? options.id : "czml_prop_double_pure_" + options.name + "_" + nanoid(10);
-    this.name = options.name;
-    this.labelZh = options.labelZh ? options.labelZh : options.name;
-    this.labelEn = options.labelEn ? options.labelEn : options.name;
+    if (!options) {
+      return;
+    }
+
+    if (options.id) {
+      this.id = options.id;
+    } else if (options.name) {
+      this.id = "czml_prop_double_pure_" + options.name + "_" + nanoid(10);
+    }
+
+    if (options.name) {
+      this.name = options.name;
+    }
+
+    if (options.labelZh) {
+      this.labelZh = options.labelZh;
+    }
+
+    if (options.labelEn) {
+      this.labelEn = options.labelEn;
+    }
+
+    if (options.title) {
+      this.title = options.title;
+    }
+
     if (options.description) {
       this.description = options.description;
     }
 
-    this.tag = options.tag ? options.tag : "CzmlNumberSliderPropInput";
+    if (options.tag) {
+      this.tag = options.tag;
+    }
 
     if (options.value) {
       this._value = options.value;
     }
-    this.default = options.default ? options.default : "";
-    this.isEnable = options.isEnable ?? true;
 
-    if (options.max != undefined && options.min != undefined && options.max > options.min) {
-      this._max = options.max;
-      this._min = options.min;
+    if (options.default) {
+      this.default = options.default;
+    }
+
+    this.isEnable = options.isEnable ?? true;
+    this.isUsed = options.isUsed ?? true;
+    this.isExpand = options.isExpand ?? true;
+
+    if (options.max != undefined && options.min != undefined && +options.max > +options.min) {
+      this._max = +options.max;
+      this._min = +options.min;
     }
 
     if (options.step) {
@@ -58,7 +93,15 @@ export class czmlDoublePureProp {
   }
 
   set valueType(newValue) {
-    this._valueType = newValue;
+    return;
+  }
+
+  get isEntity() {
+    return this._isEntity;
+  }
+
+  set isEntity(newValue) {
+    return;
   }
 
   get min() {
@@ -92,13 +135,26 @@ export class czmlDoublePureProp {
   set step(newStep) {
     this._step = newStep;
   }
+
+  public getCzmlName() {
+    return this.name;
+  }
+
+  public getCzmlValue() {
+    return this._value;
+  }
+
+  public getCzmlData() {
+    return {
+      [this.name]: this._value,
+    };
+  }
 }
 
 export default czmlDoublePureProp;
 
 export const czmlClockMultiplierOptions = {
   name: "multiplier",
-  vueName: "multiplier",
   labelZh: "乘数",
   labelEn: "multiplier",
   tag: "CzmlNumberSliderPropInput",
@@ -111,7 +167,6 @@ export const czmlClockMultiplierOptions = {
 
 export const czmlInterpolationDegreeOptions = {
   name: "interpolationDegree",
-  vueName: "interpolationDegree",
   labelZh: "插值角度",
   labelEn: "interpolation degree",
   tag: "CzmlNumberSliderPropInput",
@@ -127,7 +182,6 @@ export const czmlInterpolationDegreeOptions = {
 
 export const czmlForwardExtrapolationDurationOptions = {
   name: "forwardExtrapolationDuration",
-  vueName: "forwardExtrapolationDuration",
   labelZh: "前向插值时间",
   labelEn: "forwardExtrapolation duration",
   tag: "CzmlNumberSliderPropInput",
@@ -144,7 +198,6 @@ export const czmlForwardExtrapolationDurationOptions = {
 
 export const czmlBackwardExtrapolationDurationOptions = {
   name: "backwardExtrapolationDuration",
-  vueName: "backwardExtrapolationDuration",
   labelZh: "后向插值时间",
   labelEn: "backwardExtrapolation duration",
   tag: "CzmlNumberSliderPropInput",

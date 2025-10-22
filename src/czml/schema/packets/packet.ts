@@ -1,25 +1,25 @@
 import { nanoid } from "@/utils/common/nanoid";
-import czmlBooleanProp from "../properties/BooleanProp";
+import czmlBooleanPureProp from "../properties/BooleanPureProp.ts";
 import czmlStringProp from "../properties/StringProp";
 import czmlTextProp from "../properties/TextProp";
 import czmlPositionProp from "../properties/PositionProp";
 import { czmlTimeCollectionProp, czmlAvailabilityOptions } from "../properties/TimeCollectionProp";
 import { czmlCustomPropertiesProp, czmlCustomPropertiesOptions } from "../properties/CustomPropertiesProp";
 import { czmlOrientationProp } from "../properties/OrientationProp.ts";
+import czmlViewFromProp from "../properties/ViewFromProp.ts";
 
 import czmlBillboard from "../entities/billboard";
 
 export class czmlPacket {
-  public id = "czml_entity_packet_" + nanoid(10);
+  public id = "czml_packet_" + nanoid(10);
   public name = "packet";
   public labelZh = "包";
   public labelEn = "packet";
-  public title = "packet";
+  public title = "Packet";
   public description = "Describes the graphical properties of a single object in a scene, such as a single aircraft.";
-  public type = "object";
-  public componentType = "czml"; // 是 czml html three(3d)
-  public flyTo = true;
-  public isEnable = true;
+  public type = "packet";
+  public componentType = "czml#packet";
+  public isEnable = true; // for can edit
   public isUsed = true; // for can used
   public isExpand = true; // for UI
 
@@ -56,7 +56,7 @@ export class czmlPacket {
         "The ID of the object described by this packet. IDs do not need to be GUIDs, but they do need to uniquely identify a single object within a CZML source and any other CZML sources loaded into the same scope. If this property is not specified, the client will automatically generate a unique one. However, this prevents later packets from referring to this object in order to add more data to it.",
       type: "string",
     }),
-    delete: new czmlBooleanProp({
+    delete: new czmlBooleanPureProp({
       name: "delete",
       labelZh: "删除",
       labelEn: "delete",
@@ -136,12 +136,12 @@ export class czmlPacket {
       description:
         "The orientation of the object in the world. The orientation has no direct visual representation, but it is used to orient models, cones, pyramids, and other graphical items attached to the object.",
     }),
-    viewFrom: {
+    viewFrom: new czmlViewFromProp({
       $ref: "ViewFrom.json",
       description:
         "A suggested camera location when viewing this object. The property is specified as a Cartesian position in the East (x), North (y), Up (z) reference frame relative to the object's position.",
-    },
-    billboard: new czmlBillboard(),
+    }),
+    billboard: new czmlBillboard(null),
     box: {
       $ref: "Box.json",
       description:
@@ -237,6 +237,24 @@ export class czmlPacket {
         "Defines a graphical vector that originates at the `position` property and extends in the provided direction for the provided length. The vector is positioned using the `position` property.",
     },
   };
+
+  // end properties
+  public getCzmlData() {
+    const czmlData = {};
+    const keys = Object.keys(this.properties);
+
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i];
+      const prop = this.properties[key];
+      if (prop.getCzmlName) {
+        const propKey = prop.getCzmlName();
+        const propValue = prop.getCzmlValue();
+        czmlData[propKey] = propValue;
+      }
+    }
+
+    return czmlData;
+  }
 }
 
 export default czmlBillboard;

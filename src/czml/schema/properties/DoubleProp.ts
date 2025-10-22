@@ -5,7 +5,10 @@ export class czmlDoubleProp {
   public name = "double";
   public labelZh = "浮点数";
   public labelEn = "double";
+  public title = "Double";
   public description = "A floating-point number.";
+  public type = "property";
+  public componentType = "czml#packet#property";
   public tag = "CzmlDoublePropInput";
   public _value = 1.0;
   public _valueType = "number";
@@ -13,31 +16,63 @@ export class czmlDoubleProp {
   private _min = 0;
   private _max = 50;
   private _step = 0.1;
-  public isEnable = true;
-  public isEntity = false;
-
-  // public availability = "";
+  public isEnable = true; // for can edit
+  public isUsed = true; // for can used
+  public isExpand = true; // for UI
+  public _isEntity = false;
+  public isCombinedProperty = false;
+  public isComplexProperty = true;
 
   constructor(options: any) {
-    this.id = options.id ? options.id : "czml_prop_double_" + options.name + "_" + nanoid(10);
-    this.name = options.name;
-    this.labelZh = options.labelZh ? options.labelZh : options.name;
-    this.labelEn = options.labelEn ? options.labelEn : options.name;
+    if (!options) {
+      return;
+    }
+
+    if (options.id) {
+      this.id = options.id;
+    } else if (options.name) {
+      this.id = "czml_prop_bool_" + options.name + "_" + nanoid(10);
+    }
+
+    if (options.name) {
+      this.name = options.name;
+    }
+
+    if (options.labelZh) {
+      this.labelZh = options.labelZh;
+    }
+
+    if (options.labelEn) {
+      this.labelEn = options.labelEn;
+    }
+
+    if (options.title) {
+      this.title = options.title;
+    }
+
     if (options.description) {
       this.description = options.description;
     }
 
-    this.tag = options.tag ? options.tag : "CzmlDoublePropInput";
+    if (options.tag) {
+      this.tag = options.tag;
+    }
 
     if (options.value) {
       this._value = options.value;
     }
-    this.default = options.default ? options.default : "";
-    this.isEnable = options.isEnable ?? true;
 
-    if (options.max != undefined && options.min != undefined && options.max > options.min) {
-      this._max = options.max;
-      this._min = options.min;
+    if (options.default) {
+      this.default = options.default;
+    }
+
+    this.isEnable = options.isEnable ?? true;
+    this.isUsed = options.isUsed ?? true;
+    this.isExpand = options.isExpand ?? true;
+
+    if (options.max != undefined && options.min != undefined && +options.max > +options.min) {
+      this._max = +options.max;
+      this._min = +options.min;
     }
 
     if (options.step) {
@@ -58,7 +93,15 @@ export class czmlDoubleProp {
   }
 
   set valueType(newValue) {
-    this._valueType = newValue;
+    return;
+  }
+
+  get isEntity() {
+    return this._isEntity;
+  }
+
+  set isEntity(newValue) {
+    return;
   }
 
   get min() {
@@ -91,6 +134,20 @@ export class czmlDoubleProp {
 
   set step(newStep) {
     this._step = newStep;
+  }
+
+  getCzmlName() {
+    return this.name;
+  }
+
+  getCzmlValue() {
+    return this._value;
+  }
+
+  getCzmlData() {
+    return {
+      [this.name]: this._value,
+    };
   }
 }
 
