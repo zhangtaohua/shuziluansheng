@@ -1,8 +1,14 @@
 <template>
   <div v-if="isEnable" class="col_nw_fs_fs props_container">
-    <div class="row_nw_fs_ce props_title_box">
-      <label class="row_nw_fs_ce props_ch_label">{{ currentProp.labelZh }}</label>
-      <label class="row_nw_fs_fe props_ogi_label">{{ currentProp.labelEn }}</label>
+    <div class="row_nw_sb_ce props_title_box">
+      <div class="row_nw_fs_ce wh_auto_100p">
+        <label class="row_nw_fs_ce props_ch_label">{{ currentProp.labelZh }}</label>
+        <label class="row_nw_fs_fe props_ogi_label">{{ currentProp.labelEn }}</label>
+      </div>
+
+      <div class="row_nw_fs_ce props_timecol_isusedbox">
+        <RjBooleanSwitchInput v-model="currentProp.isUsed"></RjBooleanSwitchInput>
+      </div>
     </div>
     <div class="col_nw_fs_fs props_it_box">
       <div v-for="inval in intervalsVales" :key="inval.startTime" class="col_nw_fs_fs props_it_itembox">
@@ -53,13 +59,12 @@
 <script setup lang="ts">
   import { ref, reactive, onMounted, computed, watch, nextTick } from "vue";
   import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
-  import RjRadioTabInput from "@/components/form/RjRadioTabInput.vue";
+  import RjBooleanSwitchInput from "@/components/form/RjBooleanSwitchInput.vue";
   import { defaultTimeFormatStr } from "@/czml/schema/properties/commondata";
   import { cloneDeep } from "es-toolkit";
   import { isArray } from "es-toolkit/compat";
   import dayjs from "dayjs";
 
-  //  这个props 就是相当于 new czmlShowProp()的值
   const props = defineProps({
     vdata: {
       type: Object,
@@ -96,9 +101,9 @@
       const last = intervalsVales.value.length - 1;
       console.log("last", last);
       intervalsVales.value.push({
-        startTime: intervalsVales.value[last].endTime,
+        // startTime: intervalsVales.value[last].endTime,
+        startTime: dayjs().format(defaultTimeFormatStr),
         endTime: dayjs().format(defaultTimeFormatStr),
-        boolean: true,
       });
     }
   };
@@ -118,14 +123,14 @@
   watch(
     intervalsVales,
     () => {
-      if (currentProp.value && currentProp.value.valueType == "Intervals") {
+      if (currentProp.value) {
         console.log("intervalsVales", intervalsVales.value);
         currentProp.value.value = intervalsVales.value;
       }
     },
     {
       immediate: false,
-      deep: false,
+      deep: true,
     },
   );
 </script>
@@ -159,6 +164,12 @@
     font-size: var(--czml-fs-pp-en);
     font-weight: 400;
     margin-top: 0.25rem;
+  }
+
+  .props_timecol_isusedbox {
+    width: 10rem;
+    height: 100%;
+    margin-right: 0.25rem;
   }
 
   .props_it_box {

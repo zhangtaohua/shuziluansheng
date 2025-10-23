@@ -3,6 +3,7 @@ import { nanoid } from "@/utils/common/nanoid";
 export class czmlDoublePureProp {
   public id = "czml_prop_double_pure_" + nanoid(10);
   public name = "double";
+  public _czmlName = "double";
   public labelZh = "浮点数";
   public labelEn = "double";
   public title = "Double";
@@ -36,6 +37,10 @@ export class czmlDoublePureProp {
 
     if (options.name) {
       this.name = options.name;
+    }
+
+    if (options.czmlName) {
+      this._czmlName = options.czmlName;
     }
 
     if (options.labelZh) {
@@ -136,18 +141,39 @@ export class czmlDoublePureProp {
     this._step = newStep;
   }
 
+  get czmlName() {
+    return this._czmlName;
+  }
+
+  set czmlName(newValue) {
+    return;
+    // this._czmlName = newValue;
+  }
+
   public getCzmlName() {
-    return this.name;
+    if (this.isUsed) {
+      return this.czmlName;
+    } else {
+      return null;
+    }
   }
 
   public getCzmlValue() {
-    return this._value;
+    if (this.isUsed) {
+      return this._value;
+    } else {
+      return null;
+    }
   }
 
   public getCzmlData() {
-    return {
-      [this.name]: this._value,
-    };
+    if (this.isUsed) {
+      return {
+        [this.name]: this._value,
+      };
+    } else {
+      return null;
+    }
   }
 }
 
@@ -155,6 +181,7 @@ export default czmlDoublePureProp;
 
 export const czmlClockMultiplierOptions = {
   name: "multiplier",
+  czmlName: "multiplier",
   labelZh: "乘数",
   labelEn: "multiplier",
   tag: "CzmlNumberSliderPropInput",
@@ -167,6 +194,7 @@ export const czmlClockMultiplierOptions = {
 
 export const czmlInterpolationDegreeOptions = {
   name: "interpolationDegree",
+  czmlName: "interpolationDegree",
   labelZh: "插值角度",
   labelEn: "interpolation degree",
   tag: "CzmlNumberSliderPropInput",
@@ -182,6 +210,7 @@ export const czmlInterpolationDegreeOptions = {
 
 export const czmlForwardExtrapolationDurationOptions = {
   name: "forwardExtrapolationDuration",
+  czmlName: "forwardExtrapolationDuration",
   labelZh: "前向插值时间",
   labelEn: "forwardExtrapolation duration",
   tag: "CzmlNumberSliderPropInput",
@@ -198,6 +227,7 @@ export const czmlForwardExtrapolationDurationOptions = {
 
 export const czmlBackwardExtrapolationDurationOptions = {
   name: "backwardExtrapolationDuration",
+  czmlName: "backwardExtrapolationDuration",
   labelZh: "后向插值时间",
   labelEn: "backwardExtrapolation duration",
   tag: "CzmlNumberSliderPropInput",

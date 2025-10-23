@@ -7,6 +7,45 @@
 
     <div class="col_nw_fs_fs props_radiobox">
       <div class="row_nw_fs_ce props_radiobox_title">
+        <label class="row_nw_fs_ce props_radioch_label">插值</label>
+        <label class="row_nw_fs_fe props_radioogi_label">interpolation type</label>
+      </div>
+
+      <div class="row_nw_fs_ce props_radioinbox">
+        <RjRadioTabInput
+          :name="currentProp.id"
+          :options="currentProp.interpolationOptions"
+          :initValue="currentProp.interpolationType"
+          @onChange="interpolationTypeOptionChangedHd"
+        ></RjRadioTabInput>
+      </div>
+    </div>
+
+    <!-- 以下是  InterpolatableProperty.json 相关的设置 -->
+    <div v-if="currentProp.interpolationType == CZMLVALUESWITHINTERPOLATE" class="row_nw_ce_ce props_interpolation_box">
+      <div class="col_nw_fs_ce props_interpolation_wrapbox">
+        <div class="row_nw_fs_ce props_title_box">
+          <label class="row_nw_fs_ce props_ch_label">{{ currentProp.interpolationproperties.labelZh }}</label>
+          <label class="row_nw_fs_fe props_ogi_label">{{ currentProp.interpolationproperties.labelEn }}</label>
+        </div>
+
+        <div
+          v-for="interChildProp in currentProp.interpolationproperties.properties"
+          :key="interChildProp.id"
+          class="col_nw_ce_ce props_interpolation_ic_box"
+        >
+          <component :is="interChildProp.tag" :vdata="interChildProp"></component>
+          <LineGap></LineGap>
+        </div>
+      </div>
+    </div>
+    <div v-else class="col_nw_fs_ce props_interpolation_nosuebox">
+      <label class="row_nw_fs_ce props_interpolation_nousetipzh">不使用插值算法</label>
+      <label class="row_nw_fs_ce props_interpolation_nousetipeng">No use interpolateable properties</label>
+    </div>
+
+    <div class="col_nw_fs_fs props_radiobox">
+      <div class="row_nw_fs_ce props_radiobox_title">
         <label class="row_nw_fs_ce props_radioch_label">值是否含有时间标记</label>
         <label class="row_nw_fs_fe props_radioogi_label">is with time-tagged</label>
       </div>
@@ -15,6 +54,7 @@
           :name="currentProp.id"
           :options="currentProp.timeTypeOptions"
           :initValue="currentProp.timeType"
+          :isRefresh="refreshTimeTab"
           @onChange="timeTypesOptionChangedHd"
         ></RjRadioTabInput>
       </div>
@@ -44,7 +84,7 @@
       </div>
     </div>
     <div v-else-if="currentProp.timeType == CZMLTIMESECONDS" class="col_nw_fs_fs props_it_box">
-      <div v-for="inval in intervalsValues" :key="inval[0]" class="col_nw_fs_fs props_it_itembox">
+      <div v-for="(inval, index) in intervalsValues" :key="'second_' + index" class="col_nw_fs_fs props_it_itembox">
         <div class="row_nw_fs_ce props_qtinput_linetime">
           <div class="row_nw_fs_ce props_qtinput_linetimelabel">秒 seconds:</div>
           <div class="row_nw_fs_ce props_qtinput_linetimeinputbox">
@@ -96,7 +136,11 @@
     </div>
 
     <div v-else-if="currentProp.timeType == CZMLTIMESTRING" class="col_nw_fs_fs props_it_box">
-      <div v-for="inval in timestrIntervalsValues" :key="inval[0]" class="col_nw_fs_fs props_it_itembox">
+      <div
+        v-for="(inval, index) in timestrIntervalsValues"
+        :key="'timestr_' + index"
+        class="col_nw_fs_fs props_it_itembox"
+      >
         <div class="row_nw_fs_ce props_qtinput_linetime">
           <div class="row_nw_fs_ce props_qtinput_linetimelabel">时间串 time:</div>
           <div class="row_nw_fs_ce props_qtinput_linetimeinputbox">
@@ -193,6 +237,7 @@
   const pureValue = ref([0, 0, 0, 0]);
   const intervalsValues = ref([[0, 0, 0, 0, 0]]);
   const timestrIntervalsValues = ref([[dayjs().format(defaultTimeFormatStr), 0, 0, 0, 0]]);
+  const refreshTimeTab = ref(0);
 
   function interpolationTypeOptionChangedHd(value: string) {
     if (currentProp.value) {
@@ -266,6 +311,7 @@
     () => {
       nextTick(() => {
         console.log("currentProp.valueType", currentProp.value);
+        refreshTimeTab.value = refreshTimeTab.value + 1;
         if (currentProp.value.timeType == CZMLPUREVALUE) {
           pureValue.value = cloneDeep(currentProp.value.value);
         } else if (currentProp.value.timeType == CZMLTIMESECONDS) {
@@ -391,6 +437,57 @@
   .props_radioinbox {
     width: 100%;
     height: auto;
+  }
+
+  .props_interpolation_box {
+    width: 100%;
+    height: auto;
+    background-color: rgba(0, 0, 0, 1);
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+    padding-top: 1rem;
+  }
+
+  .props_interpolation_wrapbox {
+    width: calc(100% - 2rem);
+    height: auto;
+    background-color: rgba(26, 30, 39, 1);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .props_interpolation_ic_box {
+    width: 100%;
+    height: auto;
+  }
+
+  .props_interpolation_nosuebox {
+    width: 100%;
+    height: auto;
+    margin-bottom: 1rem;
+    padding-top: 1rem;
+    background-color: rgba(0, 0, 0, 1);
+    border-radius: 0 0 0.5rem 0.5rem;
+    /* border: 1px solid rgba(255, 255, 255, 0.5); */
+  }
+
+  .props_interpolation_nousetipzh {
+    width: 100%;
+    height: 2rem;
+    color: rgba(255, 255, 255, 1);
+    font-size: 0.875rem;
+    font-weight: 400;
+    padding-left: 0.5rem;
+  }
+
+  .props_interpolation_nousetipeng {
+    width: 100%;
+    height: 2rem;
+    color: rgba(230, 230, 230, 1);
+    font-size: 0.875rem;
+    font-weight: 400;
+    padding-left: 0.5rem;
   }
 
   .props_input_box {

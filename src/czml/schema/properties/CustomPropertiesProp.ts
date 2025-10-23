@@ -3,6 +3,7 @@ import { nanoid } from "@/utils/common/nanoid";
 export class czmlCustomPropertiesProp {
   public id = "czml_prop_custom_properties_" + nanoid(10);
   public name = "customProperties";
+  public _czmlName = "customProperties";
   public labelZh = "自定义属性";
   public labelEn = "custom properties";
   public title = "Custom Properties";
@@ -47,6 +48,10 @@ export class czmlCustomPropertiesProp {
 
     if (options.name) {
       this.name = options.name;
+    }
+
+    if (options.czmlName) {
+      this._czmlName = options.czmlName;
     }
 
     if (options.labelZh) {
@@ -106,34 +111,64 @@ export class czmlCustomPropertiesProp {
     return;
   }
 
+  get czmlName() {
+    return this._czmlName;
+  }
+
+  set czmlName(newValue) {
+    return;
+    // this._czmlName = newValue;
+  }
+
   public getCzmlName() {
-    return this.name;
+    if (this.isUsed) {
+      return this.czmlName;
+    } else {
+      return null;
+    }
   }
 
   public getCzmlValue() {
-    const czmlData = {};
+    if (this.isUsed) {
+      const czmlData = {};
 
-    for (let i = 0; i < this.value.length; i++) {
-      const prop = this.value[i];
-      const propKey = prop.key;
-      let propValue = prop.value;
-      try {
-        if (prop.isJson) {
-          propValue = JSON.parse(prop.value);
+      for (let i = 0; i < this.value.length; i++) {
+        const prop = this.value[i];
+        const propKey = prop.key;
+        let propValue = prop.value;
+        try {
+          if (prop.isJson) {
+            propValue = JSON.parse(prop.value);
+          }
+        } catch (error) {
+          ElMessage({
+            type: "warning",
+            showClose: true,
+            duration: 3000,
+            offset: 96,
+            message: "自定义属性，JSON解析失败",
+          });
+          console.error(this.name + "Json parse error", error);
         }
-      } catch (error) {
-        console.error(this.name + "Json parse error", error);
+        if (propKey && propValue) {
+          czmlData[propKey] = propValue;
+        }
       }
-      czmlData[propKey] = propValue;
-    }
 
-    return czmlData;
+      return czmlData;
+    } else {
+      return null;
+    }
   }
 
   public getCzmlData() {
-    return {
-      [this.name]: this.getCzmlValue(),
-    };
+    if (this.isUsed) {
+      return {
+        [this.name]: this.getCzmlValue(),
+      };
+    } else {
+      return null;
+    }
   }
 }
 
@@ -141,6 +176,7 @@ export default czmlCustomPropertiesProp;
 
 export const czmlCustomPropertiesOptions = {
   name: "customProperties",
+  czmlName: "customProperties",
   labelZh: "自定义属性",
   labelEn: "custom Properties",
   tag: "CzmlCustomPropertiesPropInput",

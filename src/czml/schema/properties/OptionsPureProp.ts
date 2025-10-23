@@ -3,6 +3,7 @@ import { nanoid } from "@/utils/common/nanoid";
 export class czmlOptionsPureProp {
   public id = "czml_prop_pure_options_" + nanoid(10);
   public name = "pure_options";
+  public _czmlName = "pure_options";
   public labelZh = "纯选择式";
   public labelEn = "pure options";
   public title = "Pure Options";
@@ -34,6 +35,10 @@ export class czmlOptionsPureProp {
 
     if (options.name) {
       this.name = options.name;
+    }
+
+    if (options.czmlName) {
+      this._czmlName = options.czmlName;
     }
 
     if (options.labelZh) {
@@ -95,18 +100,39 @@ export class czmlOptionsPureProp {
     return;
   }
 
-  getCzmlName() {
-    return this.name;
+  get czmlName() {
+    return this._czmlName;
   }
 
-  getCzmlValue() {
-    return this._value;
+  set czmlName(newValue) {
+    return;
+    // this._czmlName = newValue;
   }
 
-  getCzmlData() {
-    return {
-      [this.name]: this._value,
-    };
+  public getCzmlName() {
+    if (this.isUsed) {
+      return this.czmlName;
+    } else {
+      return null;
+    }
+  }
+
+  public getCzmlValue() {
+    if (this.isUsed) {
+      return this._value;
+    } else {
+      return null;
+    }
+  }
+
+  public getCzmlData() {
+    if (this.isUsed) {
+      return {
+        [this.name]: this.getCzmlValue(),
+      };
+    } else {
+      return null;
+    }
   }
 }
 
@@ -114,10 +140,9 @@ export default czmlOptionsPureProp;
 
 export const CzmlReferenceFrameOptions = {
   name: "referenceFrame",
-  vueName: "referenceFrame",
+  czmlName: "referenceFrame",
   labelZh: "参考帧",
   labelEn: "referenceFrame",
-  tag: "CzmlOptionsPurePropInput",
   isEnable: true,
 
   // real default value is static
@@ -146,10 +171,9 @@ export const CzmlReferenceFrameOptions = {
 
 export const CzmlArcTypeOptions = {
   name: "arcType",
-  vueName: "arcType",
+  czmlName: "arcType",
   labelZh: "弧型",
   labelEn: "arcType",
-  tag: "CzmlOptionsPurePropInput",
   isEnable: true,
 
   // real default value is static
@@ -191,10 +215,9 @@ export const CzmlArcTypeOptions = {
 
 export const CzmlSensorVolumePortionToDisplayOptions = {
   name: "SensorVolumePortionToDisplay",
-  vueName: "SensorVolumePortionToDisplay",
+  czmlName: "SensorVolumePortionToDisplay",
   labelZh: "弧型",
   labelEn: "SensorVolumePortionToDisplay",
-  tag: "CzmlOptionsPurePropInput",
   isEnable: true,
 
   // real default value is static
@@ -235,10 +258,9 @@ export const CzmlSensorVolumePortionToDisplayOptions = {
 
 export const CzmlClockRangeOptions = {
   name: "clockRange",
-  vueName: "clockRange",
+  czmlName: "clockRange",
   labelZh: "时钟范围",
   labelEn: "clock range",
-  tag: "CzmlOptionsPurePropInput",
   isEnable: true,
 
   // real default value is static
@@ -280,14 +302,13 @@ export const CzmlClockRangeOptions = {
 
 export const CzmlClockStepOptions = {
   name: "clockStep",
-  vueName: "clockStep",
+  czmlName: "clockStep",
   labelZh: "时钟步长",
   labelEn: "clock step",
-  tag: "CzmlOptionsPurePropInput",
   isEnable: true,
 
   // real default value is static
-  value: "TICK_DEPENDENT",
+  value: "SYSTEM_CLOCK_MULTIPLIER",
   options: [
     {
       id: "SYSTEM_CLOCK_MULTIPLIER",
@@ -325,10 +346,9 @@ export const CzmlClockStepOptions = {
 
 export const CzmlInterpolationAlgorithmOptions = {
   name: "interpolationAlgorithm",
-  vueName: "interpolationAlgorithm",
+  czmlName: "interpolationAlgorithm",
   labelZh: "插值算法",
   labelEn: "interpolation algorithm",
-  tag: "CzmlOptionsPurePropInput",
   isEnable: true,
   description:
     'The interpolation algorithm to use when interpolating. Valid values are "LINEAR", "LAGRANGE", and "HERMITE".',
@@ -373,10 +393,9 @@ export const CzmlInterpolationAlgorithmOptions = {
 
 export const CzmlForwardExtrapolationTypeOptions = {
   name: "forwardExtrapolationType",
-  vueName: "forwardExtrapolationType",
+  czmlName: "forwardExtrapolationType",
   labelZh: "前向推导类型",
   labelEn: "forward extrapolation type",
-  tag: "CzmlOptionsPurePropInput",
   isEnable: true,
   description:
     'The type of extrapolation to perform when a value is requested at a time after any available samples. Valid values are "NONE", "HOLD", and "EXTRAPOLATE".',
@@ -421,10 +440,9 @@ export const CzmlForwardExtrapolationTypeOptions = {
 
 export const CzmlBackwardExtrapolationTypeOptions = {
   name: "backwardExtrapolationType",
-  vueName: "backwardExtrapolationType",
+  czmlName: "backwardExtrapolationType",
   labelZh: "后向推导类型",
   labelEn: "backward extrapolation type",
-  tag: "CzmlOptionsPurePropInput",
   isEnable: true,
   description:
     'The type of extrapolation to perform when a value is requested at a time before any available samples. Valid values are "NONE", "HOLD", and "EXTRAPOLATE".',
@@ -469,10 +487,9 @@ export const CzmlBackwardExtrapolationTypeOptions = {
 
 export const CzmlSampleOptions = {
   name: "arcType",
-  vueName: "arcType",
+  czmlName: "arcType",
   labelZh: "弧型",
   labelEn: "arcType",
-  tag: "CzmlOptionsPurePropInput",
   isEnable: true,
 
   // real default value is static

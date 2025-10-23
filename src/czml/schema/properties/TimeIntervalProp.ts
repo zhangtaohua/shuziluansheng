@@ -6,6 +6,7 @@ import { defaultTimeFormatStr } from "./commondata";
 export class czmlTimeIntervalProp {
   public id = "czml_prop_time_interval_" + nanoid(10);
   public name = "interval";
+  public _czmlName = "interval";
   public labelZh = "时间间隔";
   public labelEn = "interval";
   public title = "Time Interval";
@@ -37,6 +38,10 @@ export class czmlTimeIntervalProp {
 
     if (options.name) {
       this.name = options.name;
+    }
+
+    if (options.czmlName) {
+      this._czmlName = options.czmlName;
     }
 
     if (options.labelZh) {
@@ -100,20 +105,41 @@ export class czmlTimeIntervalProp {
     return;
   }
 
+  get czmlName() {
+    return this._czmlName;
+  }
+
+  set czmlName(newValue) {
+    return;
+    // this._czmlName = newValue;
+  }
+
   public getCzmlName() {
-    return this.name;
+    if (this.isUsed) {
+      return this.czmlName;
+    } else {
+      return null;
+    }
   }
 
   public getCzmlValue() {
-    const startTimeStr = dayjs(this.startTime).toISOString();
-    const endTimeStr = dayjs(this.endTime).toISOString();
-    return `${startTimeStr}/${endTimeStr}`;
+    if (this.isUsed) {
+      const startTimeStr = dayjs(this.startTime).toISOString();
+      const endTimeStr = dayjs(this.endTime).toISOString();
+      return `${startTimeStr}/${endTimeStr}`;
+    } else {
+      return null;
+    }
   }
 
   public getCzmlData() {
-    return {
-      [this.name]: this.getCzmlValue(),
-    };
+    if (this.isUsed) {
+      return {
+        [this.name]: this.getCzmlValue(),
+      };
+    } else {
+      return null;
+    }
   }
 }
 
@@ -121,6 +147,7 @@ export default czmlTimeIntervalProp;
 
 export const czmlClockIntervalOptions = {
   name: "interval",
+  czmlName: "interval",
   labelZh: "时间间隔",
   labelEn: "interval",
   isEnable: true,

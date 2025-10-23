@@ -106,7 +106,7 @@
   function setOptions(opt: any) {
     currentProp.value = opt.value;
     isShowOp.value = false;
-    console.log("setOptions", editorConfig.currentParentComp.properties.position);
+    console.log("setOptions", editorConfig.currentParentComp);
   }
 
   let disTime = null;

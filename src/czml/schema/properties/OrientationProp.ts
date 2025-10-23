@@ -1,14 +1,14 @@
 import { nanoid } from "@/utils/common/nanoid";
 
-import { czmlDoublePureProp, czmlClockMultiplierOptions } from "./DoublePureProp.ts";
-import { czmlTimePureProp, czmlClockCurrentTimeOptions } from "./TimePureProp.ts";
-import { czmlTimeIntervalProp, czmlClockIntervalOptions } from "./TimeIntervalProp.ts";
+import { czmlUnitQuaternionInterpolationProp } from "./UnitQuaternionInterpolationProp.ts";
 import { czmlUnitQuaternionProp } from "./UnitQuaternionProp.ts";
 import czmlStringProp from "../properties/StringProp";
+import czmlInterpolatableProp from "./InterpolatablePropertyProp.ts";
 
 export class czmlOrientationProp {
   public id = "czml_prop_orientation_" + nanoid(10);
   public name = "orientation";
+  public _czmlName = "orientation";
   public labelZh = "方向";
   public labelEn = "orientation";
   public title = "Orientation";
@@ -31,7 +31,11 @@ export class czmlOrientationProp {
     //   description1:
     //     "The orientation specified as a 4-dimensional unit magnitude quaternion, specified as `[X, Y, Z, W]`.",
     // }),
-    unitQuaternion: new czmlUnitQuaternionProp(null),
+    inter: new czmlInterpolatableProp(null),
+    unitQuaternionPure: new czmlUnitQuaternionProp({
+      name: "unitQuaternionPure",
+    }),
+    unitQuaternion: new czmlUnitQuaternionInterpolationProp(null),
     reference: new czmlStringProp({
       name: "reference",
       labelZh: "参考",
@@ -70,6 +74,10 @@ export class czmlOrientationProp {
       this.name = options.name;
     }
 
+    if (options.czmlName) {
+      this._czmlName = options.czmlName;
+    }
+
     if (options.labelZh) {
       this.labelZh = options.labelZh;
     }
@@ -103,31 +111,63 @@ export class czmlOrientationProp {
     return;
   }
 
+  get czmlName() {
+    return this._czmlName;
+  }
+
+  set czmlName(newValue) {
+    return;
+    // this._czmlName = newValue;
+  }
+
   public getCzmlName() {
-    return this.name;
+    if (this.isUsed) {
+      return this.czmlName;
+    } else {
+      return null;
+    }
   }
 
   public getCzmlValue() {
-    const czmlData = {};
-    const keys = Object.keys(this.properties);
+    if (this.isUsed) {
+      const czmlData = {};
+      const keys = Object.keys(this.properties);
 
-    for (let i = 0; i < keys.length; i++) {
-      const key = keys[i];
-      const prop = this.properties[key];
-      if (prop.getCzmlName) {
-        const propKey = prop.getCzmlName();
-        const propValue = prop.getCzmlValue();
-        czmlData[propKey] = propValue;
+      for (let i = 0; i < keys.length; i++) {
+        const key = keys[i];
+        const prop = this.properties[key];
+        if (prop.getCzmlName) {
+          const propKey = prop.getCzmlName();
+          const propValue = prop.getCzmlValue();
+          // TODO 要去除空值的属性
+          // if(propKey && propValue) {
+          // }
+          if (prop instanceof czmlUnitQuaternionInterpolationProp) {
+            if (propValue) {
+              Object.assign(czmlData, propValue);
+            }
+          } else {
+            if (propKey && propValue) {
+              czmlData[propKey] = propValue;
+            }
+          }
+        }
       }
-    }
 
-    return czmlData;
+      return czmlData;
+    } else {
+      return null;
+    }
   }
 
   public getCzmlData() {
-    return {
-      [this.name]: this.getCzmlValue(),
-    };
+    if (this.isUsed) {
+      return {
+        [this.name]: this.getCzmlValue(),
+      };
+    } else {
+      return null;
+    }
   }
 }
 

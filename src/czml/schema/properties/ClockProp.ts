@@ -8,6 +8,7 @@ import { czmlTimeIntervalProp, czmlClockIntervalOptions } from "./TimeIntervalPr
 export class czmlClockProp {
   public id = "czml_prop_clock_" + nanoid(10);
   public name = "clock";
+  public _czmlName = "clock";
   public labelZh = "时钟";
   public labelEn = "clock";
   public title = "Clock";
@@ -46,6 +47,10 @@ export class czmlClockProp {
       this.name = options.name;
     }
 
+    if (options.czmlName) {
+      this._czmlName = options.czmlName;
+    }
+
     if (options.labelZh) {
       this.labelZh = options.labelZh;
     }
@@ -79,31 +84,54 @@ export class czmlClockProp {
     return;
   }
 
+  get czmlName() {
+    return this._czmlName;
+  }
+
+  set czmlName(newValue) {
+    return;
+    // this._czmlName = newValue;
+  }
+
   public getCzmlName() {
-    return this.name;
+    if (this.isUsed) {
+      return this.czmlName;
+    } else {
+      return null;
+    }
   }
 
   public getCzmlValue() {
-    const czmlData = {};
-    const keys = Object.keys(this.properties);
+    if (this.isUsed) {
+      const czmlData = {};
+      const keys = Object.keys(this.properties);
 
-    for (let i = 0; i < keys.length; i++) {
-      const key = keys[i];
-      const prop = this.properties[key];
-      if (prop.getCzmlName) {
-        const propKey = prop.getCzmlName();
-        const propValue = prop.getCzmlValue();
-        czmlData[propKey] = propValue;
+      for (let i = 0; i < keys.length; i++) {
+        const key = keys[i];
+        const prop = this.properties[key];
+        if (prop.getCzmlName) {
+          const propKey = prop.getCzmlName();
+          const propValue = prop.getCzmlValue();
+          if (propKey && propValue) {
+            czmlData[propKey] = propValue;
+          }
+        }
       }
-    }
 
-    return czmlData;
+      return czmlData;
+    } else {
+      return null;
+    }
   }
 
   public getCzmlData() {
-    return {
-      [this.name]: this.getCzmlValue(),
-    };
+    if (this.isUsed) {
+      return {
+        [this.name]: this.getCzmlValue(),
+      };
+    } else {
+      return null;
+    }
   }
 }
 

@@ -1,67 +1,39 @@
 <template>
-  <div class="row_nw_fs_ce props_boolean_container">
-    <div class="row_nw_fs_ce props_boolean_input_box">
-      <input
-        type="checkbox"
-        class="row_nw_fs_fs props_boolean_input"
-        :disabled="!currentProp.isEnable"
-        v-model="currentProp.value"
-        @change="onChange"
-      />
+  <div class="row_nw_fe_ce bool_switchcontainer">
+    <div class="row_nw_fs_ce bool_switchinput_box">
+      <input type="checkbox" class="row_nw_fs_fs bool_switchinput" v-model="modelValue" />
     </div>
     <div class="row_nw_fs_ce wh_auto_100p">
-      <label class="row_nw_fs_ce props_boolean_ch_label">{{ props.vdata.labelZh }}</label>
-      <label class="row_nw_fs_fe props_boolean_ogi_label">{{ props.vdata.labelEn }}</label>
+      <label class="row_nw_fs_ce bool_switchch_label">{{ props.vdata.labelZh }}</label>
+      <label class="row_nw_fs_fe bool_switchogi_label">{{ props.vdata.labelEn }}</label>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { ref, reactive, onMounted, computed } from "vue";
-  import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
-
   const props = defineProps({
     vdata: {
       type: Object,
       default() {
         return {
-          id: "",
-          name: "",
+          labelZh: "是否使用",
+          labelEn: "use?",
         };
       },
     },
   });
 
-  const { editorConfig, setEditorRefreshShape } = useEditorConfigStore();
-  const id = "";
-  const name = "";
-  const currentProp = {};
-  const isEnable = ref(false);
-
-  function init() {
-    if (props.vdata && props.vdata.id && props.vdata.name) {
-      console.log("boolean_props", props.vdata);
-      isEnable.value = true;
-      currentProp.value = props.vdata;
-    } else {
-      isEnable.value = false;
-      currentProp.value = {};
-    }
-  }
-
-  onMounted(() => {
-    init();
-  });
+  const modelValue = defineModel();
 </script>
 
 <style scoped>
-  .props_boolean_container {
+  .bool_switchcontainer {
     width: 100%;
-    height: 2.5rem;
+    height: 100%;
     background-color: transparent;
   }
 
-  .props_boolean_input_box {
+  .bool_switchinput_box {
     position: relative;
     width: 3rem;
     height: 100%;
@@ -153,7 +125,7 @@
     }
   }
 
-  .props_boolean_ch_label {
+  .bool_switchch_label {
     width: max-content;
     height: 100%;
     color: rgba(255, 255, 255, 1);
@@ -162,7 +134,7 @@
     margin-right: 0.5rem;
   }
 
-  .props_boolean_ogi_label {
+  .bool_switchogi_label {
     width: max-content;
     height: 1rem;
     color: rgba(230, 230, 230, 1);

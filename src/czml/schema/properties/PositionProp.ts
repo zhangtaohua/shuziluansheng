@@ -7,6 +7,7 @@ import { czmlStringProp, czmlReferenceValueOptions } from "./StringProp";
 export class czmlPositionProp {
   public id = "czml_prop_position_" + nanoid(10);
   public name = "position";
+  public _czmlName = "position";
   public labelZh = "位置";
   public labelEn = "position";
   public title = "Position";
@@ -46,6 +47,10 @@ export class czmlPositionProp {
       this.name = options.name;
     }
 
+    if (options.czmlName) {
+      this._czmlName = options.czmlName;
+    }
+
     if (options.labelZh) {
       this.labelZh = options.labelZh;
     }
@@ -79,31 +84,54 @@ export class czmlPositionProp {
     return;
   }
 
+  get czmlName() {
+    return this._czmlName;
+  }
+
+  set czmlName(newValue) {
+    return;
+    // this._czmlName = newValue;
+  }
+
   public getCzmlName() {
-    return this.name;
+    if (this.isUsed) {
+      return this.czmlName;
+    } else {
+      return null;
+    }
   }
 
   public getCzmlValue() {
-    const czmlData = {};
-    const keys = Object.keys(this.properties);
+    if (this.isUsed) {
+      const czmlData = {};
+      const keys = Object.keys(this.properties);
 
-    for (let i = 0; i < keys.length; i++) {
-      const key = keys[i];
-      const prop = this.properties[key];
-      if (prop.getCzmlName) {
-        const propKey = prop.getCzmlName();
-        const propValue = prop.getCzmlValue();
-        czmlData[propKey] = propValue;
+      for (let i = 0; i < keys.length; i++) {
+        const key = keys[i];
+        const prop = this.properties[key];
+        if (prop.getCzmlName) {
+          const propKey = prop.getCzmlName();
+          const propValue = prop.getCzmlValue();
+          if (propKey && propValue) {
+            czmlData[propKey] = propValue;
+          }
+        }
       }
-    }
 
-    return czmlData;
+      return czmlData;
+    } else {
+      return null;
+    }
   }
 
   public getCzmlData() {
-    return {
-      [this.name]: this.getCzmlValue(),
-    };
+    if (this.isUsed) {
+      return {
+        [this.name]: this.getCzmlValue(),
+      };
+    } else {
+      return null;
+    }
   }
 }
 

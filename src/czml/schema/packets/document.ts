@@ -7,6 +7,7 @@ import { czmlTimeCollectionProp, czmlAvailabilityOptions } from "../properties/T
 export class czmlDocument {
   public id = "czml_packet_document_" + nanoid(10);
   public name = "document";
+  public _czmlName = "document";
   public labelZh = "文本";
   public labelEn = "document";
   public title = "Document";
@@ -27,6 +28,9 @@ export class czmlDocument {
     if (options.name) {
       this.name = options.name;
     }
+    if (options.czmlName) {
+      this._czmlName = options.czmlName;
+    }
     if (options.labelZh) {
       this.labelZh = options.labelZh;
     }
@@ -41,6 +45,7 @@ export class czmlDocument {
   public properties = {
     id: new czmlStringProp({
       name: "id",
+      czmlName: "id",
       labelZh: "标示",
       labelEn: "id",
       value: "document",
@@ -50,15 +55,17 @@ export class czmlDocument {
     }),
     name: new czmlStringProp({
       name: "name",
+      czmlName: "name",
       labelZh: "名称",
       labelEn: "name",
-      value: "billboard_name_init" + nanoid(10),
+      value: "document_init" + nanoid(10),
       isEnable: true,
       isUsed: true,
       description: "The name of the object. It does not have to be unique and is intended for user consumption.",
     }),
     version: new czmlStringProp({
       name: "version",
+      czmlName: "version",
       labelZh: "版本号",
       labelEn: "version",
       value: "1.0",
@@ -68,6 +75,7 @@ export class czmlDocument {
     }),
     description: new czmlTextProp({
       name: "description",
+      czmlName: "description",
       labelZh: "描述",
       labelEn: "description",
       value: this.description,
@@ -77,6 +85,7 @@ export class czmlDocument {
     }),
     title: new czmlStringProp({
       name: "title",
+      czmlName: "title",
       labelZh: "标题",
       labelEn: "title",
       value: "Document",
@@ -85,6 +94,8 @@ export class czmlDocument {
       description: "Describes a CZML document.",
     }),
     clock: new czmlClockProp({
+      name: "clock",
+      czmlName: "clock",
       $ref: "Clock.json",
       isUsed: true,
       description: "The clock settings for the entire data set. Only valid on the document object.",
@@ -101,6 +112,15 @@ export class czmlDocument {
   };
   // end properties
 
+  get czmlName() {
+    return this._czmlName;
+  }
+
+  set czmlName(newValue) {
+    return;
+    // this._czmlName = newValue;
+  }
+
   public getCzmlData() {
     const czmlData = {};
     const keys = Object.keys(this.properties);
@@ -111,7 +131,9 @@ export class czmlDocument {
       if (prop.getCzmlName) {
         const propKey = prop.getCzmlName();
         const propValue = prop.getCzmlValue();
-        czmlData[propKey] = propValue;
+        if (propKey && propValue) {
+          czmlData[propKey] = propValue;
+        }
       }
     }
 

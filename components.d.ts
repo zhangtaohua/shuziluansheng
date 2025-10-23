@@ -23,6 +23,7 @@ declare module 'vue' {
     NumberInputSliderProps: typeof import('./src/components/form/NumberInputSliderProps.vue')['default']
     OffLineTip: typeof import('./src/components/common/OffLineTip.vue')['default']
     OptionsInputProps: typeof import('./src/components/form/OptionsInputProps.vue')['default']
+    RjBooleanSwitchInput: typeof import('./src/components/form/RjBooleanSwitchInput.vue')['default']
     RjRadioInput: typeof import('./src/components/form/RjRadioInput.vue')['default']
     RjRadioTabInput: typeof import('./src/components/form/RjRadioTabInput.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

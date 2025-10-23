@@ -17,6 +17,13 @@
           <div class="props_ic_gap"></div>
         </div>
       </div>
+
+      <div class="col_nw_fs_ce props_interpolation_nosuebox">
+        <label class="row_nw_fs_ce props_interpolation_nousetipzh">使用插值算法,请注意值值是否含有时间标记</label>
+        <label class="row_nw_fs_ce props_interpolation_nousetipeng">
+          Use interpolateable properties the value need time-tagged
+        </label>
+      </div>
     </div>
   </div>
 </template>
@@ -157,5 +164,33 @@
   .props_ic_gap {
     width: 100%;
     height: 0.875rem;
+  }
+
+  .props_interpolation_nosuebox {
+    width: calc(100% - 2rem);
+    height: auto;
+    margin-bottom: 1rem;
+    padding: 0.5rem 0.5rem;
+    background-color: rgba(0, 0, 0, 1);
+    border-radius: 0.5rem;
+    /* border: 1px solid rgba(255, 255, 255, 0.5); */
+  }
+
+  .props_interpolation_nousetipzh {
+    width: 100%;
+    height: 2rem;
+    color: rgba(255, 255, 255, 1);
+    font-size: 0.875rem;
+    font-weight: 400;
+    padding-left: 0.5rem;
+  }
+
+  .props_interpolation_nousetipeng {
+    width: 100%;
+    height: 2rem;
+    color: rgba(230, 230, 230, 1);
+    font-size: 0.875rem;
+    font-weight: 400;
+    padding-left: 0.5rem;
   }
 </style>

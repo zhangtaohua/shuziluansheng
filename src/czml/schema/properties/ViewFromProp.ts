@@ -6,6 +6,7 @@ import czmlCartesian3PureProp from "../properties/Cartesian3PureProp";
 export class czmlViewFromProp {
   public id = "czml_prop_view_from_" + nanoid(10);
   public name = "viewFrom";
+  public _czmlName = "viewFrom";
   public labelZh = "视觉参考";
   public labelEn = "view from";
   public title = "View From";
@@ -51,6 +52,10 @@ export class czmlViewFromProp {
       this.name = options.name;
     }
 
+    if (options.czmlName) {
+      this._czmlName = options.czmlName;
+    }
+
     if (options.labelZh) {
       this.labelZh = options.labelZh;
     }
@@ -84,31 +89,54 @@ export class czmlViewFromProp {
     return;
   }
 
+  get czmlName() {
+    return this._czmlName;
+  }
+
+  set czmlName(newValue) {
+    return;
+    // this._czmlName = newValue;
+  }
+
   public getCzmlName() {
-    return this.name;
+    if (this.isUsed) {
+      return this.czmlName;
+    } else {
+      return null;
+    }
   }
 
   public getCzmlValue() {
-    const czmlData = {};
-    const keys = Object.keys(this.properties);
+    if (this.isUsed) {
+      const czmlData = {};
+      const keys = Object.keys(this.properties);
 
-    for (let i = 0; i < keys.length; i++) {
-      const key = keys[i];
-      const prop = this.properties[key];
-      if (prop.getCzmlName) {
-        const propKey = prop.getCzmlName();
-        const propValue = prop.getCzmlValue();
-        czmlData[propKey] = propValue;
+      for (let i = 0; i < keys.length; i++) {
+        const key = keys[i];
+        const prop = this.properties[key];
+        if (prop.getCzmlName) {
+          const propKey = prop.getCzmlName();
+          const propValue = prop.getCzmlValue();
+          if (propKey && propValue) {
+            czmlData[propKey] = propValue;
+          }
+        }
       }
-    }
 
-    return czmlData;
+      return czmlData;
+    } else {
+      return null;
+    }
   }
 
   public getCzmlData() {
-    return {
-      [this.name]: this.getCzmlValue(),
-    };
+    if (this.isUsed) {
+      return {
+        [this.name]: this.getCzmlValue(),
+      };
+    } else {
+      return null;
+    }
   }
 }
 

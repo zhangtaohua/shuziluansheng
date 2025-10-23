@@ -6,6 +6,7 @@ import { defaultTimeFormatStr } from "./commondata";
 export class czmlTimePureProp {
   public id = "czml_prop_time_pure_" + nanoid(10);
   public name = "currentTime";
+  public _czmlName = "currentTime";
   public labelZh = "当前时间";
   public labelEn = "current time";
   public title = "Current Time";
@@ -36,6 +37,10 @@ export class czmlTimePureProp {
 
     if (options.name) {
       this.name = options.name;
+    }
+
+    if (options.czmlName) {
+      this._czmlName = options.czmlName;
     }
 
     if (options.labelZh) {
@@ -95,18 +100,39 @@ export class czmlTimePureProp {
     return;
   }
 
+  get czmlName() {
+    return this._czmlName;
+  }
+
+  set czmlName(newValue) {
+    return;
+    // this._czmlName = newValue;
+  }
+
   public getCzmlName() {
-    return this.name;
+    if (this.isUsed) {
+      return this.czmlName;
+    } else {
+      return null;
+    }
   }
 
   public getCzmlValue() {
-    return dayjs(this.value).toISOString();
+    if (this.isUsed) {
+      return dayjs(this.value).toISOString();
+    } else {
+      return null;
+    }
   }
 
   public getCzmlData() {
-    return {
-      [this.name]: this.getCzmlValue(),
-    };
+    if (this.isUsed) {
+      return {
+        [this.name]: this.getCzmlValue(),
+      };
+    } else {
+      return null;
+    }
   }
 }
 
@@ -114,6 +140,7 @@ export default czmlTimePureProp;
 
 export const czmlClockCurrentTimeOptions = {
   name: "currentTime",
+  czmlName: "currentTime",
   labelZh: "当前时间",
   labelEn: "current time",
   isEnable: true,
@@ -121,6 +148,7 @@ export const czmlClockCurrentTimeOptions = {
 
 export const czmlEpochimeOptions = {
   name: "epoch",
+  czmlName: "epoch",
   labelZh: "时期",
   labelEn: "epoch",
   isEnable: true,

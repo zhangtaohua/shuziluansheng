@@ -5,21 +5,26 @@ import {
   CZMLPUREVALUE,
   CZMLTIMESECONDS,
   CZMLTIMESTRING,
+  CZMLVALUESNOTINTERPOLATE,
+  CZMLVALUESWITHINTERPOLATE,
+  propValuesInterpolateOptions,
   defaultTimeFormatStr,
   propValuesTimeTypeOptions,
 } from "./commondata.ts";
-export class czmlUnitQuaternionProp {
-  public id = "czml_prop_unit_quaternion_" + nanoid(10);
-  public name = "unitQuaternion";
-  public _czmlName = "unitQuaternion";
-  public labelZh = "单位四元数";
-  public labelEn = "unit quaternion";
-  public title = "Unit Quaternion";
+import czmlInterpolatableProp from "./InterpolatablePropertyProp.ts";
+
+export class czmlUnitQuaternionInterpolationProp {
+  public id = "czml_prop_unit_quaternion_interpolation_" + nanoid(10);
+  public name = "unitQuaternionInterpolation";
+  public _czmlName = "unitQuaternionInterpolation";
+  public labelZh = "插值单位四元数";
+  public labelEn = "unit quaternion with interpolation";
+  public title = "Unit Quaternion With Interpolation";
   public description =
     "A set of 4-dimensional coordinates used to represent rotation in 3-dimensional space, specified as `[X, Y, Z, W]`. If the array has four elements, the value is constant. If it has five or more elements, they are time-tagged samples arranged as `[Time, X, Y, Z, W, Time, X, Y, Z, W, ...]`, where Time is an ISO 8601 date and time string or seconds since epoch.";
   public type = "property";
   public componentType = "czml#packet#property";
-  public tag = "CzmlQuaternionPropInput";
+  public tag = "CzmlQuaternionInterpolationPropInput";
   public unit = "meters";
   public _value = [0, 0, 0, 0];
   public _valueType = "";
@@ -34,6 +39,10 @@ export class czmlUnitQuaternionProp {
   public isCombinedProperty = false;
   public isComplexProperty = true;
 
+  public _interpolationType = CZMLVALUESNOTINTERPOLATE;
+  public interpolationOptions = propValuesInterpolateOptions;
+  public interpolationproperties = new czmlInterpolatableProp(null);
+
   public _timeType = CZMLPUREVALUE;
   public timeTypeOptions = propValuesTimeTypeOptions;
 
@@ -45,7 +54,7 @@ export class czmlUnitQuaternionProp {
     if (options.id) {
       this.id = options.id;
     } else if (options.name) {
-      this.id = "czml_prop_unit_quaternion_" + options.name + "_" + nanoid(10);
+      this.id = "czml_prop_unit_quaternion_interpolation_" + options.name + "_" + nanoid(10);
     }
 
     if (options.name) {
@@ -117,6 +126,8 @@ export class czmlUnitQuaternionProp {
     return this._timeType;
   }
 
+  // TODO
+  // 优化点,是不是选择了插值算法就要限制不可以选择纯数据类型了.
   set timeType(newValue) {
     if (newValue != this._timeType) {
       let __oldvalue = [];
@@ -140,6 +151,26 @@ export class czmlUnitQuaternionProp {
 
       setTimeout(() => {
         this._timeType = newValue;
+      }, 50);
+    }
+  }
+
+  get interpolationType() {
+    return this._interpolationType;
+  }
+
+  set interpolationType(newValue) {
+    if (newValue != this._interpolationType) {
+      const __oldvalue = [];
+      if (newValue == CZMLVALUESNOTINTERPOLATE) {
+      } else if (newValue == CZMLVALUESWITHINTERPOLATE) {
+        if (this.timeType == CZMLPUREVALUE) {
+          this.timeType = CZMLTIMESECONDS;
+        }
+      }
+
+      setTimeout(() => {
+        this._interpolationType = newValue;
       }, 50);
     }
   }
@@ -188,7 +219,16 @@ export class czmlUnitQuaternionProp {
           quaternionValue.push(+vtemp[4]);
         }
       }
-      return quaternionValue;
+
+      if (this.interpolationType == CZMLVALUESNOTINTERPOLATE) {
+        return quaternionValue;
+      } else if (this.interpolationType == CZMLVALUESWITHINTERPOLATE) {
+        const interpolationValues = this.interpolationproperties.getCzmlValue();
+        return {
+          ...interpolationValues,
+          unitQuaternion: quaternionValue,
+        };
+      }
     } else {
       return null;
     }
@@ -205,4 +245,4 @@ export class czmlUnitQuaternionProp {
   }
 }
 
-export default czmlUnitQuaternionProp;
+export default czmlUnitQuaternionInterpolationProp;

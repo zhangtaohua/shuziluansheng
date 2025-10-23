@@ -27,7 +27,6 @@
   import { isArray } from "es-toolkit/compat";
   import dayjs from "dayjs";
 
-  //  这个props 就是相当于 new czmlShowProp()的值
   const props = defineProps({
     vdata: {
       type: Object,

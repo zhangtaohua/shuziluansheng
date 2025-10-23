@@ -9,9 +9,10 @@ import {
   propIntervalsOption,
 } from "./commondata";
 
-export class czmlShowProp {
-  public id = "czml_prop_show_" + nanoid(10);
+export class czmlBooleanIntervalProp {
+  public id = "czml_prop_boolean_interval_" + nanoid(10);
   public name = "show";
+  public _czmlName = "show";
   public labelZh = "显示";
   public labelEn = "show";
   public title = "Show";
@@ -52,11 +53,15 @@ export class czmlShowProp {
     if (options.id) {
       this.id = options.id;
     } else if (options.name) {
-      this.id = "czml_prop_show_" + options.name + "_" + nanoid(10);
+      this.id = "czml_prop_boolean_interval_" + options.name + "_" + nanoid(10);
     }
 
     if (options.name) {
       this.name = options.name;
+    }
+
+    if (options.czmlName) {
+      this._czmlName = options.czmlName;
     }
 
     if (options.labelZh) {
@@ -128,39 +133,81 @@ export class czmlShowProp {
     return;
   }
 
+  get czmlName() {
+    return this._czmlName;
+  }
+
+  set czmlName(newValue) {
+    return;
+    // this._czmlName = newValue;
+  }
+
   public getCzmlName() {
-    return this.name;
+    if (this.isUsed) {
+      return this.czmlName;
+    } else {
+      return null;
+    }
   }
 
   public getCzmlValue() {
-    if (this.valueType == CZMLPUREVALUE) {
-      return this.value;
-    } else if (this.valueType == CZMLINTERVALSVALUE) {
-      const czmlData = [];
+    if (this.isUsed) {
+      if (this.valueType == CZMLPUREVALUE) {
+        return this.value;
+      } else if (this.valueType == CZMLINTERVALSVALUE) {
+        if (this.value.length) {
+          if (this.value.length == 1) {
+            const prop = this.value[0];
 
-      for (let i = 0; i < this.value.length; i++) {
-        const prop = this.value[i];
+            const startTimeStr = dayjs(prop.startTime).toISOString();
+            const endTimeStr = dayjs(prop.endTime).toISOString();
 
-        const startTimeStr = dayjs(prop.startTime).toISOString();
-        const endTimeStr = dayjs(prop.endTime).toISOString();
+            return {
+              interval: `${startTimeStr}/${endTimeStr}`,
+              boolean: prop.value,
+            };
+          } else {
+            const czmlData = [];
+            for (let i = 0; i < this.value.length; i++) {
+              const prop = this.value[i];
 
-        czmlData.push({
-          interval: `${startTimeStr}/${endTimeStr}`,
-          boolean: prop.value,
-        });
+              const startTimeStr = dayjs(prop.startTime).toISOString();
+              const endTimeStr = dayjs(prop.endTime).toISOString();
+
+              czmlData.push({
+                interval: `${startTimeStr}/${endTimeStr}`,
+                boolean: prop.value,
+              });
+            }
+
+            return czmlData;
+          }
+        }
       }
-
-      return czmlData;
+    } else {
+      return null;
     }
-
-    return this._value;
   }
 
   public getCzmlData() {
-    return {
-      [this.name]: this.getCzmlValue(),
-    };
+    if (this.isUsed) {
+      return {
+        [this.name]: this.getCzmlValue(),
+      };
+    } else {
+      return null;
+    }
   }
 }
 
-export default czmlShowProp;
+export default czmlBooleanIntervalProp;
+
+export const czmlShowOptions = {
+  id: "czml_prop_show_" + nanoid(10),
+  name: "show",
+  czmlName: "show",
+  labelZh: "显示",
+  labelEn: "show",
+  isEnable: true,
+  description: "Whether or not the object is shown.",
+};

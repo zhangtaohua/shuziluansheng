@@ -3,6 +3,7 @@ import { nanoid } from "@/utils/common/nanoid";
 export class czmlTextProp {
   public id = "czml_prop_text_" + nanoid(10);
   public name = "text";
+  public _czmlName = "text";
   public labelZh = "文本";
   public labelEn = "text";
   public title = "Text";
@@ -33,6 +34,10 @@ export class czmlTextProp {
 
     if (options.name) {
       this.name = options.name;
+    }
+
+    if (options.czmlName) {
+      this._czmlName = options.czmlName;
     }
 
     if (options.labelZh) {
@@ -92,18 +97,39 @@ export class czmlTextProp {
     return;
   }
 
-  getCzmlName() {
-    return this.name;
+  get czmlName() {
+    return this._czmlName;
   }
 
-  getCzmlValue() {
-    return this._value;
+  set czmlName(newValue) {
+    return;
+    // this._czmlName = newValue;
   }
 
-  getCzmlData() {
-    return {
-      [this.name]: this._value,
-    };
+  public getCzmlName() {
+    if (this.isUsed) {
+      return this.czmlName;
+    } else {
+      return null;
+    }
+  }
+
+  public getCzmlValue() {
+    if (this.isUsed) {
+      return this._value;
+    } else {
+      return null;
+    }
+  }
+
+  public getCzmlData() {
+    if (this.isUsed) {
+      return {
+        [this.name]: this.getCzmlValue(),
+      };
+    } else {
+      return null;
+    }
   }
 }
 

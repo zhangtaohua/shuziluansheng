@@ -14,13 +14,15 @@ import { createApp } from "vue";
 import { createPinia } from "pinia";
 import "default-passive-events";
 
+// 一定会用公共组件
+
 // 渲染控制
 import CommonDiv from "@/views/editor/components/CommonDiv.vue";
 import CommonDivText from "@/views/editor/components/CommonDivText.vue";
 import CommonDivImage from "@/views/editor/components/CommonDivImage.vue";
 import CommonDivCesium from "@/views/editor/components/CommonDivCesium.vue";
 
-// 属性设置
+// h5属性设置
 import NumberInputSlider from "@/h5/components/NumberInputSlider.vue";
 import RadioSingleInput from "@/h5/components/RadioSingleInput.vue";
 import ColorInput from "@/h5/components/ColorInput.vue";
@@ -39,6 +41,7 @@ import CzmlCombinePropInput from "@/czml/components/CzmlCombinePropInput.vue";
 import CzmlCustomPropertiesPropInput from "@/czml/components/CzmlCustomPropertiesPropInput.vue";
 
 import CzmlEntityRender from "@/czml/components/CzmlEntityRender.vue";
+import CzmlInterpolationPropInput from "@/czml/components/CzmlInterpolationPropInput.vue";
 
 import CzmlNumberSliderPropInput from "@/czml/components/CzmlNumberSliderPropInput.vue";
 
@@ -46,6 +49,7 @@ import CzmlOptionsPurePropInput from "@/czml/components/CzmlOptionsPurePropInput
 import CzmlPackagesRender from "@/czml/components/CzmlPackagesRender.vue";
 
 import CzmlPositionPropInput from "@/czml/components/CzmlPositionPropInput.vue";
+import CzmlQuaternionInterpolationPropInput from "@/czml/components/CzmlQuaternionInterpolationPropInput.vue";
 import CzmlQuaternionPropInput from "@/czml/components/CzmlQuaternionPropInput.vue";
 
 import CzmlStringPropInput from "@/czml/components/CzmlStringPropInput.vue";
@@ -95,12 +99,15 @@ app.component("CzmlCombinePropInput", CzmlCombinePropInput);
 app.component("CzmlCustomPropertiesPropInput", CzmlCustomPropertiesPropInput);
 app.component("CzmlEntityRender", CzmlEntityRender);
 
+app.component("CzmlInterpolationPropInput", CzmlInterpolationPropInput);
+
 app.component("CzmlNumberSliderPropInput", CzmlNumberSliderPropInput);
 
 app.component("CzmlOptionsPurePropInput", CzmlOptionsPurePropInput);
 
 app.component("CzmlPackagesRender", CzmlPackagesRender);
 app.component("CzmlPositionPropInput", CzmlPositionPropInput);
+app.component("CzmlQuaternionInterpolationPropInput", CzmlQuaternionInterpolationPropInput);
 app.component("CzmlQuaternionPropInput", CzmlQuaternionPropInput);
 
 app.component("CzmlStringPropInput", CzmlStringPropInput);

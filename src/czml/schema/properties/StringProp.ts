@@ -3,6 +3,7 @@ import { nanoid } from "@/utils/common/nanoid";
 export class czmlStringProp {
   public id = "czml_prop_string_" + nanoid(10);
   public name = "string";
+  public _czmlName = "string";
   public labelZh = "字符串";
   public labelEn = "string";
   public title = "String";
@@ -33,6 +34,10 @@ export class czmlStringProp {
 
     if (options.name) {
       this.name = options.name;
+    }
+
+    if (options.czmlName) {
+      this._czmlName = options.czmlName;
     }
 
     if (options.labelZh) {
@@ -92,18 +97,39 @@ export class czmlStringProp {
     return;
   }
 
-  getCzmlName() {
-    return this.name;
+  get czmlName() {
+    return this._czmlName;
   }
 
-  getCzmlValue() {
-    return this._value;
+  set czmlName(newValue) {
+    return;
+    // this._czmlName = newValue;
   }
 
-  getCzmlData() {
-    return {
-      [this.name]: this._value,
-    };
+  public getCzmlName() {
+    if (this.isUsed) {
+      return this.czmlName;
+    } else {
+      return null;
+    }
+  }
+
+  public getCzmlValue() {
+    if (this.isUsed) {
+      return this._value;
+    } else {
+      return null;
+    }
+  }
+
+  public getCzmlData() {
+    if (this.isUsed) {
+      return {
+        [this.name]: this.getCzmlValue(),
+      };
+    } else {
+      return null;
+    }
   }
 }
 
@@ -111,6 +137,7 @@ export default czmlStringProp;
 
 export const czmlReferenceValueOptions = {
   name: "reference",
+  czmlName: "reference",
   labelZh: "参考值",
   labelEn: "reference",
   value: "reference_init" + nanoid(10),

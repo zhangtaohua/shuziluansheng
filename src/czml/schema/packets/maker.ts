@@ -8,6 +8,7 @@ import colorsvg from "@/assets/images/icons/colors.svg";
 export class CzmlDataMaker {
   public id = "czml_" + nanoid(10);
   public name = "czml";
+  public _czmlName = "czml";
   public labelZh = "Cesium JSON数据";
   public labelEn = "czml data";
   public title = "Czml";
@@ -29,6 +30,9 @@ export class CzmlDataMaker {
     if (options.name) {
       this.name = options.name;
     }
+    if (options.czmlName) {
+      this._czmlName = options.czmlName;
+    }
     if (options.labelZh) {
       this.labelZh = options.labelZh;
     }
@@ -38,6 +42,15 @@ export class CzmlDataMaker {
     if (options.description) {
       this.description = options.description;
     }
+  }
+
+  get czmlName() {
+    return this._czmlName;
+  }
+
+  set czmlName(newValue) {
+    return;
+    // this._czmlName = newValue;
   }
 
   // TODO 后期要用 set 实现

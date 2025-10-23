@@ -13,6 +13,7 @@ import czmlBillboard from "../entities/billboard";
 export class czmlPacket {
   public id = "czml_packet_" + nanoid(10);
   public name = "packet";
+  public _czmlName = "packet";
   public labelZh = "包";
   public labelEn = "packet";
   public title = "Packet";
@@ -33,6 +34,9 @@ export class czmlPacket {
     if (options.name) {
       this.name = options.name;
     }
+    if (options.czmlName) {
+      this._czmlName = options.czmlName;
+    }
     if (options.labelZh) {
       this.labelZh = options.labelZh;
     }
@@ -47,6 +51,7 @@ export class czmlPacket {
   public properties = {
     id: new czmlStringProp({
       name: "id",
+      czmlName: "id",
       labelZh: "标示",
       labelEn: "id",
       value: "billboard_id_init" + nanoid(10),
@@ -58,6 +63,7 @@ export class czmlPacket {
     }),
     delete: new czmlBooleanPureProp({
       name: "delete",
+      czmlName: "delete",
       labelZh: "删除",
       labelEn: "delete",
       value: false,
@@ -69,6 +75,7 @@ export class czmlPacket {
     }),
     name: new czmlStringProp({
       name: "name",
+      czmlName: "name",
       labelZh: "名称",
       labelEn: "name",
       value: "billboard_name_init" + nanoid(10),
@@ -78,6 +85,7 @@ export class czmlPacket {
     }),
     parent: new czmlStringProp({
       name: "parent",
+      czmlName: "parent",
       labelZh: "父级",
       labelEn: "parent",
       value: "billboard_parent_id_init" + nanoid(10),
@@ -88,6 +96,7 @@ export class czmlPacket {
     }),
     description: new czmlTextProp({
       name: "description",
+      czmlName: "description",
       labelZh: "描述",
       labelEn: "description",
       value: this.description,
@@ -237,8 +246,17 @@ export class czmlPacket {
         "Defines a graphical vector that originates at the `position` property and extends in the provided direction for the provided length. The vector is positioned using the `position` property.",
     },
   };
-
   // end properties
+
+  get czmlName() {
+    return this._czmlName;
+  }
+
+  set czmlName(newValue) {
+    return;
+    // this._czmlName = newValue;
+  }
+
   public getCzmlData() {
     const czmlData = {};
     const keys = Object.keys(this.properties);
@@ -249,7 +267,9 @@ export class czmlPacket {
       if (prop.getCzmlName) {
         const propKey = prop.getCzmlName();
         const propValue = prop.getCzmlValue();
-        czmlData[propKey] = propValue;
+        if (propKey && propValue) {
+          czmlData[propKey] = propValue;
+        }
       }
     }
 

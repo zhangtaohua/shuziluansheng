@@ -3,6 +3,7 @@ import { nanoid } from "@/utils/common/nanoid";
 export class czmlDoubleProp {
   public id = "czml_prop_double_" + nanoid(10);
   public name = "double";
+  public _czmlName = "double";
   public labelZh = "浮点数";
   public labelEn = "double";
   public title = "Double";
@@ -36,6 +37,10 @@ export class czmlDoubleProp {
 
     if (options.name) {
       this.name = options.name;
+    }
+
+    if (options.czmlName) {
+      this._czmlName = options.czmlName;
     }
 
     if (options.labelZh) {
@@ -136,18 +141,39 @@ export class czmlDoubleProp {
     this._step = newStep;
   }
 
-  getCzmlName() {
-    return this.name;
+  get czmlName() {
+    return this._czmlName;
   }
 
-  getCzmlValue() {
-    return this._value;
+  set czmlName(newValue) {
+    return;
+    // this._czmlName = newValue;
   }
 
-  getCzmlData() {
-    return {
-      [this.name]: this._value,
-    };
+  public getCzmlName() {
+    if (this.isUsed) {
+      return this.czmlName;
+    } else {
+      return null;
+    }
+  }
+
+  public getCzmlValue() {
+    if (this.isUsed) {
+      return this._value;
+    } else {
+      return null;
+    }
+  }
+
+  public getCzmlData() {
+    if (this.isUsed) {
+      return {
+        [this.name]: this._value,
+      };
+    } else {
+      return null;
+    }
   }
 }
 

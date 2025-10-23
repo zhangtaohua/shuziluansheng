@@ -34,7 +34,6 @@
   import { ref, reactive, onMounted, computed, watch, nextTick } from "vue";
   import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
 
-  //  这个props 就是相当于 new czmlShowProp()的值
   const props = defineProps({
     vdata: {
       type: Object,

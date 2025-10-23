@@ -97,7 +97,6 @@
   import { isArray } from "es-toolkit/compat";
   import dayjs from "dayjs";
 
-  //  这个props 就是相当于 new czmlShowProp()的值
   const props = defineProps({
     vdata: {
       type: Object,
@@ -148,7 +147,7 @@
       intervalsVales.value.push({
         startTime: intervalsVales.value[last].endTime,
         endTime: dayjs().format(defaultTimeFormatStr),
-        boolean: true,
+        value: true,
       });
     }
   };
@@ -193,7 +192,7 @@
     },
     {
       immediate: false,
-      deep: false,
+      deep: true,
     },
   );
 </script>

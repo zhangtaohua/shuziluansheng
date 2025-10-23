@@ -6,6 +6,7 @@ import { defaultTimeFormatStr } from "./commondata";
 export class czmlTimeCollectionProp {
   public id = "czml_prop_time_colleciton_" + nanoid(10);
   public name = "availability";
+  public _czmlName = "availability";
   public labelZh = "可见性";
   public labelEn = "availability";
   public title = "Time Collection";
@@ -48,6 +49,10 @@ export class czmlTimeCollectionProp {
 
     if (options.name) {
       this.name = options.name;
+    }
+
+    if (options.czmlName) {
+      this._czmlName = options.czmlName;
     }
 
     if (options.labelZh) {
@@ -107,31 +112,64 @@ export class czmlTimeCollectionProp {
     return;
   }
 
+  get czmlName() {
+    return this._czmlName;
+  }
+
+  set czmlName(newValue) {
+    return;
+    // this._czmlName = newValue;
+  }
+
   public getCzmlName() {
-    return this.name;
+    if (this.isUsed) {
+      return this.czmlName;
+    } else {
+      return null;
+    }
   }
 
   public getCzmlValue() {
-    const czmlData = [];
+    if (this.isUsed) {
+      if (this.value.length) {
+        if (this.value.length == 1) {
+          const prop = this.value[0];
 
-    for (let i = 0; i < this.value.length; i++) {
-      const prop = this.value[i];
+          const startTimeStr = dayjs(prop.startTime).toISOString();
+          const endTimeStr = dayjs(prop.endTime).toISOString();
 
-      const startTimeStr = dayjs(prop.startTime).toISOString();
-      const endTimeStr = dayjs(prop.endTime).toISOString();
+          return `${startTimeStr}/${endTimeStr}`;
+        } else {
+          const czmlData = [];
 
-      czmlData.push({
-        interval: `${startTimeStr}/${endTimeStr}`,
-      });
+          for (let i = 0; i < this.value.length; i++) {
+            const prop = this.value[i];
+
+            const startTimeStr = dayjs(prop.startTime).toISOString();
+            const endTimeStr = dayjs(prop.endTime).toISOString();
+
+            czmlData.push({
+              interval: `${startTimeStr}/${endTimeStr}`,
+            });
+          }
+
+          return czmlData;
+        }
+      }
+      return null;
+    } else {
+      return null;
     }
-
-    return czmlData;
   }
 
   public getCzmlData() {
-    return {
-      [this.name]: this.getCzmlValue(),
-    };
+    if (this.isUsed) {
+      return {
+        [this.name]: this.getCzmlValue(),
+      };
+    } else {
+      return null;
+    }
   }
 }
 
@@ -139,6 +177,7 @@ export default czmlTimeCollectionProp;
 
 export const czmlAvailabilityOptions = {
   name: "availability",
+  czmlName: "availability",
   labelZh: "可见性",
   labelEn: "availability",
   isEnable: true,
