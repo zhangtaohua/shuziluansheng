@@ -114,6 +114,22 @@
         </div>
       </div>
 
+      <div class="col_nw_fs_fs props_it_secondsactbox">
+        <div class="row_nw_fs_ce props_it_secondssetbox">
+          <div class="row_nw_fs_ce props_it_secondssetbox_lable">开始秒数 start seconds:</div>
+          <el-input v-model="currentProp.secondsStart" placeholder="Please input" type="number" min="0" />
+        </div>
+        <div class="row_nw_fs_ce props_it_secondssetbox">
+          <div class="row_nw_fs_ce props_it_secondssetbox_lable">秒数步长 step:</div>
+          <el-input v-model="currentProp.secondsStep" placeholder="Please input" type="number" min="0" />
+        </div>
+
+        <div class="row_nw_fs_ce props_it_secondssetbox">
+          <div class="row_nw_fs_ce props_it_secondssetbox_lable">一次增加数量 count:</div>
+          <el-input v-model="currentProp.secondsOnceAddCount" placeholder="Please input" type="number" min="1" />
+        </div>
+      </div>
+
       <div class="row_nw_fe_ce props_it_actbox">
         <el-icon
           :color="intervalsValues.length >= 2 ? 'rgba(15, 55, 175, 1)' : '#f56c6c'"
@@ -253,17 +269,32 @@
 
   const popSecondsIntervalValue = () => {
     if (isArray(intervalsValues.value)) {
-      if (intervalsValues.value.length >= 2) {
-        intervalsValues.value.pop();
+      const { secondsOnceAddCount } = currentProp.value;
+      for (let i = 0; i < +secondsOnceAddCount; i++) {
+        if (intervalsValues.value.length >= 2) {
+          intervalsValues.value.pop();
+        }
       }
     }
   };
 
   const pushSecondsIntervalValue = () => {
     if (isArray(intervalsValues.value)) {
-      const last = intervalsValues.value.length - 1;
-      console.log("last", last);
-      intervalsValues.value.push([0, 0, 0, 0, 0]);
+      const length = intervalsValues.value.length;
+      const { secondsStart, secondsStep, secondsOnceAddCount } = currentProp.value;
+      const last = length - 1;
+      if (length == 1) {
+        intervalsValues.value[0][0] = +secondsStart;
+      }
+
+      const lastItem = intervalsValues.value[last];
+      const secondsStepNumber = +secondsStep;
+      let nextSeconds = +lastItem[0];
+
+      for (let i = 0; i < +secondsOnceAddCount; i++) {
+        nextSeconds = nextSeconds + secondsStepNumber;
+        intervalsValues.value.push([nextSeconds, 0, 0, 0, 0]);
+      }
     }
   };
 
@@ -514,7 +545,7 @@
     width: 1.5rem;
     height: 100%;
     color: rgba(255, 255, 255, 1);
-    font-size: 1rem;
+    font-size: var(--czml-fs-sl-label);
     font-weight: bold;
     margin-right: 0.5rem;
   }
@@ -523,7 +554,7 @@
     width: 1.5rem;
     height: 100%;
     color: rgba(255, 255, 255, 1);
-    font-size: 1rem;
+    font-size: var(--czml-fs-sl-label);
     font-weight: bold;
     margin-right: 0.5rem;
     margin-left: 1rem;
@@ -594,6 +625,27 @@
     width: 100%;
     height: 2rem;
     /* background-color: rgba(0, 0, 0, 1); */
+  }
+
+  .props_it_secondsactbox {
+    width: 100%;
+    height: auto;
+    margin-top: 0.875rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .props_it_secondssetbox {
+    width: 100%;
+    height: 2rem;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .props_it_secondssetbox_lable {
+    width: 15.5rem;
+    height: 100%;
+    color: rgba(255, 255, 255, 1);
+    font-size: var(--czml-fs-label);
   }
 
   .props_it_actbox {

@@ -3,6 +3,8 @@ import { csOnlySphereOptions } from "@/utils/map/cesium/csConstant";
 
 import CsVueNodePopup from "@/utils/map/cesium/vueNodePopupLayers";
 
+import MapDrawActionPopup from "./MapDrawActionPopup.vue";
+
 export let csBaseMap = null;
 export let map = null;
 export let viewer = null;
@@ -11,9 +13,16 @@ export let graphicLayer = null;
 export const czmlGraphicLayerMap = new Map();
 export const eventCanvasHandler = null;
 export const eventTarget = new mars3d.BaseClass();
-export let keyDownCode = undefined;
 
 export let vuePopupIns = null;
+
+export const MapDrawActionPopupOptions = {
+  id: "map_draw_vue_node_test_id",
+  name: "map_draw_vue_node_test_name",
+  vNode: MapDrawActionPopup,
+  vNodeData: {},
+  position: [0, 0, 0],
+};
 
 let isEntityGraphic = true;
 
@@ -60,29 +69,12 @@ export function removeCloseSmallTipEvent() {
   map.off(mars3d.EventType.mouseOut, closeSmallTooltip);
 }
 
-const keyDownCb = (event) => {
-  keyDownCode = event.keyCode;
-};
-
-const keyUpCb = (event) => {
-  keyDownCode = undefined;
-  // 按 Escape 或 Backspace 或 Delete 按钮取消标注
-  if (event.keyCode === 27 || event.keyCode === 8 || event.keyCode === 46) {
-    if (graphicLayer) {
-    }
-    // KeyP -> 80  KeyQ -> 81
-  } else if (event.keyCode === 80 || event.keyCode === 81) {
-    if (graphicLayer) {
-    }
-  }
-};
-
-export function addKeyDownEvent() {
+export function addKeyDownEvent(keyDownCb, keyUpCb) {
   map.on(mars3d.EventType.keydown, keyDownCb);
   map.on(mars3d.EventType.keyup, keyUpCb);
 }
 
-export function removeKeyDownEvent() {
+export function removeKeyDownEvent(keyDownCb, keyUpCb) {
   map.off(mars3d.EventType.keydown, keyDownCb);
   map.off(mars3d.EventType.keyup, keyUpCb);
 }
@@ -97,12 +89,10 @@ export function createGraphicLayer() {
   });
   map.addLayer(graphicLayer);
   addCloseSmallTipEvent();
-  addKeyDownEvent();
 }
 
 export function destroyGraphicLayer() {
   removeCloseSmallTipEvent();
-  removeKeyDownEvent();
   if (graphicLayer) {
     map.removeLayer(graphicLayer);
     graphicLayer.destroy();
@@ -154,6 +144,32 @@ export function updateGraphicStyle(graphic: any, newStyle = null, useDefault = t
       graphic.setStyle(newStyle);
     }
   }
+}
+
+export async function drawPoint(clampToGround = true) {
+  if (graphicLayer) {
+    const graphic = await graphicLayer.startDraw({
+      type: isEntityGraphic ? "point" : "pointP",
+      style: {
+        pixelSize: 16,
+        color: "#3388ff",
+        // label: {
+        //   // 不需要文字时，去掉label配置即可
+        //   text: "可以同时支持文字",
+        //   font_size: 20,
+        //   color: "#ffffff",
+        //   outline: true,
+        //   outlineColor: "#000000",
+        //   pixelOffsetY: -20
+        // }
+      },
+    });
+
+    console.log("Rectangle 绘制完成", graphic.toJSON());
+    return graphic;
+  }
+
+  return null;
 }
 
 export async function drawRectangle(clampToGround = true) {

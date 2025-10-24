@@ -160,13 +160,13 @@
     cesiumConfig.styles.top.value = "400";
 
     cesiumConfig.id = nanoid();
-    // addEditorComponents(cesiumConfig);
+    addEditorComponents(cesiumConfig);
   }
 
   function addBillboard() {
     const czmlOpt = new CzmlDataMaker();
     console.log("czmlOpt", czmlOpt);
-    // csMap.addCzmlGraphicLayer(czmlOpt);
+    csMap.addCzmlGraphicLayer(czmlOpt);
     setEditorCurrentParentComp(czmlOpt);
   }
 

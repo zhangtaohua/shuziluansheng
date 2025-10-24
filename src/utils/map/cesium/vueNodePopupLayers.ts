@@ -58,17 +58,18 @@ export default class CsVueNodePopup {
       const canvasHeight = this.viewer.scene.canvas.height;
       const windowPosition = new Cesium.Cartesian2();
       Cesium.SceneTransforms.worldToWindowCoordinates(this.viewer.scene, position, windowPosition);
+      // console.log("windowPosition", windowPosition, canvasHeight, this.viewer.scene.canvas.offsetTop, heightOrg);
       let bottom = canvasHeight - windowPosition.y + heightOrg;
-      // if (this.mapRootDom) {
-      //   let offsetBottom = 0;
-      //   let offsetHeight = this.mapRootDom.offsetHeight;
-      //   let offsetTop = this.mapRootDom.offsetTop;
-      //   let windowHeight = document.body.offsetHeight;
+      if (this.mapRootDom) {
+        let offsetBottom = 0;
+        const offsetHeight = this.mapRootDom.offsetHeight;
+        const offsetTop = this.mapRootDom.offsetTop;
+        const windowHeight = document.body.offsetHeight;
 
-      //   offsetBottom = windowHeight - offsetTop - offsetHeight;
-      //   // console.log(offsetBottom);
-      //   bottom = bottom + offsetBottom;
-      // }
+        offsetBottom = windowHeight - offsetTop - offsetHeight;
+        // console.log(offsetBottom);
+        bottom = bottom + offsetBottom;
+      }
       vDom.style.top = "";
       if (offset && offset.length >= 2) {
         bottom = bottom + offset[1];
@@ -77,10 +78,10 @@ export default class CsVueNodePopup {
       const elWidth = vDom.offsetWidth;
 
       let left = windowPosition.x - elWidth / 2;
-      // // console.log("left", left, this.mapRootDom, this.mapRootDom.offsetLeft);
-      // if (this.mapRootDom) {
-      //   left = left + this.mapRootDom.offsetLeft;
-      // }
+      // console.log("left", left, this.mapRootDom, this.mapRootDom.offsetLeft);
+      if (this.mapRootDom) {
+        left = left + this.mapRootDom.offsetLeft;
+      }
       if (offset && offset.length >= 2) {
         left = left + offset[0];
       }

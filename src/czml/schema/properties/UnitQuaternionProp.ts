@@ -37,6 +37,10 @@ export class czmlUnitQuaternionProp {
   public _timeType = CZMLPUREVALUE;
   public timeTypeOptions = propValuesTimeTypeOptions;
 
+  public secondsStart = 0;
+  public secondsStep = 30;
+  public secondsOnceAddCount = 1;
+
   constructor(options: any) {
     if (!options) {
       return;

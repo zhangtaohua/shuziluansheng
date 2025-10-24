@@ -8,6 +8,10 @@ export const CZMLTIMESECONDS = "seconds";
 export const CZMLVALUESNOTINTERPOLATE = "not_interpolate";
 export const CZMLVALUESWITHINTERPOLATE = "with_interpolate";
 
+export const CZMLCARTESIAN3TYPE = "cartesian3";
+export const CZMLCARTESIAN3DEGREESTYPE = "cartesian3Degrees";
+export const CZMLCARTESIAN3RADIANSTYPE = "cartesian3Radians";
+
 export const propValueTypesOptions = [
   {
     id: CZMLPUREVALUE,

@@ -503,10 +503,13 @@ export default class CesiumBase {
 
     const longitude = Cesium.Math.toDegrees(cartographic.longitude);
     const latitude = Cesium.Math.toDegrees(cartographic.latitude);
-
+    const longitudeRadians = cartographic.longitude;
+    const latitudeRadians = cartographic.latitude;
     return {
       longitude,
       latitude,
+      longitudeRadians,
+      latitudeRadians,
     };
   }
 
@@ -524,13 +527,18 @@ export default class CesiumBase {
     // console.log('纬度:',lat_String)
     // console.log('视角高度', alti_String)
 
-    // const height = cartographic.height;
-    const height = Math.ceil(this.viewer.camera.positionCartographic.height);
-    const zoom = this.heightToZoom(height);
+    const longitudeRadians = cartographic.longitude;
+    const latitudeRadians = cartographic.latitude;
+    const height = cartographic.height;
+    const heightCamera = Math.ceil(this.viewer.camera.positionCartographic.height);
+    const zoom = this.heightToZoom(heightCamera);
     return {
       longitude,
       latitude,
+      longitudeRadians,
+      latitudeRadians,
       height,
+      heightCamera,
       zoom,
     };
   }
@@ -577,14 +585,18 @@ export default class CesiumBase {
       // console.log('纬度:',lat_String)
       // console.log('视角高度', alti_String)
 
-      const height = Math.ceil(this.viewer.camera.positionCartographic.height);
-      const zoom = this.heightToZoom(height);
-      const targetHeight = cartographic.height;
+      const longitudeRadians = cartographic.longitude;
+      const latitudeRadians = cartographic.latitude;
+      const heightCamera = Math.ceil(this.viewer.camera.positionCartographic.height);
+      const zoom = this.heightToZoom(heightCamera);
+      const height = cartographic.height;
       return {
         longitude,
         latitude,
+        longitudeRadians,
+        latitudeRadians,
         height,
-        targetHeight,
+        heightCamera,
         zoom,
       };
     }

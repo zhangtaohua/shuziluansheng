@@ -15,11 +15,25 @@
 <script setup lang="ts">
   import { ref, reactive, computed, watch, onMounted, nextTick, onUnmounted } from "vue";
   import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
+  import {
+    useCzmlMapDataConfigStore,
+    MAP_DRAW_POINT,
+    MAP_DRAW_SQUARE,
+    MAP_DRAW_RECTANGLE,
+    MAP_DRAW_POLYGON,
+    MAP_DRAW_LINE,
+    MAP_DRAW_CURVE,
+  } from "@/stores/czmlMapDataConfig";
+
   import * as csMap from "./CommonDivCesium.ts";
   import { tiandituZh } from "@/utils/map/MapConst";
 
   const { editorConfig, setEditorCurrentShape, setEditorRefreshShape, setEditorCurrentParentComp } =
     useEditorConfigStore();
+
+  const { czmlMapDataConfig, setCzmlMapCurrentData } = useCzmlMapDataConfigStore();
+
+  let isStopCanvasPropagation = false;
 
   const props = defineProps({
     vNodeData: {
@@ -105,6 +119,216 @@
     },
   );
 
+  let keyDownCode = undefined;
+  let lastDrawGraphic = null;
+  const currentPopupOptions = csMap.MapDrawActionPopupOptions;
+
+  const keyDownCb = (event) => {
+    keyDownCode = event.keyCode;
+  };
+
+  const keyUpCb = (event) => {
+    keyDownCode = undefined;
+    // 按 Escape 或 Backspace 或 Delete 按钮取消标注
+    if (event.keyCode === 27 || event.keyCode === 8 || event.keyCode === 46) {
+      if (graphicLayer) {
+      }
+      // KeyP -> 80  KeyQ -> 81
+    } else if (event.keyCode === 80 || event.keyCode === 81) {
+      if (graphicLayer) {
+      }
+    }
+  };
+
+  function addGarphicLayerEvent() {
+    const graphicLayer = csMap.graphicLayer;
+    if (graphicLayer) {
+      // 在layer上绑定监听事件
+      graphicLayer.on(mars3d.EventType.click, function (event) {
+        console.log("监听layer，单击了矢量对象", event);
+      });
+
+      // 绑定layer标绘相关事件监听(可以自行加相关代码实现业务需求，此处主要做示例)
+      graphicLayer.on(mars3d.EventType.drawStart, function (e) {
+        console.log("开始绘制", e);
+        lastDrawGraphic = null;
+      });
+      graphicLayer.on(mars3d.EventType.drawAddPoint, function (e) {
+        console.log("绘制过程中增加了点", e);
+      });
+      graphicLayer.on(mars3d.EventType.drawRemovePoint, function (e) {
+        console.log("绘制过程中删除了点", e);
+      });
+      graphicLayer.on(mars3d.EventType.drawCreated, function (e) {
+        console.log("创建完成", e);
+        lastDrawGraphic = e.graphic;
+        let positions = e.positions;
+
+        if (positions && positions.length) {
+          showDrawActionPopup(positions[positions.length - 1]);
+        } else if (e.drawType == "point") {
+          positions = e.graphic.positions;
+          if (positions && positions.length) {
+            showDrawActionPopup(positions[positions.length - 1]);
+          }
+        }
+        // graphicLayer.stopDraw()
+        // graphicLayer.startDraw(mars3d.Util.clone(e.graphic.options)) // 连续标绘时，可以代替isContinued
+      });
+
+      graphicLayer.on(mars3d.EventType.editStart, function (e) {
+        console.log("开始编辑", e);
+        // graphic.editing?.hasRestore();
+        // graphic.editing?.hasRevoke();
+      });
+      graphicLayer.on(mars3d.EventType.editMovePoint, function (e) {
+        console.log("编辑修改了点", e);
+        showDrawActionPopup(e.cartesian);
+      });
+      graphicLayer.on(mars3d.EventType.editAddPoint, function (e) {
+        console.log("编辑新增了点", e);
+      });
+      graphicLayer.on(mars3d.EventType.editRemovePoint, function (e) {
+        console.log("编辑删除了点", e);
+        if (e.sourceTarget && e.sourceTarget.position) {
+          showDrawActionPopup(e.sourceTarget.position);
+        }
+      });
+      graphicLayer.on(mars3d.EventType.editStop, function (e) {
+        console.log("停止编辑", e);
+      });
+      graphicLayer.on(mars3d.EventType.removeGraphic, function (e) {
+        console.log("删除了对象", e);
+        csMap.hiddenVuePopup(currentPopupOptions);
+      });
+    }
+  }
+
+  function showDrawActionPopup(cartesian) {
+    const pos = csMap.csBaseMap.cartesian3ToWgs84(cartesian);
+    currentPopupOptions.position = [pos.longitude, pos.latitude, 0];
+    console.log("showDrawActionPopup", cartesian, pos);
+    csMap.addVuePopup(currentPopupOptions);
+    csMap.showVuePopup(currentPopupOptions);
+  }
+
+  function cancelDrawAction() {
+    if (csMap.graphicLayer) {
+      if (csMap.graphicLayer.isDrawing) {
+        csMap.graphicLayer.clearDrawing();
+      }
+      if (csMap.graphicLayer.isEditing) {
+        csMap.graphicLayer.stopEditing();
+      }
+    }
+
+    csMap.hiddenVuePopup(currentPopupOptions);
+    csMap.removeVuePopup(currentPopupOptions);
+
+    if (lastDrawGraphic) {
+      csMap.removeGraphic(lastDrawGraphic);
+      lastDrawGraphic = null;
+    }
+    isStopCanvasPropagation = false;
+  }
+
+  function mapDrawActionHd(drawAction: any) {
+    isStopCanvasPropagation = true;
+    const action = drawAction.action;
+    if (action == MAP_DRAW_POINT) {
+      csMap.drawPoint();
+    } else if (action == MAP_DRAW_POLYGON) {
+      csMap.drawRectangle();
+    }
+  }
+
+  watch(
+    () => czmlMapDataConfig.currentActionRefresh,
+    () => {
+      if (czmlMapDataConfig.currentActionRefresh) {
+        const currentDrawAction = czmlMapDataConfig.currentDrawAction;
+        console.log("通过地图获取值动作为", currentDrawAction);
+        mapDrawActionHd(currentDrawAction);
+      }
+    },
+    {
+      deep: false,
+      immediate: false,
+    },
+  );
+
+  watch(
+    () => czmlMapDataConfig.isConfirmDrawDataRefresh,
+    () => {
+      if (czmlMapDataConfig.isConfirmDrawDataRefresh) {
+        if (czmlMapDataConfig.isConfirmDrawData) {
+          // 确认数据 将数据设置到store
+          if (lastDrawGraphic) {
+            const sourceId = czmlMapDataConfig.currentDrawAction.id;
+
+            // const geojsonData = lastDrawGraphic.toJSON(); 这是一种方法，已经转换了。
+
+            console.log("lastDrawGraphic", lastDrawGraphic);
+
+            let positions = null;
+            let coordinates = null;
+            if (lastDrawGraphic instanceof mars3d.graphic.PointEntity || lastDrawGraphic.type === "point") {
+              positions = mars3d.Util.clone(lastDrawGraphic.positions);
+              if (positions && positions.length == 1) {
+                positions = positions[0];
+                if (positions) {
+                  const cartesian = [positions.x, positions.y, positions.z];
+                  const pos = csMap.csBaseMap.cartesian3ToWgs84(positions);
+                  const degrees = [pos.longitude, pos.latitude, pos.height];
+                  const radians = [pos.longitudeRadians, pos.latitudeRadians, pos.height];
+                  coordinates = {
+                    id: sourceId,
+                    cartesian,
+                    degrees,
+                    radians,
+                  };
+                }
+              }
+            } else if (
+              lastDrawGraphic instanceof mars3d.graphic.RectangleEntity ||
+              lastDrawGraphic.type === "rectangle"
+            ) {
+              positions = mars3d.Util.clone(lastDrawGraphic.outlineCoordinates);
+            } else if (lastDrawGraphic instanceof mars3d.graphic.CircleEntity || lastDrawGraphic.type === "circle") {
+              positions = mars3d.Util.clone(lastDrawGraphic.outlineCoordinates);
+            } else if (lastDrawGraphic instanceof mars3d.graphic.PolygonEntity || lastDrawGraphic.type === "polygon") {
+              positions = mars3d.Util.clone(lastDrawGraphic.positions);
+              if (positions && positions.length) {
+                positions.push(positions[0]);
+              }
+            }
+
+            // noAlt
+            // if (coordinates && coordinates.length) {
+            //   for (let i = 0; i < coordinates.length; i++) {
+            //     coordinates[i] = [coordinates[i][0], coordinates[i][1]];
+            //   }
+            // }
+
+            console.log("coordinates", coordinates);
+
+            setCzmlMapCurrentData(coordinates);
+            cancelDrawAction();
+          }
+          isStopCanvasPropagation = false;
+        } else {
+          // 清除不要点
+          isStopCanvasPropagation = false;
+          cancelDrawAction();
+        }
+      }
+    },
+    {
+      deep: false,
+      immediate: false,
+    },
+  );
+
   let hasClickedCzmlObj = false;
 
   const mapClickHandler = (event) => {
@@ -123,7 +347,7 @@
   };
 
   const mapCanvasClickHandler = (event) => {
-    if (hasClickedCzmlObj) {
+    if (hasClickedCzmlObj || isStopCanvasPropagation || lastDrawGraphic) {
       event.stopPropagation();
       event.preventDefault(); // Prevent default behavior, like selecting credit text
     }
@@ -149,9 +373,10 @@
     csMap.createGraphicLayer();
     addMapEventHd();
 
-    // setTimeout(() => {
-    //   addGarphicLayerEvent();
-    // }, 200);
+    setTimeout(() => {
+      csMap.addKeyDownEvent(keyDownCb, keyUpCb);
+      addGarphicLayerEvent();
+    }, 200);
   });
 
   onUnmounted(() => {

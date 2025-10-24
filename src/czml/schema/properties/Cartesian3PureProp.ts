@@ -1,5 +1,7 @@
 import { nanoid } from "@/utils/common/nanoid";
 
+import { CZMLCARTESIAN3TYPE, CZMLCARTESIAN3DEGREESTYPE, CZMLCARTESIAN3RADIANSTYPE } from "./commondata";
+
 export class czmlCartesian3PureProp {
   public id = "czml_prop_cartesian3_pure_" + nanoid(10);
   public name = "cartesian3";
@@ -17,7 +19,7 @@ export class czmlCartesian3PureProp {
 
   public unit = "meters";
   public _value = [0, 0, 0];
-  public _valueType = "Cartesian3";
+  public _valueType = CZMLCARTESIAN3DEGREESTYPE;
 
   public default = [0, 0, 0];
   public isEnable = true; // for can edit
@@ -92,7 +94,7 @@ export class czmlCartesian3PureProp {
   }
 
   set valueType(newValue) {
-    return;
+    this._valueType = newValue;
   }
 
   get isEntity() {
