@@ -20,6 +20,8 @@ export class czmlBooleanIntervalProp {
   public description = "Whether or not the object is shown.";
   public type = "property";
   public componentType = "czml#packet#property";
+  public czmlValue = true; // 这个用于标示是不是 czml value的
+
   public tag = "CzmlBooleanIntervalPropInput";
   // purevalue -> true false,
   // intervals ->

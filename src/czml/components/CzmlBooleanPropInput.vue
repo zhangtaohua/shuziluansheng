@@ -17,6 +17,8 @@
 </template>
 
 <script setup lang="ts">
+  // 说明：这个是纯粹的 布尔属性 设置，主要设置像 delete 这样的属性。
+
   import { ref, reactive, onMounted, computed } from "vue";
   import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
 

@@ -139,7 +139,7 @@ export class czmlOrientationProp {
         if (prop.getCzmlName) {
           const propKey = prop.getCzmlName();
           const propValue = prop.getCzmlValue();
-          // TODO 要去除空值的属性
+          // RJTODO 要去除空值的属性
           // if(propKey && propValue) {
           // }
           if (prop instanceof czmlUnitQuaternionInterpolationProp) {

@@ -306,7 +306,7 @@
         } else {
           pureValue.value = [0, 0, 0, 0];
           intervalsValues.value = [[0, 0, 0, 0, 0]];
-          timestrIntervalsValues.value = [[dayjs().format(defaultTimeFormatStr), 0]];
+          timestrIntervalsValues.value = [[dayjs().format(defaultTimeFormatStr), 0, 0, 0, 0]];
         }
       });
     },

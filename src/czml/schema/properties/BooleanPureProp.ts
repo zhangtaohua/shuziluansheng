@@ -10,6 +10,8 @@ export class czmlBooleanPureProp {
   public description = "The boolean value.";
   public type = "property";
   public componentType = "czml#packet#property";
+  public czmlValue = true; // 这个用于标示是不是 czml value的
+
   public tag = "CzmlBooleanPropInput";
   public _value = true;
   public _valueType = "boolean";

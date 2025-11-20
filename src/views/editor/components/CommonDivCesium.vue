@@ -6,10 +6,24 @@
       active_container: isActive,
     }"
     :style="divStyles"
-    :id="props.vNodeData.id"
-    @dblclick.stop.prevent="setEditorCurrentShapeHd"
-    @click.stop.prevent="setEditorCurrentParentCompHd"
-  ></div>
+  >
+    <div
+      class="row_nw_ce_ce cesium_map_container"
+      :id="props.vNodeData.id"
+      @dblclick.stop.prevent="setEditorCurrentShapeHd"
+      @click.stop.prevent="setEditorCurrentParentCompHd"
+    ></div>
+    <div v-if="isControlMaping" class="row_nw_ce_ce cesium_map_close">
+      <el-icon
+        color="rgba(15, 55, 175, 1)"
+        size="1.5rem"
+        class="row_nw_ce_ce cesium_map_closeicon"
+        @click="exitMapControl"
+      >
+        <CircleCloseFilled />
+      </el-icon>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -18,11 +32,13 @@
   import {
     useCzmlMapDataConfigStore,
     MAP_DRAW_POINT,
+    MAP_DRAW_LINE,
+    MAP_DRAW_FREELINE,
+    MAP_DRAW_CURVE,
     MAP_DRAW_SQUARE,
     MAP_DRAW_RECTANGLE,
     MAP_DRAW_POLYGON,
-    MAP_DRAW_LINE,
-    MAP_DRAW_CURVE,
+    MAP_DRAW_CIRCLE,
   } from "@/stores/czmlMapDataConfig";
 
   import * as csMap from "./CommonDivCesium.ts";
@@ -34,6 +50,7 @@
   const { czmlMapDataConfig, setCzmlMapCurrentData } = useCzmlMapDataConfigStore();
 
   let isStopCanvasPropagation = false;
+  const isControlMaping = ref(false);
 
   const props = defineProps({
     vNodeData: {
@@ -74,16 +91,24 @@
   });
 
   function setEditorCurrentShapeHd() {
-    if (props.vNodeData) {
-      setEditorCurrentShape(props.vNodeData);
-      setEditorRefreshShape();
+    if (!isControlMaping.value) {
+      if (props.vNodeData) {
+        setEditorCurrentShape(props.vNodeData);
+        setEditorRefreshShape();
+      }
     }
   }
 
   function setEditorCurrentParentCompHd() {
-    if (props.vNodeData) {
-      setEditorCurrentParentComp(props.vNodeData);
+    if (!isControlMaping.value) {
+      if (props.vNodeData) {
+        setEditorCurrentParentComp(props.vNodeData);
+      }
     }
+  }
+
+  function exitMapControl() {
+    isControlMaping.value = false;
   }
 
   watch(
@@ -119,16 +144,22 @@
     },
   );
 
-  let keyDownCode = undefined;
   let lastDrawGraphic = null;
+  let keyDownCode = undefined;
   const currentPopupOptions = csMap.MapDrawActionPopupOptions;
 
   const keyDownCb = (event) => {
-    keyDownCode = event.keyCode;
+    if (csMap) {
+      csMap.keyDownCode.code = event.keyCode;
+      keyDownCode = event.keyCode;
+    }
   };
 
   const keyUpCb = (event) => {
-    keyDownCode = undefined;
+    if (csMap) {
+      csMap.keyDownCode.code = undefined;
+      keyDownCode = undefined;
+    }
     // 按 Escape 或 Backspace 或 Delete 按钮取消标注
     if (event.keyCode === 27 || event.keyCode === 8 || event.keyCode === 46) {
       if (graphicLayer) {
@@ -234,11 +265,22 @@
 
   function mapDrawActionHd(drawAction: any) {
     isStopCanvasPropagation = true;
+    cancelDrawAction();
     const action = drawAction.action;
     if (action == MAP_DRAW_POINT) {
       csMap.drawPoint();
-    } else if (action == MAP_DRAW_POLYGON) {
+    } else if (action == MAP_DRAW_LINE) {
+      csMap.drawPolyline();
+    } else if (action == MAP_DRAW_FREELINE) {
+      csMap.drawBrushLine();
+    } else if (action == MAP_DRAW_CURVE) {
+      csMap.drawCurve();
+    } else if (action == MAP_DRAW_RECTANGLE) {
       csMap.drawRectangle();
+    } else if (action == MAP_DRAW_POLYGON) {
+      csMap.drawPolygon();
+    } else if (action == MAP_DRAW_CIRCLE) {
+      csMap.drawEllipse();
     }
   }
 
@@ -290,17 +332,51 @@
                 }
               }
             } else if (
+              lastDrawGraphic instanceof mars3d.graphic.PolylineEntity ||
+              lastDrawGraphic.type === "polyline" ||
+              lastDrawGraphic instanceof mars3d.graphic.BrushLineEntity ||
+              lastDrawGraphic.type === "brushLine" ||
+              lastDrawGraphic instanceof mars3d.graphic.CurveEntity ||
+              lastDrawGraphic.type === "curve"
+            ) {
+              positions = mars3d.Util.clone(lastDrawGraphic.positionsShow);
+              if (positions && positions.length) {
+                coordinates = {
+                  id: sourceId,
+                  coordinates: positions,
+                };
+              } else {
+                coordinates = {
+                  id: sourceId,
+                  coordinates: [],
+                };
+              }
+            } else if (
               lastDrawGraphic instanceof mars3d.graphic.RectangleEntity ||
               lastDrawGraphic.type === "rectangle"
             ) {
-              positions = mars3d.Util.clone(lastDrawGraphic.outlineCoordinates);
+              // positions = mars3d.Util.clone(lastDrawGraphic.outlineCoordinates); // 这个就可以直接拿到经纬度这些了
+              positions = mars3d.Util.clone(lastDrawGraphic.outlinePositions);
+              coordinates = {
+                id: sourceId,
+                coordinates: positions,
+              };
             } else if (lastDrawGraphic instanceof mars3d.graphic.CircleEntity || lastDrawGraphic.type === "circle") {
-              positions = mars3d.Util.clone(lastDrawGraphic.outlineCoordinates);
+              positions = mars3d.Util.clone(lastDrawGraphic.outlinePositions);
+              coordinates = {
+                id: sourceId,
+                coordinates: positions,
+              };
             } else if (lastDrawGraphic instanceof mars3d.graphic.PolygonEntity || lastDrawGraphic.type === "polygon") {
-              positions = mars3d.Util.clone(lastDrawGraphic.positions);
-              if (positions && positions.length) {
-                positions.push(positions[0]);
-              }
+              // positions = mars3d.Util.clone(lastDrawGraphic.positions);
+              // if (positions && positions.length) {
+              //   positions.push(positions[0]);
+              // }
+              positions = mars3d.Util.clone(lastDrawGraphic.outlinePositions);
+              coordinates = {
+                id: sourceId,
+                coordinates: positions,
+              };
             }
 
             // noAlt
@@ -329,25 +405,30 @@
     },
   );
 
-  let hasClickedCzmlObj = false;
-
   const mapClickHandler = (event) => {
     console.log("map 鼠标单击", event);
     if (event.czmObject) {
       // event.stopPropagation();
-      hasClickedCzmlObj = true;
+      isControlMaping.value = true;
       const layer = event.layer;
       if (layer instanceof mars3d.layer.CzmlLayer) {
         const options = layer.options;
-        setEditorCurrentParentComp(options);
+        const id = options.id;
+        if (id) {
+          const layerObj = csMap.getCzmlGraphicLayerById(id);
+          if (layerObj) {
+            setEditorCurrentParentComp(layerObj.options);
+          }
+        }
       }
-    } else {
-      hasClickedCzmlObj = false;
     }
+    // else {
+    //   isControlMaping.value = false;
+    // }
   };
 
   const mapCanvasClickHandler = (event) => {
-    if (hasClickedCzmlObj || isStopCanvasPropagation || lastDrawGraphic) {
+    if (isControlMaping.value || isStopCanvasPropagation || lastDrawGraphic) {
       event.stopPropagation();
       event.preventDefault(); // Prevent default behavior, like selecting credit text
     }
@@ -357,6 +438,7 @@
     if (csMap.map) {
       csMap.map.on(mars3d.EventType.click, mapClickHandler);
       csMap.viewer.canvas.addEventListener("click", mapCanvasClickHandler);
+      csMap.viewer.canvas.addEventListener("dblclick", mapCanvasClickHandler);
     }
   };
 
@@ -364,6 +446,7 @@
     if (csMap.map) {
       csMap.map.off(mars3d.EventType.click, mapClickHandler);
       csMap.viewer.canvas.removeEventListener("click", mapCanvasClickHandler);
+      csMap.viewer.canvas.removeEventListener("dblclick", mapCanvasClickHandler);
     }
   };
 
@@ -389,5 +472,28 @@
   .active_container {
     outline: 1px solid rgba(235, 3, 3, 1);
     box-shadow: 0 0 10px rgba(235, 3, 3, 0.5);
+  }
+
+  .cesium_map_container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+  }
+
+  .cesium_map_close {
+    position: absolute;
+    width: 1.5rem;
+    height: 1.5rem;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 999;
+  }
+
+  .props_it_acticon2 {
+    width: 1.5rem;
+    height: 1.5rem;
+    cursor: pointer;
   }
 </style>

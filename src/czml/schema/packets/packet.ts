@@ -7,6 +7,7 @@ import { czmlTimeCollectionProp, czmlAvailabilityOptions } from "../properties/T
 import { czmlCustomPropertiesProp, czmlCustomPropertiesOptions } from "../properties/CustomPropertiesProp";
 import { czmlOrientationProp } from "../properties/OrientationProp.ts";
 import czmlViewFromProp from "../properties/ViewFromProp.ts";
+import czmlCartesian3Prop from "../properties/Cartesian3Prop.ts";
 
 import czmlBillboard from "../entities/billboard";
 
@@ -151,6 +152,9 @@ export class czmlPacket {
         "A suggested camera location when viewing this object. The property is specified as a Cartesian position in the East (x), North (y), Up (z) reference frame relative to the object's position.",
     }),
     billboard: new czmlBillboard(null),
+    // RJTODO 下面的要删除
+    cartesian: new czmlCartesian3Prop(null),
+    // RJTODO 上面的要删除
     box: {
       $ref: "Box.json",
       description:

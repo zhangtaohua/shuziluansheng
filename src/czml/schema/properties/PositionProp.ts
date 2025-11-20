@@ -28,7 +28,8 @@ export class czmlPositionProp {
     // cartesian: new ,
     // cartographicRadians: new ,
     // cartographicDegrees: new ,
-    // todo 这里是错的 暂时为了调试用
+    // cartesianVelocity
+    // RJTODO 这里是错的 暂时为了调试用
     references: new czmlStringProp(czmlReferenceValueOptions),
   };
 

@@ -130,7 +130,7 @@ export class czmlUnitQuaternionInterpolationProp {
     return this._timeType;
   }
 
-  // TODO
+  // RJTODO
   // 优化点,是不是选择了插值算法就要限制不可以选择纯数据类型了.
   set timeType(newValue) {
     if (newValue != this._timeType) {

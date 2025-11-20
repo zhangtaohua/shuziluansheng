@@ -11,29 +11,54 @@
       </div>
     </div>
     <div class="col_nw_fs_fs props_it_box">
-      <div v-for="inval in intervalsVales" :key="inval.startTime" class="col_nw_fs_fs props_it_itembox">
-        <div class="row_nw_fs_ce props_it_tbox">
-          <span class="row_nw_fs_ce props_it_tlabel">startTime:</span>
-          <div class="row_nw_fs_ce props_it_tinputbox">
-            <el-date-picker
-              v-model="inval.startTime"
-              type="datetime"
-              placeholder="Select start datetime"
-              :format="defaultTimeFormatStr"
-              :value-format="defaultTimeFormatStr"
-            />
-          </div>
-        </div>
+      <div class="col_nw_fs_fs props_it_wrapper" :class="{ props_it_samllwrapper: isFoldIntervals }">
+        <div class="col_nw_fs_fs props_it_inwrapper">
+          <div v-for="(inval, index) in intervalsVales" :key="inval.startTime" class="col_nw_fs_fs props_it_itembox">
+            <div class="row_nw_fs_ce props_it_tbox">
+              <span class="row_nw_fs_ce props_it_tlabel">startTime:</span>
+              <div class="row_nw_fs_ce props_it_tinputbox">
+                <el-date-picker
+                  v-model="inval.startTime"
+                  type="datetime"
+                  placeholder="Select start datetime"
+                  :format="defaultTimeFormatStr"
+                  :value-format="defaultTimeFormatStr"
+                />
+              </div>
 
-        <div class="row_nw_fs_ce props_it_tbox">
-          <span class="row_nw_fs_ce props_it_tlabel">endTime:</span>
-          <div class="row_nw_fs_ce props_it_tinputbox">
-            <el-date-picker v-model="inval.endTime" type="datetime" placeholder="Select end datetime" />
+              <div class="row_nw_fs_ce props_qtinput_linetimeindex">SN:{{ index + 1 }}</div>
+            </div>
+
+            <div class="row_nw_fs_ce props_it_tbox">
+              <span class="row_nw_fs_ce props_it_tlabel">endTime:</span>
+              <div class="row_nw_fs_ce props_it_tinputbox">
+                <el-date-picker v-model="inval.endTime" type="datetime" placeholder="Select end datetime" />
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
       <div class="row_nw_fe_ce props_it_actbox">
+        <el-icon
+          v-if="isFoldIntervals"
+          color="rgba(15, 55, 175, 1)"
+          size="1.5rem"
+          class="row_nw_ce_ce props_it_acticon"
+          @click="setIsFoldIntervals(false)"
+        >
+          <ArrowDown />
+        </el-icon>
+        <el-icon
+          v-else
+          color="rgba(15, 55, 175, 1)"
+          size="1.5rem"
+          class="row_nw_ce_ce props_it_acticon"
+          @click="setIsFoldIntervals(true)"
+        >
+          <ArrowUp />
+        </el-icon>
+
         <el-icon
           :color="intervalsVales.length >= 2 ? 'rgba(15, 55, 175, 1)' : '#f56c6c'"
           size="1.5rem"
@@ -83,6 +108,12 @@
   const currentProp = ref({});
   const isEnable = ref(false);
   const intervalsVales = ref([]);
+
+  const isFoldIntervals = ref(false);
+
+  function setIsFoldIntervals(isFold: boolean) {
+    isFoldIntervals.value = isFold;
+  }
 
   function init() {
     if (props.vdata && props.vdata.id && props.vdata.name) {
@@ -182,6 +213,54 @@
     border-radius: 0.5rem;
   }
 
+  .props_it_wrapper {
+    position: relative;
+    width: calc(100% + 1rem);
+    height: auto;
+    max-height: 56rem;
+    transition: all 0.3s;
+    overflow-y: scroll;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 0.25rem 0.5rem -0.375rem rgba(255, 255, 255, 0.5);
+  }
+
+  .props_it_wrapper::-webkit-scrollbar {
+    width: 0px; /*  设置纵轴（y轴）轴滚动条 */
+    height: 0px; /*  设置横轴（x轴）轴滚动条 */
+  }
+  /* 滚动条滑块（里面小方块） */
+  .props_it_wrapper::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    box-shadow: inset 0 0 5px rgba(255, 100, 102, 0.2);
+    background: rgba(99, 100, 102, 1);
+  }
+  /* 滚动条轨道 */
+  .props_it_wrapper::-webkit-scrollbar-track {
+    border-radius: 0;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0);
+  }
+  /* hover时显色 */
+  .props_it_wrapper:hover::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;
+  }
+
+  .props_it_inwrapper {
+    width: calc(100% - 1rem);
+    height: auto;
+  }
+
+  .props_it_wrapper:hover .props_it_inwrapper {
+    width: calc(100% - 0.5rem);
+  }
+
+  .props_it_samllwrapper {
+    height: 8.75rem;
+    overflow-y: scroll;
+  }
+
   .props_it_itembox {
     width: 100%;
     height: auto;
@@ -204,8 +283,21 @@
   }
 
   .props_it_tinputbox {
-    width: max-content;
+    width: calc(100% - 14rem);
     height: 2rem;
+  }
+
+  :deep(.props_it_tinputbox .el-input) {
+    width: 100%;
+  }
+
+  .props_qtinput_linetimeindex {
+    width: 8rem;
+    height: 100%;
+    color: rgba(230, 230, 230, 1);
+    font-size: 0.75rem;
+    font-weight: 400;
+    margin-left: 1rem;
   }
 
   .props_it_actbox {

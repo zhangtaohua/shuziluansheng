@@ -8,7 +8,7 @@ export const CZMLTIMESECONDS = "seconds";
 export const CZMLVALUESNOTINTERPOLATE = "not_interpolate";
 export const CZMLVALUESWITHINTERPOLATE = "with_interpolate";
 
-export const CZMLCARTESIAN3TYPE = "cartesian3";
+export const CZMLCARTESIAN3METERTYPE = "cartesian3Meter";
 export const CZMLCARTESIAN3DEGREESTYPE = "cartesian3Degrees";
 export const CZMLCARTESIAN3RADIANSTYPE = "cartesian3Radians";
 
@@ -126,5 +126,32 @@ export const propValuesTimeTypeOptions = [
     labelZh: "时间串",
     labelEn: "timestring(ISO8601)",
     note: "Time is an ISO 8601 date and time string.",
+  },
+];
+
+export const propValuesCartesian3TypeOptions = [
+  {
+    id: CZMLCARTESIAN3METERTYPE,
+    value: CZMLCARTESIAN3METERTYPE,
+    label: "米",
+    labelZh: "米",
+    labelEn: "Meter",
+    note: "x y z all meter.",
+  },
+  {
+    id: CZMLCARTESIAN3DEGREESTYPE,
+    value: CZMLCARTESIAN3DEGREESTYPE,
+    label: "度",
+    labelZh: "度",
+    labelEn: "degrees",
+    note: "x y is degrees, z is meter.",
+  },
+  {
+    id: CZMLCARTESIAN3RADIANSTYPE,
+    value: CZMLCARTESIAN3RADIANSTYPE,
+    label: "弧度",
+    labelZh: "弧度",
+    labelEn: "radians",
+    note: "x y is radians, z is meter.",
   },
 ];

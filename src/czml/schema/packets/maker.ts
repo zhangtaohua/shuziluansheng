@@ -53,7 +53,7 @@ export class CzmlDataMaker {
     // this._czmlName = newValue;
   }
 
-  // TODO 后期要用 set 实现
+  // RJTODO 后期要用 set 实现
   public data = [
     {
       version: "1.0",
@@ -94,7 +94,7 @@ export class CzmlDataMaker {
     },
   ];
 
-  // todo
+  // RJTODO
   // 1 要可以手动增加packet;
   public packets = [new czmlDocument(), new czmlPacket()];
 

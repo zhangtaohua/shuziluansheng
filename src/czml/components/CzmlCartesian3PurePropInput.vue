@@ -19,6 +19,21 @@
         </div>
       </div>
 
+      <div class="col_nw_fs_fs props_radiobox">
+        <div class="row_nw_fs_ce props_radiobox_title">
+          <label class="row_nw_fs_ce props_radioch_label">XYZ 单位</label>
+          <label class="row_nw_fs_fe props_radioogi_label">XYZ Unit</label>
+        </div>
+        <div class="row_nw_fs_ce props_radioinbox">
+          <RjRadioTabInput
+            :name="currentProp.id"
+            :options="currentProp.xyzUnitTypeOptions"
+            :initValue="currentProp.xyzUnitType"
+            @onChange="xyzUnitTypesOptionChangedHd"
+          ></RjRadioTabInput>
+        </div>
+      </div>
+
       <div class="col_nw_fs_ce props_input_box">
         <div class="row_nw_fs_ce props_qtinput_line1">
           <div class="row_nw_fs_ce props_qtinput_itemlabelleft">X:</div>
@@ -43,16 +58,19 @@
 </template>
 
 <script setup lang="ts">
+  // 说明： 这个只能用来配合输入只有三个值的 Cartesian3
   import { ref, reactive, onMounted, computed, watch, nextTick } from "vue";
   import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
   import { useCzmlMapDataConfigStore, globalCzmlMapData, MapDrawPointAction } from "@/stores/czmlMapDataConfig";
   import { cloneDeep } from "es-toolkit";
   import { nanoid } from "@/utils/common/nanoid";
   import {
-    CZMLCARTESIAN3TYPE,
+    CZMLCARTESIAN3METERTYPE,
     CZMLCARTESIAN3DEGREESTYPE,
     CZMLCARTESIAN3RADIANSTYPE,
   } from "@/czml/schema/properties/commondata";
+
+  import RjRadioTabInput from "@/components/form/RjRadioTabInput.vue";
 
   const props = defineProps({
     vdata: {
@@ -87,6 +105,20 @@
     setCzmlMapCurrentAction(act);
   }
 
+  function xyzUnitTypesOptionChangedHd(value: string) {
+    if (currentProp.value) {
+      console.log("xyUnitTypesOptionChangedHd", value);
+      currentProp.value.xyzUnitType = value;
+      if (currentProp.value.xyzUnitType == CZMLCARTESIAN3METERTYPE) {
+        pureValue.value = currentProp.value.allValues.cartesian;
+      } else if (currentProp.value.xyzUnitType == CZMLCARTESIAN3DEGREESTYPE) {
+        pureValue.value = currentProp.value.allValues.degrees;
+      } else if (currentProp.value.xyzUnitType == CZMLCARTESIAN3RADIANSTYPE) {
+        pureValue.value = currentProp.value.allValues.radians;
+      }
+    }
+  }
+
   watch(
     () => czmlMapDataConfig.currentDataRefresh,
     () => {
@@ -96,13 +128,19 @@
           // 解析获取值
           const data = globalCzmlMapData.drawData;
           const { cartesian, id, degrees, radians } = data;
-          if (currentProp.value.valueType == CZMLCARTESIAN3TYPE) {
+          if (currentProp.value.xyzUnitType == CZMLCARTESIAN3METERTYPE) {
             pureValue.value = cartesian;
-          } else if (currentProp.value.valueType == CZMLCARTESIAN3DEGREESTYPE) {
+          } else if (currentProp.value.xyzUnitType == CZMLCARTESIAN3DEGREESTYPE) {
             pureValue.value = degrees;
-          } else if (currentProp.value.valueType == CZMLCARTESIAN3RADIANSTYPE) {
+          } else if (currentProp.value.xyzUnitType == CZMLCARTESIAN3RADIANSTYPE) {
             pureValue.value = radians;
           }
+          currentProp.value.allValues = {
+            meter: cartesian,
+            cartesian: cartesian,
+            degrees: degrees,
+            radians: radians,
+          };
           console.log("解析获取值", data);
         }
       }
@@ -203,6 +241,40 @@
   .props_map_actitem_show {
     width: 100%;
     height: 100%;
+  }
+
+  .props_radiobox {
+    width: 100%;
+    height: auto;
+  }
+
+  .props_radiobox_title {
+    width: 100%;
+    height: auto;
+    margin-bottom: 0.75rem;
+  }
+
+  .props_radioch_label {
+    width: max-content;
+    height: 100%;
+    color: rgba(255, 255, 255, 1);
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-right: 0.5rem;
+  }
+
+  .props_radioogi_label {
+    width: max-content;
+    height: 1rem;
+    color: rgba(230, 230, 230, 1);
+    font-size: 0.75rem;
+    font-weight: 400;
+    margin-top: 0.25rem;
+  }
+
+  .props_radioinbox {
+    width: 100%;
+    height: auto;
   }
 
   .props_input_box {

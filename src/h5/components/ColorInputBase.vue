@@ -89,7 +89,7 @@
     }
     isInputFocus.value = isShow;
     //  如果是线性的判断不准确
-    // TODO
+    // RJTODO
     // if (!chroma.valid(state.color)) {
     //   init();
     // }

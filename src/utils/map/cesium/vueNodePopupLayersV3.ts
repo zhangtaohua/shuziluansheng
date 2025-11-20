@@ -59,32 +59,29 @@ export default class CsVueNodePopup {
       const windowPosition = new Cesium.Cartesian2();
       Cesium.SceneTransforms.worldToWindowCoordinates(this.viewer.scene, position, windowPosition);
       // console.log("windowPosition", windowPosition, canvasHeight, this.viewer.scene.canvas.offsetTop, heightOrg);
-      const elWidth = vDom.offsetWidth;
-
       let bottom = canvasHeight - windowPosition.y + heightOrg;
-      let left = windowPosition.x - elWidth / 2;
-
       if (this.mapRootDom) {
         let offsetBottom = 0;
-        const boundingRect = this.mapRootDom.getBoundingClientRect();
-
-        const offsetHeight = boundingRect.height;
-        const offsetTop = boundingRect.top;
+        const offsetHeight = this.mapRootDom.offsetHeight;
+        const offsetTop = this.mapRootDom.offsetTop;
         const windowHeight = document.body.offsetHeight;
 
         offsetBottom = windowHeight - offsetTop - offsetHeight;
         // console.log(offsetBottom);
         bottom = bottom + offsetBottom;
-
-        left = left + boundingRect.left;
       }
       vDom.style.top = "";
       if (offset && offset.length >= 2) {
         bottom = bottom + offset[1];
       }
       vDom.style.bottom = bottom + "px";
+      const elWidth = vDom.offsetWidth;
 
+      let left = windowPosition.x - elWidth / 2;
       // console.log("left", left, this.mapRootDom, this.mapRootDom.offsetLeft);
+      if (this.mapRootDom) {
+        left = left + this.mapRootDom.offsetLeft;
+      }
       if (offset && offset.length >= 2) {
         left = left + offset[0];
       }

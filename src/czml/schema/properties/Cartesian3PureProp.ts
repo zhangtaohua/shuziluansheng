@@ -1,7 +1,14 @@
 import { nanoid } from "@/utils/common/nanoid";
 
-import { CZMLCARTESIAN3TYPE, CZMLCARTESIAN3DEGREESTYPE, CZMLCARTESIAN3RADIANSTYPE } from "./commondata";
+import {
+  CZMLPUREVALUE,
+  CZMLCARTESIAN3METERTYPE,
+  CZMLCARTESIAN3DEGREESTYPE,
+  CZMLCARTESIAN3RADIANSTYPE,
+  propValuesCartesian3TypeOptions,
+} from "./commondata";
 
+// 只能用于生成纯粹的三位数值的 Cartensian3，但可以改变单位， 是原始值，还是换算成经纬度，经纬度值可以是度 或者 弧度。
 export class czmlCartesian3PureProp {
   public id = "czml_prop_cartesian3_pure_" + nanoid(10);
   public name = "cartesian3";
@@ -15,11 +22,13 @@ export class czmlCartesian3PureProp {
 
   public type = "property";
   public componentType = "czml#packet#property";
+  public czmlValue = true;
+
   public tag = "CzmlCartesian3PurePropInput";
 
   public unit = "meters";
   public _value = [0, 0, 0];
-  public _valueType = CZMLCARTESIAN3DEGREESTYPE;
+  public _valueType = "cartesian3";
 
   public default = [0, 0, 0];
   public isEnable = true; // for can edit
@@ -28,6 +37,16 @@ export class czmlCartesian3PureProp {
   public _isEntity = false;
   public isCombinedProperty = false; // Composite Values
   public isComplexProperty = false;
+
+  public _xyzUnitType = CZMLCARTESIAN3METERTYPE;
+  public xyzUnitTypeOptions = propValuesCartesian3TypeOptions;
+
+  public _allValues = {
+    meter: [0, 0, 0],
+    cartesian: [0, 0, 0],
+    degrees: [0, 0, 0],
+    radians: [0, 0, 0],
+  };
 
   constructor(options: any) {
     if (!options) {
@@ -112,6 +131,22 @@ export class czmlCartesian3PureProp {
   set czmlName(newValue) {
     return;
     // this._czmlName = newValue;
+  }
+
+  get allValues() {
+    return this._allValues;
+  }
+
+  set allValues(newValue) {
+    this._allValues = newValue;
+  }
+
+  get xyzUnitType() {
+    return this._xyzUnitType;
+  }
+
+  set xyzUnitType(newValue) {
+    this._xyzUnitType = newValue;
   }
 
   public getCzmlName() {

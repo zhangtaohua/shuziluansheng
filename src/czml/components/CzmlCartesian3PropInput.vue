@@ -1,27 +1,225 @@
 <template>
   <div v-if="isEnable" class="col_nw_fs_fs props_container">
-    <div class="row_nw_sb_ce props_box">
-      <div class="row_nw_fs_ce props_lbox">
-        <label class="row_nw_fs_ce props_ch_label">{{ props.vdata.labelZh }}</label>
-        <label class="row_nw_fs_fe props_ogi_label">{{ props.vdata.labelEn }}</label>
+    <div class="row_nw_fs_ce props_title_box">
+      <label class="row_nw_fs_ce props_ch_label">{{ currentProp.labelZh }}</label>
+      <label class="row_nw_fs_fe props_ogi_label">{{ currentProp.labelEn }}</label>
+    </div>
+
+    <div class="row_nw_fs_ce props_map_actbox">
+      <div
+        v-for="mapTool in mapTools"
+        :key="mapTool.id"
+        class="row_nw_ce_ce props_map_actitem"
+        @click="setMapDrawActionHd(mapTool)"
+      >
+        <el-tooltip :content="mapTool.tipEn" placement="bottom">
+          <img class="props_map_actitem_show" :src="mapTool.image" alt="pic" />
+        </el-tooltip>
       </div>
     </div>
 
-    <div class="row_nw_ce_ce props_input_sbox" :class="{ props_input_sbox_act: isFoucus }">
-      <input
-        :id="currentProp.id"
-        :name="currentProp.id"
-        class="props_input"
-        v-model="currentText"
-        @focus="setIsFoucus(true)"
-        @blur="
-          () => {
-            setIsFoucus(false);
-            textChangeHd();
-          }
-        "
-        @input="textChangeHd"
-      />
+    <div class="col_nw_fs_fs props_radiobox">
+      <div class="row_nw_fs_ce props_radiobox_title">
+        <label class="row_nw_fs_ce props_radioch_label">值是否含有时间标记</label>
+        <label class="row_nw_fs_fe props_radioogi_label">is with time-tagged</label>
+      </div>
+      <div class="row_nw_fs_ce props_radioinbox">
+        <RjRadioTabInput
+          :name="currentProp.id"
+          :options="currentProp.timeTypeOptions"
+          :initValue="currentProp.timeType"
+          :isRefresh="refreshTimeTypeFlag"
+          @onChange="timeTypesOptionChangedHd"
+        ></RjRadioTabInput>
+      </div>
+    </div>
+
+    <div v-if="currentProp.timeType == CZMLPUREVALUE" class="col_nw_fs_ce props_input_box">
+      <div class="row_nw_fs_ce props_qtinput_line1">
+        <div class="row_nw_fs_ce props_qtinput_itemlabelleft">X:</div>
+        <div class="row_nw_fs_ce props_qtinput_itembox">
+          <el-input v-model="pureValue[0]" placeholder="Please input" type="number" />
+        </div>
+        <div class="row_nw_fs_ce props_qtinput_itemlabelright">Y:</div>
+        <div class="row_nw_fs_ce props_qtinput_itembox">
+          <el-input v-model="pureValue[1]" placeholder="Please input" type="number" />
+        </div>
+      </div>
+
+      <div class="row_nw_fs_ce props_qtinput_line2">
+        <div class="row_nw_fs_ce props_qtinput_itemlabelleft">Z:</div>
+        <div class="row_nw_fs_ce props_qtinput_itembox">
+          <el-input v-model="pureValue[2]" placeholder="Please input" type="number" />
+        </div>
+      </div>
+    </div>
+    <div v-else-if="currentProp.timeType == CZMLTIMESECONDS" class="col_nw_fs_fs props_it_box">
+      <div class="col_nw_fs_fs props_it_wrapper" :class="{ props_it_samllwrapper: isFoldIntervals }">
+        <div class="col_nw_fs_fs props_it_inwrapper">
+          <div v-for="(inval, index) in intervalsValues" :key="inval[0]" class="col_nw_fs_fs props_it_itembox">
+            <div class="row_nw_fs_ce props_qtinput_linetime">
+              <div class="row_nw_fs_ce props_qtinput_linetimelabel">秒 seconds:</div>
+              <div class="row_nw_fs_ce props_qtinput_linetimeinputbox">
+                <el-input v-model="inval[0]" placeholder="Please input" type="number" />
+              </div>
+
+              <div class="row_nw_fs_ce props_qtinput_linetimeindex">SN:{{ index + 1 }}</div>
+            </div>
+            <div class="row_nw_fs_ce props_qtinput_line1">
+              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">X:</div>
+              <div class="row_nw_fs_ce props_qtinput_itembox">
+                <el-input v-model="inval[1]" placeholder="Please input" type="number" />
+              </div>
+              <div class="row_nw_fs_ce props_qtinput_itemlabelright">Y:</div>
+              <div class="row_nw_fs_ce props_qtinput_itembox">
+                <el-input v-model="inval[2]" placeholder="Please input" type="number" />
+              </div>
+            </div>
+
+            <div class="row_nw_fs_ce props_qtinput_line2">
+              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">Z:</div>
+              <div class="row_nw_fs_ce props_qtinput_itembox">
+                <el-input v-model="inval[3]" placeholder="Please input" type="number" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col_nw_fs_fs props_it_secondsactbox">
+        <div class="row_nw_fs_ce props_it_secondssetbox">
+          <div class="row_nw_fs_ce props_it_secondssetbox_lable">开始秒数 start seconds:</div>
+          <el-input v-model="currentProp.secondsStart" placeholder="Please input" type="number" min="0" />
+        </div>
+        <div class="row_nw_fs_ce props_it_secondssetbox">
+          <div class="row_nw_fs_ce props_it_secondssetbox_lable">秒数步长 step:</div>
+          <el-input v-model="currentProp.secondsStep" placeholder="Please input" type="number" min="0" />
+        </div>
+
+        <div class="row_nw_fs_ce props_it_secondssetbox">
+          <div class="row_nw_fs_ce props_it_secondssetbox_lable">一次增加数量 count:</div>
+          <el-input v-model="currentProp.secondsOnceAddCount" placeholder="Please input" type="number" min="1" />
+        </div>
+      </div>
+
+      <div class="row_nw_fe_ce props_it_actbox">
+        <el-icon
+          v-if="isFoldIntervals"
+          :color="intervalsValues.length >= 2 ? 'rgba(15, 55, 175, 1)' : '#f56c6c'"
+          size="1.5rem"
+          class="row_nw_ce_ce props_it_acticon"
+          :class="{ props_it_dis_action: intervalsValues.length <= 1 }"
+          @click="setIsFoldIntervals(false)"
+        >
+          <ArrowDown />
+        </el-icon>
+        <el-icon
+          v-else
+          :color="intervalsValues.length >= 2 ? 'rgba(15, 55, 175, 1)' : '#f56c6c'"
+          size="1.5rem"
+          class="row_nw_ce_ce props_it_acticon"
+          :class="{ props_it_dis_action: intervalsValues.length <= 1 }"
+          @click="setIsFoldIntervals(true)"
+        >
+          <ArrowUp />
+        </el-icon>
+
+        <el-icon
+          :color="intervalsValues.length >= 2 ? 'rgba(15, 55, 175, 1)' : '#f56c6c'"
+          size="1.5rem"
+          class="row_nw_ce_ce props_it_acticon"
+          :class="{ props_it_dis_action: intervalsValues.length <= 1 }"
+          @click="popSecondsIntervalValue"
+        >
+          <RemoveFilled />
+        </el-icon>
+        <el-icon
+          color="rgba(15, 55, 175, 1)"
+          size="1.5rem"
+          class="row_nw_ce_ce props_it_acticon2"
+          @click="pushSecondsIntervalValue"
+        >
+          <CirclePlusFilled />
+        </el-icon>
+      </div>
+    </div>
+
+    <div v-else-if="currentProp.timeType == CZMLTIMESTRING" class="col_nw_fs_fs props_it_box">
+      <div class="col_nw_fs_fs props_it_wrapper" :class="{ props_it_samllwrapper: isFoldTimestrIntervals }">
+        <div class="col_nw_fs_fs props_it_inwrapper">
+          <div v-for="(inval, index2) in timestrIntervalsValues" :key="inval[0]" class="col_nw_fs_fs props_it_itembox">
+            <div class="row_nw_fs_ce props_qtinput_linetime">
+              <div class="row_nw_fs_ce props_qtinput_linetimelabel">时间串 time:</div>
+              <div class="row_nw_fs_ce props_qtinput_linetimeinputbox">
+                <el-date-picker
+                  v-model="inval[0]"
+                  type="datetime"
+                  placeholder="Select start datetime"
+                  :format="defaultTimeFormatStr"
+                  :value-format="defaultTimeFormatStr"
+                />
+              </div>
+              <div class="row_nw_fs_ce props_qtinput_linetimeindex">SN:{{ index2 + 1 }}</div>
+            </div>
+            <div class="row_nw_fs_ce props_qtinput_line1">
+              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">X:</div>
+              <div class="row_nw_fs_ce props_qtinput_itembox">
+                <el-input v-model="inval[1]" placeholder="Please input" type="number" />
+              </div>
+              <div class="row_nw_fs_ce props_qtinput_itemlabelright">Y:</div>
+              <div class="row_nw_fs_ce props_qtinput_itembox">
+                <el-input v-model="inval[2]" placeholder="Please input" type="number" />
+              </div>
+            </div>
+
+            <div class="row_nw_fs_ce props_qtinput_line2">
+              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">Z:</div>
+              <div class="row_nw_fs_ce props_qtinput_itembox">
+                <el-input v-model="inval[3]" placeholder="Please input" type="number" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row_nw_fe_ce props_it_actbox">
+        <el-icon
+          v-if="isFoldTimestrIntervals"
+          color="rgba(15, 55, 175, 1)"
+          size="1.5rem"
+          class="row_nw_ce_ce props_it_acticon"
+          @click="setIsFoldTimestrIntervals(false)"
+        >
+          <ArrowDown />
+        </el-icon>
+        <el-icon
+          v-else
+          color="rgba(15, 55, 175, 1)"
+          size="1.5rem"
+          class="row_nw_ce_ce props_it_acticon"
+          @click="setIsFoldTimestrIntervals(true)"
+        >
+          <ArrowUp />
+        </el-icon>
+
+        <el-icon
+          :color="intervalsValues.length >= 2 ? 'rgba(15, 55, 175, 1)' : '#f56c6c'"
+          size="1.5rem"
+          class="row_nw_ce_ce props_it_acticon"
+          :class="{ props_it_dis_action: intervalsValues.length <= 1 }"
+          @click="popTimestringIntervalValue"
+        >
+          <RemoveFilled />
+        </el-icon>
+        <el-icon
+          color="rgba(15, 55, 175, 1)"
+          size="1.5rem"
+          class="row_nw_ce_ce props_it_acticon2"
+          @click="pushTimestringIntervalValue"
+        >
+          <CirclePlusFilled />
+        </el-icon>
+      </div>
     </div>
   </div>
 </template>
@@ -29,6 +227,34 @@
 <script setup lang="ts">
   import { ref, reactive, onMounted, computed, watch, nextTick } from "vue";
   import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
+  import RjRadioTabInput from "@/components/form/RjRadioTabInput.vue";
+  import LineGap from "@/h5/components/LineGap.vue";
+  import { nanoid } from "@/utils/common/nanoid";
+
+  import {
+    useCzmlMapDataConfigStore,
+    globalCzmlMapData,
+    MapDrawPointAction,
+    MapDrawLineAction,
+    MapDrawSmoothLineAction,
+    MapDrawBezierLineAction,
+    MapDrawRectangleAction,
+    MapDrawPolygonAction,
+    MapDrawCircleAction,
+  } from "@/stores/czmlMapDataConfig";
+
+  import { cloneDeep } from "es-toolkit";
+  import { isArray } from "es-toolkit/compat";
+  import dayjs from "dayjs";
+  import {
+    CZMLPUREVALUE,
+    CZMLTIMESECONDS,
+    CZMLTIMESTRING,
+    CZMLVALUESNOTINTERPOLATE,
+    CZMLVALUESWITHINTERPOLATE,
+    defaultTimeFormatStr,
+  } from "@/czml/schema/properties/commondata.ts";
+  import { ArrowDown } from "@element-plus/icons-vue";
 
   const props = defineProps({
     vdata: {
@@ -43,40 +269,315 @@
   });
 
   const { editorConfig, setEditorRefreshShape } = useEditorConfigStore();
+  const { czmlMapDataConfig, setCzmlMapCurrentAction, setCzmlMapCurrentData } = useCzmlMapDataConfigStore();
   const id = "";
   const name = "";
-  let currentProp = {};
-  const currentText = ref("");
+  const currentProp = ref({});
   const isEnable = ref(false);
-  const isFoucus = ref(false);
+  const pureValue = ref([0, 0, 0, 0]);
+  const intervalsValues = ref([[0, 0, 0, 0, 0]]);
+  const isFoldIntervals = ref(false);
+
+  const timestrIntervalsValues = ref([[dayjs().format(defaultTimeFormatStr), 0, 0, 0, 0]]);
+  const isFoldTimestrIntervals = ref(false);
+
+  const refreshTimeTypeFlag = ref(0);
+  const pointDataKeyId = nanoid(10);
+  const lineDataKeyId = nanoid(10);
+  const smoothLineDataKeyId = nanoid(10);
+  const curveLineDataKeyId = nanoid(10);
+  const rectDataKeyId = nanoid(10);
+  const polygonDataKeyId = nanoid(10);
+  const circleDataKeyId = nanoid(10);
+
+  const mapTools = ref([
+    {
+      ...MapDrawPointAction,
+      id: pointDataKeyId,
+    },
+    {
+      ...MapDrawLineAction,
+      id: lineDataKeyId,
+    },
+    {
+      ...MapDrawSmoothLineAction,
+      id: smoothLineDataKeyId,
+    },
+    {
+      ...MapDrawBezierLineAction,
+      id: curveLineDataKeyId,
+    },
+    {
+      ...MapDrawRectangleAction,
+      id: rectDataKeyId,
+    },
+    {
+      ...MapDrawPolygonAction,
+      id: polygonDataKeyId,
+    },
+    {
+      ...MapDrawCircleAction,
+      id: circleDataKeyId,
+    },
+  ]);
+
+  function setIsFoldIntervals(isFold: boolean) {
+    isFoldIntervals.value = isFold;
+  }
+
+  function setIsFoldTimestrIntervals(isFold: boolean) {
+    isFoldTimestrIntervals.value = isFold;
+  }
+
+  function setMapDrawActionHd(act: any) {
+    setCzmlMapCurrentAction(act);
+    if (act.id == pointDataKeyId) {
+      if (currentProp.value && currentProp.value.timeType != CZMLPUREVALUE) {
+        currentProp.value.timeType = CZMLPUREVALUE;
+        refreshTimeTypeFlag.value++;
+      }
+    } else {
+      if (currentProp.value && currentProp.value.timeType == CZMLPUREVALUE) {
+        currentProp.value.timeType = CZMLTIMESECONDS;
+        refreshTimeTypeFlag.value++;
+      }
+    }
+  }
+
+  function timeTypesOptionChangedHd(value: string) {
+    if (currentProp.value) {
+      currentProp.value.timeType = value;
+    }
+  }
+
+  const popSecondsIntervalValue = () => {
+    if (isArray(intervalsValues.value)) {
+      const { secondsOnceAddCount } = currentProp.value;
+      for (let i = 0; i < +secondsOnceAddCount; i++) {
+        if (intervalsValues.value.length >= 2) {
+          intervalsValues.value.pop();
+        }
+      }
+    }
+  };
+
+  const pushSecondsIntervalValue = () => {
+    if (isArray(intervalsValues.value)) {
+      const length = intervalsValues.value.length;
+      const { secondsStart, secondsStep, secondsOnceAddCount } = currentProp.value;
+      const last = length - 1;
+      if (length == 1) {
+        intervalsValues.value[0][0] = +secondsStart;
+      }
+
+      const lastItem = intervalsValues.value[last];
+      const secondsStepNumber = +secondsStep;
+      let nextSeconds = +lastItem[0];
+
+      for (let i = 0; i < +secondsOnceAddCount; i++) {
+        nextSeconds = nextSeconds + secondsStepNumber;
+        intervalsValues.value.push([nextSeconds, 0, 0, 0]);
+      }
+    }
+  };
+
+  const popTimestringIntervalValue = () => {
+    if (isArray(timestrIntervalsValues.value)) {
+      if (timestrIntervalsValues.value.length >= 2) {
+        timestrIntervalsValues.value.pop();
+      }
+    }
+  };
+
+  const pushTimestringIntervalValue = () => {
+    if (isArray(timestrIntervalsValues.value)) {
+      timestrIntervalsValues.value.push([dayjs().format(defaultTimeFormatStr), 0, 0, 0]);
+    }
+  };
 
   function init() {
-    console.log("text props", props.vdata);
     if (props.vdata && props.vdata.id && props.vdata.name) {
+      console.log("unit_quaternion_props", props.vdata);
       isEnable.value = true;
-      currentProp = props.vdata;
-      currentText.value = currentProp.value;
+      currentProp.value = props.vdata;
+      if (currentProp.value.timeType == CZMLPUREVALUE) {
+        pureValue.value = cloneDeep(currentProp.value.value);
+      } else if (currentProp.value.timeType == CZMLTIMESECONDS) {
+        intervalsValues.value = cloneDeep(currentProp.value.value);
+      } else if (currentProp.value.timeType == CZMLTIMESTRING) {
+        timestrIntervalsValues.value = cloneDeep(currentProp.value.value);
+      }
     } else {
       isEnable.value = false;
-      currentText.value = "";
-      currentProp = {};
+      currentProp.value = {};
+      pureValue.value = [0, 0, 0];
+      intervalsValues.value = [[0, 0, 0, 0]];
+      timestrIntervalsValues.value = [[dayjs().format(defaultTimeFormatStr), 0, 0, 0]];
     }
-    console.log("text input", id, name, currentProp);
   }
+
+  watch(
+    () => czmlMapDataConfig.currentDataRefresh,
+    () => {
+      if (czmlMapDataConfig.currentDataRefresh) {
+        console.log("解析获取值", globalCzmlMapData.drawData);
+        if (czmlMapDataConfig.currentDataId == pointDataKeyId) {
+          // 解析获取值
+          const data = globalCzmlMapData.drawData;
+          const { cartesian, id, degrees, radians } = data;
+          pureValue.value = cartesian;
+        } else {
+          if (currentProp.value.timeType == CZMLTIMESECONDS) {
+            const data = globalCzmlMapData.drawData;
+            const coordinates = data.coordinates;
+            if (coordinates && isArray(coordinates) && coordinates.length) {
+              if (isArray(intervalsValues.value)) {
+                const length = intervalsValues.value.length;
+                const { secondsStart, secondsStep, secondsOnceAddCount } = currentProp.value;
+                const last = length - 1;
+                let isNeedModifyFirset = false;
+                if (
+                  length == 1 &&
+                  intervalsValues.value[0][1] == 0 &&
+                  intervalsValues.value[0][2] == 0 &&
+                  intervalsValues.value[0][3] == 0
+                ) {
+                  isNeedModifyFirset = true;
+                  intervalsValues.value[0][0] = +secondsStart;
+                  intervalsValues.value[0][1] = coordinates[0].x;
+                  intervalsValues.value[0][2] = coordinates[0].y;
+                  intervalsValues.value[0][3] = coordinates[0].z;
+                }
+
+                const lastItem = intervalsValues.value[last];
+                const secondsStepNumber = +secondsStep;
+                let nextSeconds = +lastItem[0];
+
+                let index = 0;
+                if (isNeedModifyFirset) {
+                  index = 1;
+                }
+                for (let i = index; i < coordinates.length; i++) {
+                  nextSeconds = nextSeconds + secondsStepNumber;
+                  const coordinate = coordinates[i];
+                  intervalsValues.value.push([nextSeconds, coordinate.x, coordinate.y, coordinate.z]);
+                }
+              }
+            }
+          } else if (currentProp.value.timeType == CZMLTIMESTRING) {
+            const data = globalCzmlMapData.drawData;
+            const coordinates = data.coordinates;
+            if (coordinates && isArray(coordinates) && coordinates.length) {
+              if (isArray(timestrIntervalsValues.value)) {
+                const length = timestrIntervalsValues.value.length;
+                const last = length - 1;
+                let isNeedModifyFirset = false;
+                if (
+                  length == 1 &&
+                  timestrIntervalsValues.value[0][1] == 0 &&
+                  timestrIntervalsValues.value[0][2] == 0 &&
+                  timestrIntervalsValues.value[0][3] == 0
+                ) {
+                  isNeedModifyFirset = true;
+                  timestrIntervalsValues.value[0][1] = coordinates[0].x;
+                  timestrIntervalsValues.value[0][2] = coordinates[0].y;
+                  timestrIntervalsValues.value[0][3] = coordinates[0].z;
+                }
+
+                let index = 0;
+                if (isNeedModifyFirset) {
+                  index = 1;
+                }
+                for (let i = index; i < coordinates.length; i++) {
+                  const coordinate = coordinates[i];
+                  timestrIntervalsValues.value.push([
+                    dayjs().format(defaultTimeFormatStr),
+                    coordinate.x,
+                    coordinate.y,
+                    coordinate.z,
+                  ]);
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      deep: false,
+      immediate: false,
+    },
+  );
 
   onMounted(() => {
     init();
   });
 
-  function textChangeHd() {
-    if (isEnable.value && currentProp) {
-      currentProp.value = currentText.value;
-    }
-  }
+  watch(
+    () => currentProp.value.timeType,
+    () => {
+      nextTick(() => {
+        console.log("currentProp.valueType", currentProp.value);
+        if (currentProp.value.timeType == CZMLPUREVALUE) {
+          pureValue.value = cloneDeep(currentProp.value.value);
+        } else if (currentProp.value.timeType == CZMLTIMESECONDS) {
+          intervalsValues.value = cloneDeep(currentProp.value.value);
+        } else if (currentProp.value.timeType == CZMLTIMESTRING) {
+          timestrIntervalsValues.value = cloneDeep(currentProp.value.value);
+        } else {
+          pureValue.value = [0, 0, 0];
+          intervalsValues.value = [[0, 0, 0, 0]];
+          timestrIntervalsValues.value = [[dayjs().format(defaultTimeFormatStr), 0, 0, 0]];
+        }
+      });
+    },
+    {
+      immediate: false,
+      deep: false,
+    },
+  );
 
-  function setIsFoucus(isFos: boolean) {
-    isFoucus.value = isFos;
-  }
+  watch(
+    pureValue,
+    () => {
+      if (currentProp.value && currentProp.value.timeType == CZMLPUREVALUE) {
+        console.log("pureValue", pureValue.value);
+        currentProp.value.value = pureValue.value;
+      }
+    },
+    {
+      immediate: false,
+      deep: false,
+    },
+  );
+
+  watch(
+    intervalsValues,
+    () => {
+      if (currentProp.value && currentProp.value.timeType == CZMLTIMESECONDS) {
+        console.log("intervalsValues", intervalsValues.value);
+        currentProp.value.value = intervalsValues.value;
+      }
+    },
+    {
+      immediate: false,
+      deep: false,
+    },
+  );
+
+  watch(
+    timestrIntervalsValues,
+    () => {
+      if (currentProp.value && currentProp.value.timeType == CZMLTIMESTRING) {
+        console.log("timestrIntervalsValues", timestrIntervalsValues.value);
+        currentProp.value.value = timestrIntervalsValues.value;
+      }
+    },
+    {
+      immediate: false,
+      deep: false,
+    },
+  );
 </script>
 
 <style scoped>
@@ -86,14 +587,10 @@
     background-color: transparent;
   }
 
-  .props_box {
+  .props_title_box {
     width: 100%;
-    height: 2.5rem;
-  }
-
-  .props_lbox {
-    width: max-content;
-    height: 100%;
+    height: 2rem;
+    margin-bottom: 0.5rem;
   }
 
   .props_ch_label {
@@ -103,60 +600,282 @@
     font-size: var(--czml-fs-pp-zh);
     font-weight: 500;
     margin-right: 0.5rem;
-    margin-left: 0.25rem;
   }
 
   .props_ogi_label {
     width: max-content;
     height: 1rem;
-    color: rgba(200, 200, 200, 1);
+    color: rgba(230, 230, 230, 1);
     font-size: var(--czml-fs-pp-en);
     font-weight: 400;
+    margin-top: 0.25rem;
   }
 
-  .props_input_sbox {
+  .props_map_actbox {
     position: relative;
-    width: calc(100% - 0.25rem);
-    margin-left: 0.125rem;
-    height: 2rem;
+    width: 100%;
+    height: auto;
     background-color: rgba(0, 0, 0, 1);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .props_map_actitem {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-right: 0.75rem;
+    cursor: pointer;
+  }
+
+  .props_map_actitem_show {
+    width: 100%;
+    height: 100%;
+  }
+
+  .props_radiobox {
+    width: 100%;
+    height: auto;
+  }
+
+  .props_radiobox_title {
+    width: 100%;
+    height: auto;
+    margin-bottom: 0.75rem;
+  }
+
+  .props_radioch_label {
+    width: max-content;
+    height: 100%;
+    color: rgba(255, 255, 255, 1);
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-right: 0.5rem;
+  }
+
+  .props_radioogi_label {
+    width: max-content;
+    height: 1rem;
+    color: rgba(230, 230, 230, 1);
+    font-size: 0.75rem;
+    font-weight: 400;
+    margin-top: 0.25rem;
+  }
+
+  .props_radioinbox {
+    width: 100%;
+    height: auto;
+  }
+
+  .props_input_box {
+    position: relative;
+    width: 100%;
+    height: auto;
+    background-color: rgba(0, 0, 0, 1);
+    border-radius: 0 0 0.5rem 0.5rem;
+    padding: 1rem;
+  }
+
+  .props_qtinput_line1 {
+    width: 100%;
+    height: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .props_qtinput_line2 {
+    width: 100%;
+    height: 2rem;
+  }
+
+  .props_qtinput_itemlabelleft {
+    width: 1.5rem;
+    height: 100%;
+    color: rgba(255, 255, 255, 1);
+    font-size: var(--czml-fs-sl-label);
+    font-weight: bold;
+    margin-right: 0.5rem;
+  }
+
+  .props_qtinput_itemlabelright {
+    width: 1.5rem;
+    height: 100%;
+    color: rgba(255, 255, 255, 1);
+    font-size: var(--czml-fs-sl-label);
+    font-weight: bold;
+    margin-right: 0.5rem;
+    margin-left: 1rem;
+  }
+
+  .props_qtinput_itembox {
+    width: calc(50% - 2.25rem);
+    height: 100%;
+  }
+
+  .props_it_box {
+    position: relative;
+    width: 100%;
+    height: auto;
+    margin-bottom: 0.25rem;
+    background-color: rgba(0, 0, 0, 1);
+    padding: 1rem;
     border-radius: 0.5rem;
   }
 
-  .props_input_sbox_act {
-    outline: 1px solid rgba(15, 55, 175, 1);
+  .props_it_wrapper {
+    position: relative;
+    width: calc(100% + 1rem);
+    height: auto;
+    max-height: 56rem;
+    transition: all 0.3s;
+    overflow-y: scroll;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 0.25rem 0.5rem -0.375rem rgba(255, 255, 255, 0.5);
   }
 
-  .props_input_sbox_disabled {
-    outline: 1px solid rgba(15, 55, 175, 0.5);
-    cursor: not-allowed;
+  .props_it_wrapper::-webkit-scrollbar {
+    width: 0px; /*  设置纵轴（y轴）轴滚动条 */
+    height: 0px; /*  设置横轴（x轴）轴滚动条 */
+  }
+  /* 滚动条滑块（里面小方块） */
+  .props_it_wrapper::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    box-shadow: inset 0 0 5px rgba(255, 100, 102, 0.2);
+    background: rgba(99, 100, 102, 1);
+  }
+  /* 滚动条轨道 */
+  .props_it_wrapper::-webkit-scrollbar-track {
+    border-radius: 0;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0);
+  }
+  /* hover时显色 */
+  .props_it_wrapper:hover::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;
   }
 
-  .props_input {
-    align-self: flex-start;
+  .props_it_inwrapper {
+    width: calc(100% - 1rem);
+    height: auto;
+  }
+
+  .props_it_wrapper:hover .props_it_inwrapper {
+    width: calc(100% - 0.5rem);
+  }
+
+  .props_it_samllwrapper {
+    height: 8.75rem;
+    overflow-y: scroll;
+  }
+
+  .props_it_itembox {
+    width: 100%;
+    height: auto;
+    margin-bottom: 0.75rem;
+  }
+
+  .props_qtinput_linetime {
     width: 100%;
     height: 2rem;
-    padding: 0.5rem 0.5rem;
-    color: rgba(255, 255, 255, 1);
-    font-size: 0.875rem;
-    background-color: transparent;
-    font-weight: 400;
-    border: none;
-    line-height: 1.75rem;
-    -moz-appearance: textfield;
-    resize: none;
+    margin-bottom: 0.5rem;
   }
 
-  .props_input:disabled {
+  .props_qtinput_linetimelabel {
+    width: 7rem;
+    height: 100%;
+    color: rgba(255, 255, 255, 1);
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  .props_qtinput_linetimeinputbox {
+    width: calc(100% - 16rem);
+    height: 100%;
+  }
+
+  :deep(.props_qtinput_linetimeinputbox .el-input) {
+    width: 100%;
+  }
+
+  .props_qtinput_linetimeindex {
+    width: 8rem;
+    height: 100%;
+    color: rgba(230, 230, 230, 1);
+    font-size: 0.75rem;
+    font-weight: 400;
+    margin-left: 1rem;
+  }
+
+  .props_it_tbox {
+    width: 100%;
+    height: 2rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .props_it_tlabel {
+    width: 4rem;
+    height: 100%;
+    color: rgba(255, 255, 255, 1);
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-right: 0.5rem;
+  }
+
+  .props_it_tinputbox {
+    width: max-content;
+    height: 2rem;
+  }
+
+  .props_it_input_box {
+    position: relative;
+    width: 100%;
+    height: 2rem;
+    /* background-color: rgba(0, 0, 0, 1); */
+  }
+
+  .props_it_secondsactbox {
+    width: 100%;
+    height: auto;
+    margin-top: 0.875rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .props_it_secondssetbox {
+    width: 100%;
+    height: 2rem;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .props_it_secondssetbox_lable {
+    width: 15.5rem;
+    height: 100%;
+    color: rgba(255, 255, 255, 1);
+    font-size: var(--czml-fs-label);
+  }
+
+  .props_it_actbox {
+    width: 100%;
+    height: 2rem;
+    margin-top: 0.5rem;
+  }
+
+  .props_it_acticon {
+    width: 1.5rem;
+    height: 1.5rem;
+    cursor: pointer;
+    margin-right: 1rem;
+  }
+
+  .props_it_dis_action {
     cursor: not-allowed;
   }
 
-  .props_input::placeholder {
-    display: flex;
-    flex-direction: row;
-    place-items: center flex-start;
-    padding: 0;
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 0.875rem;
+  .props_it_acticon2 {
+    width: 1.5rem;
+    height: 1.5rem;
+    cursor: pointer;
   }
 </style>

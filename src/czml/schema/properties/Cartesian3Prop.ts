@@ -7,35 +7,41 @@ import {
   CZMLTIMESTRING,
   CZMLVALUESNOTINTERPOLATE,
   CZMLVALUESWITHINTERPOLATE,
+  CZMLCARTESIAN3METERTYPE,
+  CZMLCARTESIAN3DEGREESTYPE,
+  CZMLCARTESIAN3RADIANSTYPE,
+  propValuesCartesian3TypeOptions,
   propValuesInterpolateOptions,
   defaultTimeFormatStr,
   propValuesTimeTypeOptions,
 } from "./commondata.ts";
 import czmlInterpolatableProp from "./InterpolatablePropertyProp.ts";
 
-// Sampled Property Values
+// 用于生成 Cartesian3 数值，纯数值，或者是带时间序的多个值。
 export class czmlCartesian3Prop {
   public id = "czml_prop_cartesian3_" + nanoid(10);
   public name = "cartesian3";
   public _czmlName = "cartesian3";
-  public labelZh = "XYZ坐标";
-  public labelEn = "cartesian3";
+  public labelZh = "XYZ坐标(C) ";
+  public labelEn = "cartesian3(C)";
   public title = "Cartesian3";
   public description =
     "A three-dimensional Cartesian value specified as `[X, Y, Z]`. If the array has three elements, the value is constant. If it has four or more elements, they are time-tagged samples arranged as `[Time, X, Y, Z, Time, X, Y, Z, ...]`, where Time is an ISO 8601 date and time string or seconds since epoch.";
 
   public type = "property";
   public componentType = "czml#packet#property";
+  public czmlValue = true; // 这个用于标示是不是 czml value的
 
   public tag = "CzmlCartesian3PropInput";
 
   public unit = "meters";
   public _value = [0, 0, 0];
   public _oldPureValue = [0, 0, 0];
-  public _oldSecondsValue = [0, 0, 0, 0];
-  public _oldTimestringValue = [dayjs().format(defaultTimeFormatStr), 0, 0, 0];
+  public _oldSecondsValue = [[0, 0, 0, 0]];
+  public _oldTimestringValue = [[dayjs().format(defaultTimeFormatStr), 0, 0, 0]];
 
-  public _valueType = "cartesian3-time-tagged";
+  public _valueType = "cartesian3 may time-tagged";
+
   public default = [0, 0, 0];
 
   public isEnable = true; // for can edit
@@ -52,6 +58,10 @@ export class czmlCartesian3Prop {
   public _timeType = CZMLPUREVALUE;
   public timeTypeOptions = propValuesTimeTypeOptions;
 
+  public secondsStart = 0;
+  public secondsStep = 30;
+  public secondsOnceAddCount = 1;
+
   constructor(options: any) {
     if (!options) {
       return;
@@ -60,7 +70,7 @@ export class czmlCartesian3Prop {
     if (options.id) {
       this.id = options.id;
     } else if (options.name) {
-      this.id = "czml_prop_cartesian3_" + options.name + "_" + nanoid(10);
+      this.id = "czml_prop_cartesian3_timetagged_" + options.name + "_" + nanoid(10);
     }
 
     if (options.name) {
@@ -159,26 +169,6 @@ export class czmlCartesian3Prop {
     }
   }
 
-  get interpolationType() {
-    return this._interpolationType;
-  }
-
-  set interpolationType(newValue) {
-    if (newValue != this._interpolationType) {
-      const __oldvalue = [];
-      if (newValue == CZMLVALUESNOTINTERPOLATE) {
-      } else if (newValue == CZMLVALUESWITHINTERPOLATE) {
-        if (this.timeType == CZMLPUREVALUE) {
-          this.timeType = CZMLTIMESECONDS;
-        }
-      }
-
-      setTimeout(() => {
-        this._interpolationType = newValue;
-      }, 50);
-    }
-  }
-
   get czmlName() {
     return this._czmlName;
   }
@@ -207,7 +197,7 @@ export class czmlCartesian3Prop {
   public getCzmlData() {
     if (this.isUsed) {
       return {
-        [this.name]: this.getCzmlValue(),
+        [this.czmlName]: this.getCzmlValue(),
       };
     } else {
       return null;

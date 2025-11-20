@@ -16,6 +16,16 @@ export const eventTarget = new mars3d.BaseClass();
 
 export let vuePopupIns = null;
 
+// prettier-ignore
+/* prettier-ignore */
+// eslint-disable-next-line。
+/* eslint-disable */
+
+export const keyDownCode = {
+  code: null,
+};
+// 一直按着的键对应的code
+
 export const MapDrawActionPopupOptions = {
   id: "map_draw_vue_node_test_id",
   name: "map_draw_vue_node_test_name",
@@ -165,8 +175,97 @@ export async function drawPoint(clampToGround = true) {
       },
     });
 
-    console.log("Rectangle 绘制完成", graphic.toJSON());
+    console.log("Point 绘制完成", graphic.toJSON());
     return graphic;
+  }
+
+  return null;
+}
+
+function updateDrawPosition(thisPoint, lastPoint, type) {
+  if (!lastPoint || !thisPoint) {
+    return thisPoint;
+  }
+  thisPoint = mars3d.LngLatPoint.fromCartesian(thisPoint);
+  lastPoint = mars3d.LngLatPoint.fromCartesian(lastPoint);
+
+  if (type === 1) {
+    thisPoint.lat = lastPoint.lat;
+  } else {
+    thisPoint.lng = lastPoint.lng;
+  }
+  return thisPoint.toCartesian();
+}
+
+export async function drawPolyline(clampToGround = true) {
+  if (graphicLayer) {
+    // map.highlightEnabled = false
+    // map.popup.enabled = false
+
+    const graphic = await graphicLayer.startDraw({
+      type: isEntityGraphic ? "polyline" : "polylineP",
+      style: {
+        color: clampToGround ? "#ffff00" : "#3388ff",
+        width: 3,
+        clampToGround,
+      },
+      // 绘制时，外部自定义更新坐标,可以自定义处理特殊业务返回修改后的新坐标。
+      updateDrawPosition: function (position, graphic) {
+        if (keyDownCode.code === 67) {
+          // 按下C键 ,限定在纬度线上
+          position = updateDrawPosition(position, graphic.lastDrawPoint, 1);
+        } else if (keyDownCode.code === 86) {
+          // 按下V键 ,限定在经度线上
+          position = updateDrawPosition(position, graphic.lastDrawPoint, 2);
+        }
+        return position;
+      },
+      // 外部自定义校验坐标，return false 时坐标无效，不参与绘制
+      // validDrawPosition: function (position, graphic) {
+      //   const point = mars3d.LngLatPoint.fromCartesian(position)
+      //   return (point.lng > 115 && point.lng < 117)
+      // }
+    });
+
+    // map.highlightEnabled = true
+    // map.popup.enabled = true
+
+    console.log("Polyline 绘制完成", graphic.toJSON());
+    return graphic;
+  }
+
+  return null;
+}
+
+export async function drawBrushLine(clampToGround = true) {
+  if (graphicLayer) {
+    const graphic = await graphicLayer.startDraw({
+      type: "brushLine",
+      style: {
+        color: clampToGround ? "#ffff00" : "#3388ff",
+        width: 3,
+        clampToGround,
+      },
+    });
+
+    console.log("BrushLine 绘制完成", graphic.toJSON());
+  }
+
+  return null;
+}
+
+export async function drawCurve(clampToGround = true) {
+  if (graphicLayer) {
+    const graphic = await graphicLayer.startDraw({
+      type: "curve",
+      style: {
+        color: clampToGround ? "#ffff00" : "#3388ff",
+        width: 3,
+        clampToGround,
+      },
+    });
+
+    console.log("Curve 绘制完成", graphic.toJSON());
   }
 
   return null;
@@ -400,6 +499,16 @@ export function addCzmlGraphicLayer(options: any) {
     //     }
     //   }
     // });
+  }
+}
+
+export function getCzmlGraphicLayerById(id: string) {
+  if (id) {
+    const layerObj = czmlGraphicLayerMap.get(id);
+    return layerObj;
+  } else {
+    return undefined;
+    // return null;
   }
 }
 
