@@ -58,12 +58,9 @@
 
   const currentValue = ref(props.initValue);
 
-  watch(
-    () => props.isRefresh,
-    () => {
-      init();
-    },
-  );
+  watch([() => props.isRefresh, () => props.initValue], () => {
+    init();
+  });
 
   onMounted(() => {
     init();

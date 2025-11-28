@@ -18,18 +18,18 @@
       </div>
     </div>
 
-    <div class="col_nw_fs_fs props_radiobox">
+    <div class="col_nw_fs_fs props_radiobox_pp">
       <div class="row_nw_fs_ce props_radiobox_title">
         <label class="row_nw_fs_ce props_radioch_label">XYZ 单位</label>
         <label class="row_nw_fs_fe props_radioogi_label">XYZ Unit</label>
       </div>
       <div class="row_nw_fs_ce props_radioinbox">
-        <RjRadioTabInput
+        <RjRadioInput
           :name="'unit_' + currentProp.id"
           :options="currentProp.xyzUnitTypeOptions"
           :initValue="currentProp.xyzUnitType"
           @onChange="xyzUnitTypesOptionChangedHd"
-        ></RjRadioTabInput>
+        ></RjRadioInput>
       </div>
     </div>
 
@@ -323,6 +323,7 @@
   import { ref, reactive, onMounted, computed, watch, nextTick } from "vue";
   import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
   import RjRadioTabInput from "@/components/form/RjRadioTabInput.vue";
+  import RjRadioInput from "@/components/form/RjRadioInput.vue";
   import LineGap from "@/h5/components/LineGap.vue";
   import { nanoid } from "@/utils/common/nanoid";
   import { cartesian3ToWgs84, cartesian3ToDegrees, cartesian3ToRadians } from "@/utils/map/cesium/csTools";
@@ -883,6 +884,12 @@
   .props_map_actitem_show {
     width: 100%;
     height: 100%;
+  }
+
+  .props_radiobox_pp {
+    width: 100%;
+    height: auto;
+    margin-bottom: 0.875rem;
   }
 
   .props_radiobox {
