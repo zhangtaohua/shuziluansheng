@@ -163,6 +163,7 @@ export class CssNamePixel {
   private _min = 0;
   private _max = 5000;
   private _step = 1;
+  private _retainDecimalPlaces = 0;
   public isEnable = true;
 
   constructor(options: any) {
@@ -190,6 +191,10 @@ export class CssNamePixel {
 
     if (options.step) {
       this._step = +options.step;
+    }
+
+    if (options.retainDecimalPlaces) {
+      this._retainDecimalPlaces = +options.retainDecimalPlaces;
     }
   }
 
@@ -231,6 +236,14 @@ export class CssNamePixel {
 
   set step(newStep) {
     this._step = newStep;
+  }
+
+  get retainDecimalPlaces() {
+    return this._retainDecimalPlaces;
+  }
+
+  set retainDecimalPlaces(newPlc) {
+    this._retainDecimalPlaces = newPlc;
   }
 
   getStyle(model = "vue", isPxToRem = false) {

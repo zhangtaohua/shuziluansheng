@@ -53,6 +53,8 @@
 </template>
 
 <script setup lang="ts">
+  // 说明：这个是纯粹的 数字属性 设置， 可以用slider 来设置一个值。
+
   import { ref, reactive, onMounted, computed, watch, nextTick } from "vue";
   import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
 
@@ -94,6 +96,33 @@
     }
   });
 
+  function getDecimalPlaces(num) {
+    const numStr = String(num);
+    if (numStr.indexOf(".") === -1) {
+      return 0;
+    }
+    const decimalPart = numStr.split(".")[1];
+    return decimalPart.length;
+  }
+
+  const toFixedNumber = computed(() => {
+    if (currentProp.value) {
+      const retainDecimalPlaces = currentProp.value.retainDecimalPlaces;
+      if (retainDecimalPlaces) {
+        return retainDecimalPlaces;
+      }
+      const step = currentProp.value.step;
+      const plc = getDecimalPlaces(step);
+      if (plc != 0) {
+        return plc;
+      } else {
+        return 1;
+      }
+    } else {
+      return 1;
+    }
+  });
+
   const isShowArrow = ref(false);
   function setIsShowArrow(isShow: boolean) {
     isShowArrow.value = isShow;
@@ -118,7 +147,7 @@
   function plusNumber() {
     if (currentProp.value && currentProp.value.isEnable) {
       const oldValue = currentProp.value.value;
-      let newValue = +(currentProp.value.value + currentProp.value.step).toFixed(1);
+      let newValue = +(currentProp.value.value + currentProp.value.step).toFixed(toFixedNumber.value);
       if (newValue > currentProp.value.max) {
         newValue = currentProp.value.max;
       }
@@ -132,7 +161,7 @@
   function reduceNuber() {
     if (currentProp.value && currentProp.value.isEnable) {
       const oldValue = currentProp.value.value;
-      let newValue = +(currentProp.value.value - currentProp.value.step).toFixed(1);
+      let newValue = +(currentProp.value.value - currentProp.value.step).toFixed(toFixedNumber.value);
       if (newValue < currentProp.value.min) {
         newValue = currentProp.value.min;
       }

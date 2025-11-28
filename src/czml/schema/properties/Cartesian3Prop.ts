@@ -62,6 +62,11 @@ export class czmlCartesian3Prop {
   public secondsStep = 30;
   public secondsOnceAddCount = 1;
 
+  public _xyzUnitType = CZMLCARTESIAN3METERTYPE;
+  public xyzUnitTypeOptions = propValuesCartesian3TypeOptions;
+
+  public isFixedXyzUnitType = false;
+
   constructor(options: any) {
     if (!options) {
       return;
@@ -109,6 +114,7 @@ export class czmlCartesian3Prop {
       this.default = options.default;
     }
 
+    this.isFixedXyzUnitType = options.isFixedXyzUnitType ?? true;
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
     this.isExpand = options.isExpand ?? true;
@@ -176,6 +182,14 @@ export class czmlCartesian3Prop {
   set czmlName(newValue) {
     return;
     // this._czmlName = newValue;
+  }
+
+  get xyzUnitType() {
+    return this._xyzUnitType;
+  }
+
+  set xyzUnitType(newValue) {
+    this._xyzUnitType = newValue;
   }
 
   public getCzmlName() {

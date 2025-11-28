@@ -32,18 +32,33 @@ import OptionsInput from "@/h5/components/OptionsInput.vue";
 import TextInput from "@/h5/components/TextInput.vue";
 
 // 以下是 czml 相关的
-import CzmlBooleanPropInput from "@/czml/components/CzmlBooleanPropInput.vue";
+import CzmlBooleanPurePropInput from "@/czml/components/CzmlBooleanPurePropInput.vue";
 import CzmlBooleanIntervalPropInput from "@/czml/components/CzmlBooleanIntervalPropInput.vue";
 
+import CzmlBoundingRectanglePropInput from "@/czml/components/CzmlBoundingRectanglePropInput.vue";
+
+import CzmlCartesian2ListPropInput from "@/czml/components/CzmlCartesian2ListPropInput.vue";
+import CzmlCartesian2PropInput from "@/czml/components/CzmlCartesian2PropInput.vue";
+
+import CzmlCartesian3ListPropInput from "@/czml/components/CzmlCartesian3ListPropInput.vue";
 import CzmlCartesian3PropInput from "@/czml/components/CzmlCartesian3PropInput.vue";
 import CzmlCartesian3PurePropInput from "@/czml/components/CzmlCartesian3PurePropInput.vue";
+import CzmlCartesian3VelocityPropInput from "@/czml/components/CzmlCartesian3VelocityPropInput.vue";
+
+import CzmlCartesian4ListPropInput from "@/czml/components/CzmlCartesian4ListPropInput.vue";
+import CzmlCartesian4PropInput from "@/czml/components/CzmlCartesian4PropInput.vue";
+
+import CzmlCartographicRectanglePropInput from "@/czml/components/CzmlCartographicRectanglePropInput.vue";
+
 import CzmlCombinePropInput from "@/czml/components/CzmlCombinePropInput.vue";
 import CzmlCustomPropertiesPropInput from "@/czml/components/CzmlCustomPropertiesPropInput.vue";
 
 import CzmlEntityRender from "@/czml/components/CzmlEntityRender.vue";
 import CzmlInterpolationPropInput from "@/czml/components/CzmlInterpolationPropInput.vue";
 
-import CzmlNumberSliderPropInput from "@/czml/components/CzmlNumberSliderPropInput.vue";
+import CzmlNumberListPropInput from "@/czml/components/CzmlNumberListPropInput.vue";
+import CzmlNumberPropInput from "@/czml/components/CzmlNumberPropInput.vue";
+import CzmlNumberSliderPurePropInput from "@/czml/components/CzmlNumberSliderPurePropInput.vue";
 
 import CzmlOptionsPurePropInput from "@/czml/components/CzmlOptionsPurePropInput.vue";
 import CzmlPackagesRender from "@/czml/components/CzmlPackagesRender.vue";
@@ -51,6 +66,9 @@ import CzmlPackagesRender from "@/czml/components/CzmlPackagesRender.vue";
 import CzmlPositionPropInput from "@/czml/components/CzmlPositionPropInput.vue";
 import CzmlQuaternionInterpolationPropInput from "@/czml/components/CzmlQuaternionInterpolationPropInput.vue";
 import CzmlQuaternionPropInput from "@/czml/components/CzmlQuaternionPropInput.vue";
+
+import CzmlSphericalListPropInput from "@/czml/components/CzmlSphericalListPropInput.vue";
+import CzmlSphericalPropInput from "@/czml/components/CzmlSphericalPropInput.vue";
 
 import CzmlStringPropInput from "@/czml/components/CzmlStringPropInput.vue";
 
@@ -90,18 +108,33 @@ app.component("OptionsInput", OptionsInput);
 app.component("TextInput", TextInput);
 
 // czml 组件注册
-app.component("CzmlBooleanPropInput", CzmlBooleanPropInput);
+app.component("CzmlBooleanPurePropInput", CzmlBooleanPurePropInput);
 app.component("CzmlBooleanIntervalPropInput", CzmlBooleanIntervalPropInput);
 
+app.component("CzmlBoundingRectanglePropInput", CzmlBoundingRectanglePropInput);
+
+app.component("CzmlCartesian2ListPropInput", CzmlCartesian2ListPropInput);
+app.component("CzmlCartesian2PropInput", CzmlCartesian2PropInput);
+
+app.component("CzmlCartesian3ListPropInput", CzmlCartesian3ListPropInput);
 app.component("CzmlCartesian3PropInput", CzmlCartesian3PropInput);
 app.component("CzmlCartesian3PurePropInput", CzmlCartesian3PurePropInput);
+app.component("CzmlCartesian3VelocityPropInput", CzmlCartesian3VelocityPropInput);
+
+app.component("CzmlCartesian4ListPropInput", CzmlCartesian4ListPropInput);
+app.component("CzmlCartesian4PropInput", CzmlCartesian4PropInput);
+
+app.component("CzmlCartographicRectanglePropInput", CzmlCartographicRectanglePropInput);
+
 app.component("CzmlCombinePropInput", CzmlCombinePropInput);
 app.component("CzmlCustomPropertiesPropInput", CzmlCustomPropertiesPropInput);
 app.component("CzmlEntityRender", CzmlEntityRender);
 
 app.component("CzmlInterpolationPropInput", CzmlInterpolationPropInput);
 
-app.component("CzmlNumberSliderPropInput", CzmlNumberSliderPropInput);
+app.component("CzmlNumberListPropInput", CzmlNumberListPropInput);
+app.component("CzmlNumberPropInput", CzmlNumberPropInput);
+app.component("CzmlNumberSliderPurePropInput", CzmlNumberSliderPurePropInput);
 
 app.component("CzmlOptionsPurePropInput", CzmlOptionsPurePropInput);
 
@@ -109,6 +142,9 @@ app.component("CzmlPackagesRender", CzmlPackagesRender);
 app.component("CzmlPositionPropInput", CzmlPositionPropInput);
 app.component("CzmlQuaternionInterpolationPropInput", CzmlQuaternionInterpolationPropInput);
 app.component("CzmlQuaternionPropInput", CzmlQuaternionPropInput);
+
+app.component("CzmlSphericalListPropInput", CzmlSphericalListPropInput);
+app.component("CzmlSphericalPropInput", CzmlSphericalPropInput);
 
 app.component("CzmlStringPropInput", CzmlStringPropInput);
 

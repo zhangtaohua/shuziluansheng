@@ -17,6 +17,7 @@ export class czmlIntegerPureProp {
   private _min = 0;
   private _max = 100;
   private _step = 1;
+  private _retainDecimalPlaces = 0;
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
   public isExpand = true; // for UI
@@ -83,6 +84,10 @@ export class czmlIntegerPureProp {
     if (options.step) {
       this._step = +options.step;
     }
+
+    if (options.retainDecimalPlaces) {
+      this._retainDecimalPlaces = +options.retainDecimalPlaces;
+    }
   }
 
   get value() {
@@ -141,6 +146,14 @@ export class czmlIntegerPureProp {
     this._step = newStep;
   }
 
+  get retainDecimalPlaces() {
+    return this._retainDecimalPlaces;
+  }
+
+  set retainDecimalPlaces(newPlc) {
+    this._retainDecimalPlaces = newPlc;
+  }
+
   get czmlName() {
     return this._czmlName;
   }
@@ -169,7 +182,7 @@ export class czmlIntegerPureProp {
   public getCzmlData() {
     if (this.isUsed) {
       return {
-        [this.name]: this.getCzmlValue(),
+        [this.name]: this._value,
       };
     } else {
       return null;

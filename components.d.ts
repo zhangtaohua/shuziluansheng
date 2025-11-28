@@ -17,6 +17,7 @@ declare module 'vue' {
     ElIcon: typeof import('element-plus/es')['ElIcon']
     ElInput: typeof import('element-plus/es')['ElInput']
     EllipsisTextScroll: typeof import('./src/components/common/EllipsisTextScroll.vue')['default']
+    ElTag: typeof import('element-plus/es')['ElTag']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     LatitudeBaseInput: typeof import('./src/components/lnglat/LatitudeBaseInput.vue')['default']
     LongitudeBaseInput: typeof import('./src/components/lnglat/LongitudeBaseInput.vue')['default']

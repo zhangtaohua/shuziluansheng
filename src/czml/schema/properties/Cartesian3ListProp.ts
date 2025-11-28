@@ -1,25 +1,46 @@
 import { nanoid } from "@/utils/common/nanoid";
 
-export class czmlBooleanPureProp {
-  public id = "czml_prop_bool_" + nanoid(10);
-  public name = "boolean";
-  public _czmlName = "boolean";
-  public labelZh = "布尔值";
-  public labelEn = "boolean";
-  public title = "Boolean";
-  public description = "The boolean value.";
+import {
+  CZMLCARTESIAN3METERTYPE,
+  CZMLCARTESIAN3DEGREESTYPE,
+  CZMLCARTESIAN3RADIANSTYPE,
+  propValuesCartesian3TypeOptions,
+} from "./commondata.ts";
+
+export class czmlCartesian3ListProp {
+  public id = "czml_prop_cartesian3_list_" + nanoid(10);
+  public name = "cartesian3";
+  public _czmlName = "cartesian3";
+  public labelZh = "XYZ坐标列表";
+  public labelEn = "cartesian3 list";
+  public title = "Cartesian3";
+  public description = "A list of three-dimensional Cartesian values specified as `[X, Y, Z, X, Y, Z, ...]`.";
+
   public type = "property";
   public componentType = "czml#packet#property";
-  public tag = "CzmlBooleanPropInput";
-  public _value = true;
-  public _valueType = "boolean";
-  public default = true;
+  public czmlValue = true; // 这个用于标示是不是 czml value的
+
+  public tag = "CzmlCartesian3ListPropInput";
+
+  public unit = "meters";
+  public _value = [[0, 0, 0]];
+  public _valueType = "cartesian3 list";
+
+  public default = [[0, 0, 0]];
+
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
   public isExpand = true; // for UI
   public _isEntity = false;
   public isCombinedProperty = false;
   public isComplexProperty = true;
+
+  public secondsOnceAddCount = 1;
+
+  public _xyzUnitType = CZMLCARTESIAN3METERTYPE;
+  public xyzUnitTypeOptions = propValuesCartesian3TypeOptions;
+
+  public isFixedXyzUnitType = false;
 
   constructor(options: any) {
     if (!options) {
@@ -29,7 +50,7 @@ export class czmlBooleanPureProp {
     if (options.id) {
       this.id = options.id;
     } else if (options.name) {
-      this.id = "czml_prop_bool_" + options.name + "_" + nanoid(10);
+      this.id = "czml_prop_cartesian3_list_" + options.name + "_" + nanoid(10);
     }
 
     if (options.name) {
@@ -68,6 +89,7 @@ export class czmlBooleanPureProp {
       this.default = options.default;
     }
 
+    this.isFixedXyzUnitType = options.isFixedXyzUnitType ?? true;
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
     this.isExpand = options.isExpand ?? true;
@@ -106,6 +128,14 @@ export class czmlBooleanPureProp {
     // this._czmlName = newValue;
   }
 
+  get xyzUnitType() {
+    return this._xyzUnitType;
+  }
+
+  set xyzUnitType(newValue) {
+    this._xyzUnitType = newValue;
+  }
+
   public getCzmlName() {
     if (this.isUsed) {
       return this.czmlName;
@@ -114,9 +144,13 @@ export class czmlBooleanPureProp {
     }
   }
 
+  // public flatten(arr) {
+  //   return arr.reduce((acc, val) => Array.isArray(val) ? acc.concat(flatten(val)) : acc.concat(val), []);
+  // }
+
   public getCzmlValue() {
     if (this.isUsed) {
-      return this._value;
+      return this._value.flat(Infinity);
     } else {
       return null;
     }
@@ -133,4 +167,4 @@ export class czmlBooleanPureProp {
   }
 }
 
-export default czmlBooleanPureProp;
+export default czmlCartesian3ListProp;

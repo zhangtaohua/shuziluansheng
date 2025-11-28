@@ -8,6 +8,7 @@ import { czmlCustomPropertiesProp, czmlCustomPropertiesOptions } from "../proper
 import { czmlOrientationProp } from "../properties/OrientationProp.ts";
 import czmlViewFromProp from "../properties/ViewFromProp.ts";
 import czmlCartesian3Prop from "../properties/Cartesian3Prop.ts";
+import czmlCartesian3ListProp from "../properties/Cartesian3ListProp.ts";
 
 import czmlBillboard from "../entities/billboard";
 
@@ -154,6 +155,7 @@ export class czmlPacket {
     billboard: new czmlBillboard(null),
     // RJTODO 下面的要删除
     cartesian: new czmlCartesian3Prop(null),
+    cartesianList: new czmlCartesian3ListProp(null),
     // RJTODO 上面的要删除
     box: {
       $ref: "Box.json",

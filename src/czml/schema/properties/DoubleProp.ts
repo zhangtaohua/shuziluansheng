@@ -17,6 +17,7 @@ export class czmlDoubleProp {
   private _min = 0;
   private _max = 50;
   private _step = 0.1;
+  private _retainDecimalPlaces = 3;
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
   public isExpand = true; // for UI
@@ -32,7 +33,7 @@ export class czmlDoubleProp {
     if (options.id) {
       this.id = options.id;
     } else if (options.name) {
-      this.id = "czml_prop_bool_" + options.name + "_" + nanoid(10);
+      this.id = "czml_prop_double_" + options.name + "_" + nanoid(10);
     }
 
     if (options.name) {
@@ -83,6 +84,10 @@ export class czmlDoubleProp {
     if (options.step) {
       this._step = +options.step;
     }
+
+    if (options.retainDecimalPlaces) {
+      this._retainDecimalPlaces = +options.retainDecimalPlaces;
+    }
   }
 
   get value() {
@@ -90,7 +95,7 @@ export class czmlDoubleProp {
   }
 
   set value(newValue) {
-    this._value = newValue;
+    this._value = +newValue;
   }
 
   get valueType() {
@@ -139,6 +144,14 @@ export class czmlDoubleProp {
 
   set step(newStep) {
     this._step = newStep;
+  }
+
+  get retainDecimalPlaces() {
+    return this._retainDecimalPlaces;
+  }
+
+  set retainDecimalPlaces(newPlc) {
+    this._retainDecimalPlaces = newPlc;
   }
 
   get czmlName() {

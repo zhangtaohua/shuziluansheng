@@ -30,6 +30,7 @@
   import { ref, reactive, computed, watch, onMounted, nextTick, onUnmounted } from "vue";
   import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
   import {
+    globalCzmlMapData,
     useCzmlMapDataConfigStore,
     MAP_DRAW_POINT,
     MAP_DRAW_LINE,
@@ -397,6 +398,34 @@
           isStopCanvasPropagation = false;
           cancelDrawAction();
         }
+      }
+    },
+    {
+      deep: false,
+      immediate: false,
+    },
+  );
+
+  watch(
+    [() => czmlMapDataConfig.currentViewDataRefresh, () => czmlMapDataConfig.isViewDrawDataPath],
+    () => {
+      if (czmlMapDataConfig.currentViewDataRefresh) {
+        const opts = globalCzmlMapData.viewDrawData;
+        const isViewDrawDataPath = czmlMapDataConfig.isViewDrawDataPath;
+        // 显示
+        if (isViewDrawDataPath) {
+          if (opts.type == "point") {
+            csMap.addPathViewBillboradPointGraphic(opts.data);
+          } else if (opts.type == "polyline") {
+            csMap.addPathViewLineraphic(opts.data);
+          }
+        } else {
+          csMap.removePathViewBillboradPointGraphic();
+          csMap.removePathViewLineraphic();
+        }
+      } else {
+        csMap.removePathViewBillboradPointGraphic();
+        csMap.removePathViewLineraphic();
       }
     },
     {

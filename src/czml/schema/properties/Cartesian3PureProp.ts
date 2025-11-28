@@ -41,6 +41,8 @@ export class czmlCartesian3PureProp {
   public _xyzUnitType = CZMLCARTESIAN3METERTYPE;
   public xyzUnitTypeOptions = propValuesCartesian3TypeOptions;
 
+  public isFixedXyzUnitType = false;
+
   public _allValues = {
     meter: [0, 0, 0],
     cartesian: [0, 0, 0],
@@ -95,6 +97,7 @@ export class czmlCartesian3PureProp {
       this.default = options.default;
     }
 
+    this.isFixedXyzUnitType = options.isFixedXyzUnitType ?? true;
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
     this.isExpand = options.isExpand ?? true;

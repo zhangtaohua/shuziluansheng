@@ -228,3 +228,76 @@ export function getAreaV2(points: any, positions: any) {
 
   // return (res / 1000000.0).toFixed(4);
 }
+
+export function cartesian3ToWgs84(cartesian: Cesium.Cartesian3) {
+  const cartographic = Cesium.Cartographic.fromCartesian(cartesian);
+
+  if (cartographic) {
+    const longitude = Cesium.Math.toDegrees(cartographic.longitude);
+    const latitude = Cesium.Math.toDegrees(cartographic.latitude);
+
+    const longitudeRadians = cartographic.longitude;
+    const latitudeRadians = cartographic.latitude;
+    const height = cartographic.height;
+
+    return {
+      longitude,
+      latitude,
+      longitudeRadians,
+      latitudeRadians,
+      height,
+    };
+  }
+
+  return {
+    longitude: cartesian.x,
+    latitude: cartesian.y,
+    longitudeRadians: cartesian.x,
+    latitudeRadians: cartesian.y,
+    height: cartesian.z,
+  };
+}
+
+export function cartesian3ToDegrees(cartesian: Cesium.Cartesian3) {
+  const cartographic = Cesium.Cartographic.fromCartesian(cartesian);
+
+  if (cartographic) {
+    const longitude = Cesium.Math.toDegrees(cartographic.longitude);
+    const latitude = Cesium.Math.toDegrees(cartographic.latitude);
+    const height = cartographic.height;
+
+    return {
+      longitude,
+      latitude,
+      height,
+    };
+  }
+
+  return {
+    longitude: cartesian.x,
+    latitude: cartesian.y,
+    height: cartesian.z,
+  };
+}
+
+export function cartesian3ToRadians(cartesian: Cesium.Cartesian3) {
+  const cartographic = Cesium.Cartographic.fromCartesian(cartesian);
+
+  if (cartographic) {
+    const longitude = cartographic.longitude;
+    const latitude = cartographic.latitude;
+    const height = cartographic.height;
+
+    return {
+      longitude,
+      latitude,
+      height,
+    };
+  }
+
+  return {
+    longitude: cartesian.x,
+    latitude: cartesian.y,
+    height: cartesian.z,
+  };
+}

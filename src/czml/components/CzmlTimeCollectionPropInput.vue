@@ -13,7 +13,7 @@
     <div class="col_nw_fs_fs props_it_box">
       <div class="col_nw_fs_fs props_it_wrapper" :class="{ props_it_samllwrapper: isFoldIntervals }">
         <div class="col_nw_fs_fs props_it_inwrapper">
-          <div v-for="(inval, index) in intervalsVales" :key="inval.startTime" class="col_nw_fs_fs props_it_itembox">
+          <div v-for="(inval, index) in intervalsValues" :key="inval.startTime" class="col_nw_fs_fs props_it_itembox">
             <div class="row_nw_fs_ce props_it_tbox">
               <span class="row_nw_fs_ce props_it_tlabel">startTime:</span>
               <div class="row_nw_fs_ce props_it_tinputbox">
@@ -40,6 +40,8 @@
       </div>
 
       <div class="row_nw_fe_ce props_it_actbox">
+        <el-tag type="info">{{ "Total: " + intervalsValues.length }}</el-tag>
+
         <el-icon
           v-if="isFoldIntervals"
           color="rgba(15, 55, 175, 1)"
@@ -47,7 +49,7 @@
           class="row_nw_ce_ce props_it_acticon"
           @click="setIsFoldIntervals(false)"
         >
-          <ArrowDown />
+          <CaretBottom />
         </el-icon>
         <el-icon
           v-else
@@ -56,14 +58,18 @@
           class="row_nw_ce_ce props_it_acticon"
           @click="setIsFoldIntervals(true)"
         >
-          <ArrowUp />
+          <CaretTop />
+        </el-icon>
+
+        <el-icon color="#f56c6c" size="1.25rem" class="row_nw_ce_ce props_it_acticon" @click="clearintervalsValues">
+          <DeleteFilled />
         </el-icon>
 
         <el-icon
-          :color="intervalsVales.length >= 2 ? 'rgba(15, 55, 175, 1)' : '#f56c6c'"
+          :color="intervalsValues.length >= 2 ? 'rgba(15, 55, 175, 1)' : '#f56c6c'"
           size="1.5rem"
           class="row_nw_ce_ce props_it_acticon"
-          :class="{ props_it_dis_action: intervalsVales.length <= 1 }"
+          :class="{ props_it_dis_action: intervalsValues.length <= 1 }"
           @click="popIntervalValue"
         >
           <RemoveFilled />
@@ -107,9 +113,23 @@
   const name = "";
   const currentProp = ref({});
   const isEnable = ref(false);
-  const intervalsVales = ref([]);
+  const intervalsValues = ref([
+    {
+      startTime: dayjs().format(defaultTimeFormatStr),
+      endTime: dayjs().format(defaultTimeFormatStr),
+    },
+  ]);
 
   const isFoldIntervals = ref(false);
+
+  function clearintervalsValues() {
+    intervalsValues.value = [
+      {
+        startTime: dayjs().format(defaultTimeFormatStr),
+        endTime: dayjs().format(defaultTimeFormatStr),
+      },
+    ];
+  }
 
   function setIsFoldIntervals(isFold: boolean) {
     isFoldIntervals.value = isFold;
@@ -119,20 +139,20 @@
     if (props.vdata && props.vdata.id && props.vdata.name) {
       isEnable.value = true;
       currentProp.value = props.vdata;
-      intervalsVales.value = cloneDeep(currentProp.value.value);
+      intervalsValues.value = cloneDeep(currentProp.value.value);
     } else {
       isEnable.value = false;
       currentProp.value = {};
-      intervalsVales.value = [];
+      intervalsValues.value = [];
     }
   }
 
   const pushIntervalValue = () => {
-    if (isArray(intervalsVales.value)) {
-      const last = intervalsVales.value.length - 1;
+    if (isArray(intervalsValues.value)) {
+      const last = intervalsValues.value.length - 1;
       console.log("last", last);
-      intervalsVales.value.push({
-        // startTime: intervalsVales.value[last].endTime,
+      intervalsValues.value.push({
+        // startTime: intervalsValues.value[last].endTime,
         startTime: dayjs().format(defaultTimeFormatStr),
         endTime: dayjs().format(defaultTimeFormatStr),
       });
@@ -140,9 +160,9 @@
   };
 
   const popIntervalValue = () => {
-    if (isArray(intervalsVales.value)) {
-      if (intervalsVales.value.length >= 2) {
-        intervalsVales.value.pop();
+    if (isArray(intervalsValues.value)) {
+      if (intervalsValues.value.length >= 2) {
+        intervalsValues.value.pop();
       }
     }
   };
@@ -152,11 +172,11 @@
   });
 
   watch(
-    intervalsVales,
+    intervalsValues,
     () => {
       if (currentProp.value) {
-        console.log("intervalsVales", intervalsVales.value);
-        currentProp.value.value = intervalsVales.value;
+        console.log("intervalsValues", intervalsValues.value);
+        currentProp.value.value = intervalsValues.value;
       }
     },
     {
@@ -321,5 +341,9 @@
     width: 1.5rem;
     height: 1.5rem;
     cursor: pointer;
+  }
+
+  :deep(.props_it_actbox .el-tag) {
+    margin-right: 0.75rem;
   }
 </style>

@@ -52,6 +52,27 @@
             <el-input v-model="pureValue[2]" placeholder="Please input" />
           </div>
         </div>
+
+        <div class="row_nw_fe_ce props_it_actbox">
+          <el-icon
+            v-if="czmlMapDataConfig.isViewDrawDataPath"
+            color="rgba(15, 55, 175, 1)"
+            size="1.5rem"
+            class="row_nw_ce_ce props_it_acticon"
+            @click="setIsViewPath(false, 'pure')"
+          >
+            <Hide />
+          </el-icon>
+          <el-icon
+            v-else
+            color="rgba(15, 55, 175, 1)"
+            size="1.5rem"
+            class="row_nw_ce_ce props_it_acticon"
+            @click="setIsViewPath(true, 'pure')"
+          >
+            <View />
+          </el-icon>
+        </div>
       </div>
     </div>
   </div>
@@ -94,12 +115,29 @@
   ]);
 
   const { editorConfig, setEditorRefreshShape } = useEditorConfigStore();
-  const { czmlMapDataConfig, setCzmlMapCurrentAction, setCzmlMapCurrentData } = useCzmlMapDataConfigStore();
+  const {
+    czmlMapDataConfig,
+    setCzmlMapCurrentAction,
+    setCzmlMapCurrentData,
+    setCzmlMapViewDrawData,
+    setCzmlIsViewDrawDataPath,
+  } = useCzmlMapDataConfigStore();
   const id = "";
   const name = "";
   const currentProp = ref({});
   const isEnable = ref(false);
   const pureValue = ref([0, 0, 0]);
+
+  function setIsViewPath(isView: boolean, which: string) {
+    if (which == "pure") {
+      const coord = pureValue.value;
+      setCzmlMapViewDrawData({
+        type: "point",
+        data: { x: coord[1], y: coord[2], z: coord[3] },
+      });
+    }
+    setCzmlIsViewDrawDataPath(isView);
+  }
 
   function setMapDrawActionHd(act: any) {
     setCzmlMapCurrentAction(act);
@@ -319,5 +357,19 @@
   .props_qtinput_itembox {
     width: calc(50% - 2.25rem);
     height: 100%;
+  }
+
+  .props_it_actbox {
+    width: 100%;
+    height: 2rem;
+    margin-top: 1rem;
+    box-shadow: 0 -0.25rem 0.5rem -0.375rem rgba(255, 255, 255, 0.5);
+  }
+
+  .props_it_acticon {
+    width: 1.5rem;
+    height: 1.5rem;
+    cursor: pointer;
+    margin-right: 1rem;
   }
 </style>

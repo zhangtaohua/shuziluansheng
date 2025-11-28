@@ -1,49 +1,47 @@
 <template>
   <div v-if="isEnable" class="col_nw_fs_fs props_container">
-    <div class="row_nw_sb_ce props_title_box">
-      <div class="row_nw_fs_ce wh_auto_100p">
-        <label class="row_nw_fs_ce props_ch_label">{{ currentProp.labelZh }}</label>
-        <label class="row_nw_fs_fe props_ogi_label">{{ currentProp.labelEn }}</label>
-      </div>
-
-      <div class="row_nw_fs_ce props_timecol_isusedbox">
-        <RjBooleanSwitchInput v-model="currentProp.isUsed"></RjBooleanSwitchInput>
-      </div>
+    <div class="row_nw_fs_ce props_title_box">
+      <label class="row_nw_fs_ce props_ch_label">{{ currentProp.labelZh }}</label>
+      <label class="row_nw_fs_fe props_ogi_label">{{ currentProp.labelEn }}</label>
     </div>
+
     <div class="col_nw_fs_fs props_it_box">
-      <div class="col_nw_fs_fs props_it_wrapper" :class="{ props_it_samllwrapper: isFoldIntervals }">
+      <div class="col_nw_fs_fs props_it_wrapper">
         <div class="col_nw_fs_fs props_it_inwrapper">
-          <div
-            v-for="(inval, index) in intervalsValues"
-            :key="'customprops' + index"
-            class="col_nw_fs_fs props_it_itembox"
-          >
-            <div class="row_nw_fs_ce props_it_tbox">
-              <span class="row_nw_fs_ce props_it_tlabel">key:</span>
-              <div class="row_nw_fs_ce props_it_tinputbox">
-                <el-input v-model="inval.key" placeholder="key" />
-              </div>
-            </div>
-
-            <div class="row_nw_fs_ce props_it_tbox">
-              <span class="row_nw_fs_ce props_it_tlabel">value:</span>
-              <div class="row_nw_fs_ce props_it_tinputbox">
-                <el-input v-model="inval.value" placeholder="value" />
-              </div>
-            </div>
-
-            <div class="row_nw_sb_ce props_it_input_box">
-              <div class="row_nw_fs_ce props_it_input_inbox">
-                <input type="checkbox" v-model="inval.isJson" class="row_nw_fs_fs props_input" />
-                <div class="row_nw_fs_ce wh_auto_100p">
-                  <label class="row_nw_fs_ce props_inch_label">是否</label>
-                  <label class="row_nw_fs_fe props_inogi_label">is JSON</label>
-                </div>
-              </div>
-
+          <div v-for="(inval, index) in intervalsValues" :key="inval[0]" class="col_nw_fs_fs props_it_itembox">
+            <div class="row_nw_fs_ce props_qtinput_linetime">
               <div class="row_nw_fs_ce props_qtinput_linetimeindex">SN:{{ index + 1 }}</div>
             </div>
+
+            <div class="row_nw_fs_ce props_qtinput_line1">
+              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">X:</div>
+              <div class="row_nw_fs_ce props_qtinput_itembox">
+                <el-input v-model="inval[0]" placeholder="Please input" type="number" />
+              </div>
+              <div class="row_nw_fs_ce props_qtinput_itemlabelright">Y:</div>
+              <div class="row_nw_fs_ce props_qtinput_itembox">
+                <el-input v-model="inval[1]" placeholder="Please input" type="number" />
+              </div>
+            </div>
+
+            <div class="row_nw_fs_ce props_qtinput_line2">
+              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">Z:</div>
+              <div class="row_nw_fs_ce props_qtinput_itembox">
+                <el-input v-model="inval[2]" placeholder="Please input" type="number" />
+              </div>
+              <div class="row_nw_fs_ce props_qtinput_itemlabelright">W:</div>
+              <div class="row_nw_fs_ce props_qtinput_itembox">
+                <el-input v-model="inval[3]" placeholder="Please input" type="number" />
+              </div>
+            </div>
           </div>
+        </div>
+      </div>
+
+      <div class="col_nw_fs_fs props_it_secondsactbox">
+        <div class="row_nw_fs_ce props_it_secondssetbox">
+          <div class="row_nw_fs_ce props_it_secondssetbox_lable">一次增加数量 count:</div>
+          <el-input v-model="currentProp.secondsOnceAddCount" placeholder="Please input" type="number" min="1" />
         </div>
       </div>
 
@@ -78,7 +76,7 @@
           size="1.5rem"
           class="row_nw_ce_ce props_it_acticon"
           :class="{ props_it_dis_action: intervalsValues.length <= 1 }"
-          @click="popIntervalValue"
+          @click="popSecondsIntervalValue"
         >
           <RemoveFilled />
         </el-icon>
@@ -86,7 +84,7 @@
           color="rgba(15, 55, 175, 1)"
           size="1.5rem"
           class="row_nw_ce_ce props_it_acticon2"
-          @click="pushIntervalValue"
+          @click="pushSecondsIntervalValue"
         >
           <CirclePlusFilled />
         </el-icon>
@@ -96,13 +94,12 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, reactive, onMounted, computed, watch, nextTick } from "vue";
-  import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
-  import RjBooleanSwitchInput from "@/components/form/RjBooleanSwitchInput.vue";
-  import { defaultTimeFormatStr } from "@/czml/schema/properties/commondata";
+  // 说明： 这个主要用于设置 没有时间类型的 cartesian2  list 的值, 可能有一个元素,也可能有多个
+
+  import { ref, onMounted, watch } from "vue";
+
   import { cloneDeep } from "es-toolkit";
-  import { isArray, values } from "es-toolkit/compat";
-  import dayjs from "dayjs";
+  import { isArray } from "es-toolkit/compat";
 
   const props = defineProps({
     vdata: {
@@ -116,34 +113,40 @@
     },
   });
 
-  const { editorConfig, setEditorRefreshShape } = useEditorConfigStore();
   const id = "";
   const name = "";
   const currentProp = ref({});
   const isEnable = ref(false);
-  const intervalsValues = ref([
-    {
-      key: "",
-      value: "",
-      isJson: false,
-    },
-  ]);
-
+  const intervalsValues = ref([[0, 0, 0, 0]]);
   const isFoldIntervals = ref(false);
 
   function clearintervalsValues() {
-    intervalsValues.value = [
-      {
-        key: "",
-        value: "",
-        isJson: false,
-      },
-    ];
+    intervalsValues.value = [[0, 0, 0, 0]];
   }
 
   function setIsFoldIntervals(isFold: boolean) {
     isFoldIntervals.value = isFold;
   }
+
+  const popSecondsIntervalValue = () => {
+    if (isArray(intervalsValues.value)) {
+      const { secondsOnceAddCount } = currentProp.value;
+      for (let i = 0; i < +secondsOnceAddCount; i++) {
+        if (intervalsValues.value.length >= 2) {
+          intervalsValues.value.pop();
+        }
+      }
+    }
+  };
+
+  const pushSecondsIntervalValue = () => {
+    if (isArray(intervalsValues.value)) {
+      const { secondsOnceAddCount } = currentProp.value;
+      for (let i = 0; i < +secondsOnceAddCount; i++) {
+        intervalsValues.value.push([0, 0, 0, 0]);
+      }
+    }
+  };
 
   function init() {
     if (props.vdata && props.vdata.id && props.vdata.name) {
@@ -153,29 +156,9 @@
     } else {
       isEnable.value = false;
       currentProp.value = {};
-      intervalsValues.value = [];
+      intervalsValues.value = [[0, 0, 0, 0]];
     }
   }
-
-  const pushIntervalValue = () => {
-    if (isArray(intervalsValues.value)) {
-      const last = intervalsValues.value.length - 1;
-      // console.log("last", last);
-      intervalsValues.value.push({
-        key: "",
-        value: "",
-        isJson: false,
-      });
-    }
-  };
-
-  const popIntervalValue = () => {
-    if (isArray(intervalsValues.value)) {
-      if (intervalsValues.value.length >= 2) {
-        intervalsValues.value.pop();
-      }
-    }
-  };
 
   onMounted(() => {
     init();
@@ -185,13 +168,12 @@
     intervalsValues,
     () => {
       if (currentProp.value) {
-        console.log("intervalsValues", intervalsValues.value);
         currentProp.value.value = intervalsValues.value;
       }
     },
     {
       immediate: false,
-      deep: true,
+      deep: false,
     },
   );
 </script>
@@ -227,10 +209,27 @@
     margin-top: 0.25rem;
   }
 
-  .props_timecol_isusedbox {
-    width: 10rem;
+  .props_map_actbox {
+    position: relative;
+    width: 100%;
+    height: auto;
+    background-color: rgba(0, 0, 0, 1);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .props_map_actitem {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-right: 0.75rem;
+    cursor: pointer;
+  }
+
+  .props_map_actitem_show {
+    width: 100%;
     height: 100%;
-    margin-right: 0.25rem;
   }
 
   .props_radiobox {
@@ -262,106 +261,44 @@
     margin-top: 0.25rem;
   }
 
-  input[type="checkbox"] {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    -webkit-tap-highlight-color: transparent;
-    width: auto;
+  .props_radioinbox {
+    width: 100%;
     height: auto;
-    vertical-align: middle;
-    position: relative;
-    border: 0;
-    outline: 0;
-    cursor: pointer;
-    margin: 0 0.25rem;
-    background: none;
-    box-shadow: none;
   }
 
-  input[type="checkbox"]:focus {
-    box-shadow: none;
+  .props_qtinput_line1 {
+    width: 100%;
+    height: 2rem;
+    margin-bottom: 0.5rem;
   }
 
-  input[type="checkbox"]:after {
-    content: "";
-    font-size: 0.5rem;
-    font-weight: 400;
-    line-height: 1.125rem;
-    width: 2.25rem;
-    height: 1.125rem;
-    display: inline-block;
-    background-color: rgba(122, 125, 129, 1);
-    border-radius: 4.5rem;
-    box-shadow: 0 0 0.75rem rgb(0 0 0 / 15%) inset;
+  .props_qtinput_line2 {
+    width: 100%;
+    height: 2rem;
   }
 
-  input[type="checkbox"]:before {
-    content: "";
-    width: 0.875rem;
-    height: 0.875rem;
-    display: block;
-    position: absolute;
-    top: 0.125rem;
-    left: 0.125rem;
-    margin: 0;
-    border-radius: 50%;
-    background-color: #ffffff;
-  }
-
-  input[type="checkbox"]:checked:before {
-    left: 1.25rem;
-    margin: 0;
-    background-color: #ffffff;
-  }
-
-  input[type="checkbox"],
-  input[type="checkbox"]:before,
-  input[type="checkbox"]:after,
-  input[type="checkbox"]:checked:before,
-  input[type="checkbox"]:checked:after {
-    transition: ease 0.15s;
-  }
-
-  input[type="checkbox"]:checked:after {
-    background-color: rgba(15, 55, 175, 1);
-  }
-
-  input[type="checkbox"]:disabled {
-    cursor: not-allowed;
-  }
-
-  .has-cube-spin-animation {
-    animation: spin 10s infinite linear;
-    display: block;
-  }
-
-  @keyframes spin {
-    from {
-      transform: rotateX(0deg) rotateY(-45deg);
-    }
-
-    to {
-      transform: rotateX(0deg) rotateY(-405deg);
-    }
-  }
-
-  .props_inch_label {
-    width: max-content;
+  .props_qtinput_itemlabelleft {
+    width: 1.5rem;
     height: 100%;
     color: rgba(255, 255, 255, 1);
-    font-size: 1rem;
-    font-weight: 500;
+    font-size: var(--czml-fs-sl-label);
+    font-weight: bold;
     margin-right: 0.5rem;
   }
 
-  .props_inogi_label {
-    width: max-content;
-    height: 1rem;
-    color: rgba(230, 230, 230, 1);
-    font-size: 0.75rem;
-    font-weight: 400;
-    margin-top: 0.25rem;
+  .props_qtinput_itemlabelright {
+    width: 1.5rem;
+    height: 100%;
+    color: rgba(255, 255, 255, 1);
+    font-size: var(--czml-fs-sl-label);
+    font-weight: bold;
+    margin-right: 0.5rem;
+    margin-left: 1rem;
+  }
+
+  .props_qtinput_itembox {
+    width: calc(50% - 2.25rem);
+    height: 100%;
   }
 
   .props_it_box {
@@ -370,7 +307,7 @@
     height: auto;
     margin-bottom: 0.25rem;
     background-color: rgba(0, 0, 0, 1);
-    padding: 1rem 0.5rem 0.5rem 0.5rem;
+    padding: 1rem;
     border-radius: 0.5rem;
   }
 
@@ -428,6 +365,21 @@
     margin-bottom: 0.75rem;
   }
 
+  .props_qtinput_linetime {
+    width: 100%;
+    height: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .props_qtinput_linetimeindex {
+    width: calc(50% - 0.25rem);
+    height: 100%;
+    color: rgba(230, 230, 230, 1);
+    font-size: 0.75rem;
+    font-weight: 400;
+    margin-left: 1rem;
+  }
+
   .props_it_tbox {
     width: 100%;
     height: 2rem;
@@ -444,7 +396,7 @@
   }
 
   .props_it_tinputbox {
-    width: calc(100% - 5rem);
+    width: max-content;
     height: 2rem;
   }
 
@@ -455,23 +407,25 @@
     /* background-color: rgba(0, 0, 0, 1); */
   }
 
-  :deep(.props_it_tinputbox .el-input) {
+  .props_it_secondsactbox {
     width: 100%;
+    height: auto;
+    margin-top: 0.875rem;
+    margin-bottom: 0.5rem;
   }
 
-  .props_it_input_inbox {
-    width: max-content;
+  .props_it_secondssetbox {
+    width: 100%;
     height: 2rem;
-    /* background-color: rgba(0, 0, 0, 1); */
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
   }
 
-  .props_qtinput_linetimeindex {
-    width: 8rem;
+  .props_it_secondssetbox_lable {
+    width: 15.5rem;
     height: 100%;
-    color: rgba(230, 230, 230, 1);
-    font-size: 0.75rem;
-    font-weight: 400;
-    margin-left: 1rem;
+    color: rgba(255, 255, 255, 1);
+    font-size: var(--czml-fs-label);
   }
 
   .props_it_actbox {

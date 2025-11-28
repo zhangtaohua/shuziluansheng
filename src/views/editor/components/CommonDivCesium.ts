@@ -5,6 +5,8 @@ import CsVueNodePopup from "@/utils/map/cesium/vueNodePopupLayers";
 
 import MapDrawActionPopup from "./MapDrawActionPopup.vue";
 
+import mapPointSvg from "@/assets/images/icons/mappoint.svg";
+
 export let csBaseMap = null;
 export let map = null;
 export let viewer = null;
@@ -519,5 +521,62 @@ export function removeCzmlGraphicLayer(options: any) {
       map.removeLayer(layerObj.layer);
       czmlGraphicLayerMap.delete(options.id);
     }
+  }
+}
+
+let pathViewBillboard = null;
+export function addPathViewBillboradPointGraphic(cartesian3) {
+  if (graphicLayer) {
+    removePathViewBillboradPointGraphic();
+    pathViewBillboard = new mars3d.graphic.BillboardEntity({
+      position: cartesian3,
+      style: {
+        image: mapPointSvg,
+        width: 16,
+        height: 16,
+        horizontalOrigin: Cesium.HorizontalOrigin.CENTER,
+        verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+      },
+      flyTo: true,
+      hasEdit: false,
+    });
+    graphicLayer.addGraphic(pathViewBillboard);
+  }
+}
+
+export function removePathViewBillboradPointGraphic() {
+  if (pathViewBillboard && graphicLayer) {
+    graphicLayer.removeGraphic(pathViewBillboard);
+    pathViewBillboard = null;
+  }
+}
+
+let pathViewLine = null;
+export function addPathViewLineraphic(cartesians) {
+  if (graphicLayer) {
+    removePathViewLineraphic();
+    pathViewLine = new mars3d.graphic.PolylineEntity({
+      positions: cartesians,
+      style: {
+        width: 5,
+        color: "#3388ff",
+        label: { text: "鼠标移入会高亮", pixelOffsetY: -30 },
+        // 高亮时的样式（默认为鼠标移入，也可以指定type:'click'单击高亮），构造后也可以openHighlight、closeHighlight方法来手动调用
+        highlight: {
+          color: "#ff0000",
+        },
+      },
+      attr: { remark: "回显路径线" },
+      flyTo: true,
+      hasEdit: false,
+    });
+    graphicLayer.addGraphic(pathViewLine);
+  }
+}
+
+export function removePathViewLineraphic() {
+  if (pathViewLine && graphicLayer) {
+    graphicLayer.removeGraphic(pathViewLine);
+    pathViewLine = null;
   }
 }

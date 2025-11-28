@@ -8,6 +8,7 @@ export default class CssNamePixel {
   private _min = 0;
   private _max = 500;
   private _step = 1;
+  private _retainDecimalPlaces = 0;
   public isEnable = true;
 
   // constructor(value: number = 1920, unit: "px" | "%" | "vw" | "vh" = "px", min = -1, max = -1, step = 1) {
@@ -45,6 +46,10 @@ export default class CssNamePixel {
 
     if (options.step) {
       this._step = +options.step;
+    }
+
+    if (options.retainDecimalPlaces) {
+      this._retainDecimalPlaces = +options.retainDecimalPlaces;
     }
   }
 
@@ -86,6 +91,14 @@ export default class CssNamePixel {
 
   set step(newStep) {
     this._step = newStep;
+  }
+
+  get retainDecimalPlaces() {
+    return this._retainDecimalPlaces;
+  }
+
+  set retainDecimalPlaces(newPlc) {
+    this._retainDecimalPlaces = newPlc;
   }
 
   getStyle(isPxToRem = false) {

@@ -44,32 +44,38 @@
       </div>
     </div>
     <div v-else-if="currentProp.timeType == CZMLTIMESECONDS" class="col_nw_fs_fs props_it_box">
-      <div v-for="inval in intervalsValues" :key="inval[0]" class="col_nw_fs_fs props_it_itembox">
-        <div class="row_nw_fs_ce props_qtinput_linetime">
-          <div class="row_nw_fs_ce props_qtinput_linetimelabel">秒 seconds:</div>
-          <div class="row_nw_fs_ce props_qtinput_linetimeinputbox">
-            <el-input v-model="inval[0]" placeholder="Please input" type="number" />
-          </div>
-        </div>
-        <div class="row_nw_fs_ce props_qtinput_line1">
-          <div class="row_nw_fs_ce props_qtinput_itemlabelleft">X:</div>
-          <div class="row_nw_fs_ce props_qtinput_itembox">
-            <el-input v-model="inval[1]" placeholder="Please input" type="number" />
-          </div>
-          <div class="row_nw_fs_ce props_qtinput_itemlabelright">Y:</div>
-          <div class="row_nw_fs_ce props_qtinput_itembox">
-            <el-input v-model="inval[2]" placeholder="Please input" type="number" />
-          </div>
-        </div>
+      <div class="col_nw_fs_fs props_it_wrapper" :class="{ props_it_samllwrapper: isFoldIntervals }">
+        <div class="col_nw_fs_fs props_it_inwrapper">
+          <div v-for="(inval, index) in intervalsValues" :key="inval[0]" class="col_nw_fs_fs props_it_itembox">
+            <div class="row_nw_fs_ce props_qtinput_linetime">
+              <div class="row_nw_fs_ce props_qtinput_linetimelabel">秒 seconds:</div>
+              <div class="row_nw_fs_ce props_qtinput_linetimeinputbox">
+                <el-input v-model="inval[0]" placeholder="Please input" type="number" />
+              </div>
 
-        <div class="row_nw_fs_ce props_qtinput_line2">
-          <div class="row_nw_fs_ce props_qtinput_itemlabelleft">Z:</div>
-          <div class="row_nw_fs_ce props_qtinput_itembox">
-            <el-input v-model="inval[3]" placeholder="Please input" type="number" />
-          </div>
-          <div class="row_nw_fs_ce props_qtinput_itemlabelright">W:</div>
-          <div class="row_nw_fs_ce props_qtinput_itembox">
-            <el-input v-model="inval[4]" placeholder="Please input" type="number" />
+              <div class="row_nw_fs_ce props_qtinput_linetimeindex">SN:{{ index + 1 }}</div>
+            </div>
+            <div class="row_nw_fs_ce props_qtinput_line1">
+              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">X:</div>
+              <div class="row_nw_fs_ce props_qtinput_itembox">
+                <el-input v-model="inval[1]" placeholder="Please input" type="number" />
+              </div>
+              <div class="row_nw_fs_ce props_qtinput_itemlabelright">Y:</div>
+              <div class="row_nw_fs_ce props_qtinput_itembox">
+                <el-input v-model="inval[2]" placeholder="Please input" type="number" />
+              </div>
+            </div>
+
+            <div class="row_nw_fs_ce props_qtinput_line2">
+              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">Z:</div>
+              <div class="row_nw_fs_ce props_qtinput_itembox">
+                <el-input v-model="inval[3]" placeholder="Please input" type="number" />
+              </div>
+              <div class="row_nw_fs_ce props_qtinput_itemlabelright">W:</div>
+              <div class="row_nw_fs_ce props_qtinput_itembox">
+                <el-input v-model="inval[4]" placeholder="Please input" type="number" />
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -91,6 +97,31 @@
       </div>
 
       <div class="row_nw_fe_ce props_it_actbox">
+        <el-tag type="info">{{ "Total: " + intervalsValues.length }}</el-tag>
+
+        <el-icon
+          v-if="isFoldIntervals"
+          color="rgba(15, 55, 175, 1)"
+          size="1.5rem"
+          class="row_nw_ce_ce props_it_acticon"
+          @click="setIsFoldIntervals(false)"
+        >
+          <CaretBottom />
+        </el-icon>
+        <el-icon
+          v-else
+          color="rgba(15, 55, 175, 1)"
+          size="1.5rem"
+          class="row_nw_ce_ce props_it_acticon"
+          @click="setIsFoldIntervals(true)"
+        >
+          <CaretTop />
+        </el-icon>
+
+        <el-icon color="#f56c6c" size="1.25rem" class="row_nw_ce_ce props_it_acticon" @click="clearintervalsValues">
+          <DeleteFilled />
+        </el-icon>
+
         <el-icon
           :color="intervalsValues.length >= 2 ? 'rgba(15, 55, 175, 1)' : '#f56c6c'"
           size="1.5rem"
@@ -112,48 +143,78 @@
     </div>
 
     <div v-else-if="currentProp.timeType == CZMLTIMESTRING" class="col_nw_fs_fs props_it_box">
-      <div v-for="inval in timestrIntervalsValues" :key="inval[0]" class="col_nw_fs_fs props_it_itembox">
-        <div class="row_nw_fs_ce props_qtinput_linetime">
-          <div class="row_nw_fs_ce props_qtinput_linetimelabel">时间串 time:</div>
-          <div class="row_nw_fs_ce props_qtinput_linetimeinputbox">
-            <el-date-picker
-              v-model="inval[0]"
-              type="datetime"
-              placeholder="Select start datetime"
-              :format="defaultTimeFormatStr"
-              :value-format="defaultTimeFormatStr"
-            />
-          </div>
-        </div>
-        <div class="row_nw_fs_ce props_qtinput_line1">
-          <div class="row_nw_fs_ce props_qtinput_itemlabelleft">X:</div>
-          <div class="row_nw_fs_ce props_qtinput_itembox">
-            <el-input v-model="inval[1]" placeholder="Please input" type="number" />
-          </div>
-          <div class="row_nw_fs_ce props_qtinput_itemlabelright">Y:</div>
-          <div class="row_nw_fs_ce props_qtinput_itembox">
-            <el-input v-model="inval[2]" placeholder="Please input" type="number" />
-          </div>
-        </div>
+      <div class="col_nw_fs_fs props_it_wrapper" :class="{ props_it_samllwrapper: isFoldTimestrIntervals }">
+        <div class="col_nw_fs_fs props_it_inwrapper">
+          <div v-for="(inval, index2) in timestrIntervalsValues" :key="inval[0]" class="col_nw_fs_fs props_it_itembox">
+            <div class="row_nw_fs_ce props_qtinput_linetime">
+              <div class="row_nw_fs_ce props_qtinput_linetimelabel">时间串 time:</div>
+              <div class="row_nw_fs_ce props_qtinput_linetimeinputbox">
+                <el-date-picker
+                  v-model="inval[0]"
+                  type="datetime"
+                  placeholder="Select start datetime"
+                  :format="defaultTimeFormatStr"
+                  :value-format="defaultTimeFormatStr"
+                />
+              </div>
+              <div class="row_nw_fs_ce props_qtinput_linetimeindex">SN:{{ index2 + 1 }}</div>
+            </div>
+            <div class="row_nw_fs_ce props_qtinput_line1">
+              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">X:</div>
+              <div class="row_nw_fs_ce props_qtinput_itembox">
+                <el-input v-model="inval[1]" placeholder="Please input" type="number" />
+              </div>
+              <div class="row_nw_fs_ce props_qtinput_itemlabelright">Y:</div>
+              <div class="row_nw_fs_ce props_qtinput_itembox">
+                <el-input v-model="inval[2]" placeholder="Please input" type="number" />
+              </div>
+            </div>
 
-        <div class="row_nw_fs_ce props_qtinput_line2">
-          <div class="row_nw_fs_ce props_qtinput_itemlabelleft">Z:</div>
-          <div class="row_nw_fs_ce props_qtinput_itembox">
-            <el-input v-model="inval[3]" placeholder="Please input" type="number" />
-          </div>
-          <div class="row_nw_fs_ce props_qtinput_itemlabelright">W:</div>
-          <div class="row_nw_fs_ce props_qtinput_itembox">
-            <el-input v-model="inval[4]" placeholder="Please input" type="number" />
+            <div class="row_nw_fs_ce props_qtinput_line2">
+              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">Z:</div>
+              <div class="row_nw_fs_ce props_qtinput_itembox">
+                <el-input v-model="inval[3]" placeholder="Please input" type="number" />
+              </div>
+              <div class="row_nw_fs_ce props_qtinput_itemlabelright">W:</div>
+              <div class="row_nw_fs_ce props_qtinput_itembox">
+                <el-input v-model="inval[4]" placeholder="Please input" type="number" />
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
       <div class="row_nw_fe_ce props_it_actbox">
+        <el-tag type="info">{{ "Total: " + timestrIntervalsValues.length }}</el-tag>
+
         <el-icon
-          :color="intervalsValues.length >= 2 ? 'rgba(15, 55, 175, 1)' : '#f56c6c'"
+          v-if="isFoldTimestrIntervals"
+          color="rgba(15, 55, 175, 1)"
           size="1.5rem"
           class="row_nw_ce_ce props_it_acticon"
-          :class="{ props_it_dis_action: intervalsValues.length <= 1 }"
+          @click="setIsFoldTimestrIntervals(false)"
+        >
+          <CaretBottom />
+        </el-icon>
+        <el-icon
+          v-else
+          color="rgba(15, 55, 175, 1)"
+          size="1.5rem"
+          class="row_nw_ce_ce props_it_acticon"
+          @click="setIsFoldTimestrIntervals(true)"
+        >
+          <CaretTop />
+        </el-icon>
+
+        <el-icon color="#f56c6c" size="1.25rem" class="row_nw_ce_ce props_it_acticon" @click="clearTimesIntervals">
+          <DeleteFilled />
+        </el-icon>
+
+        <el-icon
+          :color="timestrIntervalsValues.length >= 2 ? 'rgba(15, 55, 175, 1)' : '#f56c6c'"
+          size="1.5rem"
+          class="row_nw_ce_ce props_it_acticon"
+          :class="{ props_it_dis_action: timestrIntervalsValues.length <= 1 }"
           @click="popTimestringIntervalValue"
         >
           <RemoveFilled />
@@ -208,7 +269,26 @@
   const isEnable = ref(false);
   const pureValue = ref([0, 0, 0, 0]);
   const intervalsValues = ref([[0, 0, 0, 0, 0]]);
+  const isFoldIntervals = ref(false);
+
   const timestrIntervalsValues = ref([[dayjs().format(defaultTimeFormatStr), 0, 0, 0, 0]]);
+  const isFoldTimestrIntervals = ref(false);
+
+  function clearintervalsValues() {
+    intervalsValues.value = [[0, 0, 0, 0, 0]];
+  }
+
+  function clearTimesIntervals() {
+    timestrIntervalsValues.value = [[dayjs().format(defaultTimeFormatStr), 0, 0, 0, 0]];
+  }
+
+  function setIsFoldIntervals(isFold: boolean) {
+    isFoldIntervals.value = isFold;
+  }
+
+  function setIsFoldTimestrIntervals(isFold: boolean) {
+    isFoldTimestrIntervals.value = isFold;
+  }
 
   function interpolationTypeOptionChangedHd(value: string) {
     if (currentProp.value) {
@@ -284,7 +364,7 @@
       currentProp.value = {};
       pureValue.value = [0, 0, 0, 0];
       intervalsValues.value = [[0, 0, 0, 0, 0]];
-      timestrIntervalsValues.value = [[dayjs().format(defaultTimeFormatStr), 0]];
+      timestrIntervalsValues.value = [[dayjs().format(defaultTimeFormatStr), 0, 0, 0, 0]];
     }
   }
 
@@ -478,6 +558,54 @@
     border-radius: 0.5rem;
   }
 
+  .props_it_wrapper {
+    position: relative;
+    width: calc(100% + 1rem);
+    height: auto;
+    max-height: 56rem;
+    transition: all 0.3s;
+    overflow-y: scroll;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 0.25rem 0.5rem -0.375rem rgba(255, 255, 255, 0.5);
+  }
+
+  .props_it_wrapper::-webkit-scrollbar {
+    width: 0px; /*  设置纵轴（y轴）轴滚动条 */
+    height: 0px; /*  设置横轴（x轴）轴滚动条 */
+  }
+  /* 滚动条滑块（里面小方块） */
+  .props_it_wrapper::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    box-shadow: inset 0 0 5px rgba(255, 100, 102, 0.2);
+    background: rgba(99, 100, 102, 1);
+  }
+  /* 滚动条轨道 */
+  .props_it_wrapper::-webkit-scrollbar-track {
+    border-radius: 0;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0);
+  }
+  /* hover时显色 */
+  .props_it_wrapper:hover::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;
+  }
+
+  .props_it_inwrapper {
+    width: calc(100% - 1rem);
+    height: auto;
+  }
+
+  .props_it_wrapper:hover .props_it_inwrapper {
+    width: calc(100% - 0.5rem);
+  }
+
+  .props_it_samllwrapper {
+    height: 8.75rem;
+    overflow-y: scroll;
+  }
+
   .props_it_itembox {
     width: 100%;
     height: auto;
@@ -499,8 +627,21 @@
   }
 
   .props_qtinput_linetimeinputbox {
-    width: calc(100% - 7rem);
+    width: calc(100% - 16rem);
     height: 100%;
+  }
+
+  :deep(.props_qtinput_linetimeinputbox .el-input) {
+    width: 100%;
+  }
+
+  .props_qtinput_linetimeindex {
+    width: 8rem;
+    height: 100%;
+    color: rgba(230, 230, 230, 1);
+    font-size: 0.75rem;
+    font-weight: 400;
+    margin-left: 1rem;
   }
 
   .props_it_tbox {
@@ -572,5 +713,9 @@
     width: 1.5rem;
     height: 1.5rem;
     cursor: pointer;
+  }
+
+  :deep(.props_it_actbox .el-tag) {
+    margin-right: 0.75rem;
   }
 </style>

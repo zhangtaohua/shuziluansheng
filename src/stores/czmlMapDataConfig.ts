@@ -113,6 +113,7 @@ export const MapDrawCircleAction = {
 
 export const globalCzmlMapData = {
   drawData: null,
+  viewDrawData: null,
 };
 
 export const useCzmlMapDataConfigStore = defineStore("useCzmlMapDataConfigStore", () => {
@@ -121,6 +122,9 @@ export const useCzmlMapDataConfigStore = defineStore("useCzmlMapDataConfigStore"
     currentActionRefresh: 0,
     currentDataId: "",
     currentDataRefresh: 0,
+    currentViewDataId: "",
+    currentViewDataRefresh: 0,
+    isViewDrawDataPath: true,
     isConfirmDrawData: false,
     isConfirmDrawDataRefresh: 0,
   });
@@ -151,10 +155,31 @@ export const useCzmlMapDataConfigStore = defineStore("useCzmlMapDataConfigStore"
     czmlMapDataConfig.isConfirmDrawDataRefresh = czmlMapDataConfig.isConfirmDrawDataRefresh + 1;
   }
 
+  function setCzmlMapViewDrawData(data: any, isForceRefresh = false) {
+    if (data) {
+      czmlMapDataConfig.currentViewDataId = data.id;
+      czmlMapDataConfig.currentViewDataRefresh = czmlMapDataConfig.currentViewDataRefresh + 1;
+    } else {
+      czmlMapDataConfig.currentViewDataId = "";
+      czmlMapDataConfig.currentViewDataRefresh = 0;
+      if (isForceRefresh) {
+        czmlMapDataConfig.currentViewDataRefresh = czmlMapDataConfig.currentViewDataRefresh + 1;
+      }
+    }
+
+    globalCzmlMapData.viewDrawData = data;
+  }
+
+  function setCzmlIsViewDrawDataPath(isView: boolean) {
+    czmlMapDataConfig.isViewDrawDataPath = isView;
+  }
+
   return {
     czmlMapDataConfig,
     setCzmlMapCurrentAction,
     setCzmlMapCurrentData,
     setCzmlMapIsConfirmDrawData,
+    setCzmlMapViewDrawData,
+    setCzmlIsViewDrawDataPath,
   };
 });
