@@ -4,6 +4,16 @@ import czmlUriProp from "../properties/UriProp";
 import czmlStringProp from "../properties/StringProp";
 import czmlTextProp from "../properties/TextProp";
 import czmlPositionProp from "../properties/PositionProp";
+import czmlDoubleProp from "../properties/DoubleProp";
+import { czmlDoublePureProp, czmlScalePureOptions } from "../properties/DoublePureProp";
+import { czmlCartesian2Prop, czmlPixelOffsetOptions } from "../properties/Cartesian2Prop";
+import { czmlCartesian3PixelProp, czmlEyeOffsetOptions } from "../properties/Cartesian3PixelProp";
+import {
+  czmlOptionsPureProp,
+  CzmlHorizontalOriginOptions,
+  CzmlVerticalOriginOptions,
+  CzmlHeightReferenceOptions,
+} from "../properties/OptionsPureProp";
 
 export class czmlBillboard {
   public id = "czml_entity_billboard_" + nanoid(10);
@@ -81,42 +91,54 @@ export class czmlBillboard {
         'The URI of the image displayed on the billboard. For broadest client compatibility, the URI should be accessible via Cross-Origin Resource Sharing (CORS). The URI may also be a <a href="https://developer.mozilla.org/en/data_URIs">data URI</a>.',
       czmlRequiredForDisplay: true,
     }),
-    scale: {
+    // scale: new czmlDoubleProp({
+    //   $ref: "Double.json",
+    //   description:
+    //     "The scale of the billboard. The scale is multiplied with the pixel size of the billboard's `image`. For example, if the scale is 2.0, the billboard will be rendered with twice the number of pixels, in each direction, of the `image`.",
+    //   default: 1.0,
+    // }),
+    scale: new czmlDoublePureProp({
+      ...czmlScalePureOptions,
       $ref: "Double.json",
       description:
         "The scale of the billboard. The scale is multiplied with the pixel size of the billboard's `image`. For example, if the scale is 2.0, the billboard will be rendered with twice the number of pixels, in each direction, of the `image`.",
       default: 1.0,
-    },
-    pixelOffset: {
+    }),
+    pixelOffset: new czmlCartesian2Prop({
+      ...czmlPixelOffsetOptions,
       $ref: "PixelOffset.json",
       description:
         "The offset, in viewport pixels, of the billboard origin from the `position`. A pixel offset is the number of pixels up and to the right to place the billboard, relative to the `position`.",
       default: "[0.0, 0.0]",
-    },
-    eyeOffset: {
+    }),
+    eyeOffset: new czmlCartesian3PixelProp({
+      ...czmlEyeOffsetOptions,
       $ref: "EyeOffset.json",
       description:
         "The eye offset of the billboard, which is the offset in eye coordinates at which to place the billboard relative to the `position` property. Eye coordinates are a left-handed coordinate system where the X-axis points toward the viewer's right, the Y-axis points up, and the Z-axis points into the screen.",
       default: "[0.0, 0.0, 0.0]",
-    },
-    horizontalOrigin: {
+    }),
+    horizontalOrigin: new czmlOptionsPureProp({
+      ...CzmlHorizontalOriginOptions,
       $ref: "HorizontalOrigin.json",
       description:
         "The horizontal origin of the billboard, which determines whether the billboard image is left-, center-, or right-aligned with the `position`.",
       default: "CENTER",
-    },
-    verticalOrigin: {
+    }),
+    verticalOrigin: new czmlOptionsPureProp({
+      ...CzmlVerticalOriginOptions,
       $ref: "VerticalOrigin.json",
       description:
         "The vertical origin of the billboard, which determines whether the billboard image is bottom-, center-, or top-aligned with the `position`.",
       default: "CENTER",
-    },
-    heightReference: {
+    }),
+    heightReference: new czmlOptionsPureProp({
+      ...CzmlHeightReferenceOptions,
       $ref: "HeightReference.json",
       description:
         "The height reference of the billboard, which indicates if the position is relative to terrain or not.",
       default: "NONE",
-    },
+    }),
     color: {
       $ref: "Color.json",
       description:

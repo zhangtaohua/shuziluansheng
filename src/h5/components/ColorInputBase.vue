@@ -54,6 +54,10 @@
       type: String,
       default: "rgba(255, 0, 0, 0.9)",
     },
+    index: {
+      type: Number,
+      default: 0,
+    },
     disabled: {
       type: Boolean,
       default: false,
@@ -94,7 +98,7 @@
     //   init();
     // }
     if (!isShow) {
-      emit("onChange", state.color);
+      emit("onChange", state.color, props.index);
     }
   }
 
@@ -136,7 +140,7 @@
 
   function updateHandle(newColor: any) {
     state.color = newColor;
-    emit("onChange", state.color);
+    emit("onChange", state.color, props.index);
   }
 </script>
 

@@ -157,10 +157,8 @@ export const useCzmlMapDataConfigStore = defineStore("useCzmlMapDataConfigStore"
 
   function setCzmlMapViewDrawData(data: any, isForceRefresh = false) {
     if (data) {
-      czmlMapDataConfig.currentViewDataId = data.id;
       czmlMapDataConfig.currentViewDataRefresh = czmlMapDataConfig.currentViewDataRefresh + 1;
     } else {
-      czmlMapDataConfig.currentViewDataId = "";
       czmlMapDataConfig.currentViewDataRefresh = 0;
       if (isForceRefresh) {
         czmlMapDataConfig.currentViewDataRefresh = czmlMapDataConfig.currentViewDataRefresh + 1;
@@ -170,6 +168,7 @@ export const useCzmlMapDataConfigStore = defineStore("useCzmlMapDataConfigStore"
     globalCzmlMapData.viewDrawData = data;
   }
 
+  // 整体控制显示的。
   function setCzmlIsViewDrawDataPath(isView: boolean) {
     czmlMapDataConfig.isViewDrawDataPath = isView;
   }

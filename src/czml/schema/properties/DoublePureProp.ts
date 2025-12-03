@@ -254,3 +254,16 @@ export const czmlBackwardExtrapolationDurationOptions = {
   type: "number",
   default: 1,
 };
+
+export const czmlScalePureOptions = {
+  name: "scale",
+  czmlName: "scale",
+  labelZh: "比例",
+  labelEn: "scale",
+  tag: "CzmlNumberSliderPurePropInput",
+  value: 1.0,
+  max: 200,
+  min: 0,
+  setp: 0.1,
+  isEnable: true,
+};

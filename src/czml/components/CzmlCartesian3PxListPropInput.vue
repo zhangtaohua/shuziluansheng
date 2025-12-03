@@ -5,38 +5,14 @@
       <label class="row_nw_fs_fe props_ogi_label">{{ currentProp.labelEn }}</label>
     </div>
 
-    <div class="row_nw_fs_ce props_map_actbox">
-      <div
-        v-for="mapTool in mapTools"
-        :key="mapTool.id"
-        class="row_nw_ce_ce props_map_actitem"
-        @click="setMapDrawActionHd(mapTool)"
-      >
-        <el-tooltip :content="mapTool.tipEn" placement="bottom">
-          <img class="props_map_actitem_show" :src="mapTool.image" alt="pic" />
-        </el-tooltip>
-      </div>
-    </div>
-
-    <div class="col_nw_fs_fs props_radiobox">
-      <div class="row_nw_fs_ce props_radiobox_title">
-        <label class="row_nw_fs_ce props_radioch_label">XYZ 单位</label>
-        <label class="row_nw_fs_fe props_radioogi_label">XYZ Unit</label>
-      </div>
-      <div class="row_nw_fs_ce props_radioinbox">
-        <RjRadioTabInput
-          :name="'unit_' + currentProp.id"
-          :options="currentProp.xyzUnitTypeOptions"
-          :initValue="currentProp.xyzUnitType"
-          @onChange="xyzUnitTypesOptionChangedHd"
-        ></RjRadioTabInput>
-      </div>
-    </div>
-
     <div class="col_nw_fs_fs props_it_box">
       <div class="col_nw_fs_fs props_it_wrapper">
         <div class="col_nw_fs_fs props_it_inwrapper">
-          <div v-for="(inval, index) in intervalsValuesShow" :key="inval[0]" class="col_nw_fs_fs props_it_itembox">
+          <div v-for="(inval, index) in intervalsValues" :key="inval[0]" class="col_nw_fs_fs props_it_itembox">
+            <div class="row_nw_fs_ce props_qtinput_linetime">
+              <div class="row_nw_fs_ce props_qtinput_linetimeindex">SN:{{ index + 1 }}</div>
+            </div>
+
             <div class="row_nw_fs_ce props_qtinput_line1">
               <div class="row_nw_fs_ce props_qtinput_itemlabelleft">X:</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
@@ -53,8 +29,6 @@
               <div class="row_nw_fs_ce props_qtinput_itembox">
                 <el-input v-model="inval[2]" placeholder="Please input" type="number" />
               </div>
-
-              <div class="row_nw_fs_ce props_qtinput_linetimeindex">SN:{{ index + 1 }}</div>
             </div>
           </div>
         </div>
@@ -68,7 +42,7 @@
       </div>
 
       <div class="row_nw_fe_ce props_it_actbox">
-        <el-tag type="info">{{ "Total: " + intervalsValuesShow.length }}</el-tag>
+        <el-tag type="info">{{ "Total: " + intervalsValues.length }}</el-tag>
 
         <el-icon
           v-if="isFoldIntervals"
@@ -89,34 +63,15 @@
           <CaretTop />
         </el-icon>
 
-        <el-icon
-          v-if="intervalsIsViewDataPath"
-          color="rgba(15, 55, 175, 1)"
-          size="1.5rem"
-          class="row_nw_ce_ce props_it_acticon"
-          @click="setIsViewPath(false)"
-        >
-          <Hide />
-        </el-icon>
-        <el-icon
-          v-else
-          color="rgba(15, 55, 175, 1)"
-          size="1.5rem"
-          class="row_nw_ce_ce props_it_acticon"
-          @click="setIsViewPath(true)"
-        >
-          <View />
-        </el-icon>
-
         <el-icon color="#f56c6c" size="1.25rem" class="row_nw_ce_ce props_it_acticon" @click="clearintervalsValues">
           <DeleteFilled />
         </el-icon>
 
         <el-icon
-          :color="intervalsValuesShow.length >= 2 ? 'rgba(15, 55, 175, 1)' : '#f56c6c'"
+          :color="intervalsValues.length >= 2 ? 'rgba(15, 55, 175, 1)' : '#f56c6c'"
           size="1.5rem"
           class="row_nw_ce_ce props_it_acticon"
-          :class="{ props_it_dis_action: intervalsValuesShow.length <= 1 }"
+          :class="{ props_it_dis_action: intervalsValues.length <= 1 }"
           @click="popSecondsIntervalValue"
         >
           <RemoveFilled />
@@ -135,29 +90,9 @@
 </template>
 
 <script setup lang="ts">
-  // 说明： 这个主要用于设置 没有时间类型的 cartesian 3  list 的值, 可能有一个元素,也可能有多个
+  // 说明： 这个主要用于设置 没有时间类型的 cartesian2  list 的值, 可能有一个元素,也可能有多个
 
   import { ref, onMounted, watch } from "vue";
-  import { nanoid } from "@/utils/common/nanoid";
-  import { cartesian3ToWgs84, cartesian3ToDegrees, cartesian3ToRadians } from "@/utils/map/cesium/csTools";
-
-  import {
-    CZMLCARTESIAN3METERTYPE,
-    CZMLCARTESIAN3DEGREESTYPE,
-    CZMLCARTESIAN3RADIANSTYPE,
-  } from "@/czml/schema/properties/commondata";
-
-  import {
-    useCzmlMapDataConfigStore,
-    globalCzmlMapData,
-    MapDrawPointAction,
-    MapDrawLineAction,
-    MapDrawSmoothLineAction,
-    MapDrawBezierLineAction,
-    MapDrawRectangleAction,
-    MapDrawPolygonAction,
-    MapDrawCircleAction,
-  } from "@/stores/czmlMapDataConfig";
 
   import { cloneDeep } from "es-toolkit";
   import { isArray } from "es-toolkit/compat";
@@ -174,96 +109,19 @@
     },
   });
 
-  const { czmlMapDataConfig, setCzmlMapCurrentAction, setCzmlMapViewDrawData, setCzmlIsViewDrawDataPath } =
-    useCzmlMapDataConfigStore();
-
   const id = "";
   const name = "";
   const currentProp = ref({});
   const isEnable = ref(false);
   const intervalsValues = ref([[0, 0, 0]]);
   const isFoldIntervals = ref(false);
-  const xyzUnitType = ref("");
-
-  const intervalsValuesShow = ref([[0, 0, 0]]);
-
-  const intervalsIsViewDataPath = ref(true);
-
-  const pointDataKeyId = nanoid(10);
-  const lineDataKeyId = nanoid(10);
-  const smoothLineDataKeyId = nanoid(10);
-  const curveLineDataKeyId = nanoid(10);
-  const rectDataKeyId = nanoid(10);
-  const polygonDataKeyId = nanoid(10);
-  const circleDataKeyId = nanoid(10);
-
-  const mapTools = ref([
-    {
-      ...MapDrawPointAction,
-      id: pointDataKeyId,
-    },
-    {
-      ...MapDrawLineAction,
-      id: lineDataKeyId,
-    },
-    {
-      ...MapDrawSmoothLineAction,
-      id: smoothLineDataKeyId,
-    },
-    {
-      ...MapDrawBezierLineAction,
-      id: curveLineDataKeyId,
-    },
-    {
-      ...MapDrawRectangleAction,
-      id: rectDataKeyId,
-    },
-    {
-      ...MapDrawPolygonAction,
-      id: polygonDataKeyId,
-    },
-    {
-      ...MapDrawCircleAction,
-      id: circleDataKeyId,
-    },
-  ]);
 
   function clearintervalsValues() {
     intervalsValues.value = [[0, 0, 0]];
   }
 
-  function setIsViewPath(isView: boolean) {
-    intervalsIsViewDataPath.value = isView;
-    if (isView) {
-      if (intervalsValues.value.length == 1) {
-        const coord = intervalsValues.value[0];
-        setCzmlMapViewDrawData({
-          type: "point",
-          data: { x: coord[0], y: coord[1], z: coord[2] },
-        });
-      } else {
-        const coordinates = [];
-        for (let i = 0; i < intervalsValues.value.length; i++) {
-          const coord = intervalsValues.value[i];
-          coordinates.push({ x: coord[0], y: coord[1], z: coord[2] });
-        }
-        setCzmlMapViewDrawData({
-          type: "polyline",
-          data: coordinates,
-        });
-      }
-    } else {
-      setCzmlMapViewDrawData(null);
-    }
-    setCzmlIsViewDrawDataPath(isView);
-  }
-
   function setIsFoldIntervals(isFold: boolean) {
     isFoldIntervals.value = isFold;
-  }
-
-  function setMapDrawActionHd(act: any) {
-    setCzmlMapCurrentAction(act);
   }
 
   const popSecondsIntervalValue = () => {
@@ -288,10 +146,8 @@
 
   function init() {
     if (props.vdata && props.vdata.id && props.vdata.name) {
-      console.log("unit_quaternion_props", props.vdata);
       isEnable.value = true;
       currentProp.value = props.vdata;
-      xyzUnitType.value = currentProp.value.xyzUnitType;
       intervalsValues.value = cloneDeep(currentProp.value.value);
     } else {
       isEnable.value = false;
@@ -299,108 +155,6 @@
       intervalsValues.value = [[0, 0, 0]];
     }
   }
-
-  function xyzUnitTypesOptionChangedHd(value: string) {
-    if (currentProp.value) {
-      console.log("xyUnitTypesOptionChangedHd", value);
-      currentProp.value.xyzUnitType = value;
-      xyzUnitType.value = value;
-    }
-  }
-
-  watch(
-    [xyzUnitType, intervalsValues],
-    () => {
-      if (xyzUnitType.value == CZMLCARTESIAN3METERTYPE) {
-        intervalsValuesShow.value = intervalsValues.value;
-      } else if (xyzUnitType.value == CZMLCARTESIAN3DEGREESTYPE) {
-        const positions = [];
-        for (let i = 0; i < intervalsValues.value.length; i++) {
-          const vtemp = intervalsValues.value[i];
-          const cartesian3 = { x: vtemp[0], y: vtemp[1], z: vtemp[2] };
-          const cart = cartesian3ToDegrees(cartesian3);
-          positions.push([cart.longitude, cart.latitude, cart.height]);
-        }
-        intervalsValuesShow.value = positions;
-      } else if (xyzUnitType.value == CZMLCARTESIAN3RADIANSTYPE) {
-        const positions = [];
-        for (let i = 0; i < intervalsValues.value.length; i++) {
-          const vtemp = intervalsValues.value[i];
-          const cartesian3 = { x: vtemp[0], y: vtemp[1], z: vtemp[2] };
-          const cart = cartesian3ToRadians(cartesian3);
-          positions.push([cart.longitude, cart.latitude, cart.height]);
-        }
-        intervalsValuesShow.value = positions;
-      }
-    },
-    {
-      immediate: false,
-      deep: true,
-    },
-  );
-
-  watch(
-    () => czmlMapDataConfig.currentDataRefresh,
-    () => {
-      if (czmlMapDataConfig.currentDataRefresh) {
-        console.log("解析获取值", globalCzmlMapData.drawData);
-        if (czmlMapDataConfig.currentDataId == pointDataKeyId) {
-          // 解析获取值
-          const data = globalCzmlMapData.drawData;
-          const { cartesian, id, degrees, radians } = data;
-          intervalsValues.value = [[cartesian[0], cartesian[1], cartesian[2]]];
-          setCzmlMapViewDrawData({
-            type: "point",
-            data: { x: cartesian[0], y: cartesian[1], z: cartesian[2] },
-          });
-        } else if (
-          czmlMapDataConfig.currentDataId == lineDataKeyId ||
-          czmlMapDataConfig.currentDataId == smoothLineDataKeyId ||
-          czmlMapDataConfig.currentDataId == curveLineDataKeyId ||
-          czmlMapDataConfig.currentDataId == rectDataKeyId ||
-          czmlMapDataConfig.currentDataId == polygonDataKeyId ||
-          czmlMapDataConfig.currentDataId == circleDataKeyId
-        ) {
-          const data = globalCzmlMapData.drawData;
-          const coordinates = data.coordinates;
-          setCzmlMapViewDrawData({
-            type: "polyline",
-            data: coordinates,
-          });
-          if (coordinates && isArray(coordinates) && coordinates.length) {
-            if (isArray(intervalsValues.value)) {
-              const length = intervalsValues.value.length;
-              let isNeedModifyFirset = false;
-              if (
-                length == 1 &&
-                intervalsValues.value[0][0] == 0 &&
-                intervalsValues.value[0][1] == 0 &&
-                intervalsValues.value[0][2] == 0
-              ) {
-                isNeedModifyFirset = true;
-                intervalsValues.value[0][0] = coordinates[0].x;
-                intervalsValues.value[0][1] = coordinates[0].y;
-                intervalsValues.value[0][2] = coordinates[0].z;
-              }
-
-              let index = 0;
-              if (isNeedModifyFirset) {
-                index = 1;
-              }
-              for (let i = index; i < coordinates.length; i++) {
-                const coordinate = coordinates[i];
-                intervalsValues.value.push([coordinate.x, coordinate.y, coordinate.z]);
-              }
-            }
-          }
-        }
-      }
-    },
-    {
-      deep: false,
-      immediate: false,
-    },
-  );
 
   onMounted(() => {
     init();
@@ -605,6 +359,12 @@
     width: 100%;
     height: auto;
     margin-bottom: 0.75rem;
+  }
+
+  .props_qtinput_linetime {
+    width: 100%;
+    height: 2rem;
+    margin-bottom: 0.5rem;
   }
 
   .props_qtinput_linetimeindex {

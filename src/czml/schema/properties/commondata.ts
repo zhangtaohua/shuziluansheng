@@ -155,3 +155,22 @@ export const propValuesCartesian3TypeOptions = [
     note: "x y is radians, z is meter.",
   },
 ];
+
+export const propValuesCartRectTypeOptions = [
+  {
+    id: CZMLCARTESIAN3DEGREESTYPE,
+    value: CZMLCARTESIAN3DEGREESTYPE,
+    label: "度",
+    labelZh: "度",
+    labelEn: "degrees",
+    note: "x y is degrees",
+  },
+  {
+    id: CZMLCARTESIAN3RADIANSTYPE,
+    value: CZMLCARTESIAN3RADIANSTYPE,
+    label: "弧度",
+    labelZh: "弧度",
+    labelEn: "radians",
+    note: "x y is radians",
+  },
+];

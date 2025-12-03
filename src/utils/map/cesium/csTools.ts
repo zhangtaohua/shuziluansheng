@@ -301,3 +301,21 @@ export function cartesian3ToRadians(cartesian: Cesium.Cartesian3) {
     height: cartesian.z,
   };
 }
+
+export function Wgs84DegreesToCartesian3(longitude, latitude, height) {
+  const cartesian3 = Cesium.Cartesian3.fromDegrees(longitude, latitude, height);
+  if (cartesian3) {
+    return cartesian3;
+  }
+
+  return new Cesium.Cartesian3(0, 0, 0);
+}
+
+export function Wgs84RadiansToCartesian3(longitude, latitude, height) {
+  const cartesian3 = Cesium.Cartesian3.fromRadians(longitude, latitude, height);
+  if (cartesian3) {
+    return cartesian3;
+  }
+
+  return new Cesium.Cartesian3(0, 0, 0);
+}

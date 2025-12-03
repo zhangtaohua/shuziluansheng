@@ -418,14 +418,14 @@
             csMap.addPathViewBillboradPointGraphic(opts.data);
           } else if (opts.type == "polyline") {
             csMap.addPathViewLineraphic(opts.data);
+          } else if (opts.type == "mutilpolylines") {
+            csMap.addMutilPathViewLineraphic(opts.data);
           }
         } else {
-          csMap.removePathViewBillboradPointGraphic();
-          csMap.removePathViewLineraphic();
+          csMap.removePathViewAllGraphics();
         }
       } else {
-        csMap.removePathViewBillboradPointGraphic();
-        csMap.removePathViewLineraphic();
+        csMap.removePathViewAllGraphics();
       }
     },
     {

@@ -485,6 +485,146 @@ export const CzmlBackwardExtrapolationTypeOptions = {
   ],
 };
 
+export const CzmlHorizontalOriginOptions = {
+  name: "horizontalOrigin",
+  czmlName: "horizontalOrigin",
+  labelZh: "水平原点",
+  labelEn: "horizontal origin",
+  isEnable: true,
+
+  // real default value is static
+  value: "CENTER",
+  options: [
+    {
+      id: "LEFT",
+      value: "LEFT",
+      label: "左",
+      labelZh: "左",
+      labelEn: "LEFT",
+      note: "LEFT",
+      default: false,
+      description: "The origin is on the left side of the object.",
+    },
+    {
+      id: "CENTER",
+      value: "CENTER",
+      label: "居中",
+      labelZh: "居中",
+      labelEn: "CENTER",
+      note: "CENTER",
+      default: true,
+      description: "The origin is at the horizontal center of the object.",
+    },
+    {
+      id: "RIGHT",
+      value: "RIGHT",
+      label: "右",
+      labelZh: "右",
+      labelEn: "RIGHT",
+      note: "RIGHT",
+      default: false,
+      description: "The origin is on the right side of the object.",
+    },
+  ],
+};
+
+export const CzmlVerticalOriginOptions = {
+  name: "verticalOrigin",
+  czmlName: "verticalOrigin",
+  labelZh: "垂直原点",
+  labelEn: "vertical origin",
+  isEnable: true,
+
+  // real default value is static
+  value: "CENTER",
+  options: [
+    {
+      id: "BASELINE",
+      value: "BASELINE",
+      label: "基线",
+      labelZh: "基线",
+      labelEn: "BASELINE",
+      note: "BASELINE",
+      default: false,
+      description:
+        "If the object contains text, the origin is at the baseline of the text, otherwise the origin is at the bottom of the object.",
+    },
+    {
+      id: "BOTTOM",
+      value: "BOTTOM",
+      label: "底",
+      labelZh: "底",
+      labelEn: "BOTTOM",
+      note: "BOTTOM",
+      default: false,
+      description: "The origin is at the bottom of the object.",
+    },
+    {
+      id: "CENTER",
+      value: "CENTER",
+      label: "居中",
+      labelZh: "居中",
+      labelEn: "CENTER",
+      note: "CENTER",
+      default: true,
+      description: "The origin is at the vertical center between `BASELINE` and `TOP`.",
+    },
+    {
+      id: "TOP",
+      value: "TOP",
+      label: "右",
+      labelZh: "右",
+      labelEn: "TOP",
+      note: "TOP",
+      default: false,
+      description: "The origin is at the top of the object.",
+    },
+  ],
+};
+
+export const CzmlHeightReferenceOptions = {
+  name: "heightReference",
+  czmlName: "heightReference",
+  labelZh: "高度参考",
+  labelEn: "height reference",
+  isEnable: true,
+
+  // real default value is static
+  value: "NONE",
+  options: [
+    {
+      id: "NONE",
+      value: "NONE",
+      label: "无",
+      labelZh: "无",
+      labelEn: "NONE",
+      note: "NONE",
+      default: true,
+      description: "The position is absolute.",
+    },
+    {
+      id: "CLAMP_TO_GROUND",
+      value: "CLAMP_TO_GROUND",
+      label: "接地",
+      labelZh: "接地钳",
+      labelEn: "CLAMP_TO_GROUND",
+      note: "CLAMP_TO_GROUND",
+      default: false,
+      description: "The position is clamped to the terrain.",
+    },
+    {
+      id: "RELATIVE_TO_GROUND",
+      value: "RELATIVE_TO_GROUND",
+      label: "相对于地",
+      labelZh: "相对于地面",
+      labelEn: "RELATIVE_TO_GROUND",
+      note: "RELATIVE_TO_GROUND",
+      default: false,
+      description: "The position height is the height above the terrain.",
+    },
+  ],
+};
+
 export const CzmlSampleOptions = {
   name: "arcType",
   czmlName: "arcType",

@@ -2,7 +2,7 @@
   <div class="row_nw_fs_fs props_container">
     <div v-for="(item, index) in options" :key="'radio_' + item.id" class="row_nw_fs_ce radio_content">
       <input
-        :id="item.id"
+        :id="name + item.id"
         v-model="currentValue"
         class="radio_input"
         type="radio"
@@ -11,7 +11,7 @@
         @change="onChange"
       />
       <label
-        :for="item.id"
+        :for="name + item.id"
         class="row_nw_fs_ce radio_label"
         :class="{ radio_label_checked: item.value === currentValue }"
       >

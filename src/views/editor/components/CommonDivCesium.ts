@@ -62,10 +62,11 @@ export function destroyMap() {
   if (csBaseMap) {
     destroyGraphicLayer();
     vuePopupIns?.destructor();
-    csBaseMap?.destructor();
-    csBaseMap = null;
     map.destroy();
     map = null;
+    // csBaseMap?.destructor();
+    csBaseMap = null;
+    viewer = null;
   }
 }
 
@@ -524,11 +525,11 @@ export function removeCzmlGraphicLayer(options: any) {
   }
 }
 
-let pathViewBillboard = null;
+let pathViewGraphics = [];
 export function addPathViewBillboradPointGraphic(cartesian3) {
   if (graphicLayer) {
-    removePathViewBillboradPointGraphic();
-    pathViewBillboard = new mars3d.graphic.BillboardEntity({
+    removePathViewAllGraphics();
+    const graphic = new mars3d.graphic.BillboardEntity({
       position: cartesian3,
       style: {
         image: mapPointSvg,
@@ -540,27 +541,20 @@ export function addPathViewBillboradPointGraphic(cartesian3) {
       flyTo: true,
       hasEdit: false,
     });
-    graphicLayer.addGraphic(pathViewBillboard);
+    graphicLayer.addGraphic(graphic);
+    pathViewGraphics.push(graphic);
   }
 }
 
-export function removePathViewBillboradPointGraphic() {
-  if (pathViewBillboard && graphicLayer) {
-    graphicLayer.removeGraphic(pathViewBillboard);
-    pathViewBillboard = null;
-  }
-}
-
-let pathViewLine = null;
 export function addPathViewLineraphic(cartesians) {
   if (graphicLayer) {
-    removePathViewLineraphic();
-    pathViewLine = new mars3d.graphic.PolylineEntity({
+    removePathViewAllGraphics();
+    const graphic = new mars3d.graphic.PolylineEntity({
       positions: cartesians,
       style: {
         width: 5,
         color: "#3388ff",
-        label: { text: "鼠标移入会高亮", pixelOffsetY: -30 },
+        // label: { text: "", pixelOffsetY: -30 },
         // 高亮时的样式（默认为鼠标移入，也可以指定type:'click'单击高亮），构造后也可以openHighlight、closeHighlight方法来手动调用
         highlight: {
           color: "#ff0000",
@@ -570,13 +564,42 @@ export function addPathViewLineraphic(cartesians) {
       flyTo: true,
       hasEdit: false,
     });
-    graphicLayer.addGraphic(pathViewLine);
+    graphicLayer.addGraphic(graphic);
+    pathViewGraphics.push(graphic);
   }
 }
 
-export function removePathViewLineraphic() {
-  if (pathViewLine && graphicLayer) {
-    graphicLayer.removeGraphic(pathViewLine);
-    pathViewLine = null;
+export function addMutilPathViewLineraphic(allCoordinates) {
+  if (graphicLayer && allCoordinates.length) {
+    removePathViewAllGraphics();
+
+    for (let i = 0; i < allCoordinates.length; i++) {
+      const graphic = new mars3d.graphic.PolylineEntity({
+        positions: allCoordinates[i],
+        style: {
+          width: 5,
+          color: "#3388ff",
+          // label: { text: "", pixelOffsetY: -30 },
+          // 高亮时的样式（默认为鼠标移入，也可以指定type:'click'单击高亮），构造后也可以openHighlight、closeHighlight方法来手动调用
+          highlight: {
+            color: "#ff0000",
+          },
+        },
+        attr: { remark: "回显路径线" },
+        flyTo: true,
+        hasEdit: false,
+      });
+      graphicLayer.addGraphic(graphic);
+      pathViewGraphics.push(graphic);
+    }
+  }
+}
+
+export function removePathViewAllGraphics() {
+  if (graphicLayer && pathViewGraphics && pathViewGraphics.length) {
+    for (let i = 0; i < pathViewGraphics.length; i++) {
+      graphicLayer.removeGraphic(pathViewGraphics[i]);
+    }
+    pathViewGraphics = [];
   }
 }

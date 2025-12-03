@@ -17,32 +17,32 @@ import {
 } from "./commondata.ts";
 import czmlInterpolatableProp from "./InterpolatablePropertyProp.ts";
 
-// 用于生成 Cartesian3 数值，纯数值，或者是带时间序的多个值。
-export class czmlCartesian3Prop {
-  public id = "czml_prop_cartesian3_timetagged_" + nanoid(10);
-  public name = "cartesian3";
-  public _czmlName = "cartesian3";
-  public labelZh = "XYZ坐标(C) ";
-  public labelEn = "cartesian3(C)";
-  public title = "Cartesian3";
+// 用于生成 Cartesian4 数值，纯数值，或者是带时间序的多个值。
+export class czmlCartesian4Prop {
+  public id = "czml_prop_cartesian4_timetagged_" + nanoid(10);
+  public name = "cartesian4";
+  public _czmlName = "cartesian4";
+  public labelZh = "XYZW坐标(C) ";
+  public labelEn = "cartesian4(C)";
+  public title = "cartesian4";
   public description =
-    "A three-dimensional Cartesian value specified as `[X, Y, Z]`. If the array has three elements, the value is constant. If it has four or more elements, they are time-tagged samples arranged as `[Time, X, Y, Z, Time, X, Y, Z, ...]`, where Time is an ISO 8601 date and time string or seconds since epoch.";
+    "A two-dimensional Cartesian value specified as `[X, Y]`. If the array has two elements, the value is constant. If it has three or more elements, they are time-tagged samples arranged as `[Time, X, Y, Time, X, Y, ...]`, where Time is an ISO 8601 date and time string or seconds since epoch.";
 
   public type = "property";
   public componentType = "czml#packet#property";
   public czmlValue = true; // 这个用于标示是不是 czml value的
 
-  public tag = "CzmlCartesian3PropInput";
+  public tag = "CzmlCartesian4PropInput";
 
   public unit = "meters";
-  public _value = [0, 0, 0];
-  public _oldPureValue = [0, 0, 0];
-  public _oldSecondsValue = [[0, 0, 0, 0]];
-  public _oldTimestringValue = [[dayjs().format(defaultTimeFormatStr), 0, 0, 0]];
+  public _value = [0, 0, 0, 0];
+  public _oldPureValue = [0, 0, 0, 0];
+  public _oldSecondsValue = [[0, 0, 0, 0, 0]];
+  public _oldTimestringValue = [[dayjs().format(defaultTimeFormatStr), 0, 0, 0, 0]];
 
-  public _valueType = "cartesian3 may time-tagged";
+  public _valueType = "cartesian4 may time-tagged";
 
-  public default = [0, 0, 0];
+  public default = [0, 0, 0, 0];
 
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
@@ -51,19 +51,12 @@ export class czmlCartesian3Prop {
   public isCombinedProperty = false;
   public isComplexProperty = true;
 
-  public _interpolationType = CZMLVALUESNOTINTERPOLATE;
-  public interpolationOptions = propValuesInterpolateOptions;
-  public interpolationproperties = new czmlInterpolatableProp(null);
-
   public _timeType = CZMLPUREVALUE;
   public timeTypeOptions = propValuesTimeTypeOptions;
 
   public secondsStart = 0;
   public secondsStep = 30;
   public secondsOnceAddCount = 1;
-
-  public _xyzUnitType = CZMLCARTESIAN3METERTYPE;
-  public xyzUnitTypeOptions = propValuesCartesian3TypeOptions;
 
   public isFixedXyzUnitType = false;
 
@@ -75,7 +68,7 @@ export class czmlCartesian3Prop {
     if (options.id) {
       this.id = options.id;
     } else if (options.name) {
-      this.id = "czml_prop_cartesian3_timetagged_" + options.name + "_" + nanoid(10);
+      this.id = "czml_prop_cartesian4_timetagged_" + options.name + "_" + nanoid(10);
     }
 
     if (options.name) {
@@ -184,14 +177,6 @@ export class czmlCartesian3Prop {
     // this._czmlName = newValue;
   }
 
-  get xyzUnitType() {
-    return this._xyzUnitType;
-  }
-
-  set xyzUnitType(newValue) {
-    this._xyzUnitType = newValue;
-  }
-
   public getCzmlName() {
     if (this.isUsed) {
       return this.czmlName;
@@ -219,4 +204,4 @@ export class czmlCartesian3Prop {
   }
 }
 
-export default czmlCartesian3Prop;
+export default czmlCartesian4Prop;

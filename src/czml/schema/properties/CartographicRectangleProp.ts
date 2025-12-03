@@ -11,38 +11,39 @@ import {
   CZMLCARTESIAN3DEGREESTYPE,
   CZMLCARTESIAN3RADIANSTYPE,
   propValuesCartesian3TypeOptions,
+  propValuesCartRectTypeOptions,
   propValuesInterpolateOptions,
   defaultTimeFormatStr,
   propValuesTimeTypeOptions,
 } from "./commondata.ts";
 import czmlInterpolatableProp from "./InterpolatablePropertyProp.ts";
 
-// 用于生成 Cartesian3 数值，纯数值，或者是带时间序的多个值。
-export class czmlCartesian3Prop {
-  public id = "czml_prop_cartesian3_timetagged_" + nanoid(10);
-  public name = "cartesian3";
-  public _czmlName = "cartesian3";
-  public labelZh = "XYZ坐标(C) ";
-  public labelEn = "cartesian3(C)";
-  public title = "Cartesian3";
+// 用于生成 rectangle 数值，纯数值，或者是带时间序的多个值。
+export class czmlCartographicRectangleProp {
+  public id = "czml_prop_cartographicRectang_timetagged_" + nanoid(10);
+  public name = "cartographicRectang";
+  public _czmlName = "CartographicRectangleDegrees";
+  public labelZh = "矩形范围";
+  public labelEn = "Cartographic Rectangle";
+  public title = "CartographicRectangle";
   public description =
-    "A three-dimensional Cartesian value specified as `[X, Y, Z]`. If the array has three elements, the value is constant. If it has four or more elements, they are time-tagged samples arranged as `[Time, X, Y, Z, Time, X, Y, Z, ...]`, where Time is an ISO 8601 date and time string or seconds since epoch.";
+    "A two-dimensional region specified as `[WestLongitude, SouthLatitude, EastLongitude, NorthLatitude]`, with values in degrees. If the array has four elements, the value is constant. If it has five or more elements, they are time-tagged samples arranged as `[Time, WestLongitude, SouthLatitude, EastLongitude, NorthLatitude, Time, WestLongitude, SouthLatitude, EastLongitude, NorthLatitude, ...]`, where Time is an ISO 8601 date and time string or seconds since epoch.";
 
   public type = "property";
   public componentType = "czml#packet#property";
   public czmlValue = true; // 这个用于标示是不是 czml value的
 
-  public tag = "CzmlCartesian3PropInput";
+  public tag = "CzmlCartographicRectanglePropInput";
 
-  public unit = "meters";
-  public _value = [0, 0, 0];
-  public _oldPureValue = [0, 0, 0];
-  public _oldSecondsValue = [[0, 0, 0, 0]];
-  public _oldTimestringValue = [[dayjs().format(defaultTimeFormatStr), 0, 0, 0]];
+  public unit = "degrees";
+  public _value = [0, 0, 0, 0];
+  public _oldPureValue = [0, 0, 0, 0];
+  public _oldSecondsValue = [[0, 0, 0, 0, 0]];
+  public _oldTimestringValue = [[dayjs().format(defaultTimeFormatStr), 0, 0, 0, 0]];
 
-  public _valueType = "cartesian3 may time-tagged";
+  public _valueType = "Cartographic Rectangle may time-tagged";
 
-  public default = [0, 0, 0];
+  public default = [0, 0, 0, 0];
 
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
@@ -51,10 +52,6 @@ export class czmlCartesian3Prop {
   public isCombinedProperty = false;
   public isComplexProperty = true;
 
-  public _interpolationType = CZMLVALUESNOTINTERPOLATE;
-  public interpolationOptions = propValuesInterpolateOptions;
-  public interpolationproperties = new czmlInterpolatableProp(null);
-
   public _timeType = CZMLPUREVALUE;
   public timeTypeOptions = propValuesTimeTypeOptions;
 
@@ -62,8 +59,8 @@ export class czmlCartesian3Prop {
   public secondsStep = 30;
   public secondsOnceAddCount = 1;
 
-  public _xyzUnitType = CZMLCARTESIAN3METERTYPE;
-  public xyzUnitTypeOptions = propValuesCartesian3TypeOptions;
+  public _xyzUnitType = CZMLCARTESIAN3DEGREESTYPE;
+  public xyzUnitTypeOptions = propValuesCartRectTypeOptions;
 
   public isFixedXyzUnitType = false;
 
@@ -75,7 +72,7 @@ export class czmlCartesian3Prop {
     if (options.id) {
       this.id = options.id;
     } else if (options.name) {
-      this.id = "czml_prop_cartesian3_timetagged_" + options.name + "_" + nanoid(10);
+      this.id = "czml_prop_cartographicRectang_timetagged_" + options.name + "_" + nanoid(10);
     }
 
     if (options.name) {
@@ -219,4 +216,4 @@ export class czmlCartesian3Prop {
   }
 }
 
-export default czmlCartesian3Prop;
+export default czmlCartographicRectangleProp;

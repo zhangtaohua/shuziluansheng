@@ -20,15 +20,15 @@
 
     <div class="col_nw_fs_fs props_radiobox_pp">
       <div class="row_nw_fs_ce props_radiobox_title">
-        <label class="row_nw_fs_ce props_radioch_label">XYZ 单位</label>
-        <label class="row_nw_fs_fe props_radioogi_label">XYZ Unit</label>
+        <label class="row_nw_fs_ce props_radioch_label">单位</label>
+        <label class="row_nw_fs_fe props_radioogi_label">Unit</label>
       </div>
       <div class="row_nw_fs_ce props_radioinbox">
         <RjRadioInput
-          :name="'unit_' + currentProp.id"
+          :name="'rectunit_' + currentProp.id"
           :options="currentProp.xyzUnitTypeOptions"
           :initValue="currentProp.xyzUnitType"
-          @onChange="xyzUnitTypesOptionChangedHd"
+          @onChange="unitTypesOptionChangedHd"
         ></RjRadioInput>
       </div>
     </div>
@@ -54,18 +54,22 @@
         <div class="col_nw_fs_fs props_it_inwrapper">
           <div class="col_nw_fs_fs props_it_itembox">
             <div class="row_nw_fs_ce props_qtinput_line1">
-              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">X:</div>
+              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">WLng(L):</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
                 <el-input v-model="pureValueShow[0]" placeholder="Please input" type="number" />
               </div>
-              <div class="row_nw_fs_ce props_qtinput_itemlabelright">Y:</div>
+              <div class="row_nw_fs_ce props_qtinput_itemlabelright">SLat(B):</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
                 <el-input v-model="pureValueShow[1]" placeholder="Please input" type="number" />
               </div>
             </div>
 
             <div class="row_nw_fs_ce props_qtinput_line2">
-              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">Z:</div>
+              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">ELng(R):</div>
+              <div class="row_nw_fs_ce props_qtinput_itembox">
+                <el-input v-model="pureValueShow[2]" placeholder="Please input" type="number" />
+              </div>
+              <div class="row_nw_fs_ce props_qtinput_itemlabelright">NLat(T):</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
                 <el-input v-model="pureValueShow[2]" placeholder="Please input" type="number" />
               </div>
@@ -76,7 +80,7 @@
 
       <div class="row_nw_fe_ce props_it_actbox">
         <el-icon
-          v-if="czmlMapDataConfig.isViewDrawDataPath"
+          v-if="pureValueIsViewDataPath"
           color="rgba(15, 55, 175, 1)"
           size="1.5rem"
           class="row_nw_ce_ce props_it_acticon"
@@ -108,20 +112,24 @@
               <div class="row_nw_fs_ce props_qtinput_linetimeindex">SN:{{ index + 1 }}</div>
             </div>
             <div class="row_nw_fs_ce props_qtinput_line1">
-              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">X:</div>
+              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">WLng(L):</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
                 <el-input v-model="inval[1]" placeholder="Please input" type="number" />
               </div>
-              <div class="row_nw_fs_ce props_qtinput_itemlabelright">Y:</div>
+              <div class="row_nw_fs_ce props_qtinput_itemlabelright">SLat(B):</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
                 <el-input v-model="inval[2]" placeholder="Please input" type="number" />
               </div>
             </div>
 
             <div class="row_nw_fs_ce props_qtinput_line2">
-              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">Z:</div>
+              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">ELng(R):</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
                 <el-input v-model="inval[3]" placeholder="Please input" type="number" />
+              </div>
+              <div class="row_nw_fs_ce props_qtinput_itemlabelright">NLat(T):</div>
+              <div class="row_nw_fs_ce props_qtinput_itembox">
+                <el-input v-model="inval[4]" placeholder="Please input" type="number" />
               </div>
             </div>
           </div>
@@ -167,7 +175,7 @@
         </el-icon>
 
         <el-icon
-          v-if="czmlMapDataConfig.isViewDrawDataPath"
+          v-if="intervalsIsViewDataPath"
           color="rgba(15, 55, 175, 1)"
           size="1.5rem"
           class="row_nw_ce_ce props_it_acticon"
@@ -231,20 +239,24 @@
               <div class="row_nw_fs_ce props_qtinput_linetimeindex">SN:{{ index2 + 1 }}</div>
             </div>
             <div class="row_nw_fs_ce props_qtinput_line1">
-              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">X:</div>
+              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">WLng(L):</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
                 <el-input v-model="inval[1]" placeholder="Please input" type="number" />
               </div>
-              <div class="row_nw_fs_ce props_qtinput_itemlabelright">Y:</div>
+              <div class="row_nw_fs_ce props_qtinput_itemlabelright">SLat(B):</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
                 <el-input v-model="inval[2]" placeholder="Please input" type="number" />
               </div>
             </div>
 
             <div class="row_nw_fs_ce props_qtinput_line2">
-              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">Z:</div>
+              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">ELng(R):</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
                 <el-input v-model="inval[3]" placeholder="Please input" type="number" />
+              </div>
+              <div class="row_nw_fs_ce props_qtinput_itemlabelright">NLat(T):</div>
+              <div class="row_nw_fs_ce props_qtinput_itembox">
+                <el-input v-model="inval[4]" placeholder="Please input" type="number" />
               </div>
             </div>
           </div>
@@ -273,7 +285,7 @@
         </el-icon>
 
         <el-icon
-          v-if="czmlMapDataConfig.isViewDrawDataPath"
+          v-if="timestrIsViewDataPath"
           color="rgba(15, 55, 175, 1)"
           size="1.5rem"
           class="row_nw_ce_ce props_it_acticon"
@@ -326,7 +338,15 @@
   import RjRadioInput from "@/components/form/RjRadioInput.vue";
   import LineGap from "@/h5/components/LineGap.vue";
   import { nanoid } from "@/utils/common/nanoid";
-  import { cartesian3ToWgs84, cartesian3ToDegrees, cartesian3ToRadians } from "@/utils/map/cesium/csTools";
+  import {
+    cartesian3ToWgs84,
+    cartesian3ToDegrees,
+    cartesian3ToRadians,
+    Wgs84DegreesToCartesian3,
+    Wgs84RadiansToCartesian3,
+  } from "@/utils/map/cesium/csTools";
+
+  import { getExtentFromRectCoords } from "@/utils/map/geoCommon";
 
   import {
     useCzmlMapDataConfigStore,
@@ -380,94 +400,104 @@
   const name = "";
   const currentProp = ref({});
   const isEnable = ref(false);
-  const pureValue = ref([0, 0, 0]);
-  const intervalsValues = ref([[0, 0, 0, 0]]);
+  const pureValue = ref([0, 0, 0, 0]);
+  const intervalsValues = ref([[0, 0, 0, 0, 0]]);
   const isFoldIntervals = ref(false);
   const xyzUnitType = ref("");
 
-  const timestrIntervalsValues = ref([[dayjs().format(defaultTimeFormatStr), 0, 0, 0]]);
+  const timestrIntervalsValues = ref([[dayjs().format(defaultTimeFormatStr), 0, 0, 0, 0]]);
   const isFoldTimestrIntervals = ref(false);
 
-  const pureValueShow = ref([0, 0, 0]);
-  const intervalsValuesShow = ref([[0, 0, 0, 0]]);
-  const timestrIntervalsValuesShow = ref([[dayjs().format(defaultTimeFormatStr), 0, 0, 0]]);
+  const pureValueShow = ref([0, 0, 0, 0]);
+  const intervalsValuesShow = ref([[0, 0, 0, 0, 0]]);
+  const timestrIntervalsValuesShow = ref([[dayjs().format(defaultTimeFormatStr), 0, 0, 0, 0]]);
+
+  const pureValueIsViewDataPath = ref(true);
+  const intervalsIsViewDataPath = ref(true);
+  const timestrIsViewDataPath = ref(true);
 
   const refreshTimeTypeFlag = ref(0);
-  const pointDataKeyId = nanoid(10);
-  const lineDataKeyId = nanoid(10);
-  const smoothLineDataKeyId = nanoid(10);
-  const curveLineDataKeyId = nanoid(10);
+
   const rectDataKeyId = nanoid(10);
-  const polygonDataKeyId = nanoid(10);
-  const circleDataKeyId = nanoid(10);
 
   const mapTools = ref([
-    {
-      ...MapDrawPointAction,
-      id: pointDataKeyId,
-    },
-    {
-      ...MapDrawLineAction,
-      id: lineDataKeyId,
-    },
-    {
-      ...MapDrawSmoothLineAction,
-      id: smoothLineDataKeyId,
-    },
-    {
-      ...MapDrawBezierLineAction,
-      id: curveLineDataKeyId,
-    },
     {
       ...MapDrawRectangleAction,
       id: rectDataKeyId,
     },
-    {
-      ...MapDrawPolygonAction,
-      id: polygonDataKeyId,
-    },
-    {
-      ...MapDrawCircleAction,
-      id: circleDataKeyId,
-    },
   ]);
 
   function clearintervalsValues() {
-    intervalsValues.value = [[0, 0, 0, 0]];
+    intervalsValues.value = [[0, 0, 0, 0, 0]];
   }
 
   function clearTimesIntervals() {
-    timestrIntervalsValues.value = [[dayjs().format(defaultTimeFormatStr), 0, 0, 0]];
+    timestrIntervalsValues.value = [[dayjs().format(defaultTimeFormatStr), 0, 0, 0, 0]];
   }
 
   function setIsViewPath(isView: boolean, which: string) {
     if (which == "pure") {
-      const coord = pureValue.value;
-      setCzmlMapViewDrawData({
-        type: "point",
-        data: { x: coord[0], y: coord[1], z: coord[2] },
-      });
+      pureValueIsViewDataPath.value = isView;
+      if (isView) {
+        const coord = pureValue.value;
+        const coordinates = [];
+        coordinates.push(Wgs84DegreesToCartesian3(coord[0], coord[1], 0));
+        coordinates.push(Wgs84DegreesToCartesian3(coord[2], coord[1], 0));
+        coordinates.push(Wgs84DegreesToCartesian3(coord[2], coord[3], 0));
+        coordinates.push(Wgs84DegreesToCartesian3(coord[0], coord[3], 0));
+        coordinates.push(Wgs84DegreesToCartesian3(coord[0], coord[1], 0));
+        setCzmlMapViewDrawData({
+          type: "polyline",
+          data: coordinates,
+        });
+      } else {
+        setCzmlMapViewDrawData(null);
+      }
     } else if (which == "seconds") {
-      const coordinates = [];
-      for (let i = 0; i < intervalsValues.value.length; i++) {
-        const coord = intervalsValues.value[i];
-        coordinates.push({ x: coord[1], y: coord[2], z: coord[3] });
+      intervalsIsViewDataPath.value = isView;
+      if (isView) {
+        const allCoordinates = [];
+
+        for (let i = 0; i < intervalsValues.value.length; i++) {
+          const coord = intervalsValues.value[i];
+          const coordinates = [];
+          coordinates.push(Wgs84DegreesToCartesian3(coord[1], coord[2], 0));
+          coordinates.push(Wgs84DegreesToCartesian3(coord[3], coord[2], 0));
+          coordinates.push(Wgs84DegreesToCartesian3(coord[3], coord[4], 0));
+          coordinates.push(Wgs84DegreesToCartesian3(coord[1], coord[4], 0));
+          coordinates.push(Wgs84DegreesToCartesian3(coord[1], coord[2], 0));
+          allCoordinates.push(coordinates);
+        }
+        setCzmlMapViewDrawData({
+          type: "mutilpolylines",
+          data: allCoordinates,
+        });
+      } else {
+        setCzmlMapViewDrawData(null);
       }
-      setCzmlMapViewDrawData({
-        type: "polyline",
-        data: coordinates,
-      });
     } else if (which == "timeString") {
-      const coordinates = [];
-      for (let i = 0; i < timestrIntervalsValues.value.length; i++) {
-        const coord = timestrIntervalsValues.value[i];
-        coordinates.push({ x: coord[1], y: coord[2], z: coord[3] });
+      timestrIsViewDataPath.value = isView;
+      if (isView) {
+        const allCoordinates = [];
+        for (let i = 0; i < timestrIntervalsValues.value.length; i++) {
+          const coord = timestrIntervalsValues.value[i];
+          const coordinates = [];
+          coordinates.push(Wgs84DegreesToCartesian3(coord[1], coord[2], 0));
+          coordinates.push(Wgs84DegreesToCartesian3(coord[3], coord[2], 0));
+          coordinates.push(Wgs84DegreesToCartesian3(coord[3], coord[4], 0));
+          coordinates.push(Wgs84DegreesToCartesian3(coord[1], coord[4], 0));
+          coordinates.push(Wgs84DegreesToCartesian3(coord[1], coord[2], 0));
+          allCoordinates.push(coordinates);
+        }
+        setCzmlMapViewDrawData({
+          type: "mutilpolylines",
+          data: allCoordinates,
+        });
+      } else {
+        setCzmlMapViewDrawData(null);
       }
-      setCzmlMapViewDrawData({
-        type: "polyline",
-        data: coordinates,
-      });
     }
+
     setCzmlIsViewDrawDataPath(isView);
   }
 
@@ -481,17 +511,6 @@
 
   function setMapDrawActionHd(act: any) {
     setCzmlMapCurrentAction(act);
-    if (act.id == pointDataKeyId) {
-      if (currentProp.value && currentProp.value.timeType != CZMLPUREVALUE) {
-        currentProp.value.timeType = CZMLPUREVALUE;
-        refreshTimeTypeFlag.value++;
-      }
-    } else {
-      if (currentProp.value && currentProp.value.timeType == CZMLPUREVALUE) {
-        currentProp.value.timeType = CZMLTIMESECONDS;
-        refreshTimeTypeFlag.value++;
-      }
-    }
   }
 
   function timeTypesOptionChangedHd(value: string) {
@@ -526,7 +545,7 @@
 
       for (let i = 0; i < +secondsOnceAddCount; i++) {
         nextSeconds = nextSeconds + secondsStepNumber;
-        intervalsValues.value.push([nextSeconds, 0, 0, 0]);
+        intervalsValues.value.push([nextSeconds, 0, 0, 0, 0]);
       }
     }
   };
@@ -541,13 +560,13 @@
 
   const pushTimestringIntervalValue = () => {
     if (isArray(timestrIntervalsValues.value)) {
-      timestrIntervalsValues.value.push([dayjs().format(defaultTimeFormatStr), 0, 0, 0]);
+      timestrIntervalsValues.value.push([dayjs().format(defaultTimeFormatStr), 0, 0, 0, 0]);
     }
   };
 
   function init() {
     if (props.vdata && props.vdata.id && props.vdata.name) {
-      console.log("unit_quaternion_props", props.vdata);
+      console.log("unit_rect_props", props.vdata);
       isEnable.value = true;
       currentProp.value = props.vdata;
       xyzUnitType.value = currentProp.value.xyzUnitType;
@@ -561,15 +580,15 @@
     } else {
       isEnable.value = false;
       currentProp.value = {};
-      pureValue.value = [0, 0, 0];
-      intervalsValues.value = [[0, 0, 0, 0]];
-      timestrIntervalsValues.value = [[dayjs().format(defaultTimeFormatStr), 0, 0, 0]];
+      pureValue.value = [0, 0, 0, 0];
+      intervalsValues.value = [[0, 0, 0, 0, 0]];
+      timestrIntervalsValues.value = [[dayjs().format(defaultTimeFormatStr), 0, 0, 0, 0]];
     }
   }
 
-  function xyzUnitTypesOptionChangedHd(value: string) {
+  function unitTypesOptionChangedHd(value: string) {
     if (currentProp.value) {
-      console.log("xyUnitTypesOptionChangedHd", value);
+      console.log("rect unitTypesOptionChangedHd", value);
       currentProp.value.xyzUnitType = value;
       xyzUnitType.value = value;
     }
@@ -581,11 +600,14 @@
       if (xyzUnitType.value == CZMLCARTESIAN3METERTYPE) {
         pureValueShow.value = pureValue.value;
       } else if (xyzUnitType.value == CZMLCARTESIAN3DEGREESTYPE) {
-        const cart = cartesian3ToDegrees({ x: pureValue.value[0], y: pureValue.value[1], z: pureValue.value[2] });
-        pureValueShow.value = [cart.longitude, cart.latitude, cart.height];
+        pureValueShow.value = pureValue.value;
       } else if (xyzUnitType.value == CZMLCARTESIAN3RADIANSTYPE) {
-        const cart = cartesian3ToRadians({ x: pureValue.value[0], y: pureValue.value[1], z: pureValue.value[2] });
-        pureValueShow.value = [cart.longitude, cart.latitude, cart.height];
+        pureValueShow.value = [
+          Cesium.Math.toRadians(pureValue.value[0]),
+          Cesium.Math.toRadians(pureValue.value[1]),
+          Cesium.Math.toRadians(pureValue.value[2]),
+          Cesium.Math.toRadians(pureValue.value[3]),
+        ];
       }
     },
     {
@@ -600,21 +622,18 @@
       if (xyzUnitType.value == CZMLCARTESIAN3METERTYPE) {
         intervalsValuesShow.value = intervalsValues.value;
       } else if (xyzUnitType.value == CZMLCARTESIAN3DEGREESTYPE) {
-        const positions = [];
-        for (let i = 0; i < intervalsValues.value.length; i++) {
-          const vtemp = intervalsValues.value[i];
-          const cartesian3 = { x: vtemp[1], y: vtemp[2], z: vtemp[3] };
-          const cart = cartesian3ToDegrees(cartesian3);
-          positions.push([vtemp[0], cart.longitude, cart.latitude, cart.height]);
-        }
-        intervalsValuesShow.value = positions;
+        intervalsValuesShow.value = intervalsValues.value;
       } else if (xyzUnitType.value == CZMLCARTESIAN3RADIANSTYPE) {
         const positions = [];
         for (let i = 0; i < intervalsValues.value.length; i++) {
           const vtemp = intervalsValues.value[i];
-          const cartesian3 = { x: vtemp[1], y: vtemp[2], z: vtemp[3] };
-          const cart = cartesian3ToRadians(cartesian3);
-          positions.push([vtemp[0], cart.longitude, cart.latitude, cart.height]);
+          positions.push([
+            vtemp[0],
+            Cesium.Math.toRadians(vtemp[1]),
+            Cesium.Math.toRadians(vtemp[2]),
+            Cesium.Math.toRadians(vtemp[3]),
+            Cesium.Math.toRadians(vtemp[4]),
+          ]);
         }
         intervalsValuesShow.value = positions;
       }
@@ -631,21 +650,18 @@
       if (xyzUnitType.value == CZMLCARTESIAN3METERTYPE) {
         timestrIntervalsValuesShow.value = timestrIntervalsValues.value;
       } else if (xyzUnitType.value == CZMLCARTESIAN3DEGREESTYPE) {
-        const positions = [];
-        for (let i = 0; i < timestrIntervalsValues.value.length; i++) {
-          const vtemp = timestrIntervalsValues.value[i];
-          const cartesian3 = { x: vtemp[1], y: vtemp[2], z: vtemp[3] };
-          const cart = cartesian3ToDegrees(cartesian3);
-          positions.push([vtemp[0], cart.longitude, cart.latitude, cart.height]);
-        }
-        timestrIntervalsValuesShow.value = positions;
+        timestrIntervalsValuesShow.value = timestrIntervalsValues.value;
       } else if (xyzUnitType.value == CZMLCARTESIAN3RADIANSTYPE) {
         const positions = [];
         for (let i = 0; i < timestrIntervalsValues.value.length; i++) {
           const vtemp = timestrIntervalsValues.value[i];
-          const cartesian3 = { x: vtemp[1], y: vtemp[2], z: vtemp[3] };
-          const cart = cartesian3ToRadians(cartesian3);
-          positions.push([vtemp[0], cart.longitude, cart.latitude, cart.height]);
+          positions.push([
+            vtemp[0],
+            Cesium.Math.toRadians(vtemp[1]),
+            Cesium.Math.toRadians(vtemp[2]),
+            Cesium.Math.toRadians(vtemp[3]),
+            Cesium.Math.toRadians(vtemp[4]),
+          ]);
         }
         timestrIntervalsValuesShow.value = positions;
       }
@@ -660,93 +676,81 @@
     () => czmlMapDataConfig.currentDataRefresh,
     () => {
       if (czmlMapDataConfig.currentDataRefresh) {
-        console.log("解析获取值", globalCzmlMapData.drawData);
-        if (czmlMapDataConfig.currentDataId == pointDataKeyId) {
-          // 解析获取值
+        if (czmlMapDataConfig.currentDataId == rectDataKeyId) {
+          console.log("解析获取值", globalCzmlMapData.drawData);
           const data = globalCzmlMapData.drawData;
-          const { cartesian, id, degrees, radians } = data;
-          pureValue.value = cartesian;
+          const coordinates = data.coordinates;
           setCzmlMapViewDrawData({
-            type: "point",
-            data: { x: cartesian[0], y: cartesian[1], z: cartesian[2] },
+            type: "polyline",
+            data: coordinates,
           });
-        } else {
-          if (currentProp.value.timeType == CZMLTIMESECONDS) {
-            const data = globalCzmlMapData.drawData;
-            const coordinates = data.coordinates;
-            setCzmlMapViewDrawData({
-              type: "polyline",
-              data: coordinates,
-            });
-            if (coordinates && isArray(coordinates) && coordinates.length) {
+
+          let extent = null;
+          const positions = [];
+          if (coordinates && isArray(coordinates) && coordinates.length) {
+            for (let i = 0; i < coordinates.length; i++) {
+              const cart = cartesian3ToDegrees(coordinates[i]);
+              console.log("rect cart", cart);
+
+              positions.push([cart.longitude, cart.latitude]);
+            }
+            extent = getExtentFromRectCoords([positions]);
+          }
+
+          console.log("rect positions", positions, extent, currentProp.value.timeType);
+          if (extent) {
+            if (currentProp.value.timeType == CZMLPUREVALUE) {
+              pureValue.value[0] = extent[0];
+              pureValue.value[1] = extent[1];
+              pureValue.value[2] = extent[2];
+              pureValue.value[3] = extent[3];
+            } else if (currentProp.value.timeType == CZMLTIMESECONDS) {
               if (isArray(intervalsValues.value)) {
                 const length = intervalsValues.value.length;
-                const { secondsStart, secondsStep, secondsOnceAddCount } = currentProp.value;
                 const last = length - 1;
-                let isNeedModifyFirset = false;
+                const { secondsStart, secondsStep, secondsOnceAddCount } = currentProp.value;
                 if (
                   length == 1 &&
                   intervalsValues.value[0][1] == 0 &&
                   intervalsValues.value[0][2] == 0 &&
-                  intervalsValues.value[0][3] == 0
+                  intervalsValues.value[0][3] == 0 &&
+                  intervalsValues.value[0][4] == 0
                 ) {
-                  isNeedModifyFirset = true;
                   intervalsValues.value[0][0] = +secondsStart;
-                  intervalsValues.value[0][1] = coordinates[0].x;
-                  intervalsValues.value[0][2] = coordinates[0].y;
-                  intervalsValues.value[0][3] = coordinates[0].z;
-                }
-
-                const lastItem = intervalsValues.value[last];
-                const secondsStepNumber = +secondsStep;
-                let nextSeconds = +lastItem[0];
-
-                let index = 0;
-                if (isNeedModifyFirset) {
-                  index = 1;
-                }
-                for (let i = index; i < coordinates.length; i++) {
-                  nextSeconds = nextSeconds + secondsStepNumber;
-                  const coordinate = coordinates[i];
-                  intervalsValues.value.push([nextSeconds, coordinate.x, coordinate.y, coordinate.z]);
+                  intervalsValues.value[0][1] = extent[0];
+                  intervalsValues.value[0][2] = extent[1];
+                  intervalsValues.value[0][3] = extent[2];
+                  intervalsValues.value[0][4] = extent[3];
+                } else {
+                  const lastItem = intervalsValues.value[last];
+                  const secondsStepNumber = +secondsStep;
+                  const nextSeconds = +lastItem[0] + secondsStepNumber;
+                  intervalsValues.value.push([nextSeconds, extent[0], extent[1], extent[2], extent[3]]);
                 }
               }
-            }
-          } else if (currentProp.value.timeType == CZMLTIMESTRING) {
-            const data = globalCzmlMapData.drawData;
-            const coordinates = data.coordinates;
-            setCzmlMapViewDrawData({
-              type: "polyline",
-              data: coordinates,
-            });
-            if (coordinates && isArray(coordinates) && coordinates.length) {
+            } else if (currentProp.value.timeType == CZMLTIMESTRING) {
               if (isArray(timestrIntervalsValues.value)) {
                 const length = timestrIntervalsValues.value.length;
                 const last = length - 1;
-                let isNeedModifyFirset = false;
+                const { secondsStart, secondsStep, secondsOnceAddCount } = currentProp.value;
                 if (
                   length == 1 &&
                   timestrIntervalsValues.value[0][1] == 0 &&
                   timestrIntervalsValues.value[0][2] == 0 &&
-                  timestrIntervalsValues.value[0][3] == 0
+                  timestrIntervalsValues.value[0][3] == 0 &&
+                  timestrIntervalsValues.value[0][4] == 0
                 ) {
-                  isNeedModifyFirset = true;
-                  timestrIntervalsValues.value[0][1] = coordinates[0].x;
-                  timestrIntervalsValues.value[0][2] = coordinates[0].y;
-                  timestrIntervalsValues.value[0][3] = coordinates[0].z;
-                }
-
-                let index = 0;
-                if (isNeedModifyFirset) {
-                  index = 1;
-                }
-                for (let i = index; i < coordinates.length; i++) {
-                  const coordinate = coordinates[i];
-                  timestrIntervalsValues.value.push([
+                  timestrIntervalsValues.value[0][1] = extent[0];
+                  timestrIntervalsValues.value[0][2] = extent[1];
+                  timestrIntervalsValues.value[0][3] = extent[2];
+                  timestrIntervalsValues.value[0][4] = extent[3];
+                } else {
+                  intervalsValues.value.push([
                     dayjs().format(defaultTimeFormatStr),
-                    coordinate.x,
-                    coordinate.y,
-                    coordinate.z,
+                    extent[0],
+                    extent[1],
+                    extent[2],
+                    extent[3],
                   ]);
                 }
               }
@@ -777,9 +781,9 @@
         } else if (currentProp.value.timeType == CZMLTIMESTRING) {
           timestrIntervalsValues.value = cloneDeep(currentProp.value.value);
         } else {
-          pureValue.value = [0, 0, 0];
-          intervalsValues.value = [[0, 0, 0, 0]];
-          timestrIntervalsValues.value = [[dayjs().format(defaultTimeFormatStr), 0, 0, 0]];
+          pureValue.value = [0, 0, 0, 0];
+          intervalsValues.value = [[0, 0, 0, 0, 0]];
+          timestrIntervalsValues.value = [[dayjs().format(defaultTimeFormatStr), 0, 0, 0, 0]];
         }
       });
     },
@@ -938,26 +942,28 @@
   }
 
   .props_qtinput_itemlabelleft {
-    width: 1.5rem;
+    width: 4.75rem;
     height: 100%;
     color: rgba(255, 255, 255, 1);
     font-size: var(--czml-fs-sl-label);
     font-weight: bold;
     margin-right: 0.5rem;
+    flex-shrink: 0;
   }
 
   .props_qtinput_itemlabelright {
-    width: 1.5rem;
+    width: 4.75rem;
     height: 100%;
     color: rgba(255, 255, 255, 1);
     font-size: var(--czml-fs-sl-label);
     font-weight: bold;
     margin-right: 0.5rem;
     margin-left: 1rem;
+    flex-shrink: 0;
   }
 
   .props_qtinput_itembox {
-    width: calc(50% - 2.25rem);
+    width: calc(50% - 5.5rem);
     height: 100%;
   }
 

@@ -43,6 +43,8 @@ import CzmlCartesian2PropInput from "@/czml/components/CzmlCartesian2PropInput.v
 import CzmlCartesian3ListPropInput from "@/czml/components/CzmlCartesian3ListPropInput.vue";
 import CzmlCartesian3PropInput from "@/czml/components/CzmlCartesian3PropInput.vue";
 import CzmlCartesian3PurePropInput from "@/czml/components/CzmlCartesian3PurePropInput.vue";
+import CzmlCartesian3PxListPropInput from "@/czml/components/CzmlCartesian3PxListPropInput.vue";
+import CzmlCartesian3PxPropInput from "@/czml/components/CzmlCartesian3PxPropInput.vue";
 import CzmlCartesian3VelocityPropInput from "@/czml/components/CzmlCartesian3VelocityPropInput.vue";
 
 import CzmlCartesian4ListPropInput from "@/czml/components/CzmlCartesian4ListPropInput.vue";
@@ -50,11 +52,15 @@ import CzmlCartesian4PropInput from "@/czml/components/CzmlCartesian4PropInput.v
 
 import CzmlCartographicRectanglePropInput from "@/czml/components/CzmlCartographicRectanglePropInput.vue";
 
+import CzmlColorPropInput from "@/czml/components/CzmlColorPropInput.vue";
+
 import CzmlCombinePropInput from "@/czml/components/CzmlCombinePropInput.vue";
 import CzmlCustomPropertiesPropInput from "@/czml/components/CzmlCustomPropertiesPropInput.vue";
 
 import CzmlEntityRender from "@/czml/components/CzmlEntityRender.vue";
 import CzmlInterpolationPropInput from "@/czml/components/CzmlInterpolationPropInput.vue";
+
+import CzmlNumberFixedCntPropInput from "@/czml/components/CzmlNumberFixedCntPropInput.vue";
 
 import CzmlNumberListPropInput from "@/czml/components/CzmlNumberListPropInput.vue";
 import CzmlNumberPropInput from "@/czml/components/CzmlNumberPropInput.vue";
@@ -119,6 +125,8 @@ app.component("CzmlCartesian2PropInput", CzmlCartesian2PropInput);
 app.component("CzmlCartesian3ListPropInput", CzmlCartesian3ListPropInput);
 app.component("CzmlCartesian3PropInput", CzmlCartesian3PropInput);
 app.component("CzmlCartesian3PurePropInput", CzmlCartesian3PurePropInput);
+app.component("CzmlCartesian3PxListPropInput", CzmlCartesian3PxListPropInput);
+app.component("CzmlCartesian3PxPropInput", CzmlCartesian3PxPropInput);
 app.component("CzmlCartesian3VelocityPropInput", CzmlCartesian3VelocityPropInput);
 
 app.component("CzmlCartesian4ListPropInput", CzmlCartesian4ListPropInput);
@@ -126,12 +134,15 @@ app.component("CzmlCartesian4PropInput", CzmlCartesian4PropInput);
 
 app.component("CzmlCartographicRectanglePropInput", CzmlCartographicRectanglePropInput);
 
+app.component("CzmlColorPropInput", CzmlColorPropInput);
+
 app.component("CzmlCombinePropInput", CzmlCombinePropInput);
 app.component("CzmlCustomPropertiesPropInput", CzmlCustomPropertiesPropInput);
 app.component("CzmlEntityRender", CzmlEntityRender);
 
 app.component("CzmlInterpolationPropInput", CzmlInterpolationPropInput);
 
+app.component("CzmlNumberFixedCntPropInput", CzmlNumberFixedCntPropInput);
 app.component("CzmlNumberListPropInput", CzmlNumberListPropInput);
 app.component("CzmlNumberPropInput", CzmlNumberPropInput);
 app.component("CzmlNumberSliderPurePropInput", CzmlNumberSliderPurePropInput);

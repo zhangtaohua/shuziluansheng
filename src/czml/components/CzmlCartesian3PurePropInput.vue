@@ -55,7 +55,7 @@
 
         <div class="row_nw_fe_ce props_it_actbox">
           <el-icon
-            v-if="czmlMapDataConfig.isViewDrawDataPath"
+            v-if="pureValueIsViewDataPath"
             color="rgba(15, 55, 175, 1)"
             size="1.5rem"
             class="row_nw_ce_ce props_it_acticon"
@@ -128,13 +128,20 @@
   const isEnable = ref(false);
   const pureValue = ref([0, 0, 0]);
 
+  const pureValueIsViewDataPath = ref(true);
+
   function setIsViewPath(isView: boolean, which: string) {
     if (which == "pure") {
-      const coord = pureValue.value;
-      setCzmlMapViewDrawData({
-        type: "point",
-        data: { x: coord[1], y: coord[2], z: coord[3] },
-      });
+      pureValueIsViewDataPath.value = isView;
+      if (isView) {
+        const coord = pureValue.value;
+        setCzmlMapViewDrawData({
+          type: "point",
+          data: { x: coord[1], y: coord[2], z: coord[3] },
+        });
+      } else {
+        setCzmlMapViewDrawData(null);
+      }
     }
     setCzmlIsViewDrawDataPath(isView);
   }
