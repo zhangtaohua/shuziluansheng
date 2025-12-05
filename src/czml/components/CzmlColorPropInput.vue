@@ -1,9 +1,21 @@
 <template>
   <div v-if="isEnable" class="col_nw_fs_fs props_container">
-    <div class="row_nw_fs_ce props_title_box">
-      <label class="row_nw_fs_ce props_ch_label">{{ currentProp.labelZh }}</label>
-      <label class="row_nw_fs_fe props_ogi_label">{{ currentProp.labelEn }}</label>
-    </div>
+    <el-tooltip placement="top" effect="dark">
+      <template #content>
+        <div class="col_nw_fs_ce props_title_tipbox">
+          <p v-if="currentProp.descriptionZh" class="props_ch_tiplabel">
+            {{ currentProp.descriptionZh }}
+          </p>
+          <p class="props_ogi_tiplabel">
+            {{ currentProp.description }}
+          </p>
+        </div>
+      </template>
+      <div class="row_nw_fs_ce props_title_box">
+        <label class="row_nw_fs_ce props_ch_label">{{ currentProp.labelZh }}</label>
+        <label class="row_nw_fs_fe props_ogi_label">{{ currentProp.labelEn }}</label>
+      </div>
+    </el-tooltip>
 
     <div class="col_nw_fs_fs props_radiobox">
       <div class="row_nw_fs_ce props_radiobox_title">
@@ -26,11 +38,10 @@
         <div class="col_nw_fs_fs props_it_inwrapper">
           <div class="col_nw_fs_fs props_it_itembox">
             <div class="row_nw_fs_ce props_qtinput_line1">
-              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">Value:</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
                 <ColorInputBase
                   :color="pureValue[0]"
-                  :disabled="isEnable"
+                  :disabled="!currentProp.isEnable"
                   @onChange="updatePureColorHd"
                 ></ColorInputBase>
               </div>
@@ -52,11 +63,10 @@
               <div class="row_nw_fs_ce props_qtinput_linetimeindex">SN:{{ index + 1 }}</div>
             </div>
             <div class="row_nw_fs_ce props_qtinput_line1">
-              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">Value:</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
                 <ColorInputBase
                   :color="inval[1]"
-                  :disabled="isEnable"
+                  :disabled="!currentProp.isEnable"
                   :index="index"
                   @onChange="updateInterColorHd"
                 ></ColorInputBase>
@@ -146,12 +156,11 @@
               <div class="row_nw_fs_ce props_qtinput_linetimeindex">SN:{{ index2 + 1 }}</div>
             </div>
             <div class="row_nw_fs_ce props_qtinput_line1">
-              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">Value:</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
                 <ColorInputBase
                   :color="inval[1]"
-                  :disabled="isEnable"
-                  :index="index"
+                  :disabled="!currentProp.isEnable"
+                  :index="index2"
                   @onChange="updateTimestrColorHd"
                 ></ColorInputBase>
               </div>
@@ -213,7 +222,8 @@
 
   import { ref, reactive, onMounted, computed, watch, nextTick } from "vue";
   import RjRadioTabInput from "@/components/form/RjRadioTabInput.vue";
-  import ColorInputBase from "@/h5/components/ColorInputBase.vue";
+  import ColorInputBase from "./ColorInputBase.vue";
+  import { nanoid } from "@/utils/common/nanoid";
 
   import { cloneDeep } from "es-toolkit";
   import { isArray } from "es-toolkit/compat";
@@ -237,15 +247,16 @@
     },
   });
 
+  // const domId = "color_pp_" + nanoid(10);
   const id = "";
   const name = "";
   const currentProp = ref({});
   const isEnable = ref(false);
-  const pureValue = ref([0]);
-  const intervalsValues = ref([[0, 0]]);
+  const pureValue = ref([null]);
+  const intervalsValues = ref([[0, null]]);
   const isFoldIntervals = ref(false);
 
-  const timestrIntervalsValues = ref([[dayjs().format(defaultTimeFormatStr), 0]]);
+  const timestrIntervalsValues = ref([[dayjs().format(defaultTimeFormatStr), null]]);
   const isFoldTimestrIntervals = ref(false);
 
   const refreshTimeTypeFlag = ref(0);
@@ -263,11 +274,11 @@
   }
 
   function clearintervalsValues() {
-    intervalsValues.value = [[0, 0]];
+    intervalsValues.value = [[0, null]];
   }
 
   function clearTimesIntervals() {
-    timestrIntervalsValues.value = [[dayjs().format(defaultTimeFormatStr), 0]];
+    timestrIntervalsValues.value = [[dayjs().format(defaultTimeFormatStr), null]];
   }
 
   function setIsFoldIntervals(isFold: boolean) {
@@ -310,7 +321,7 @@
 
       for (let i = 0; i < +secondsOnceAddCount; i++) {
         nextSeconds = nextSeconds + secondsStepNumber;
-        intervalsValues.value.push([nextSeconds, 0]);
+        intervalsValues.value.push([nextSeconds, null]);
       }
     }
   };
@@ -325,7 +336,7 @@
 
   const pushTimestringIntervalValue = () => {
     if (isArray(timestrIntervalsValues.value)) {
-      timestrIntervalsValues.value.push([dayjs().format(defaultTimeFormatStr), 0]);
+      timestrIntervalsValues.value.push([dayjs().format(defaultTimeFormatStr), null]);
     }
   };
 
@@ -343,9 +354,9 @@
     } else {
       isEnable.value = false;
       currentProp.value = {};
-      pureValue.value = [0];
-      intervalsValues.value = [[0, 0]];
-      timestrIntervalsValues.value = [[dayjs().format(defaultTimeFormatStr), 0]];
+      pureValue.value = [null];
+      intervalsValues.value = [[0, null]];
+      timestrIntervalsValues.value = [[dayjs().format(defaultTimeFormatStr), null]];
     }
   }
 
@@ -365,9 +376,9 @@
         } else if (currentProp.value.timeType == CZMLTIMESTRING) {
           timestrIntervalsValues.value = cloneDeep(currentProp.value.value);
         } else {
-          pureValue.value = [0];
-          intervalsValues.value = [[0, 0]];
-          timestrIntervalsValues.value = [[dayjs().format(defaultTimeFormatStr), 0]];
+          pureValue.value = [null];
+          intervalsValues.value = [[0, null]];
+          timestrIntervalsValues.value = [[dayjs().format(defaultTimeFormatStr), null]];
         }
       });
     },
@@ -422,13 +433,43 @@
 
 <style scoped>
   .props_container {
+    position: relative;
     width: 100%;
     height: auto;
     background-color: transparent;
   }
 
-  .props_title_box {
+  .props_title_tipbox {
+    width: auto;
+    max-width: 30rem;
+    height: auto;
+  }
+
+  .props_ch_tiplabel {
     width: 100%;
+    height: 100%;
+    color: rgba(0, 0, 0, 1);
+    font-size: var(--czml-fs-tipvalue);
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+    line-height: 1rem;
+    word-wrap: break-word;
+    word-break: break-all;
+  }
+
+  .props_ogi_tiplabel {
+    width: 100%;
+    height: 100%;
+    color: rgba(0, 0, 0, 1);
+    font-size: var(--czml-fs-tipvalue);
+    font-weight: 400;
+    line-height: 1rem;
+    word-wrap: break-word;
+    word-break: break-all;
+  }
+
+  .props_title_box {
+    width: max-content;
     height: 2rem;
     margin-bottom: 0.5rem;
   }
@@ -509,14 +550,18 @@
   }
 
   .props_qtinput_line1 {
+    position: relative;
     width: 100%;
     height: 2rem;
     margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
   }
 
   .props_qtinput_line2 {
+    position: relative;
     width: 100%;
     height: 2rem;
+    margin-top: 0.5rem;
   }
 
   .props_qtinput_itemlabelleft {
@@ -529,8 +574,9 @@
   }
 
   .props_qtinput_itembox {
-    width: calc(100% - 4.25rem);
-    height: 100%;
+    position: relative;
+    width: 100%;
+    height: 1.875rem;
   }
 
   :deep(.props_qtinput_itembox .el-input) {

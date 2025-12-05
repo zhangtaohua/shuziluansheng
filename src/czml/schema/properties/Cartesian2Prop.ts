@@ -214,3 +214,12 @@ export const czmlPixelOffsetOptions = {
   tag: "CzmlCartesian2PropInput",
   isEnable: true,
 };
+
+export const czmlDistanceDisplayConditionOptions = {
+  name: "distanceDisplayCondition",
+  czmlName: "distanceDisplayCondition",
+  labelZh: "显示距离",
+  labelEn: "distance display condition",
+  tag: "CzmlCartesian2NFPropInput",
+  isEnable: true,
+};

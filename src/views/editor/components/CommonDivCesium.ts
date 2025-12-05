@@ -51,6 +51,9 @@ export function initMap(container: string) {
     scene: {
       center: { lat: 30.054604, lng: 108.885436, alt: 17036414, heading: 0, pitch: -90 },
       fxaa: true,
+      clock: {
+        multiplier: 1, // 速度
+      },
     },
     control: {
       contextmenu: { hasDefault: false }, // 右键菜单

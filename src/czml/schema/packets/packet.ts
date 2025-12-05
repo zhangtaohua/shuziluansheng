@@ -12,6 +12,8 @@ import czmlCartesian3ListProp from "../properties/Cartesian3ListProp.ts";
 import czmlCartographicRectangleProp from "../properties/CartographicRectangleProp.ts";
 
 import czmlBillboard from "../entities/billboard";
+import czmlColorProp from "../properties/ColorProp.ts";
+import czmlDoubleFixedNumberProp from "../properties/DoubleFixedNumberProp.ts";
 
 export class czmlPacket {
   public id = "czml_packet_" + nanoid(10);
@@ -158,6 +160,8 @@ export class czmlPacket {
     cartesian: new czmlCartesian3Prop(null),
     cartesianList: new czmlCartesian3ListProp(null),
     rectTest: new czmlCartographicRectangleProp(null),
+    color: new czmlColorProp(null),
+    fixedCnt: new czmlDoubleFixedNumberProp({ fixedCounter: 20 }),
     // RJTODO 上面的要删除
     box: {
       $ref: "Box.json",

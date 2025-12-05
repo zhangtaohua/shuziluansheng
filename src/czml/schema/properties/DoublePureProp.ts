@@ -267,3 +267,29 @@ export const czmlScalePureOptions = {
   setp: 0.1,
   isEnable: true,
 };
+
+export const czmlRotationPureOptions = {
+  name: "rotation",
+  czmlName: "rotation",
+  labelZh: "旋转角度",
+  labelEn: "scale",
+  tag: "CzmlNumberSliderPurePropInput",
+  value: 0.0,
+  max: Math.PI,
+  min: 0,
+  setp: 0.05,
+  isEnable: true,
+};
+
+export const czmlDisableDepthTestDistancePureOptions = {
+  name: "disableDepthTestDistance",
+  czmlName: "disableDepthTestDistance",
+  labelZh: "禁止深度测试距离",
+  labelEn: "disable depth test distance",
+  tag: "CzmlNumberSliderPurePropInput",
+  value: 0.0,
+  max: 999999999999999999999999, // Infinity,
+  min: 0,
+  setp: 0.05,
+  isEnable: true,
+};

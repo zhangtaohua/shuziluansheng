@@ -15,34 +15,45 @@
     <div
       class="row_nw_sb_ce prop_color_btn"
       :class="{ prop_color_btn_disabled: props.disabled }"
-      @click="setIsShowColorPP(!isShowColorPP)"
+      @click="setIsShowColorPP(!isShowColorPP, $event)"
     >
       <div v-if="hasChangeColor" class="prop_show_color" :style="{ background: state.color }"></div>
       <div v-else class="prop_show_color"></div>
       <img src="@/assets/images/icons/colors.svg" alt="color" class="prop_color_btnshow" />
     </div>
-    <div v-if="isShowColorPP" class="row_nw_ce_ce prop_color_popup" @mouseenter="clearDisTime" @mouseleave="hiddenOp">
-      <Vue3ColorPicker
-        v-model="state.color"
-        theme="dark"
-        :mode="props.colorMode"
-        :showColorList="true"
-        :showEyeDrop="true"
-        type="RGBA"
-        @onCancel="closeColorPP"
-        @onSave="saveColorPP"
-        @update:model-value="updateHandle"
-      />
-    </div>
+    <Teleport to="body">
+      <div
+        v-if="isShowColorPP"
+        class="row_nw_ce_ce prop_color_popup"
+        :style="colorPpStyle"
+        @mouseenter="clearDisTime"
+        @mouseleave="hiddenOp"
+      >
+        <Vue3ColorPicker
+          v-model="state.color"
+          theme="dark"
+          :mode="props.colorMode"
+          :showColorList="true"
+          :showEyeDrop="true"
+          :showInputMenu="false"
+          :showPickerMode="false"
+          type="RGBA"
+          @onCancel="closeColorPP"
+          @onSave="saveColorPP"
+          @update:model-value="updateHandle"
+        />
+      </div>
+    </Teleport>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { ref, reactive, onMounted, computed } from "vue";
+  import { ref, reactive, onMounted, computed, nextTick } from "vue";
   // import { ColorPicker } from "vue3-colorpicker";
   // import "vue3-colorpicker/style.css";
   import { Vue3ColorPicker } from "@cyhnkckali/vue3-color-picker";
   import chroma from "chroma-js";
+  import { Right } from "@element-plus/icons-vue";
 
   const emit = defineEmits(["onChange"]);
 
@@ -68,6 +79,9 @@
   const isShowColorPP = ref(false);
   const isInputFocus = ref(false);
   const hasChangeColor = ref(false);
+  const colorPpStyle = {
+    top: "3rem",
+  };
 
   const isActive = computed(() => {
     if (isShowColorPP.value) {
@@ -80,7 +94,7 @@
   });
 
   const state = reactive({
-    color: "rgba(255, 0, 0, 0.5)",
+    color: "",
   });
 
   function init() {
@@ -88,7 +102,7 @@
       state.color = props.color;
       hasChangeColor.value = true;
     } else {
-      state.color = "rgba(255, 0, 0, 0.9)";
+      state.color = "";
       hasChangeColor.value = false;
     }
   }
@@ -99,19 +113,23 @@
     }
     isInputFocus.value = isShow;
     //  如果是线性的判断不准确
-    // RJTODO
-    // if (!chroma.valid(state.color)) {
-    //   init();
-    // }
+    if (!chroma.valid(state.color)) {
+      init();
+    } else {
+      state.color = `rgba(${chroma(state.color).rgba().join(",")})`;
+    }
     if (!isShow) {
       emit("onChange", state.color, props.index);
     }
   }
 
-  function setIsShowColorPP(isShow: boolean) {
+  function setIsShowColorPP(isShow: boolean, event) {
     if (props.disabled) {
       return null;
     }
+    const target = event.srcElement;
+    const rect = target.getClientRects();
+    colorPpStyle.top = rect[0].top + rect[0].height + 8 + "px";
     isShowColorPP.value = isShow;
   }
 
@@ -137,7 +155,7 @@
     clearDisTime();
     disTime = setTimeout(() => {
       isShowColorPP.value = false;
-    }, 3000);
+    }, 500);
   }
 
   onMounted(() => {
@@ -159,6 +177,7 @@
     background-color: rgba(0, 0, 0, 1);
     border-radius: 2.5rem;
     margin-left: 0.125rem;
+    outline: 1px solid rgb(76, 77, 79, 1);
   }
 
   .prop_color_box_act {
@@ -217,7 +236,7 @@
     width: max-content;
     height: auto;
     top: 3rem;
-    right: 0rem;
+    right: 2rem;
     z-index: 10;
     touch-action: none !important;
     border-radius: 0.5rem;

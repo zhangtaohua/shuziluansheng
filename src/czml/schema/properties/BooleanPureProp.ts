@@ -135,3 +135,12 @@ export class czmlBooleanPureProp {
 }
 
 export default czmlBooleanPureProp;
+
+export const czmlSizeInMetersOptions = {
+  name: "sizeInMeters",
+  czmlName: "sizeInMeters",
+  labelZh: "以米为单位",
+  labelEn: "size in meters",
+  tag: "CzmlBooleanPurePropInput",
+  isEnable: true,
+};

@@ -1,10 +1,22 @@
 <template>
   <div v-if="isEnable" class="col_nw_fs_fs props_container">
     <div class="col_nw_fs_fs props_box">
-      <div class="row_nw_fs_ce props_lbox">
-        <label class="row_nw_fs_ce props_ch_label">{{ currentProp.labelZh }}</label>
-        <label class="row_nw_fs_fe props_ogi_label">{{ currentProp.labelEn }}</label>
-      </div>
+      <el-tooltip placement="top" effect="dark">
+        <template #content>
+          <div class="col_nw_fs_ce props_title_tipbox">
+            <p v-if="currentProp.descriptionZh" class="props_ch_tiplabel">
+              {{ currentProp.descriptionZh }}
+            </p>
+            <p class="props_ogi_tiplabel">
+              {{ currentProp.description }}
+            </p>
+          </div>
+        </template>
+        <div class="row_nw_fs_ce props_title_box">
+          <label class="row_nw_fs_ce props_ch_label">{{ currentProp.labelZh }}</label>
+          <label class="row_nw_fs_fe props_ogi_label">{{ currentProp.labelEn }}</label>
+        </div>
+      </el-tooltip>
 
       <div class="row_nw_fs_ce props_map_actbox">
         <div
@@ -241,8 +253,37 @@
     height: auto;
   }
 
-  .props_lbox {
+  .props_title_tipbox {
+    width: auto;
+    max-width: 30rem;
+    height: auto;
+  }
+
+  .props_ch_tiplabel {
     width: 100%;
+    height: 100%;
+    color: rgba(0, 0, 0, 1);
+    font-size: var(--czml-fs-tipvalue);
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+    line-height: 1rem;
+    word-wrap: break-word;
+    word-break: break-all;
+  }
+
+  .props_ogi_tiplabel {
+    width: 100%;
+    height: 100%;
+    color: rgba(0, 0, 0, 1);
+    font-size: var(--czml-fs-tipvalue);
+    font-weight: 400;
+    line-height: 1rem;
+    word-wrap: break-word;
+    word-break: break-all;
+  }
+
+  .props_title_box {
+    width: max-content;
     height: 2rem;
     margin-bottom: 0.5rem;
   }

@@ -5,15 +5,38 @@ import czmlStringProp from "../properties/StringProp";
 import czmlTextProp from "../properties/TextProp";
 import czmlPositionProp from "../properties/PositionProp";
 import czmlDoubleProp from "../properties/DoubleProp";
-import { czmlDoublePureProp, czmlScalePureOptions } from "../properties/DoublePureProp";
-import { czmlCartesian2Prop, czmlPixelOffsetOptions } from "../properties/Cartesian2Prop";
-import { czmlCartesian3PixelProp, czmlEyeOffsetOptions } from "../properties/Cartesian3PixelProp";
+import {
+  czmlDoublePureProp,
+  czmlScalePureOptions,
+  czmlRotationPureOptions,
+  czmlDisableDepthTestDistancePureOptions,
+} from "../properties/DoublePureProp";
+import {
+  czmlCartesian2Prop,
+  czmlPixelOffsetOptions,
+  czmlDistanceDisplayConditionOptions,
+} from "../properties/Cartesian2Prop";
+import { czmlCartesian3PixelProp, czmlEyeOffsetCartesian3PixelOptions } from "../properties/Cartesian3PixelProp";
 import {
   czmlOptionsPureProp,
   CzmlHorizontalOriginOptions,
   CzmlVerticalOriginOptions,
   CzmlHeightReferenceOptions,
 } from "../properties/OptionsPureProp";
+import czmlColorProp from "../properties/ColorProp";
+import {
+  czmlDoubleFixedNumberProp,
+  czmlAlignedAxisDoubleFixedNumberOptions,
+} from "../properties/DoubleFixedNumberProp";
+import { czmlBooleanPureProp, czmlSizeInMetersOptions } from "../properties/BooleanPureProp";
+import { czmlIntegerPureProp, czmlWidthIntPureOptions, czmlHeightIntPureOptions } from "../properties/IntegerPureProp";
+import {
+  czmlCartesian4Prop,
+  czmlScaleByDistanceOptions,
+  czmlTranslucencyByDistanceOptions,
+  czmlPixelOffsetScaleByDistanceOptions,
+  czmlBoundingRectangleOptions,
+} from "../properties/Cartesian4Prop";
 
 export class czmlBillboard {
   public id = "czml_entity_billboard_" + nanoid(10);
@@ -112,7 +135,7 @@ export class czmlBillboard {
       default: "[0.0, 0.0]",
     }),
     eyeOffset: new czmlCartesian3PixelProp({
-      ...czmlEyeOffsetOptions,
+      ...czmlEyeOffsetCartesian3PixelOptions,
       $ref: "EyeOffset.json",
       description:
         "The eye offset of the billboard, which is the offset in eye coordinates at which to place the billboard relative to the `position` property. Eye coordinates are a left-handed coordinate system where the X-axis points toward the viewer's right, the Y-axis points up, and the Z-axis points into the screen.",
@@ -139,70 +162,82 @@ export class czmlBillboard {
         "The height reference of the billboard, which indicates if the position is relative to terrain or not.",
       default: "NONE",
     }),
-    color: {
+    color: new czmlColorProp({
       $ref: "Color.json",
       description:
         "The color of the billboard. This color value is multiplied with the values of the billboard's `image` to produce the final color.",
-      default: "white",
-    },
-    rotation: {
+      // default: "white",
+      default: "rgba(255,255,255,1)",
+    }),
+    rotation: new czmlDoublePureProp({
+      ...czmlRotationPureOptions,
       $ref: "Double.json",
       description: "The rotation of the billboard, in radians, counter-clockwise from the alignedAxis.",
       default: 0.0,
-    },
-    alignedAxis: {
+    }),
+    alignedAxis: new czmlDoubleFixedNumberProp({
+      ...czmlAlignedAxisDoubleFixedNumberOptions,
       $ref: "AlignedAxis.json",
       description:
         "The aligned axis is the unit vector, in world coordinates, that the billboard up vector points towards. The default is the zero vector, which means the billboard is aligned to the screen up vector.",
       default: "[0.0, 0.0, 0.0]",
-    },
-    sizeInMeters: {
+    }),
+    sizeInMeters: new czmlBooleanPureProp({
+      ...czmlSizeInMetersOptions,
       $ref: "Boolean.json",
       description:
         "Whether this billboard's size (`width` and `height`) should be measured in meters, otherwise size is measured in pixels.",
       default: false,
-    },
-    width: {
+    }),
+    width: new czmlIntegerPureProp({
+      ...czmlWidthIntPureOptions,
       $ref: "Double.json",
       description:
         "The width of the billboard, in pixels (or meters, if `sizeInMeters` is true). By default, the native width of the image is used.",
-    },
-    height: {
+    }),
+    height: new czmlIntegerPureProp({
+      ...czmlHeightIntPureOptions,
       $ref: "Double.json",
       description:
         "The height of the billboard, in pixels (or meters, if `sizeInMeters` is true). By default, the native height of the image is used.",
-    },
-    scaleByDistance: {
+    }),
+    scaleByDistance: new czmlCartesian4Prop({
+      ...czmlScaleByDistanceOptions,
       $ref: "NearFarScalar.json",
       description:
         "How the billboard's scale should change based on the billboard's distance from the camera. This scalar value will be multiplied by `scale`.",
-    },
-    translucencyByDistance: {
+    }),
+    translucencyByDistance: new czmlCartesian4Prop({
+      ...czmlTranslucencyByDistanceOptions,
       $ref: "NearFarScalar.json",
       description:
         "How the billboard's translucency should change based on the billboard's distance from the camera. This scalar value should range from 0 to 1.",
-    },
-    pixelOffsetScaleByDistance: {
+    }),
+    pixelOffsetScaleByDistance: new czmlCartesian4Prop({
+      ...czmlPixelOffsetScaleByDistanceOptions,
       $ref: "NearFarScalar.json",
       description:
         "How the billboard's pixel offset should change based on the billboard's distance from the camera. This scalar value will be multiplied by `pixelOffset`.",
-    },
-    imageSubRegion: {
+    }),
+    imageSubRegion: new czmlCartesian4Prop({
+      ...czmlPixelOffsetScaleByDistanceOptions,
       $ref: "BoundingRectangle.json",
       description:
         "A sub-region of the image which will be used for the billboard, rather than the entire image, measured in pixels from the bottom-left.",
-    },
-    distanceDisplayCondition: {
+    }),
+    distanceDisplayCondition: new czmlCartesian2Prop({
+      ...czmlBoundingRectangleOptions,
       $ref: "DistanceDisplayCondition.json",
       description:
         "The display condition specifying the distance from the camera at which this billboard will be displayed.",
-    },
-    disableDepthTestDistance: {
+    }),
+    disableDepthTestDistance: new czmlDoublePureProp({
+      ...czmlDisableDepthTestDistancePureOptions,
       $ref: "Double.json",
       description:
         "The distance from the camera at which to disable the depth test. This can be used to prevent clipping against terrain, for example. When set to zero, the depth test is always applied. When set to Infinity, the depth test is never applied.",
       default: 0.0,
-    },
+    }),
   };
   // end properties
 

@@ -15,34 +15,32 @@ import {
   defaultTimeFormatStr,
   propValuesTimeTypeOptions,
 } from "./commondata.ts";
-import czmlInterpolatableProp from "./InterpolatablePropertyProp.ts";
 
-// 用于生成 Cartesian4 数值，纯数值，或者是带时间序的多个值。
-export class czmlCartesian4Prop {
-  public id = "czml_prop_cartesian4_timetagged_" + nanoid(10);
-  public name = "cartesian4";
-  public _czmlName = "cartesian4";
-  public labelZh = "XYZW坐标(C) ";
-  public labelEn = "cartesian4(C)";
-  public title = "cartesian4";
-  public description =
-    "A two-dimensional Cartesian value specified as `[X, Y]`. If the array has two elements, the value is constant. If it has three or more elements, they are time-tagged samples arranged as `[Time, X, Y, Time, X, Y, ...]`, where Time is an ISO 8601 date and time string or seconds since epoch.";
+// 用于生成 color 像素 数值，纯数值，或者是带时间序的多个值。
+export class czmlColorProp {
+  public id = "czml_prop_color_timetagged_" + nanoid(10);
+  public name = "color";
+  public _czmlName = "color";
+  public labelZh = "颜色";
+  public labelEn = "color";
+  public title = "color";
+  public description = "A color. The color can optionally vary over time.";
 
   public type = "property";
   public componentType = "czml#packet#property";
   public czmlValue = true; // 这个用于标示是不是 czml value的
 
-  public tag = "CzmlCartesian4PropInput";
+  public tag = "CzmlColorPropInput";
 
-  public unit = "meters";
-  public _value = [0, 0, 0, 0];
-  public _oldPureValue = [0, 0, 0, 0];
-  public _oldSecondsValue = [[0, 0, 0, 0, 0]];
-  public _oldTimestringValue = [[dayjs().format(defaultTimeFormatStr), 0, 0, 0, 0]];
+  public unit = "";
+  public _value = [null];
+  public _oldPureValue = [null];
+  public _oldSecondsValue = [[0, null]];
+  public _oldTimestringValue = [[dayjs().format(defaultTimeFormatStr), null]];
 
-  public _valueType = "cartesian4 may time-tagged";
+  public _valueType = "cartesian3 pixel may time-tagged";
 
-  public default = [0, 0, 0, 0];
+  public default = [null];
 
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
@@ -68,7 +66,7 @@ export class czmlCartesian4Prop {
     if (options.id) {
       this.id = options.id;
     } else if (options.name) {
-      this.id = "czml_prop_cartesian4_timetagged_" + options.name + "_" + nanoid(10);
+      this.id = "czml_prop_color_timetagged_" + options.name + "_" + nanoid(10);
     }
 
     if (options.name) {
@@ -204,40 +202,4 @@ export class czmlCartesian4Prop {
   }
 }
 
-export default czmlCartesian4Prop;
-
-export const czmlScaleByDistanceOptions = {
-  name: "scaleByDistance",
-  czmlName: "scaleByDistance",
-  labelZh: "缩放距离",
-  labelEn: "scale by distance",
-  tag: "CzmlCartesian4NFScalerPropInput",
-  isEnable: true,
-};
-
-export const czmlTranslucencyByDistanceOptions = {
-  name: "translucencyByDistance",
-  czmlName: "translucencyByDistance",
-  labelZh: "透明度距离",
-  labelEn: "translucency by distance",
-  tag: "CzmlCartesian4NFScalerPropInput",
-  isEnable: true,
-};
-
-export const czmlPixelOffsetScaleByDistanceOptions = {
-  name: "pixelOffsetScaleByDistance",
-  czmlName: "pixelOffsetScaleByDistance",
-  labelZh: "像素偏移缩放距离",
-  labelEn: "pixel offset scale by distance",
-  tag: "CzmlCartesian4NFScalerPropInput",
-  isEnable: true,
-};
-
-export const czmlBoundingRectangleOptions = {
-  name: "BoundingRectangle",
-  czmlName: "BoundingRectangle",
-  labelZh: "包围矩形",
-  labelEn: "bounding rectangle",
-  tag: "CzmlCartesian4NFScalerPropInput",
-  isEnable: true,
-};
+export default czmlColorProp;

@@ -15,7 +15,6 @@ import { createPinia } from "pinia";
 import "default-passive-events";
 
 // 一定会用公共组件
-
 // 渲染控制
 import CommonDiv from "@/views/editor/components/CommonDiv.vue";
 import CommonDivText from "@/views/editor/components/CommonDivText.vue";
@@ -38,6 +37,7 @@ import CzmlBooleanIntervalPropInput from "@/czml/components/CzmlBooleanIntervalP
 import CzmlBoundingRectanglePropInput from "@/czml/components/CzmlBoundingRectanglePropInput.vue";
 
 import CzmlCartesian2ListPropInput from "@/czml/components/CzmlCartesian2ListPropInput.vue";
+import CzmlCartesian2NFPropInput from "@/czml/components/CzmlCartesian2NFPropInput.vue";
 import CzmlCartesian2PropInput from "@/czml/components/CzmlCartesian2PropInput.vue";
 
 import CzmlCartesian3ListPropInput from "@/czml/components/CzmlCartesian3ListPropInput.vue";
@@ -48,6 +48,7 @@ import CzmlCartesian3PxPropInput from "@/czml/components/CzmlCartesian3PxPropInp
 import CzmlCartesian3VelocityPropInput from "@/czml/components/CzmlCartesian3VelocityPropInput.vue";
 
 import CzmlCartesian4ListPropInput from "@/czml/components/CzmlCartesian4ListPropInput.vue";
+import CzmlCartesian4NFScalerPropInput from "@/czml/components/CzmlCartesian4NFScalerPropInput.vue";
 import CzmlCartesian4PropInput from "@/czml/components/CzmlCartesian4PropInput.vue";
 
 import CzmlCartographicRectanglePropInput from "@/czml/components/CzmlCartographicRectanglePropInput.vue";
@@ -120,6 +121,7 @@ app.component("CzmlBooleanIntervalPropInput", CzmlBooleanIntervalPropInput);
 app.component("CzmlBoundingRectanglePropInput", CzmlBoundingRectanglePropInput);
 
 app.component("CzmlCartesian2ListPropInput", CzmlCartesian2ListPropInput);
+app.component("CzmlCartesian2NFPropInput", CzmlCartesian2NFPropInput);
 app.component("CzmlCartesian2PropInput", CzmlCartesian2PropInput);
 
 app.component("CzmlCartesian3ListPropInput", CzmlCartesian3ListPropInput);
@@ -130,6 +132,7 @@ app.component("CzmlCartesian3PxPropInput", CzmlCartesian3PxPropInput);
 app.component("CzmlCartesian3VelocityPropInput", CzmlCartesian3VelocityPropInput);
 
 app.component("CzmlCartesian4ListPropInput", CzmlCartesian4ListPropInput);
+app.component("CzmlCartesian4NFScalerPropInput", CzmlCartesian4NFScalerPropInput);
 app.component("CzmlCartesian4PropInput", CzmlCartesian4PropInput);
 
 app.component("CzmlCartographicRectanglePropInput", CzmlCartographicRectanglePropInput);

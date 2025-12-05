@@ -1,9 +1,21 @@
 <template>
   <div v-if="isEnable" class="col_nw_fs_fs props_container">
-    <div class="row_nw_fs_ce props_title_box">
-      <label class="row_nw_fs_ce props_ch_label">{{ currentProp.labelZh }}</label>
-      <label class="row_nw_fs_fe props_ogi_label">{{ currentProp.labelEn }}</label>
-    </div>
+    <el-tooltip placement="top" effect="dark">
+      <template #content>
+        <div class="col_nw_fs_ce props_title_tipbox">
+          <p v-if="currentProp.descriptionZh" class="props_ch_tiplabel">
+            {{ currentProp.descriptionZh }}
+          </p>
+          <p class="props_ogi_tiplabel">
+            {{ currentProp.description }}
+          </p>
+        </div>
+      </template>
+      <div class="row_nw_fs_ce props_title_box">
+        <label class="row_nw_fs_ce props_ch_label">{{ currentProp.labelZh }}</label>
+        <label class="row_nw_fs_fe props_ogi_label">{{ currentProp.labelEn }}</label>
+      </div>
+    </el-tooltip>
 
     <div class="col_nw_fs_fs props_radiobox">
       <div class="row_nw_fs_ce props_radiobox_title">
@@ -22,12 +34,12 @@
     </div>
 
     <div v-if="currentProp.timeType == CZMLPUREVALUE" class="col_nw_fs_fs props_it_box">
-      <div class="col_nw_fs_fs props_it_wrapper" :class="{ props_it_samllwrapper: isFoldIntervals }">
+      <div class="col_nw_fs_fs props_it_wrapper" :class="{ props_it_samllwrapper: isFoldPureValue }">
         <div class="col_nw_fs_fs props_it_inwrapper">
-          <div v-if="(pinval, pindex) in pureValue" :key="pinval[0]" class="col_nw_fs_fs props_it_itembox">
+          <div v-for="(pinval, pindex) in pureValue" :key="pindex" class="col_nw_fs_fs props_it_itembox">
             <div class="row_nw_fs_ce props_qtinput_line1">
               <div class="row_nw_fs_ce props_qtinput_itemlabelleft">Value:</div>
-              <div class="row_nw_fs_ce props_qtinput_itembox">
+              <div class="row_nw_fs_ce props_qtinput_itembox_sm">
                 <el-input v-model="pinval[0]" placeholder="Please input" type="number" />
               </div>
 
@@ -36,9 +48,32 @@
           </div>
         </div>
       </div>
+
+      <div class="row_nw_fe_ce props_it_actbox">
+        <el-tag type="info">{{ "Total: " + pureValue.length }}</el-tag>
+
+        <el-icon
+          v-if="isFoldPureValue"
+          color="rgba(15, 55, 175, 1)"
+          size="1.5rem"
+          class="row_nw_ce_ce props_it_acticon"
+          @click="setIsFoldPureValues(false)"
+        >
+          <CaretBottom />
+        </el-icon>
+        <el-icon
+          v-else
+          color="rgba(15, 55, 175, 1)"
+          size="1.5rem"
+          class="row_nw_ce_ce props_it_acticon"
+          @click="setIsFoldPureValues(true)"
+        >
+          <CaretTop />
+        </el-icon>
+      </div>
     </div>
     <div v-else-if="currentProp.timeType == CZMLTIMESECONDS" class="col_nw_fs_fs props_it_box">
-      <div class="col_nw_fs_fs props_it_wrapper">
+      <div class="col_nw_fs_fs props_it_wrapper" :class="{ props_it_samllwrapper: isFoldIntervals }">
         <div class="col_nw_fs_fs props_it_inwrapper">
           <div v-for="(inval, index) in intervalsValues" :key="inval[0]" class="col_nw_fs_fs props_it_itembox">
             <div class="row_nw_fs_ce props_qtinput_linetime">
@@ -168,14 +203,20 @@
   const name = "";
   const currentProp = ref({});
   const isEnable = ref(false);
-  const pureValue = ref([0]);
-  const intervalsValues = ref([[0, 0]]);
+  const pureValue = ref([[1.0]]);
+  const isFoldPureValue = ref(false);
+
+  const intervalsValues = ref([[0, 1.0]]);
   const isFoldIntervals = ref(false);
 
-  const timestrIntervalsValues = ref([[dayjs().format(defaultTimeFormatStr), 0]]);
+  const timestrIntervalsValues = ref([[dayjs().format(defaultTimeFormatStr), 1.0]]);
   const isFoldTimestrIntervals = ref(false);
 
   const refreshTimeTypeFlag = ref(0);
+
+  function setIsFoldPureValues(isFold: boolean) {
+    isFoldPureValue.value = isFold;
+  }
 
   function setIsFoldIntervals(isFold: boolean) {
     isFoldIntervals.value = isFold;
@@ -205,9 +246,9 @@
     } else {
       isEnable.value = false;
       currentProp.value = {};
-      pureValue.value = [0];
-      intervalsValues.value = [[0, 0]];
-      timestrIntervalsValues.value = [[dayjs().format(defaultTimeFormatStr), 0]];
+      pureValue.value = [[1.0]];
+      intervalsValues.value = [[0, 1.0]];
+      timestrIntervalsValues.value = [[dayjs().format(defaultTimeFormatStr), 1.0]];
     }
   }
 
@@ -227,9 +268,9 @@
         } else if (currentProp.value.timeType == CZMLTIMESTRING) {
           timestrIntervalsValues.value = cloneDeep(currentProp.value.value);
         } else {
-          pureValue.value = [0];
-          intervalsValues.value = [[0, 0]];
-          timestrIntervalsValues.value = [[dayjs().format(defaultTimeFormatStr), 0]];
+          pureValue.value = [[1.0]];
+          intervalsValues.value = [[0, 1.0]];
+          timestrIntervalsValues.value = [[dayjs().format(defaultTimeFormatStr), 1.0]];
         }
       });
     },
@@ -289,8 +330,37 @@
     background-color: transparent;
   }
 
-  .props_title_box {
+  .props_title_tipbox {
+    width: auto;
+    max-width: 30rem;
+    height: auto;
+  }
+
+  .props_ch_tiplabel {
     width: 100%;
+    height: 100%;
+    color: rgba(0, 0, 0, 1);
+    font-size: var(--czml-fs-tipvalue);
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+    line-height: 1rem;
+    word-wrap: break-word;
+    word-break: break-all;
+  }
+
+  .props_ogi_tiplabel {
+    width: 100%;
+    height: 100%;
+    color: rgba(0, 0, 0, 1);
+    font-size: var(--czml-fs-tipvalue);
+    font-weight: 400;
+    line-height: 1rem;
+    word-wrap: break-word;
+    word-break: break-all;
+  }
+
+  .props_title_box {
+    width: max-content;
     height: 2rem;
     margin-bottom: 0.5rem;
   }
@@ -396,6 +466,15 @@
   }
 
   :deep(.props_qtinput_itembox .el-input) {
+    width: 100%;
+  }
+
+  .props_qtinput_itembox_sm {
+    width: calc(100% - 13.5rem);
+    height: 100%;
+  }
+
+  :deep(.props_qtinput_itembox_sm .el-input) {
     width: 100%;
   }
 

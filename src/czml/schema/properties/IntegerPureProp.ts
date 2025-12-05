@@ -10,7 +10,7 @@ export class czmlIntegerPureProp {
   public description = "An integer number.";
   public type = "property";
   public componentType = "czml#packet#property";
-  public tag = "CzmlNumberInputSlider";
+  public tag = "CzmlNumberSliderPurePropInput";
   public _value = 1;
   public _valueType = "number";
   public default = 1;
@@ -191,3 +191,27 @@ export class czmlIntegerPureProp {
 }
 
 export default czmlIntegerPureProp;
+
+export const czmlWidthIntPureOptions = {
+  name: "width",
+  czmlName: "width",
+  labelZh: "宽度",
+  labelEn: "width",
+  tag: "CzmlNumberSliderPurePropInput",
+  value: 20,
+  max: 200,
+  min: 0,
+  isEnable: true,
+};
+
+export const czmlHeightIntPureOptions = {
+  name: "height",
+  czmlName: "height",
+  labelZh: "高度",
+  labelEn: "height",
+  tag: "CzmlNumberSliderPurePropInput",
+  value: 20,
+  max: 200,
+  min: 0,
+  isEnable: true,
+};

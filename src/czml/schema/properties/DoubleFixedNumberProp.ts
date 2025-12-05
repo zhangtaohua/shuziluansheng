@@ -1,6 +1,6 @@
 import { nanoid } from "@/utils/common/nanoid";
+import { isArray } from "es-toolkit/compat";
 import dayjs from "dayjs";
-
 import {
   CZMLPUREVALUE,
   CZMLTIMESECONDS,
@@ -15,34 +15,31 @@ import {
   defaultTimeFormatStr,
   propValuesTimeTypeOptions,
 } from "./commondata.ts";
-import czmlInterpolatableProp from "./InterpolatablePropertyProp.ts";
 
-// 用于生成 Cartesian4 数值，纯数值，或者是带时间序的多个值。
-export class czmlCartesian4Prop {
-  public id = "czml_prop_cartesian4_timetagged_" + nanoid(10);
-  public name = "cartesian4";
-  public _czmlName = "cartesian4";
-  public labelZh = "XYZW坐标(C) ";
-  public labelEn = "cartesian4(C)";
-  public title = "cartesian4";
-  public description =
-    "A two-dimensional Cartesian value specified as `[X, Y]`. If the array has two elements, the value is constant. If it has three or more elements, they are time-tagged samples arranged as `[Time, X, Y, Time, X, Y, ...]`, where Time is an ISO 8601 date and time string or seconds since epoch.";
-
+export class czmlDoubleFixedNumberProp {
+  public id = "czml_prop_double_fixed_number" + nanoid(10);
+  public name = "double";
+  public _czmlName = "double";
+  public labelZh = "固定浮点数";
+  public labelEn = "double fixed";
+  public title = "Double";
+  public description = "A floating-point number.";
   public type = "property";
   public componentType = "czml#packet#property";
-  public czmlValue = true; // 这个用于标示是不是 czml value的
+  public tag = "CzmlNumberFixedCntPropInput";
+  public _value = [[1.0]];
 
-  public tag = "CzmlCartesian4PropInput";
+  public _oldPureValue = [[1.0]];
+  public _oldSecondsValue = [[0, 1.0]];
+  public _oldTimestringValue = [[dayjs().format(defaultTimeFormatStr), 1.0]];
 
-  public unit = "meters";
-  public _value = [0, 0, 0, 0];
-  public _oldPureValue = [0, 0, 0, 0];
-  public _oldSecondsValue = [[0, 0, 0, 0, 0]];
-  public _oldTimestringValue = [[dayjs().format(defaultTimeFormatStr), 0, 0, 0, 0]];
+  public _valueType = "number";
+  public default = [[1.0]];
 
-  public _valueType = "cartesian4 may time-tagged";
-
-  public default = [0, 0, 0, 0];
+  private _min = 0;
+  private _max = 50;
+  private _step = 0.1;
+  private _retainDecimalPlaces = 3;
 
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
@@ -50,6 +47,7 @@ export class czmlCartesian4Prop {
   public _isEntity = false;
   public isCombinedProperty = false;
   public isComplexProperty = true;
+  public fixedCounter = 1;
 
   public _timeType = CZMLPUREVALUE;
   public timeTypeOptions = propValuesTimeTypeOptions;
@@ -57,8 +55,6 @@ export class czmlCartesian4Prop {
   public secondsStart = 0;
   public secondsStep = 30;
   public secondsOnceAddCount = 1;
-
-  public isFixedXyzUnitType = false;
 
   constructor(options: any) {
     if (!options) {
@@ -68,7 +64,7 @@ export class czmlCartesian4Prop {
     if (options.id) {
       this.id = options.id;
     } else if (options.name) {
-      this.id = "czml_prop_cartesian4_timetagged_" + options.name + "_" + nanoid(10);
+      this.id = "czml_prop_double_fixed_number" + options.name + "_" + nanoid(10);
     }
 
     if (options.name) {
@@ -99,18 +95,56 @@ export class czmlCartesian4Prop {
       this.tag = options.tag;
     }
 
-    if (options.value) {
-      this._value = options.value;
+    if (options.fixedCounter) {
+      this.fixedCounter = options.fixedCounter;
+      const values = [];
+      const secondsValues = [];
+      const timestrValues = [];
+      for (let i = 0; i < this.fixedCounter; i++) {
+        values.push([1.0]);
+        secondsValues.push([i * this.secondsStep, 1.0]);
+        timestrValues.push([dayjs().format(defaultTimeFormatStr), 1.0]);
+      }
+
+      this._value = values;
+      this._oldPureValue = values;
+      this._oldSecondsValue = secondsValues;
+      this._oldTimestringValue = timestrValues;
     }
+
+    // RJTODO
+    // 这时的逻辑太简单了，因为人时间系列的，不能这么简单粗暴的处理
+    // 故暂不提供用values 来初始化
+    // if (options.value) {
+    //   if (isArray(options.value)) {
+    //     this._value = options.value;
+    //     this.fixedCounter = options.value.length;
+    //   } else {
+    //     this._value = [[options.value]];
+    //     this.fixedCounter = 1;
+    //   }
+    // }
 
     if (options.default) {
       this.default = options.default;
     }
 
-    this.isFixedXyzUnitType = options.isFixedXyzUnitType ?? true;
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
     this.isExpand = options.isExpand ?? true;
+
+    if (options.max != undefined && options.min != undefined && +options.max > +options.min) {
+      this._max = +options.max;
+      this._min = +options.min;
+    }
+
+    if (options.step) {
+      this._step = +options.step;
+    }
+
+    if (options.retainDecimalPlaces) {
+      this._retainDecimalPlaces = +options.retainDecimalPlaces;
+    }
   }
 
   get value() {
@@ -168,6 +202,46 @@ export class czmlCartesian4Prop {
     }
   }
 
+  get min() {
+    return this._min;
+  }
+
+  set min(newMin) {
+    if (newMin < this._max) {
+      this._min = newMin;
+    } else {
+      console.error("min must be less than max.");
+    }
+  }
+
+  get max() {
+    return this._max;
+  }
+
+  set max(newMax) {
+    if (newMax > this._min) {
+      this._max = newMax;
+    } else {
+      console.error("max must be greater than min.");
+    }
+  }
+
+  get step() {
+    return this._step;
+  }
+
+  set step(newStep) {
+    this._step = newStep;
+  }
+
+  get retainDecimalPlaces() {
+    return this._retainDecimalPlaces;
+  }
+
+  set retainDecimalPlaces(newPlc) {
+    this._retainDecimalPlaces = newPlc;
+  }
+
   get czmlName() {
     return this._czmlName;
   }
@@ -196,7 +270,7 @@ export class czmlCartesian4Prop {
   public getCzmlData() {
     if (this.isUsed) {
       return {
-        [this.czmlName]: this.getCzmlValue(),
+        [this.name]: this._value,
       };
     } else {
       return null;
@@ -204,40 +278,20 @@ export class czmlCartesian4Prop {
   }
 }
 
-export default czmlCartesian4Prop;
+export default czmlDoubleFixedNumberProp;
 
-export const czmlScaleByDistanceOptions = {
-  name: "scaleByDistance",
-  czmlName: "scaleByDistance",
-  labelZh: "缩放距离",
-  labelEn: "scale by distance",
-  tag: "CzmlCartesian4NFScalerPropInput",
-  isEnable: true,
-};
+export {};
 
-export const czmlTranslucencyByDistanceOptions = {
-  name: "translucencyByDistance",
-  czmlName: "translucencyByDistance",
-  labelZh: "透明度距离",
-  labelEn: "translucency by distance",
-  tag: "CzmlCartesian4NFScalerPropInput",
-  isEnable: true,
-};
-
-export const czmlPixelOffsetScaleByDistanceOptions = {
-  name: "pixelOffsetScaleByDistance",
-  czmlName: "pixelOffsetScaleByDistance",
-  labelZh: "像素偏移缩放距离",
-  labelEn: "pixel offset scale by distance",
-  tag: "CzmlCartesian4NFScalerPropInput",
-  isEnable: true,
-};
-
-export const czmlBoundingRectangleOptions = {
-  name: "BoundingRectangle",
-  czmlName: "BoundingRectangle",
-  labelZh: "包围矩形",
-  labelEn: "bounding rectangle",
-  tag: "CzmlCartesian4NFScalerPropInput",
+export const czmlAlignedAxisDoubleFixedNumberOptions = {
+  name: "alignedAxis",
+  czmlName: "alignedAxis",
+  labelZh: "对齐轴",
+  labelEn: "aligned axis",
+  fixedCounter: 3,
+  tag: "CzmlNumberFixedCntPropInput",
+  value: 1.0,
+  max: 360,
+  min: 0,
+  setp: 0.1,
   isEnable: true,
 };

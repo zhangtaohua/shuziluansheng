@@ -38,11 +38,11 @@
         <div class="col_nw_fs_fs props_it_inwrapper">
           <div class="col_nw_fs_fs props_it_itembox">
             <div class="row_nw_fs_ce props_qtinput_line1">
-              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">X:</div>
+              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">Near:</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
                 <el-input v-model="pureValue[0]" placeholder="Please input" type="number" />
               </div>
-              <div class="row_nw_fs_ce props_qtinput_itemlabelright">Y:</div>
+              <div class="row_nw_fs_ce props_qtinput_itemlabelright">Far:</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
                 <el-input v-model="pureValue[1]" placeholder="Please input" type="number" />
               </div>
@@ -64,11 +64,11 @@
               <div class="row_nw_fs_ce props_qtinput_linetimeindex">SN:{{ index + 1 }}</div>
             </div>
             <div class="row_nw_fs_ce props_qtinput_line1">
-              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">X:</div>
+              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">Near:</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
                 <el-input v-model="inval[1]" placeholder="Please input" type="number" />
               </div>
-              <div class="row_nw_fs_ce props_qtinput_itemlabelright">Y:</div>
+              <div class="row_nw_fs_ce props_qtinput_itemlabelright">Far:</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
                 <el-input v-model="inval[2]" placeholder="Please input" type="number" />
               </div>
@@ -157,11 +157,11 @@
               <div class="row_nw_fs_ce props_qtinput_linetimeindex">SN:{{ index2 + 1 }}</div>
             </div>
             <div class="row_nw_fs_ce props_qtinput_line1">
-              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">X:</div>
+              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">Near:</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
                 <el-input v-model="inval[1]" placeholder="Please input" type="number" />
               </div>
-              <div class="row_nw_fs_ce props_qtinput_itemlabelright">Y:</div>
+              <div class="row_nw_fs_ce props_qtinput_itemlabelright">Far:</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
                 <el-input v-model="inval[2]" placeholder="Please input" type="number" />
               </div>
@@ -219,7 +219,7 @@
 </template>
 
 <script setup lang="ts">
-  // 说明： 这个主要用于设置 有时间类型的 cartesian 3 的值
+  // 说明： 这个主要用于设置 有时间类型的 cartesian 2  的值
 
   import { ref, reactive, onMounted, computed, watch, nextTick } from "vue";
   import RjRadioTabInput from "@/components/form/RjRadioTabInput.vue";

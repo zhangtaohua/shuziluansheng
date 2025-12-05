@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 
 import { czmlOptionsPureProp, CzmlReferenceFrameOptions } from "./OptionsPureProp";
 import { czmlStringProp, czmlReferenceValueOptions } from "./StringProp";
+import czmlCartesian3Prop from "./Cartesian3Prop";
 
 export class czmlPositionProp {
   public id = "czml_prop_position_" + nanoid(10);
@@ -25,7 +26,7 @@ export class czmlPositionProp {
 
   public properties = {
     referenceFrame: new czmlOptionsPureProp(CzmlReferenceFrameOptions),
-    // cartesian: new ,
+    cartesian: new czmlCartesian3Prop(null),
     // cartographicRadians: new ,
     // cartographicDegrees: new ,
     // cartesianVelocity

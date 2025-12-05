@@ -206,11 +206,20 @@ export class czmlCartesian3PixelProp {
 
 export default czmlCartesian3PixelProp;
 
-export const czmlEyeOffsetOptions = {
+export const czmlEyeOffsetCartesian3PixelOptions = {
   name: "eyeOffset",
   czmlName: "eyeOffset",
   labelZh: "观察偏移量",
   labelEn: "eye offset",
+  tag: "CzmlCartesian3PxPropInput",
+  isEnable: true,
+};
+
+export const czmlAlignedAxisCartesian3PixelOptions = {
+  name: "alignedAxis",
+  czmlName: "alignedAxis",
+  labelZh: "对齐轴",
+  labelEn: "aligned axis",
   tag: "CzmlCartesian3PxPropInput",
   isEnable: true,
 };
