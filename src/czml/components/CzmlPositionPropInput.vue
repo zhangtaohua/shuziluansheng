@@ -113,7 +113,7 @@
   }
 
   .props_title_box {
-    width: max-content;
+    width: 100%;
     height: 2rem;
     margin-bottom: 0.5rem;
   }

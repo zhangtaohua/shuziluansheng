@@ -13,8 +13,8 @@
           </div>
         </template>
         <div class="row_nw_fs_ce props_title_box">
-          <label class="row_nw_fs_ce props_ch_label">{{ props.vdata.labelZh }}</label>
-          <label class="row_nw_fs_fe props_ogi_label">{{ props.vdata.labelEn }}</label>
+          <label class="row_nw_fs_ce props_ch_label">{{ currentProp.labelZh }}</label>
+          <label class="row_nw_fs_fe props_ogi_label">{{ currentProp.labelEn }}</label>
         </div>
       </el-tooltip>
     </div>
@@ -61,7 +61,7 @@
   const { editorConfig, setEditorRefreshShape } = useEditorConfigStore();
   const id = "";
   const name = "";
-  let currentProp = {};
+  const currentProp = ref({});
   const currentText = ref("");
   const isEnable = ref(false);
   const isFoucus = ref(false);
@@ -70,12 +70,12 @@
     console.log("text props", props.vdata);
     if (props.vdata && props.vdata.id && props.vdata.name) {
       isEnable.value = true;
-      currentProp = props.vdata;
-      currentText.value = currentProp.value;
+      currentProp.value = props.vdata;
+      currentText.value = currentProp.value.value;
     } else {
       isEnable.value = false;
       currentText.value = "";
-      currentProp = {};
+      currentProp.value = {};
     }
     console.log("text input", id, name, currentProp);
   }
@@ -85,8 +85,8 @@
   });
 
   function textChangeHd() {
-    if (isEnable.value && currentProp) {
-      currentProp.value = currentText.value;
+    if (isEnable.value && currentProp.value) {
+      currentProp.value.value = currentText.value;
     }
   }
 

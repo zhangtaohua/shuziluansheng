@@ -12,7 +12,7 @@
             </p>
           </div>
         </template>
-        <div class="row_nw_fs_ce props_title_box">
+        <div class="row_nw_fs_ce wh_auto_100p">
           <label class="row_nw_fs_ce props_ch_label">{{ currentProp.labelZh }}</label>
           <label class="row_nw_fs_fe props_ogi_label">{{ currentProp.labelEn }}</label>
         </div>
@@ -235,7 +235,7 @@
   }
 
   .props_title_box {
-    width: max-content;
+    width: 100%;
     height: 2rem;
     margin-bottom: 0.5rem;
   }

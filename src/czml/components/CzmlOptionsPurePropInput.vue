@@ -84,7 +84,7 @@
   const { editorConfig, setEditorRefreshShape } = useEditorConfigStore();
   const id = "";
   const name = "";
-  let currentProp = {};
+  const currentProp = ref({});
   const isEnable = ref(false);
 
   const isShowOp = ref(false);
@@ -93,10 +93,10 @@
     console.log("pure options props", props.vdata);
     if (props.vdata && props.vdata.id && props.vdata.name) {
       isEnable.value = true;
-      currentProp = props.vdata;
+      currentProp.value = props.vdata;
     } else {
       isEnable.value = false;
-      currentProp = {};
+      currentProp.value = {};
     }
   }
 
@@ -105,19 +105,19 @@
   });
 
   function toggleIsShowOptions() {
-    if (currentProp && currentProp.isEnable) {
+    if (currentProp.value && currentProp.value.isEnable) {
       isShowOp.value = !isShowOp.value;
     }
   }
 
   function setIsShowOptions(isShow) {
-    if (currentProp && currentProp.isEnable) {
+    if (currentProp.value && currentProp.value.isEnable) {
       isShowOp.value = isShow;
     }
   }
 
   function setOptions(opt: any) {
-    currentProp.value = opt.value;
+    currentProp.value.value = opt.value;
     isShowOp.value = false;
     console.log("setOptions", editorConfig.currentParentComp);
   }

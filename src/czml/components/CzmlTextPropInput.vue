@@ -25,6 +25,7 @@
         :name="currentProp.id"
         class="props_input"
         v-model="currentText"
+	:disabled="!currentProp.isEnable"
         rows="5"
         @focus="setIsFoucus(true)"
         @blur="
@@ -58,7 +59,7 @@
   const { editorConfig, setEditorRefreshShape } = useEditorConfigStore();
   const id = "";
   const name = "";
-  let currentProp = {};
+  const currentProp = ref({});
   const currentText = ref("");
   const isEnable = ref(false);
   const isFoucus = ref(false);
@@ -67,12 +68,12 @@
     console.log("text props", props.vdata);
     if (props.vdata && props.vdata.id && props.vdata.name) {
       isEnable.value = true;
-      currentProp = props.vdata;
-      currentText.value = currentProp.value;
+      currentProp.value = props.vdata;
+      currentText.value = currentProp.value.value;
     } else {
       isEnable.value = false;
       currentText.value = "";
-      currentProp = {};
+      currentProp.value = {};
     }
     console.log("text input", id, name, currentProp);
   }
@@ -82,8 +83,8 @@
   });
 
   function textChangeHd() {
-    if (isEnable.value && currentProp) {
-      currentProp.value = currentText.value;
+    if (isEnable.value && currentProp.value) {
+      currentProp.value.value = currentText.value;
     }
   }
 
