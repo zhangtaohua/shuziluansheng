@@ -13,6 +13,7 @@ declare module 'vue' {
     ColorInputProps: typeof import('./src/components/form/ColorInputProps.vue')['default']
     EchartsErrorNoData: typeof import('./src/components/echarts/EchartsErrorNoData.vue')['default']
     EchartsOptionBase: typeof import('./src/components/echarts/EchartsOptionBase.vue')['default']
+    ElAutocomplete: typeof import('element-plus/es')['ElAutocomplete']
     ElDatePicker: typeof import('element-plus/es')['ElDatePicker']
     ElIcon: typeof import('element-plus/es')['ElIcon']
     ElInput: typeof import('element-plus/es')['ElInput']

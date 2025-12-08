@@ -14,6 +14,7 @@ import czmlCartographicRectangleProp from "../properties/CartographicRectanglePr
 import czmlBillboard from "../entities/billboard";
 import czmlColorProp from "../properties/ColorProp.ts";
 import czmlDoubleFixedNumberProp from "../properties/DoubleFixedNumberProp.ts";
+import czmlReferencesProp from "../properties/ReferencesProps.ts";
 
 export class czmlPacket {
   public id = "czml_packet_" + nanoid(10);
@@ -28,6 +29,8 @@ export class czmlPacket {
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
   public isExpand = true; // for UI
+
+  public domMaxHeight = "fit-content";
 
   constructor(options: any) {
     if (!options) {
@@ -157,11 +160,12 @@ export class czmlPacket {
     }),
     billboard: new czmlBillboard(null),
     // RJTODO 下面的要删除
-    cartesian: new czmlCartesian3Prop(null),
-    cartesianList: new czmlCartesian3ListProp(null),
-    rectTest: new czmlCartographicRectangleProp(null),
-    color: new czmlColorProp(null),
-    fixedCnt: new czmlDoubleFixedNumberProp({ fixedCounter: 20 }),
+    // cartesian: new czmlCartesian3Prop(null),
+    // cartesianList: new czmlCartesian3ListProp(null),
+    // rectTest: new czmlCartographicRectangleProp(null),
+    // color: new czmlColorProp(null),
+    // fixedCnt: new czmlDoubleFixedNumberProp({ fixedCounter: 20 }),
+    // refreees: new czmlReferencesProp(null),
     // RJTODO 上面的要删除
     box: {
       $ref: "Box.json",

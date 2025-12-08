@@ -209,7 +209,7 @@
   const pushIntervalValue = () => {
     if (isArray(intervalsValues.value)) {
       const last = intervalsValues.value.length - 1;
-      console.log("last", last);
+      // console.log("last", last);
       intervalsValues.value.push({
         startTime: intervalsValues.value[last].endTime,
         endTime: dayjs().format(defaultTimeFormatStr),

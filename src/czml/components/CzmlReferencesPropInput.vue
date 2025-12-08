@@ -1,52 +1,40 @@
 <template>
   <div v-if="isEnable" class="col_nw_fs_fs props_container">
-    <el-tooltip placement="top" effect="dark">
-      <template #content>
-        <div class="col_nw_fs_ce props_title_tipbox">
-          <p v-if="currentProp.descriptionZh" class="props_ch_tiplabel">
-            {{ currentProp.descriptionZh }}
-          </p>
-          <p class="props_ogi_tiplabel">
-            {{ currentProp.description }}
-          </p>
+    <div class="row_nw_sb_ce props_box">
+      <el-tooltip placement="top" effect="dark">
+        <template #content>
+          <div class="col_nw_fs_ce props_title_tipbox">
+            <p v-if="currentProp.descriptionZh" class="props_ch_tiplabel">
+              {{ currentProp.descriptionZh }}
+            </p>
+            <p class="props_ogi_tiplabel">
+              {{ currentProp.description }}
+            </p>
+          </div>
+        </template>
+        <div class="row_nw_fs_ce props_title_box">
+          <label class="row_nw_fs_ce props_ch_label">{{ currentProp.labelZh }}</label>
+          <label class="row_nw_fs_fe props_ogi_label">{{ currentProp.labelEn }}</label>
         </div>
-      </template>
-      <div class="row_nw_fs_ce props_title_box">
-        <label class="row_nw_fs_ce props_ch_label">{{ currentProp.labelZh }}</label>
-        <label class="row_nw_fs_fe props_ogi_label">{{ currentProp.labelEn }}</label>
-      </div>
-    </el-tooltip>
-
-    <div class="col_nw_fs_fs props_radiobox">
-      <div class="row_nw_fs_ce props_radiobox_title">
-        <label class="row_nw_fs_ce props_radioch_label">角度单位: 弧度; 幅值单位: 米;</label>
-        <label class="row_nw_fs_fe props_radioogi_label">angles in radians and magnitude in meters</label>
-      </div>
+      </el-tooltip>
     </div>
 
     <div class="col_nw_fs_fs props_it_box">
       <div class="col_nw_fs_fs props_it_wrapper" :class="{ props_it_samllwrapper: isFoldIntervals }">
         <div class="col_nw_fs_fs props_it_inwrapper">
-          <div v-for="(inval, index) in intervalsValues" :key="inval[0]" class="col_nw_fs_fs props_it_itembox">
-            <div class="row_nw_fs_ce props_qtinput_linetime">
-              <div class="row_nw_fs_ce props_qtinput_linetimeindex">SN:{{ index + 1 }}</div>
-            </div>
-
+          <div v-for="(inval, index) in intervalsValues" :key="'ref_' + inval[0]" class="col_nw_fs_fs props_it_itembox">
             <div class="row_nw_fs_ce props_qtinput_line1">
-              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">Clock:</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
-                <el-input v-model="inval[0]" placeholder="Please input" type="number" />
+                <el-autocomplete
+                  v-model="inval[0]"
+                  :fetch-suggestions="querySearch"
+                  clearable
+                  placeholder="Please Input"
+                  @select="handleSelect"
+                />
               </div>
-              <div class="row_nw_fs_ce props_qtinput_itemlabelright">Cone:</div>
-              <div class="row_nw_fs_ce props_qtinput_itembox">
-                <el-input v-model="inval[1]" placeholder="Please input" type="number" />
-              </div>
-            </div>
-
-            <div class="row_nw_fs_ce props_qtinput_line2">
-              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">Magnitude:</div>
-              <div class="row_nw_fs_ce props_qtinput_itembox">
-                <el-input v-model="inval[2]" placeholder="Please input" type="number" />
+              <div class="row_nw_fs_ce props_qtinput_linetime">
+                <div class="row_nw_fs_ce props_qtinput_linetimeindex">SN:{{ index + 1 }}</div>
               </div>
             </div>
           </div>
@@ -109,9 +97,8 @@
 </template>
 
 <script setup lang="ts">
-  // 说明： 这个主要用于设置 没有时间类型的 cartesian2  list 的值, 可能有一个元素,也可能有多个
-
-  import { ref, onMounted, watch } from "vue";
+  import { ref, reactive, onMounted, computed, watch, nextTick } from "vue";
+  import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
 
   import { cloneDeep } from "es-toolkit";
   import { isArray } from "es-toolkit/compat";
@@ -128,15 +115,52 @@
     },
   });
 
-  const id = "";
-  const name = "";
+  const { editorConfig, setEditorRefreshShape } = useEditorConfigStore();
+
   const currentProp = ref({});
+  const currentText = ref("");
   const isEnable = ref(false);
-  const intervalsValues = ref([[0, 0, 0]]);
+
+  const intervalsValues = ref([[""]]);
   const isFoldIntervals = ref(false);
 
+  interface RestaurantItem {
+    value: string;
+    link: string;
+  }
+
+  const restaurants = ref<RestaurantItem[]>([]);
+
+  const querySearch = (queryString: string, cb: any) => {
+    const results = queryString ? restaurants.value.filter(createFilter(queryString)) : restaurants.value;
+    // call callback function to return suggestions
+    cb(results);
+  };
+
+  const createFilter = (queryString: string) => {
+    return (restaurant: RestaurantItem) => {
+      return restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0;
+    };
+  };
+
+  const loadAll = () => {
+    return [
+      { value: "vue", link: "https://github.com/vuejs/vue" },
+      { value: "element", link: "https://github.com/ElemeFE/element" },
+      { value: "cooking", link: "https://github.com/ElemeFE/cooking" },
+      { value: "mint-ui", link: "https://github.com/ElemeFE/mint-ui" },
+      { value: "vuex", link: "https://github.com/vuejs/vuex" },
+      { value: "vue-router", link: "https://github.com/vuejs/vue-router" },
+      { value: "babel", link: "https://github.com/babel/babel" },
+    ];
+  };
+
+  const handleSelect = (item: Record<string, any>) => {
+    console.log(item);
+  };
+
   function clearintervalsValues() {
-    intervalsValues.value = [[0, 0, 0]];
+    intervalsValues.value = [[""]];
   }
 
   function setIsFoldIntervals(isFold: boolean) {
@@ -158,12 +182,13 @@
     if (isArray(intervalsValues.value)) {
       const { secondsOnceAddCount } = currentProp.value;
       for (let i = 0; i < +secondsOnceAddCount; i++) {
-        intervalsValues.value.push([0, 0, 0]);
+        intervalsValues.value.push([""]);
       }
     }
   };
 
   function init() {
+    restaurants.value = loadAll();
     if (props.vdata && props.vdata.id && props.vdata.name) {
       isEnable.value = true;
       currentProp.value = props.vdata;
@@ -171,8 +196,9 @@
     } else {
       isEnable.value = false;
       currentProp.value = {};
-      intervalsValues.value = [[0, 0, 0]];
+      intervalsValues.value = [[""]];
     }
+    console.log("refrences input", currentProp);
   }
 
   onMounted(() => {
@@ -253,98 +279,6 @@
     margin-top: 0.25rem;
   }
 
-  .props_map_actbox {
-    position: relative;
-    width: 100%;
-    height: auto;
-    background-color: rgba(0, 0, 0, 1);
-    border-radius: 0.5rem;
-    padding: 1rem;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-  }
-
-  .props_map_actitem {
-    width: 1.5rem;
-    height: 1.5rem;
-    margin-right: 0.75rem;
-    cursor: pointer;
-  }
-
-  .props_map_actitem_show {
-    width: 100%;
-    height: 100%;
-  }
-
-  .props_radiobox {
-    width: 100%;
-    height: auto;
-  }
-
-  .props_radiobox_title {
-    width: 100%;
-    height: auto;
-    margin-bottom: 0.75rem;
-  }
-
-  .props_radioch_label {
-    width: max-content;
-    height: 100%;
-    color: rgba(255, 255, 255, 1);
-    font-size: 0.875rem;
-    font-weight: 500;
-    margin-right: 0.5rem;
-  }
-
-  .props_radioogi_label {
-    width: max-content;
-    height: 1rem;
-    color: rgba(230, 230, 230, 1);
-    font-size: 0.75rem;
-    font-weight: 400;
-    margin-top: 0.25rem;
-  }
-
-  .props_radioinbox {
-    width: 100%;
-    height: auto;
-  }
-
-  .props_qtinput_line1 {
-    width: 100%;
-    height: 2rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .props_qtinput_line2 {
-    width: 100%;
-    height: 2rem;
-  }
-
-  .props_qtinput_itemlabelleft {
-    width: 5.75rem;
-    height: 100%;
-    color: rgba(255, 255, 255, 1);
-    font-size: var(--czml-fs-sl-label);
-    font-weight: bold;
-    margin-right: 0.5rem;
-  }
-
-  .props_qtinput_itemlabelright {
-    width: 5.75rem;
-    height: 100%;
-    color: rgba(255, 255, 255, 1);
-    font-size: var(--czml-fs-sl-label);
-    font-weight: bold;
-    margin-right: 0.5rem;
-    margin-left: 1rem;
-  }
-
-  .props_qtinput_itembox {
-    width: calc(50% - 6.5rem);
-    height: 100%;
-  }
-
   .props_it_box {
     position: relative;
     width: 100%;
@@ -409,14 +343,25 @@
     margin-bottom: 0.75rem;
   }
 
-  .props_qtinput_linetime {
+  .props_qtinput_line1 {
     width: 100%;
     height: 2rem;
     margin-bottom: 0.5rem;
   }
 
+  .props_qtinput_itembox {
+    width: calc(100% - 8.75rem);
+    height: 100%;
+  }
+
+  .props_qtinput_linetime {
+    width: 8rem;
+    height: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
   .props_qtinput_linetimeindex {
-    width: calc(50% - 0.25rem);
+    width: 100%;
     height: 100%;
     color: rgba(230, 230, 230, 1);
     font-size: 0.75rem;
@@ -437,18 +382,6 @@
     font-size: 0.875rem;
     font-weight: 500;
     margin-right: 0.5rem;
-  }
-
-  .props_it_tinputbox {
-    width: max-content;
-    height: 2rem;
-  }
-
-  .props_it_input_box {
-    position: relative;
-    width: 100%;
-    height: 2rem;
-    /* background-color: rgba(0, 0, 0, 1); */
   }
 
   .props_it_secondsactbox {

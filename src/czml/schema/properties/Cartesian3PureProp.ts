@@ -162,7 +162,13 @@ export class czmlCartesian3PureProp {
 
   public getCzmlValue() {
     if (this.isUsed) {
-      return this._value;
+      if (this._xyzUnitType == CZMLCARTESIAN3METERTYPE) {
+        return this._allValues.cartesian.map(Number);
+      } else if (this._xyzUnitType == CZMLCARTESIAN3DEGREESTYPE) {
+        return this._allValues.degrees.map(Number);
+      } else if (this._xyzUnitType == CZMLCARTESIAN3RADIANSTYPE) {
+        return this._allValues.radians.map(Number);
+      }
     } else {
       return null;
     }
@@ -171,7 +177,7 @@ export class czmlCartesian3PureProp {
   public getCzmlData() {
     if (this.isUsed) {
       return {
-        [this.name]: this.getCzmlValue(),
+        [this.czmlName]: this.getCzmlValue(),
       };
     } else {
       return null;

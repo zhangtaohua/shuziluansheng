@@ -173,7 +173,7 @@ export class czmlIntegerPureProp {
 
   public getCzmlValue() {
     if (this.isUsed) {
-      return this._value;
+      return +this._value;
     } else {
       return null;
     }
@@ -182,7 +182,7 @@ export class czmlIntegerPureProp {
   public getCzmlData() {
     if (this.isUsed) {
       return {
-        [this.name]: this._value,
+        [this.czmlName]: +this._value,
       };
     } else {
       return null;

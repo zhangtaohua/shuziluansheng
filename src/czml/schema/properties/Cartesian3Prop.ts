@@ -114,6 +114,10 @@ export class czmlCartesian3Prop {
       this.default = options.default;
     }
 
+    if (options.xyzUnitType) {
+      this._xyzUnitType = options.xyzUnitType;
+    }
+
     this.isFixedXyzUnitType = options.isFixedXyzUnitType ?? true;
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
@@ -202,7 +206,23 @@ export class czmlCartesian3Prop {
 
   public getCzmlValue() {
     if (this.isUsed) {
-      return this._value;
+      if (this._timeType == CZMLPUREVALUE) {
+        return this._value.map(Number);
+      } else if (this._timeType == CZMLTIMESECONDS) {
+        const revals = [];
+        for (let i = 0; i < this._value.length; i++) {
+          const temp = this._value[i];
+          revals.push(+temp[0], +temp[1], +temp[2], +temp[3]);
+        }
+        return revals;
+      } else if (this._timeType == CZMLTIMESTRING) {
+        const revals = [];
+        for (let i = 0; i < this._value.length; i++) {
+          const temp = this._value[i];
+          revals.push(dayjs(temp[0]).toISOString(), +temp[1], +temp[2], +temp[3]);
+        }
+        return revals;
+      }
     } else {
       return null;
     }

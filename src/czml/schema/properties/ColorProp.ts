@@ -1,5 +1,6 @@
 import { nanoid } from "@/utils/common/nanoid";
 import dayjs from "dayjs";
+import chroma from "chroma-js";
 
 import {
   CZMLPUREVALUE,
@@ -14,6 +15,8 @@ import {
   propValuesInterpolateOptions,
   defaultTimeFormatStr,
   propValuesTimeTypeOptions,
+  CZMLCOLORRGBATYPE,
+  CZMLCOLORRGBAFTYPE,
 } from "./commondata.ts";
 
 // 用于生成 color 像素 数值，纯数值，或者是带时间序的多个值。
@@ -57,6 +60,8 @@ export class czmlColorProp {
   public secondsOnceAddCount = 1;
 
   public isFixedXyzUnitType = false;
+
+  public colorType = CZMLCOLORRGBATYPE;
 
   constructor(options: any) {
     if (!options) {
@@ -103,6 +108,10 @@ export class czmlColorProp {
 
     if (options.default) {
       this.default = options.default;
+    }
+
+    if (options.colorType) {
+      this.colorType = options.colorType;
     }
 
     this.isFixedXyzUnitType = options.isFixedXyzUnitType ?? true;
@@ -185,7 +194,73 @@ export class czmlColorProp {
 
   public getCzmlValue() {
     if (this.isUsed) {
-      return this._value;
+      if (this.colorType == CZMLCOLORRGBATYPE) {
+        if (this._timeType == CZMLPUREVALUE) {
+          if (this._value[0]) {
+            const colors = chroma(this._value[0]).rgba();
+            colors[3] = Math.floor(colors[3] * 255);
+            return colors;
+          }
+        } else if (this._timeType == CZMLTIMESECONDS) {
+          const revals = [];
+          for (let i = 0; i < this._value.length; i++) {
+            const temp = this._value[i];
+            if (temp[1]) {
+              const colors = chroma(temp[1]).rgba();
+              colors[3] = Math.floor(colors[3] * 255);
+              revals.push(+temp[0], colors[0], colors[1], colors[2], colors[3]);
+            }
+          }
+          return revals;
+        } else if (this._timeType == CZMLTIMESTRING) {
+          const revals = [];
+          for (let i = 0; i < this._value.length; i++) {
+            const temp = this._value[i];
+            if (temp[1]) {
+              const colors = chroma(temp[1]).rgba();
+              colors[3] = Math.floor(colors[3] * 255);
+              revals.push(dayjs(temp[0]).toISOString(), colors[0], colors[1], colors[2], colors[3]);
+            }
+          }
+          return revals;
+        }
+      } else if (this.colorType == CZMLCOLORRGBAFTYPE) {
+        if (this._timeType == CZMLPUREVALUE) {
+          if (this._value[0]) {
+            const colors = chroma(this._value[0]).rgba();
+            colors[0] = colors[0] / 255.0;
+            colors[1] = colors[1] / 255.0;
+            colors[2] = colors[2] / 255.0;
+            return colors;
+          }
+        } else if (this._timeType == CZMLTIMESECONDS) {
+          const revals = [];
+          for (let i = 0; i < this._value.length; i++) {
+            const temp = this._value[i];
+            if (temp[1]) {
+              const colors = chroma(temp[1]).rgba();
+              colors[0] = colors[0] / 255.0;
+              colors[1] = colors[1] / 255.0;
+              colors[2] = colors[2] / 255.0;
+              revals.push(+temp[0], colors[0], colors[1], colors[2], colors[3]);
+            }
+          }
+          return revals;
+        } else if (this._timeType == CZMLTIMESTRING) {
+          const revals = [];
+          for (let i = 0; i < this._value.length; i++) {
+            const temp = this._value[i];
+            if (temp[1]) {
+              const colors = chroma(temp[1]).rgba();
+              colors[0] = colors[0] / 255.0;
+              colors[1] = colors[1] / 255.0;
+              colors[2] = colors[2] / 255.0;
+              revals.push(dayjs(temp[0]).toISOString(), colors[0], colors[1], colors[2], colors[3]);
+            }
+          }
+          return revals;
+        }
+      }
     } else {
       return null;
     }

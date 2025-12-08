@@ -7,11 +7,19 @@
           <label class="row_nw_fs_ce czml_entitych_label">{{ currentProp.labelZh }}</label>
           <label class="row_nw_fs_ce czml_entityogi_label">{{ currentProp.labelEn }}</label>
         </div>
-        <div class="row_nw_ce_ce czml_combine_downarrow"></div>
+        <div
+          class="row_nw_ce_ce czml_combine_downarrow"
+          :class="{ czml_combine_arrowup_show: currentProp.isExpand }"
+          @click="() => (currentProp.isExpand = !currentProp.isExpand)"
+        ></div>
       </div>
       <div class="czml_combine_topgap"></div>
 
-      <div v-if="currentProp.properties" class="col_nw_fs_fs czml_combine_propbox">
+      <div
+        v-if="currentProp.properties"
+        class="col_nw_fs_fs czml_combine_propbox"
+        :class="{ czml_combine_bigpropbox: currentProp.isExpand }"
+      >
         <div v-for="childProp in currentProp.properties" :key="childProp.id" class="col_nw_ce_ce props_ic_box">
           <component :is="childProp.tag" :vdata="childProp"></component>
           <div class="props_ic_gap"></div>
@@ -22,11 +30,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, reactive, onMounted, computed, watch, nextTick } from "vue";
-  import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
-  import { cloneDeep } from "es-toolkit";
-  import { isArray } from "es-toolkit/compat";
-  import dayjs from "dayjs";
+  import { ref, onMounted } from "vue";
 
   const props = defineProps({
     vdata: {
@@ -40,9 +44,6 @@
     },
   });
 
-  const { editorConfig } = useEditorConfigStore();
-  const id = "";
-  const name = "";
   const currentProp = ref({});
   const isEnable = ref(false);
 
@@ -55,7 +56,7 @@
       currentProp.value = {};
     }
 
-    console.log("combine_currentProp", currentProp.value);
+    console.log("Current_Combine_Prop", currentProp.value);
   }
 
   onMounted(() => {
@@ -147,6 +148,16 @@
   .czml_combine_propbox {
     width: calc(100% - 2rem);
     height: auto;
+    max-height: 0px;
+    overflow: hidden;
+    transition: all 0.5s;
+  }
+
+  .czml_combine_bigpropbox {
+    width: calc(100% - 2rem);
+    height: auto;
+    max-height: fit-content;
+    overflow: unset;
   }
 
   .props_ic_box {

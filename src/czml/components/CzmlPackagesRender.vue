@@ -1,31 +1,34 @@
 <template>
   <div v-if="isEnable" class="col_nw_fs_fs czml_props_container">
-    <div v-for="packet in currentPackets.packets" :key="packet.id" class="col_nw_fs_ce config_czml_box">
+    <div v-for="packet in currentPackets.packets" :id="packet.id" :key="packet.id" class="col_nw_fs_ce config_czml_box">
       <div class="row_nw_fs_ce czml_packet_tbox">
         <div class="row_nw_fs_ce wh_auto_100p">
           <img src="@/assets/images/icons/packetsetting.svg" alt="icon" class="czml_packet_icon" />
           <label class="row_nw_fs_ce czml_ch_label">{{ packet.labelZh }}</label>
           <label class="row_nw_fs_ce czml_ogi_label">{{ packet.labelEn }}</label>
         </div>
-        <div class="row_nw_ce_ce czml_packet_downarrow"></div>
+        <div
+          class="row_nw_ce_ce czml_packet_downarrow"
+          :class="{ czml_packet_arrowup_show: packet.isExpand }"
+          @click="() => (packet.isExpand = !packet.isExpand)"
+        ></div>
       </div>
       <div class="czml_packet_topgap"></div>
-      <div v-for="czmlProp in packet.properties" :key="czmlProp.id" class="col_nw_ce_ce czml_packet_box">
-        <component :is="czmlProp.tag" :vdata="czmlProp"></component>
-        <LineGap v-if="!czmlProp.isCombinedProperty"></LineGap>
+      <div class="col_nw_fs_ce czml_packet_ctxoutbox" :class="{ czml_packet_ctxoutbitbox: packet.isExpand }">
+        <div v-for="(czmlProp, index) in packet.properties" :key="czmlProp.id" class="col_nw_ce_ce czml_packet_box">
+          <component :is="czmlProp.tag" :vdata="czmlProp"></component>
+          <!-- <LineGap v-if="!czmlProp.isCombinedProperty && index != packet.properties - 1"></LineGap> -->
+          <div v-if="!czmlProp.isCombinedProperty && index != packet.properties - 1" class="czml_packet_gap"></div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { ref, reactive, onMounted, computed, watch, nextTick } from "vue";
-  import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
-  import LineGap from "@/h5/components/LineGap.vue";
-
-  import { cloneDeep } from "es-toolkit";
-  import { isArray } from "es-toolkit/compat";
-  import dayjs from "dayjs";
+  import { ref, onMounted } from "vue";
+  // import { getDomMaxHeight } from "@/utils/common/dom";
+  // import LineGap from "@/h5/components/LineGap.vue";
 
   const props = defineProps({
     vdata: {
@@ -39,9 +42,6 @@
     },
   });
 
-  const { editorConfig } = useEditorConfigStore();
-  const id = "";
-  const name = "";
   const currentPackets = ref({});
   const isEnable = ref(false);
 
@@ -54,7 +54,7 @@
       currentPackets.value = {};
     }
 
-    console.log("clock_currentPackets", currentPackets.value);
+    console.log("Current_Packets", currentPackets.value);
   }
 
   onMounted(() => {
@@ -143,8 +143,29 @@
     height: 2rem;
   }
 
+  .czml_packet_ctxoutbox {
+    width: 100%;
+    height: auto;
+    max-height: 0px;
+    overflow: hidden;
+    transition: all 0.5s;
+  }
+
+  .czml_packet_ctxoutbitbox {
+    width: 100%;
+    height: auto;
+    max-height: fit-content;
+    overflow: unset;
+    transition: all 0.5s;
+  }
+
   .czml_packet_box {
     width: calc(100% - 2rem);
     height: auto;
+  }
+
+  .czml_packet_gap {
+    width: 100%;
+    height: 1rem;
   }
 </style>

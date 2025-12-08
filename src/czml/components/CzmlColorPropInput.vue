@@ -218,7 +218,7 @@
 </template>
 
 <script setup lang="ts">
-  // 说明： 这个主要用于设置 有时间类型的 Double 的值
+  // 说明： 这个主要用于设置 有时间类型的 color 的值
 
   import { ref, reactive, onMounted, computed, watch, nextTick } from "vue";
   import RjRadioTabInput from "@/components/form/RjRadioTabInput.vue";

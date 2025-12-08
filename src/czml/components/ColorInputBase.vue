@@ -53,7 +53,6 @@
   // import "vue3-colorpicker/style.css";
   import { Vue3ColorPicker } from "@cyhnkckali/vue3-color-picker";
   import chroma from "chroma-js";
-  import { Right } from "@element-plus/icons-vue";
 
   const emit = defineEmits(["onChange"]);
 

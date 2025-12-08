@@ -1,6 +1,6 @@
 import { nanoid } from "@/utils/common/nanoid";
-
 import dayjs from "dayjs";
+
 import {
   CZMLPUREVALUE,
   CZMLTIMESECONDS,
@@ -15,32 +15,35 @@ import {
   defaultTimeFormatStr,
   propValuesTimeTypeOptions,
 } from "./commondata.ts";
+import czmlInterpolatableProp from "./InterpolatablePropertyProp.ts";
 
-export class czmlDoubleProp {
-  public id = "czml_prop_double_" + nanoid(10);
-  public name = "double";
-  public _czmlName = "double";
-  public labelZh = "浮点数";
-  public labelEn = "double";
-  public title = "Double";
-  public description = "A floating-point number.";
+// 用于生成 Cartesian3 数值，纯数值，或者是带时间序的多个值。
+export class czmlCartesian3VelocityProp {
+  public id = "czml_prop_cartesianvelocity_timetagged_" + nanoid(10);
+  public name = "Cartesian Velocity";
+  public _czmlName = "cartesianVelocity";
+  public labelZh = "dXdYdZ加速度(C) ";
+  public labelEn = "cartesian velocity(C)";
+  public title = "Cartesian3";
+  public description =
+    "A three-dimensional Cartesian value and its derivative specified as `[X, Y, Z, dX, dY, dZ]`. If the array has six elements, the value is constant. If it has seven or more elements, they are time-tagged samples arranged as `[Time, X, Y, Z, dX, dY, dZ, Time, X, Y, Z, dX, dY, dZ, ...]`, where Time is an ISO 8601 date and time string or seconds since epoch.";
+
   public type = "property";
   public componentType = "czml#packet#property";
-  public tag = "CzmlNumberPropInput";
+  public czmlValue = true; // 这个用于标示是不是 czml value的
 
-  public _value = [1.0];
-  public _valueType = "number";
+  public tag = "CzmlCartesian3VelocityPropInput";
 
-  public _oldPureValue = [1.0];
-  public _oldSecondsValue = [[0, 1.0]];
-  public _oldTimestringValue = [[dayjs().format(defaultTimeFormatStr), 1.0]];
+  public unit = "meters";
+  public _value = [0, 0, 0, 0, 0, 0];
+  public _oldPureValue = [0, 0, 0, 0, 0, 0];
+  public _oldSecondsValue = [[0, 0, 0, 0, 0, 0, 0]];
+  public _oldTimestringValue = [[dayjs().format(defaultTimeFormatStr), 0, 0, 0, 0, 0, 0]];
 
-  public default = [1.0];
+  public _valueType = "cartesian3 may time-tagged";
 
-  private _min = 0;
-  private _max = 50;
-  private _step = 0.1;
-  private _retainDecimalPlaces = 3;
+  public default = [0, 0, 0, 0, 0, 0];
+
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
   public isExpand = true; // for UI
@@ -48,12 +51,21 @@ export class czmlDoubleProp {
   public isCombinedProperty = false;
   public isComplexProperty = true;
 
+  public _interpolationType = CZMLVALUESNOTINTERPOLATE;
+  public interpolationOptions = propValuesInterpolateOptions;
+  public interpolationproperties = new czmlInterpolatableProp(null);
+
   public _timeType = CZMLPUREVALUE;
   public timeTypeOptions = propValuesTimeTypeOptions;
 
   public secondsStart = 0;
   public secondsStep = 30;
   public secondsOnceAddCount = 1;
+
+  public _xyzUnitType = CZMLCARTESIAN3METERTYPE;
+  public xyzUnitTypeOptions = propValuesCartesian3TypeOptions;
+
+  public isFixedXyzUnitType = false;
 
   constructor(options: any) {
     if (!options) {
@@ -63,7 +75,7 @@ export class czmlDoubleProp {
     if (options.id) {
       this.id = options.id;
     } else if (options.name) {
-      this.id = "czml_prop_double_" + options.name + "_" + nanoid(10);
+      this.id = "czml_prop_cartesianvelocity_timetagged_" + options.name + "_" + nanoid(10);
     }
 
     if (options.name) {
@@ -102,22 +114,14 @@ export class czmlDoubleProp {
       this.default = options.default;
     }
 
+    if (options.xyzUnitType) {
+      this._xyzUnitType = options.xyzUnitType;
+    }
+
+    this.isFixedXyzUnitType = options.isFixedXyzUnitType ?? true;
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
     this.isExpand = options.isExpand ?? true;
-
-    if (options.max != undefined && options.min != undefined && +options.max > +options.min) {
-      this._max = +options.max;
-      this._min = +options.min;
-    }
-
-    if (options.step) {
-      this._step = +options.step;
-    }
-
-    if (options.retainDecimalPlaces) {
-      this._retainDecimalPlaces = +options.retainDecimalPlaces;
-    }
   }
 
   get value() {
@@ -125,7 +129,7 @@ export class czmlDoubleProp {
   }
 
   set value(newValue) {
-    return;
+    this._value = newValue;
   }
 
   get valueType() {
@@ -142,46 +146,6 @@ export class czmlDoubleProp {
 
   set isEntity(newValue) {
     return;
-  }
-
-  get min() {
-    return this._min;
-  }
-
-  set min(newMin) {
-    if (newMin < this._max) {
-      this._min = newMin;
-    } else {
-      console.error("min must be less than max.");
-    }
-  }
-
-  get max() {
-    return this._max;
-  }
-
-  set max(newMax) {
-    if (newMax > this._min) {
-      this._max = newMax;
-    } else {
-      console.error("max must be greater than min.");
-    }
-  }
-
-  get step() {
-    return this._step;
-  }
-
-  set step(newStep) {
-    this._step = newStep;
-  }
-
-  get retainDecimalPlaces() {
-    return this._retainDecimalPlaces;
-  }
-
-  set retainDecimalPlaces(newPlc) {
-    this._retainDecimalPlaces = newPlc;
   }
 
   get timeType() {
@@ -224,6 +188,14 @@ export class czmlDoubleProp {
     // this._czmlName = newValue;
   }
 
+  get xyzUnitType() {
+    return this._xyzUnitType;
+  }
+
+  set xyzUnitType(newValue) {
+    this._xyzUnitType = newValue;
+  }
+
   public getCzmlName() {
     if (this.isUsed) {
       return this.czmlName;
@@ -237,13 +209,17 @@ export class czmlDoubleProp {
       if (this._timeType == CZMLPUREVALUE) {
         return this._value.map(Number);
       } else if (this._timeType == CZMLTIMESECONDS) {
-        const flattenArr = this._value.flat(Infinity);
-        return flattenArr.map(Number);
+        const revals = [];
+        for (let i = 0; i < this._value.length; i++) {
+          const temp = this._value[i];
+          revals.push(+temp[0], +temp[1], +temp[2], +temp[3], +temp[4], +temp[5], +temp[6]);
+        }
+        return revals;
       } else if (this._timeType == CZMLTIMESTRING) {
         const revals = [];
         for (let i = 0; i < this._value.length; i++) {
           const temp = this._value[i];
-          revals.push(dayjs(temp[0]).toISOString(), +temp[1]);
+          revals.push(dayjs(temp[0]).toISOString(), +temp[1], +temp[2], +temp[3], +temp[4], +temp[5], +temp[6]);
         }
         return revals;
       }
@@ -255,7 +231,7 @@ export class czmlDoubleProp {
   public getCzmlData() {
     if (this.isUsed) {
       return {
-        [this.czmlName]: this._value,
+        [this.czmlName]: this.getCzmlValue(),
       };
     } else {
       return null;
@@ -263,4 +239,4 @@ export class czmlDoubleProp {
   }
 }
 
-export default czmlDoubleProp;
+export default czmlCartesian3VelocityProp;

@@ -18,7 +18,7 @@
     </el-tooltip>
 
     <div class="col_nw_fs_fs props_it_box">
-      <div class="col_nw_fs_fs props_it_wrapper">
+      <div class="col_nw_fs_fs props_it_wrapper" :class="{ props_it_samllwrapper: isFoldIntervals }">
         <div class="col_nw_fs_fs props_it_inwrapper">
           <div v-for="(inval, index) in intervalsValues" :key="inval[0]" class="col_nw_fs_fs props_it_itembox">
             <div class="row_nw_fs_ce props_qtinput_linetime">

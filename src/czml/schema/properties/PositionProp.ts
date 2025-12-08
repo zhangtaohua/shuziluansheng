@@ -1,9 +1,26 @@
 import { nanoid } from "@/utils/common/nanoid";
 import dayjs from "dayjs";
 
+import {
+  CZMLPUREVALUE,
+  CZMLTIMESECONDS,
+  CZMLTIMESTRING,
+  CZMLVALUESNOTINTERPOLATE,
+  CZMLVALUESWITHINTERPOLATE,
+  CZMLCARTESIAN3METERTYPE,
+  CZMLCARTESIAN3DEGREESTYPE,
+  CZMLCARTESIAN3RADIANSTYPE,
+  propValuesCartesian3TypeOptions,
+  propValuesInterpolateOptions,
+  defaultTimeFormatStr,
+  propValuesTimeTypeOptions,
+} from "./commondata.ts";
+
 import { czmlOptionsPureProp, CzmlReferenceFrameOptions } from "./OptionsPureProp";
 import { czmlStringProp, czmlReferenceValueOptions } from "./StringProp";
 import czmlCartesian3Prop from "./Cartesian3Prop";
+import czmlCartesian4Prop from "./Cartesian4Prop";
+import czmlCartesian3VelocityProp from "./Cartesian3VelocityProp.ts";
 
 export class czmlPositionProp {
   public id = "czml_prop_position_" + nanoid(10);
@@ -26,10 +43,25 @@ export class czmlPositionProp {
 
   public properties = {
     referenceFrame: new czmlOptionsPureProp(CzmlReferenceFrameOptions),
-    cartesian: new czmlCartesian3Prop(null),
-    // cartographicRadians: new ,
-    // cartographicDegrees: new ,
-    // cartesianVelocity
+    cartesian: new czmlCartesian3Prop({
+      czmlName: "cartesian",
+      isEnable: true,
+      isFixedXyzUnitType: true,
+      xyzUnitType: CZMLCARTESIAN3METERTYPE,
+    }),
+    cartographicRadians: new czmlCartesian3Prop({
+      czmlName: "cartographicRadians",
+      isEnable: true,
+      isFixedXyzUnitType: true,
+      xyzUnitType: CZMLCARTESIAN3DEGREESTYPE,
+    }),
+    cartographicDegrees: new czmlCartesian3Prop({
+      czmlName: "cartographicRadians",
+      isEnable: true,
+      isFixedXyzUnitType: true,
+      xyzUnitType: CZMLCARTESIAN3RADIANSTYPE,
+    }),
+    cartesianVelocity: new czmlCartesian3VelocityProp(null),
     // RJTODO 这里是错的 暂时为了调试用
     references: new czmlStringProp(czmlReferenceValueOptions),
   };
@@ -129,7 +161,7 @@ export class czmlPositionProp {
   public getCzmlData() {
     if (this.isUsed) {
       return {
-        [this.name]: this.getCzmlValue(),
+        [this.czmlName]: this.getCzmlValue(),
       };
     } else {
       return null;

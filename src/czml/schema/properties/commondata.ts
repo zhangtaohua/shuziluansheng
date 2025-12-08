@@ -12,6 +12,9 @@ export const CZMLCARTESIAN3METERTYPE = "cartesian3Meter";
 export const CZMLCARTESIAN3DEGREESTYPE = "cartesian3Degrees";
 export const CZMLCARTESIAN3RADIANSTYPE = "cartesian3Radians";
 
+export const CZMLCOLORRGBATYPE = "colorRgba";
+export const CZMLCOLORRGBAFTYPE = "colorRgbaf";
+
 export const propValueTypesOptions = [
   {
     id: CZMLPUREVALUE,

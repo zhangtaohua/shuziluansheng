@@ -261,7 +261,20 @@ export class czmlDoubleFixedNumberProp {
 
   public getCzmlValue() {
     if (this.isUsed) {
-      return this._value;
+      if (this._timeType == CZMLPUREVALUE) {
+        const flattenArr = this._value.flat(Infinity);
+        return flattenArr.map(Number);
+      } else if (this._timeType == CZMLTIMESECONDS) {
+        const flattenArr = this._value.flat(Infinity);
+        return flattenArr.map(Number);
+      } else if (this._timeType == CZMLTIMESTRING) {
+        const revals = [];
+        for (let i = 0; i < this._value.length; i++) {
+          const temp = this._value[i];
+          revals.push(dayjs(temp[0]).toISOString(), +temp[1]);
+        }
+        return revals;
+      }
     } else {
       return null;
     }
@@ -270,7 +283,7 @@ export class czmlDoubleFixedNumberProp {
   public getCzmlData() {
     if (this.isUsed) {
       return {
-        [this.name]: this._value,
+        [this.czmlName]: this._value,
       };
     } else {
       return null;

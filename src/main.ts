@@ -74,6 +74,8 @@ import CzmlPositionPropInput from "@/czml/components/CzmlPositionPropInput.vue";
 import CzmlQuaternionInterpolationPropInput from "@/czml/components/CzmlQuaternionInterpolationPropInput.vue";
 import CzmlQuaternionPropInput from "@/czml/components/CzmlQuaternionPropInput.vue";
 
+import CzmlReferencesPropInput from "@/czml/components/CzmlReferencesPropInput.vue";
+
 import CzmlSphericalListPropInput from "@/czml/components/CzmlSphericalListPropInput.vue";
 import CzmlSphericalPropInput from "@/czml/components/CzmlSphericalPropInput.vue";
 
@@ -156,6 +158,8 @@ app.component("CzmlPackagesRender", CzmlPackagesRender);
 app.component("CzmlPositionPropInput", CzmlPositionPropInput);
 app.component("CzmlQuaternionInterpolationPropInput", CzmlQuaternionInterpolationPropInput);
 app.component("CzmlQuaternionPropInput", CzmlQuaternionPropInput);
+
+app.component("CzmlReferencesPropInput", CzmlReferencesPropInput);
 
 app.component("CzmlSphericalListPropInput", CzmlSphericalListPropInput);
 app.component("CzmlSphericalPropInput", CzmlSphericalPropInput);

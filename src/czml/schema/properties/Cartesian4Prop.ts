@@ -187,7 +187,23 @@ export class czmlCartesian4Prop {
 
   public getCzmlValue() {
     if (this.isUsed) {
-      return this._value;
+      if (this._timeType == CZMLPUREVALUE) {
+        return this._value.map(Number);
+      } else if (this._timeType == CZMLTIMESECONDS) {
+        const revals = [];
+        for (let i = 0; i < this._value.length; i++) {
+          const temp = this._value[i];
+          revals.push(+temp[0], +temp[1], +temp[2], +temp[3], +temp[4]);
+        }
+        return revals;
+      } else if (this._timeType == CZMLTIMESTRING) {
+        const revals = [];
+        for (let i = 0; i < this._value.length; i++) {
+          const temp = this._value[i];
+          revals.push(dayjs(temp[0]).toISOString(), +temp[1], +temp[2], +temp[3], +temp[4]);
+        }
+        return revals;
+      }
     } else {
       return null;
     }
@@ -238,6 +254,6 @@ export const czmlBoundingRectangleOptions = {
   czmlName: "BoundingRectangle",
   labelZh: "包围矩形",
   labelEn: "bounding rectangle",
-  tag: "CzmlCartesian4NFScalerPropInput",
+  tag: "CzmlBoundingRectanglePropInput",
   isEnable: true,
 };

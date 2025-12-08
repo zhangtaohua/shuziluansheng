@@ -25,7 +25,7 @@
         :name="currentProp.id"
         class="props_input"
         v-model="currentText"
-	:disabled="!currentProp.isEnable"
+        :disabled="!currentProp.isEnable"
         rows="5"
         @focus="setIsFoucus(true)"
         @blur="

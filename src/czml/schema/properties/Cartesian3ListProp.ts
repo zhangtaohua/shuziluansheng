@@ -150,7 +150,9 @@ export class czmlCartesian3ListProp {
 
   public getCzmlValue() {
     if (this.isUsed) {
-      return this._value.flat(Infinity);
+      const flattenArr = this._value.flat(Infinity);
+      // return flattenArr.map(item => parseInt(item, 10));
+      return flattenArr.map(Number);
     } else {
       return null;
     }
@@ -159,7 +161,7 @@ export class czmlCartesian3ListProp {
   public getCzmlData() {
     if (this.isUsed) {
       return {
-        [this.name]: this.getCzmlValue(),
+        [this.czmlName]: this.getCzmlValue(),
       };
     } else {
       return null;

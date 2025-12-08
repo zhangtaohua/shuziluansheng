@@ -14,6 +14,7 @@ export class czmlDocument {
   public description = "Describes a CZML document.";
   public type = "packet";
   public componentType = "czml#packet";
+
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
   public isExpand = true; // for UI

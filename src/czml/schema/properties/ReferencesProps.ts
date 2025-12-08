@@ -1,28 +1,40 @@
 import { nanoid } from "@/utils/common/nanoid";
-import dayjs from "dayjs";
 
-import { defaultTimeFormatStr } from "./commondata";
+import {
+  CZMLCARTESIAN3METERTYPE,
+  CZMLCARTESIAN3DEGREESTYPE,
+  CZMLCARTESIAN3RADIANSTYPE,
+  propValuesCartesian3TypeOptions,
+} from "./commondata.ts";
 
-export class czmlTimePureProp {
-  public id = "czml_prop_time_pure_" + nanoid(10);
-  public name = "currentTime";
-  public _czmlName = "currentTime";
-  public labelZh = "当前时间";
-  public labelEn = "current time";
-  public title = "Current Time";
-  public description = "The current time, specified in ISO8601 format.";
+export class czmlReferencesProp {
+  public id = "czml_prop_references_" + nanoid(10);
+  public name = "reference";
+  public _czmlName = "reference";
+  public labelZh = "參考";
+  public labelEn = "reference";
+  public title = "reference";
+  public description = "The offset specified as a reference to another property.";
+
   public type = "property";
   public componentType = "czml#packet#property";
-  public tag = "CzmlTimePurePropInput";
-  public _value = dayjs().format(defaultTimeFormatStr);
-  public _valueType = "";
-  public default = dayjs().format(defaultTimeFormatStr);
+  public czmlValue = true; // 这个用于标示是不是 czml value的
+
+  public tag = "CzmlReferencesPropInput";
+
+  public _value = [[""]];
+  public _valueType = "reference";
+
+  public default = [[""]];
+
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
   public isExpand = true; // for UI
   public _isEntity = false;
   public isCombinedProperty = false;
-  public isComplexProperty = false;
+  public isComplexProperty = true;
+
+  public secondsOnceAddCount = 1;
 
   constructor(options: any) {
     if (!options) {
@@ -32,16 +44,16 @@ export class czmlTimePureProp {
     if (options.id) {
       this.id = options.id;
     } else if (options.name) {
-      this.id = "czml_prop_time_pure_" + options.name + "_" + nanoid(10);
+      this.id = "czml_prop_references_" + options.name + "_" + nanoid(10);
     }
 
     if (options.name) {
       this.name = options.name;
     }
 
-    if (options.czmlName) {
-      this._czmlName = options.czmlName;
-    }
+    // if (options.czmlName) {
+    //   this._czmlName = options.czmlName;
+    // }
 
     if (options.labelZh) {
       this.labelZh = options.labelZh;
@@ -89,7 +101,7 @@ export class czmlTimePureProp {
   }
 
   set valueType(newValue) {
-    this._valueType = newValue;
+    return;
   }
 
   get isEntity() {
@@ -111,15 +123,39 @@ export class czmlTimePureProp {
 
   public getCzmlName() {
     if (this.isUsed) {
-      return this.czmlName;
+      if (this._value.length >= 2) {
+        return "references";
+      } else {
+        return this.czmlName;
+      }
     } else {
       return null;
     }
   }
 
+  // public flatten(arr) {
+  //   return arr.reduce((acc, val) => Array.isArray(val) ? acc.concat(flatten(val)) : acc.concat(val), []);
+  // }
+
   public getCzmlValue() {
     if (this.isUsed) {
-      return dayjs(this.value).toISOString();
+      if (this._value.length >= 2) {
+        // return this._value.flat(Infinity);
+        const revals = [];
+        for (let i = 0; i < this._value.length; i++) {
+          const temp = this._value[i];
+          if (temp[0]) {
+            revals.push();
+          }
+        }
+        return revals;
+      } else if (this._value.length == 1) {
+        if (this._value[0][0]) {
+          return this._value[0][0];
+        } else {
+          return null;
+        }
+      }
     } else {
       return null;
     }
@@ -136,23 +172,4 @@ export class czmlTimePureProp {
   }
 }
 
-export default czmlTimePureProp;
-
-export const czmlClockCurrentTimeOptions = {
-  name: "currentTime",
-  czmlName: "currentTime",
-  labelZh: "当前时间",
-  labelEn: "current time",
-  isEnable: true,
-};
-
-export const czmlEpochimeOptions = {
-  name: "epoch",
-  czmlName: "epoch",
-  labelZh: "时期",
-  labelEn: "epoch",
-  isEnable: true,
-  description: "The epoch to use for times specified as seconds since an epoch.",
-  type: "string",
-  format: "date-time",
-};
+export default czmlReferencesProp;

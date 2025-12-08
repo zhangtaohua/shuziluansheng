@@ -1,32 +1,47 @@
 <template>
-  <div v-if="isEnable" class="col_nw_fs_fs props_container">
-    <div class="row_nw_sb_ce props_title_box">
-      <el-tooltip placement="top" effect="dark">
-        <template #content>
-          <div class="col_nw_fs_ce props_title_tipbox">
-            <p v-if="currentProp.descriptionZh" class="props_ch_tiplabel">
-              {{ currentProp.descriptionZh }}
-            </p>
-            <p class="props_ogi_tiplabel">
-              {{ currentProp.description }}
-            </p>
+  <div v-if="isEnable" class="col_nw_fs_fs czml_props_container">
+    <div class="col_nw_fs_ce czml_combine_box">
+      <div class="row_nw_sb_ce czml_combine_tbox">
+        <el-tooltip placement="top" effect="dark">
+          <template #content>
+            <div class="col_nw_fs_ce props_title_tipbox">
+              <p v-if="currentProp.descriptionZh" class="props_ch_tiplabel">
+                {{ currentProp.descriptionZh }}
+              </p>
+              <p class="props_ogi_tiplabel">
+                {{ currentProp.description }}
+              </p>
+            </div>
+          </template>
+          <div class="row_nw_fs_ce czml_combine_lefttbox">
+            <img src="@/assets/images/icons/e-cube.svg" alt="icon" class="czml_combine_icon" />
+            <label class="row_nw_fs_ce czml_entitych_label">{{ currentProp.labelZh }}</label>
+            <label class="row_nw_fs_fe czml_entityogi_label">{{ currentProp.labelEn }}</label>
+
+            <div
+              class="row_nw_ce_ce czml_combine_downarrow"
+              :class="{ czml_combine_arrowup_show: currentProp.isExpand }"
+              @click="() => (currentProp.isExpand = !currentProp.isExpand)"
+            ></div>
           </div>
-        </template>
-        <div class="row_nw_fs_ce wh_auto_100p">
-          <label class="row_nw_fs_ce props_ch_label">{{ currentProp.labelZh }}</label>
-          <label class="row_nw_fs_fe props_ogi_label">{{ currentProp.labelEn }}</label>
+        </el-tooltip>
+
+        <div class="row_nw_fs_ce props_timecol_isusedbox">
+          <RjBooleanSwitchInput v-model="currentProp.isUsed"></RjBooleanSwitchInput>
         </div>
-      </el-tooltip>
-
-      <div class="row_nw_fs_ce props_timecol_isusedbox">
-        <RjBooleanSwitchInput v-model="currentProp.isUsed"></RjBooleanSwitchInput>
       </div>
-    </div>
 
-    <div v-if="currentProp && currentProp.properties" class="col_nw_fs_fs props_children_box">
-      <div v-for="childProp in currentProp.properties" :key="childProp.id" class="col_nw_ce_ce props_ic_box">
-        <component :is="childProp.tag" :vdata="childProp"></component>
-        <div class="props_ic_gap"></div>
+      <div class="czml_combine_topgap"></div>
+
+      <div
+        v-if="currentProp && currentProp.properties"
+        class="col_nw_fs_fs czml_combine_propbox"
+        :class="{ czml_combine_bigpropbox: currentProp.isExpand }"
+      >
+        <div v-for="childProp in currentProp.properties" :key="childProp.id" class="col_nw_ce_ce props_ic_box">
+          <component :is="childProp.tag" :vdata="childProp"></component>
+          <div class="props_ic_gap"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -36,10 +51,6 @@
   import { ref, reactive, onMounted, computed, watch, nextTick } from "vue";
   import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
   import RjBooleanSwitchInput from "@/components/form/RjBooleanSwitchInput.vue";
-
-  import { cloneDeep } from "es-toolkit";
-  import { isArray } from "es-toolkit/compat";
-  import dayjs from "dayjs";
 
   const props = defineProps({
     vdata: {
@@ -77,10 +88,20 @@
 </script>
 
 <style scoped>
-  .props_container {
+  .czml_props_container {
     width: 100%;
     height: auto;
     background-color: transparent;
+  }
+
+  .czml_combine_box {
+    position: relative;
+    width: 100%;
+    height: auto;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+    border-radius: 0.5rem;
   }
 
   .props_title_tipbox {
@@ -112,39 +133,98 @@
     word-break: break-all;
   }
 
-  .props_title_box {
+  .czml_combine_tbox {
+    position: absolute;
     width: 100%;
     height: 2rem;
-    margin-bottom: 0.5rem;
+    top: -1rem;
+    left: 0.5rem;
+    background-color: transparent;
+    padding: 0rem 0.5rem;
   }
 
-  .props_ch_label {
+  .czml_combine_lefttbox {
+    width: auto;
+    height: 100%;
+    background-color: rgba(26, 30, 39, 1);
+    padding: 0 0.875rem;
+  }
+
+  .czml_combine_icon {
+    width: auto;
+    height: 1.5rem;
+    margin-right: 0.75rem;
+  }
+
+  .czml_entitych_label {
     width: max-content;
     height: 100%;
     color: rgba(255, 255, 255, 1);
-    font-size: var(--czml-fs-pp-zh);
-    font-weight: 500;
-    margin-right: 0.5rem;
+    font-size: var(--czml-fs-c-zh);
+    font-weight: bold;
+    margin-right: 0.75rem;
   }
 
-  .props_ogi_label {
+  .czml_entityogi_label {
     width: max-content;
-    height: 1rem;
+    height: 100%;
     color: rgba(230, 230, 230, 1);
-    font-size: var(--czml-fs-pp-en);
-    font-weight: 400;
+    font-size: var(--czml-fs-c-en);
+    font-weight: bold;
     margin-top: 0.25rem;
+    margin-right: 0.875rem;
   }
 
   .props_timecol_isusedbox {
     width: 10rem;
     height: 100%;
+    background-color: rgba(26, 30, 39, 1);
     margin-right: 0.25rem;
+    padding: 0 0.875rem 0 1rem;
   }
 
-  .props_children_box {
+  .czml_combine_downarrow {
+    width: 0px;
+    height: 0px;
+    border-right: 0.75rem solid transparent;
+    border-top: 0.75rem solid rgba(255, 255, 255, 1);
+    border-left: 0.75rem solid transparent;
+    cursor: pointer;
+    transition: all 0.5s;
+    margin-top: 0.375rem;
+  }
+
+  .czml_combine_downarrow_disabled {
+    border-top: 0.75rem solid rgba(255, 255, 255, 0.5);
+    cursor: not-allowed;
+  }
+
+  .czml_combine_arrowup_show {
+    transform: rotate(180deg);
+  }
+
+  .czml_combine_arrowdown_show {
+    transform: rotate(0deg);
+  }
+
+  .czml_combine_topgap {
     width: 100%;
+    height: 2rem;
+  }
+
+  .czml_combine_propbox {
+    width: calc(100% - 2rem);
     height: auto;
+    max-height: 0px;
+    overflow: hidden;
+    transition: all 0.5s;
+  }
+
+  .czml_combine_bigpropbox {
+    width: calc(100% - 2rem);
+    height: auto;
+    max-height: fit-content;
+    overflow: unset;
   }
 
   .props_ic_box {
@@ -154,6 +234,6 @@
 
   .props_ic_gap {
     width: 100%;
-    height: 0.75rem;
+    height: 0.875rem;
   }
 </style>
