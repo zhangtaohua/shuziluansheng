@@ -6,22 +6,28 @@
       @click="setIsShowOptions(false)"
     ></div>
     <div class="row_nw_fs_ce props_box">
-      <el-tooltip placement="top" effect="dark">
-        <template #content>
-          <div class="col_nw_fs_ce props_title_tipbox">
-            <p v-if="currentProp.descriptionZh" class="props_ch_tiplabel">
-              {{ currentProp.descriptionZh }}
-            </p>
-            <p class="props_ogi_tiplabel">
-              {{ currentProp.description }}
-            </p>
+      <div class="row_nw_sb_ce props_title_box">
+        <el-tooltip placement="top" effect="dark">
+          <template #content>
+            <div class="col_nw_fs_ce props_title_tipbox">
+              <p v-if="currentProp.descriptionZh" class="props_ch_tiplabel">
+                {{ currentProp.descriptionZh }}
+              </p>
+              <p class="props_ogi_tiplabel">
+                {{ currentProp.description }}
+              </p>
+            </div>
+          </template>
+          <div class="row_nw_fs_ce wh_auto_100p">
+            <label class="row_nw_fs_ce props_ch_label">{{ currentProp.labelZh }}</label>
+            <label class="row_nw_fs_fe props_ogi_label">{{ currentProp.labelEn }}</label>
           </div>
-        </template>
-        <div class="row_nw_fs_ce wh_auto_100p">
-          <label class="row_nw_fs_ce props_ch_label">{{ currentProp.labelZh }}</label>
-          <label class="row_nw_fs_fe props_ogi_label">{{ currentProp.labelEn }}</label>
+        </el-tooltip>
+
+        <div class="row_nw_fs_ce props_timecol_isusedbox">
+          <RjBooleanSwitchInput v-model="currentProp.isUsed"></RjBooleanSwitchInput>
         </div>
-      </el-tooltip>
+      </div>
     </div>
 
     <div class="row_nw_ce_ce props_optionsbox">
@@ -67,6 +73,8 @@
 
 <script setup lang="ts">
   import { ref, reactive, onMounted, computed } from "vue";
+  import RjBooleanSwitchInput from "@/components/form/RjBooleanSwitchInput.vue";
+
   import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
 
   const props = defineProps({
@@ -158,6 +166,11 @@
   .props_box {
     width: 100%;
     height: 2.5rem;
+  }
+
+  .props_title_box {
+    width: 100%;
+    height: 100%;
   }
 
   .props_title_tipbox {

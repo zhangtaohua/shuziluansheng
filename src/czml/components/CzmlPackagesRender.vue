@@ -27,6 +27,8 @@
 
 <script setup lang="ts">
   import { ref, onMounted } from "vue";
+  import RjBooleanSwitchInput from "@/components/form/RjBooleanSwitchInput.vue";
+
   // import { getDomMaxHeight } from "@/utils/common/dom";
   // import LineGap from "@/h5/components/LineGap.vue";
 

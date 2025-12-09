@@ -58,7 +58,7 @@ export class CzmlDataMaker {
   }
 
   // RJTODO 后期要用 set 实现
-  public data = testFakeData2;
+  public data = testFakeData;
 
   // RJTODO
   // 1 要可以手动增加packet;

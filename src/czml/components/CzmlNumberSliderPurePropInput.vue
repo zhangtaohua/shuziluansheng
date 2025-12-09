@@ -1,43 +1,49 @@
 <template>
   <div v-if="isEnable" class="col_nw_fs_fs props_container" @mouseleave="setIsShowArrow(false)">
-    <div class="row_nw_sb_ce props_box">
-      <el-tooltip placement="top" effect="dark">
-        <template #content>
-          <div class="col_nw_fs_ce props_title_tipbox">
-            <p v-if="currentProp.descriptionZh" class="props_ch_tiplabel">
-              {{ currentProp.descriptionZh }}
-            </p>
-            <p class="props_ogi_tiplabel">
-              {{ currentProp.description }}
-            </p>
+    <div class="row_nw_ce_ce props_box">
+      <div class="row_nw_sb_ce props_title_box">
+        <el-tooltip placement="top" effect="dark">
+          <template #content>
+            <div class="col_nw_fs_ce props_title_tipbox">
+              <p v-if="currentProp.descriptionZh" class="props_ch_tiplabel">
+                {{ currentProp.descriptionZh }}
+              </p>
+              <p class="props_ogi_tiplabel">
+                {{ currentProp.description }}
+              </p>
+            </div>
+          </template>
+          <div class="row_nw_fs_ce wh_auto_100p">
+            <label class="row_nw_fs_ce props_ch_label">{{ currentProp.labelZh }}</label>
+            <label class="row_nw_fs_fe props_ogi_label">{{ currentProp.labelEn }}</label>
           </div>
-        </template>
-        <div class="row_nw_fs_ce props_title_box">
-          <label class="row_nw_fs_ce props_ch_label">{{ currentProp.labelZh }}</label>
-          <label class="row_nw_fs_fe props_ogi_label">{{ currentProp.labelEn }}</label>
-        </div>
-      </el-tooltip>
+        </el-tooltip>
 
-      <div class="row_nw_fs_ce props_input_nbox">
-        <div
-          class="row_nw_fs_ce props_input_box"
-          :class="{ props_input_box_act: isShowArrow, props_input_box_disabled: !currentProp.isEnable }"
-          @mouseover="setIsShowArrow(true)"
-        >
-          <input
-            type="number"
-            v-model="currentProp.value"
-            :min="currentProp.min"
-            :max="currentProp.max"
-            :step="currentProp.step"
-            class="row_nw_fs_fs props_input"
-            @focus="setIsShowArrow(true)"
-            @blur="onBlur"
-            :disabled="!currentProp.isEnable"
-          />
-          <div v-show="isShowArrow && currentProp.isEnable" class="props_input_uparrow" @click="plusNumber"></div>
-          <div v-show="isShowArrow && currentProp.isEnable" class="props_input_downarrow" @click="reduceNuber"></div>
+        <div class="row_nw_fs_ce props_timecol_isusedbox">
+          <RjBooleanSwitchInput v-model="currentProp.isUsed"></RjBooleanSwitchInput>
         </div>
+      </div>
+    </div>
+
+    <div class="row_nw_fe_ce props_input_nbox">
+      <div
+        class="row_nw_fs_ce props_input_box"
+        :class="{ props_input_box_act: isShowArrow, props_input_box_disabled: !currentProp.isEnable }"
+        @mouseover="setIsShowArrow(true)"
+      >
+        <input
+          type="number"
+          v-model="currentProp.value"
+          :min="currentProp.min"
+          :max="currentProp.max"
+          :step="currentProp.step"
+          class="row_nw_fs_fs props_input"
+          @focus="setIsShowArrow(true)"
+          @blur="onBlur"
+          :disabled="!currentProp.isEnable"
+        />
+        <div v-show="isShowArrow && currentProp.isEnable" class="props_input_uparrow" @click="plusNumber"></div>
+        <div v-show="isShowArrow && currentProp.isEnable" class="props_input_downarrow" @click="reduceNuber"></div>
       </div>
     </div>
 
@@ -68,6 +74,8 @@
   // 说明：这个是纯粹的 数字属性 设置， 可以用slider 来设置一个值。
 
   import { ref, reactive, onMounted, computed, watch, nextTick } from "vue";
+  import RjBooleanSwitchInput from "@/components/form/RjBooleanSwitchInput.vue";
+
   import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
 
   const props = defineProps({
@@ -237,8 +245,9 @@
   }
 
   .props_title_box {
-    width: max-content;
+    width: 100%;
     height: 100%;
+    margin-bottom: 0.5rem;
   }
 
   .props_ch_label {
@@ -260,13 +269,14 @@
   }
 
   .props_input_nbox {
-    width: max-content;
+    width: 100%;
     height: 2.5rem;
+    margin: 0.25rem 0;
   }
 
   .props_input_box {
     position: relative;
-    width: 7.5rem;
+    width: 12rem;
     height: calc(100% - 0.25rem);
     background-color: rgba(0, 0, 0, 1);
     border-radius: 2rem;

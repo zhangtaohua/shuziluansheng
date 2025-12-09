@@ -1,21 +1,27 @@
 <template>
   <div v-if="isEnable" class="col_nw_fs_fs props_container">
-    <el-tooltip placement="top" effect="dark">
-      <template #content>
-        <div class="col_nw_fs_ce props_title_tipbox">
-          <p v-if="currentProp.descriptionZh" class="props_ch_tiplabel">
-            {{ currentProp.descriptionZh }}
-          </p>
-          <p class="props_ogi_tiplabel">
-            {{ currentProp.description }}
-          </p>
+    <div class="row_nw_sb_ce props_title_box">
+      <el-tooltip placement="top" effect="dark">
+        <template #content>
+          <div class="col_nw_fs_ce props_title_tipbox">
+            <p v-if="currentProp.descriptionZh" class="props_ch_tiplabel">
+              {{ currentProp.descriptionZh }}
+            </p>
+            <p class="props_ogi_tiplabel">
+              {{ currentProp.description }}
+            </p>
+          </div>
+        </template>
+        <div class="row_nw_fs_ce wh_auto_100p">
+          <label class="row_nw_fs_ce props_ch_label">{{ currentProp.labelZh }}</label>
+          <label class="row_nw_fs_fe props_ogi_label">{{ currentProp.labelEn }}</label>
         </div>
-      </template>
-      <div class="row_nw_fs_ce props_title_box">
-        <label class="row_nw_fs_ce props_ch_label">{{ currentProp.labelZh }}</label>
-        <label class="row_nw_fs_fe props_ogi_label">{{ currentProp.labelEn }}</label>
+      </el-tooltip>
+
+      <div class="row_nw_fs_ce props_timecol_isusedbox">
+        <RjBooleanSwitchInput v-model="currentProp.isUsed"></RjBooleanSwitchInput>
       </div>
-    </el-tooltip>
+    </div>
 
     <div class="col_nw_fs_fs props_radiobox">
       <div class="row_nw_fs_ce props_radiobox_title">
@@ -36,7 +42,7 @@
     <!-- 以下是  InterpolatableProperty.json 相关的设置 -->
     <div v-if="currentProp.interpolationType == CZMLVALUESWITHINTERPOLATE" class="row_nw_ce_ce props_interpolation_box">
       <div class="col_nw_fs_ce props_interpolation_wrapbox">
-        <div class="row_nw_fs_ce props_title_box">
+        <div class="row_nw_fs_ce props_title_box2">
           <label class="row_nw_fs_ce props_ch_label">{{ currentProp.interpolationproperties.labelZh }}</label>
           <label class="row_nw_fs_fe props_ogi_label">{{ currentProp.interpolationproperties.labelEn }}</label>
         </div>
@@ -294,6 +300,7 @@
   import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
   import RjRadioTabInput from "@/components/form/RjRadioTabInput.vue";
   import LineGap from "@/h5/components/LineGap.vue";
+  import RjBooleanSwitchInput from "@/components/form/RjBooleanSwitchInput.vue";
 
   import { cloneDeep } from "es-toolkit";
   import { isArray } from "es-toolkit/compat";
@@ -536,6 +543,12 @@
   }
 
   .props_title_box {
+    width: 100%;
+    height: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .props_title_box2 {
     width: max-content;
     height: 2rem;
     margin-bottom: 0.5rem;

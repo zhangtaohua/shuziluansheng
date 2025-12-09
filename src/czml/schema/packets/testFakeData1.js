@@ -186,7 +186,7 @@ export const testFakeData2 = [
           uri: "https://images.pexels.com/photos/34198331/pexels-photo-34198331.jpeg",
         },
       ],
-      scale: 0.05,
+      scale: 0.5,
       // pixelOffset: [0, 0],
       // eyeOffset: [0, 0, 0],
       horizontalOrigin: "CENTER",

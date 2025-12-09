@@ -1,21 +1,27 @@
 <template>
   <div v-if="isEnable" class="col_nw_fs_fs props_container">
-    <el-tooltip placement="top" effect="dark">
-      <template #content>
-        <div class="col_nw_fs_ce props_title_tipbox">
-          <p v-if="currentProp.descriptionZh" class="props_ch_tiplabel">
-            {{ currentProp.descriptionZh }}
-          </p>
-          <p class="props_ogi_tiplabel">
-            {{ currentProp.description }}
-          </p>
+    <div class="row_nw_sb_ce props_title_box">
+      <el-tooltip placement="top" effect="dark">
+        <template #content>
+          <div class="col_nw_fs_ce props_title_tipbox">
+            <p v-if="currentProp.descriptionZh" class="props_ch_tiplabel">
+              {{ currentProp.descriptionZh }}
+            </p>
+            <p class="props_ogi_tiplabel">
+              {{ currentProp.description }}
+            </p>
+          </div>
+        </template>
+        <div class="row_nw_fs_ce wh_auto_100p">
+          <label class="row_nw_fs_ce props_ch_label">{{ currentProp.labelZh }}</label>
+          <label class="row_nw_fs_fe props_ogi_label">{{ currentProp.labelEn }}</label>
         </div>
-      </template>
-      <div class="row_nw_fs_ce props_title_box">
-        <label class="row_nw_fs_ce props_ch_label">{{ currentProp.labelZh }}</label>
-        <label class="row_nw_fs_fe props_ogi_label">{{ currentProp.labelEn }}</label>
+      </el-tooltip>
+
+      <div class="row_nw_fs_ce props_timecol_isusedbox">
+        <RjBooleanSwitchInput v-model="currentProp.isUsed"></RjBooleanSwitchInput>
       </div>
-    </el-tooltip>
+    </div>
 
     <div class="col_nw_fs_fs props_radiobox">
       <div class="row_nw_fs_ce props_radiobox_title">
@@ -256,6 +262,7 @@
 
   import { ref, reactive, onMounted, computed, watch, nextTick } from "vue";
   import RjRadioTabInput from "@/components/form/RjRadioTabInput.vue";
+  import RjBooleanSwitchInput from "@/components/form/RjBooleanSwitchInput.vue";
 
   import { cloneDeep } from "es-toolkit";
   import { isArray } from "es-toolkit/compat";
@@ -487,7 +494,7 @@
   }
 
   .props_title_box {
-    width: max-content;
+    width: 100%;
     height: 2rem;
     margin-bottom: 0.5rem;
   }
@@ -579,7 +586,7 @@
   }
 
   .props_qtinput_itemlabelleft {
-    width: 1.5rem;
+    width: 4.5rem;
     height: 100%;
     color: rgba(255, 255, 255, 1);
     font-size: var(--czml-fs-sl-label);
@@ -588,17 +595,18 @@
   }
 
   .props_qtinput_itemlabelright {
-    width: 1.5rem;
+    width: 4.5rem;
     height: 100%;
     color: rgba(255, 255, 255, 1);
     font-size: var(--czml-fs-sl-label);
     font-weight: bold;
     margin-right: 0.5rem;
     margin-left: 1rem;
+    flex-shrink: 0;
   }
 
   .props_qtinput_itembox {
-    width: calc(50% - 2.25rem);
+    width: calc(50% - 5.25rem);
     height: 100%;
   }
 

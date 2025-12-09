@@ -22,6 +22,7 @@
         <RjBooleanSwitchInput v-model="currentProp.isUsed"></RjBooleanSwitchInput>
       </div>
     </div>
+
     <div class="col_nw_fs_fs props_it_box">
       <div class="col_nw_fs_fs props_it_wrapper" :class="{ props_it_samllwrapper: isFoldIntervals }">
         <div class="col_nw_fs_fs props_it_inwrapper">
@@ -103,6 +104,7 @@
   import { ref, reactive, onMounted, computed, watch, nextTick } from "vue";
   import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
   import RjBooleanSwitchInput from "@/components/form/RjBooleanSwitchInput.vue";
+
   import { defaultTimeFormatStr } from "@/czml/schema/properties/commondata";
   import { cloneDeep } from "es-toolkit";
   import { isArray } from "es-toolkit/compat";

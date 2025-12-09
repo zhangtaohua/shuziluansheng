@@ -22,6 +22,7 @@
   import { ref, reactive, onMounted, computed, watch, nextTick } from "vue";
   import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
   import LineGap from "@/h5/components/LineGap.vue";
+  import RjBooleanSwitchInput from "@/components/form/RjBooleanSwitchInput.vue";
 
   import { cloneDeep } from "es-toolkit";
   import { isArray } from "es-toolkit/compat";
