@@ -12,6 +12,7 @@ export class czmlDocument {
   public labelEn = "document";
   public title = "Document";
   public description = "Describes a CZML document.";
+  public descriptionZh = "";
   public type = "packet";
   public componentType = "czml#packet";
 
@@ -38,8 +39,13 @@ export class czmlDocument {
     if (options.labelEn) {
       this.labelEn = options.labelEn;
     }
+
     if (options.description) {
       this.description = options.description;
+    }
+
+    if (options.descriptionZh) {
+      this.descriptionZh = options.descriptionZh;
     }
   }
 

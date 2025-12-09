@@ -30,7 +30,7 @@
       </div>
     </div>
 
-    <div class="col_nw_fs_fs props_radiobox">
+    <div v-if="!currentProp.isFixedXyzUnitType" class="col_nw_fs_fs props_radiobox">
       <div class="row_nw_fs_ce props_radiobox_title">
         <label class="row_nw_fs_ce props_radioch_label">XYZ 单位</label>
         <label class="row_nw_fs_fe props_radioogi_label">XYZ Unit</label>

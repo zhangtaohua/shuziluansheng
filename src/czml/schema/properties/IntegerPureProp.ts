@@ -8,6 +8,8 @@ export class czmlIntegerPureProp {
   public labelEn = "integer";
   public title = "Integer";
   public description = "An integer number.";
+  public descriptionZh = "";
+
   public type = "property";
   public componentType = "czml#packet#property";
   public tag = "CzmlNumberSliderPurePropInput";
@@ -58,6 +60,10 @@ export class czmlIntegerPureProp {
 
     if (options.description) {
       this.description = options.description;
+    }
+
+    if (options.descriptionZh) {
+      this.descriptionZh = options.descriptionZh;
     }
 
     if (options.tag) {

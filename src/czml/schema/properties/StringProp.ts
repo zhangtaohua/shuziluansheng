@@ -8,6 +8,8 @@ export class czmlStringProp {
   public labelEn = "string";
   public title = "String";
   public description = "The string value.";
+  public descriptionZh = "";
+
   public type = "property";
   public componentType = "czml#packet#property";
   public tag = "CzmlStringPropInput";
@@ -54,6 +56,10 @@ export class czmlStringProp {
 
     if (options.description) {
       this.description = options.description;
+    }
+
+    if (options.descriptionZh) {
+      this.descriptionZh = options.descriptionZh;
     }
 
     if (options.tag) {
@@ -140,7 +146,7 @@ export const czmlReferenceValueOptions = {
   czmlName: "reference",
   labelZh: "参考值",
   labelEn: "reference",
-  value: "reference_init" + nanoid(10),
+  value: "",
   isEnable: true,
   description:
     "Represents a reference to another property. References can be used to specify that two properties on different objects are in fact, the same property.",

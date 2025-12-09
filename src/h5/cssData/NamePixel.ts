@@ -160,6 +160,8 @@ export class CssNamePixel {
   public _value = 200;
   public unit = "px";
   public description = "";
+  public descriptionZh = "";
+
   private _min = 0;
   private _max = 5000;
   private _step = 1;
@@ -195,6 +197,14 @@ export class CssNamePixel {
 
     if (options.retainDecimalPlaces) {
       this._retainDecimalPlaces = +options.retainDecimalPlaces;
+    }
+
+    if (options.description) {
+      this.description = options.description;
+    }
+
+    if (options.descriptionZh) {
+      this.descriptionZh = options.descriptionZh;
     }
   }
 

@@ -14,6 +14,8 @@ export class czmlOrientationProp {
   public title = "Orientation";
   public description =
     'Defines an orientation. An orientation is a rotation that takes a vector expressed in the "body" axes of the object and transforms it to the Earth fixed axes.';
+  public descriptionZh = "";
+
   public type = "property";
   public componentType = "czml#packet#property";
   public tag = "CzmlCombinePropInput";
@@ -25,19 +27,17 @@ export class czmlOrientationProp {
   public isComplexProperty = false;
 
   public properties = {
-    // unitQuaternion: new czmlUnitQuaternionProp({
-    //   $ref: "Values/UnitQuaternionValue.json",
-    //   name: "unitQuaternion",
-    //   description1:
-    //     "The orientation specified as a 4-dimensional unit magnitude quaternion, specified as `[X, Y, Z, W]`.",
-    // }),
-    inter: new czmlInterpolatableProp(null),
-    unitQuaternionPure: new czmlUnitQuaternionProp({
-      name: "unitQuaternionPure",
+    interpolate: new czmlInterpolatableProp(null),
+    unitQuaternion: new czmlUnitQuaternionProp({
+      czmlName: "unitQuaternion",
+      $ref: "Values/UnitQuaternionValue.json",
+      description:
+        "The orientation specified as a 4-dimensional unit magnitude quaternion, specified as `[X, Y, Z, W]`.",
     }),
-    unitQuaternion: new czmlUnitQuaternionInterpolationProp(null),
+    // unitQuaternionWithInterpolate: new czmlUnitQuaternionInterpolationProp(null),
     reference: new czmlStringProp({
       name: "reference",
+      czmlName: "reference",
       labelZh: "参考",
       labelEn: "reference",
       value: "",
@@ -48,6 +48,7 @@ export class czmlOrientationProp {
     }),
     velocityReference: new czmlStringProp({
       name: "velocityReference",
+      czmlName: "velocityReference",
       labelZh: "速度参考",
       labelEn: "velocity reference",
       value: "",
@@ -92,6 +93,10 @@ export class czmlOrientationProp {
 
     if (options.description) {
       this.description = options.description;
+    }
+
+    if (options.descriptionZh) {
+      this.descriptionZh = options.descriptionZh;
     }
 
     if (options.tag) {
@@ -142,7 +147,7 @@ export class czmlOrientationProp {
           // RJTODO 要去除空值的属性
           // if(propKey && propValue) {
           // }
-          if (prop instanceof czmlUnitQuaternionInterpolationProp) {
+          if (prop instanceof czmlInterpolatableProp) {
             if (propValue) {
               Object.assign(czmlData, propValue);
             }

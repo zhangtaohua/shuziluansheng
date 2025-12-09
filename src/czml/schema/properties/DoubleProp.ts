@@ -24,6 +24,8 @@ export class czmlDoubleProp {
   public labelEn = "double";
   public title = "Double";
   public description = "A floating-point number.";
+  public descriptionZh = "";
+
   public type = "property";
   public componentType = "czml#packet#property";
   public tag = "CzmlNumberPropInput";
@@ -88,6 +90,10 @@ export class czmlDoubleProp {
 
     if (options.description) {
       this.description = options.description;
+    }
+
+    if (options.descriptionZh) {
+      this.descriptionZh = options.descriptionZh;
     }
 
     if (options.tag) {

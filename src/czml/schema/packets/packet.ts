@@ -24,6 +24,7 @@ export class czmlPacket {
   public labelEn = "packet";
   public title = "Packet";
   public description = "Describes the graphical properties of a single object in a scene, such as a single aircraft.";
+  public descriptionZh = "";
   public type = "packet";
   public componentType = "czml#packet";
   public isEnable = true; // for can edit
@@ -53,6 +54,9 @@ export class czmlPacket {
     }
     if (options.description) {
       this.description = options.description;
+    }
+    if (options.descriptionZh) {
+      this.descriptionZh = options.descriptionZh;
     }
   }
 
@@ -155,6 +159,7 @@ export class czmlPacket {
     }),
     viewFrom: new czmlViewFromProp({
       $ref: "ViewFrom.json",
+      isUsed: false,
       description:
         "A suggested camera location when viewing this object. The property is specified as a Cartesian position in the East (x), North (y), Up (z) reference frame relative to the object's position.",
     }),

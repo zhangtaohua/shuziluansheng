@@ -27,6 +27,7 @@ export class czmlCartesian3PixelProp {
   public title = "cartesian3Pixel";
   public description =
     "A two-dimensional Cartesian value specified as `[X, Y]`. If the array has two elements, the value is constant. If it has three or more elements, they are time-tagged samples arranged as `[Time, X, Y, Time, X, Y, ...]`, where Time is an ISO 8601 date and time string or seconds since epoch.";
+  public descriptionZh = "";
 
   public type = "property";
   public componentType = "czml#packet#property";
@@ -93,6 +94,10 @@ export class czmlCartesian3PixelProp {
 
     if (options.description) {
       this.description = options.description;
+    }
+
+    if (options.descriptionZh) {
+      this.descriptionZh = options.descriptionZh;
     }
 
     if (options.tag) {

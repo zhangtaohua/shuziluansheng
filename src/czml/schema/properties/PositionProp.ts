@@ -19,8 +19,8 @@ import {
 import { czmlOptionsPureProp, CzmlReferenceFrameOptions } from "./OptionsPureProp";
 import { czmlStringProp, czmlReferenceValueOptions } from "./StringProp";
 import czmlCartesian3Prop from "./Cartesian3Prop";
-import czmlCartesian4Prop from "./Cartesian4Prop";
 import czmlCartesian3VelocityProp from "./Cartesian3VelocityProp.ts";
+import czmlInterpolatableProp from "./InterpolatablePropertyProp.ts";
 
 export class czmlPositionProp {
   public id = "czml_prop_position_" + nanoid(10);
@@ -30,6 +30,8 @@ export class czmlPositionProp {
   public labelEn = "position";
   public title = "Position";
   public description = "Defines a position. The position can optionally vary over time.";
+  public descriptionZh = "";
+
   public type = "property";
   public componentType = "czml#packet#property";
   public tag = "CzmlPositionPropInput";
@@ -39,31 +41,50 @@ export class czmlPositionProp {
   public _isEntity = false;
   public isCombinedProperty = true;
   public isComplexProperty = false;
-  // public availability = "";
+
+  public compUsedOptions = [
+    { label: "cartesian 笛卡尔", value: "cartesian" },
+    { label: "cartographicDegrees wgs84经纬度", value: "cartographicDegrees" },
+    { label: "cartographicRadians wgs84弧度", value: "cartographicRadians" },
+  ];
 
   public properties = {
-    referenceFrame: new czmlOptionsPureProp(CzmlReferenceFrameOptions),
+    referenceFrame: new czmlOptionsPureProp({
+      ...CzmlReferenceFrameOptions,
+      descriptionZh:
+        "用于指定笛卡尔坐标位置的参考系。可选值为“FIXED”和“INERTIAL”。如果选择“INERTIAL”，请设置与插值相关的属性。",
+      description:
+        'The reference frame in which cartesian positions are specified. Possible values are "FIXED" and "INERTIAL".If you select INERTIAL, please set the interpolation-related properties.',
+      type: "string",
+      default: "FIXED",
+    }),
+    interpolate: new czmlInterpolatableProp(null),
     cartesian: new czmlCartesian3Prop({
       czmlName: "cartesian",
       isEnable: true,
       isFixedXyzUnitType: true,
+      isUsed: true,
       xyzUnitType: CZMLCARTESIAN3METERTYPE,
     }),
     cartographicRadians: new czmlCartesian3Prop({
       czmlName: "cartographicRadians",
       isEnable: true,
       isFixedXyzUnitType: true,
-      xyzUnitType: CZMLCARTESIAN3DEGREESTYPE,
-    }),
-    cartographicDegrees: new czmlCartesian3Prop({
-      czmlName: "cartographicRadians",
-      isEnable: true,
-      isFixedXyzUnitType: true,
+      isUsed: false,
       xyzUnitType: CZMLCARTESIAN3RADIANSTYPE,
     }),
-    cartesianVelocity: new czmlCartesian3VelocityProp(null),
+    cartographicDegrees: new czmlCartesian3Prop({
+      czmlName: "cartographicDegrees",
+      isEnable: true,
+      isFixedXyzUnitType: true,
+      isUsed: false,
+      xyzUnitType: CZMLCARTESIAN3DEGREESTYPE,
+    }),
+    cartesianVelocity: new czmlCartesian3VelocityProp({
+      isUsed: false,
+    }),
     // RJTODO 这里是错的 暂时为了调试用
-    references: new czmlStringProp(czmlReferenceValueOptions),
+    references: new czmlStringProp({ ...czmlReferenceValueOptions, isUsed: true }),
   };
 
   constructor(options: any) {
@@ -99,6 +120,10 @@ export class czmlPositionProp {
 
     if (options.description) {
       this.description = options.description;
+    }
+
+    if (options.descriptionZh) {
+      this.descriptionZh = options.descriptionZh;
     }
 
     if (options.tag) {
@@ -140,14 +165,29 @@ export class czmlPositionProp {
       const czmlData = {};
       const keys = Object.keys(this.properties);
 
+      const rfProp = this.properties["referenceFrame"];
+      let isUseInterpolate = false;
+      if (rfProp) {
+        const propValue = rfProp.getCzmlValue();
+        if (propValue && propValue == "INERTIAL") {
+          isUseInterpolate = true;
+        }
+      }
+
       for (let i = 0; i < keys.length; i++) {
         const key = keys[i];
         const prop = this.properties[key];
-        if (prop.getCzmlName) {
+        if (prop.getCzmlName && prop.isUsed) {
           const propKey = prop.getCzmlName();
           const propValue = prop.getCzmlValue();
-          if (propKey && propValue) {
-            czmlData[propKey] = propValue;
+          if (prop instanceof czmlInterpolatableProp) {
+            if (isUseInterpolate) {
+              Object.assign(czmlData, propValue);
+            }
+          } else {
+            if (propKey && propValue) {
+              czmlData[propKey] = propValue;
+            }
           }
         }
       }

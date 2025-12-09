@@ -8,6 +8,8 @@ export class czmlCustomPropertiesProp {
   public labelEn = "custom properties";
   public title = "Custom Properties";
   public description = "A set of custom properties.";
+  public descriptionZh = "";
+
   public type = "property";
   public componentType = "czml#packet#property";
 
@@ -68,6 +70,10 @@ export class czmlCustomPropertiesProp {
 
     if (options.description) {
       this.description = options.description;
+    }
+
+    if (options.descriptionZh) {
+      this.descriptionZh = options.descriptionZh;
     }
 
     if (options.tag) {

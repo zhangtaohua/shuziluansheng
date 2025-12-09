@@ -9,6 +9,8 @@ export class CssPureOptionsInput {
   public tag = "OptionsInput";
   public _value = "";
   public description = "";
+  public descriptionZh = "";
+
   public options = [];
   public isEnable = true;
 
@@ -23,6 +25,14 @@ export class CssPureOptionsInput {
     this._value = options.value;
     this.options = options.options;
     this.isEnable = options.isEnable ?? true;
+
+    if (options.description) {
+      this.description = options.description;
+    }
+
+    if (options.descriptionZh) {
+      this.descriptionZh = options.descriptionZh;
+    }
   }
 
   get value() {

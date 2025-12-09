@@ -4,6 +4,8 @@ import { nanoid } from "@/utils/common/nanoid";
 export class czmlBooleanValue {
   public title = "Boolean";
   public description = "A boolean value.";
+  public descriptionZh = "";
+
   public type = "boolean";
   public czmlValue = true;
 

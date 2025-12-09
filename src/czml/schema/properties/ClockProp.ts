@@ -14,6 +14,8 @@ export class czmlClockProp {
   public title = "Clock";
   public description =
     "Initial settings for a simulated clock when a document is loaded. The start and stop time are configured using the interval property.";
+  public descriptionZh = "";
+
   public type = "property";
   public componentType = "czml#packet#property";
   public tag = "CzmlCombinePropInput";
@@ -65,6 +67,10 @@ export class czmlClockProp {
 
     if (options.description) {
       this.description = options.description;
+    }
+
+    if (options.descriptionZh) {
+      this.descriptionZh = options.descriptionZh;
     }
 
     if (options.tag) {

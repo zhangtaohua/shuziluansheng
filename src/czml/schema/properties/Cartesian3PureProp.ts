@@ -19,6 +19,7 @@ export class czmlCartesian3PureProp {
 
   public description =
     "A three-dimensional Cartesian value specified as `[X, Y, Z]`. If the array has three elements, the value is constant.";
+  public descriptionZh = "";
 
   public type = "property";
   public componentType = "czml#packet#property";
@@ -83,6 +84,10 @@ export class czmlCartesian3PureProp {
 
     if (options.description) {
       this.description = options.description;
+    }
+
+    if (options.descriptionZh) {
+      this.descriptionZh = options.descriptionZh;
     }
 
     if (options.tag) {

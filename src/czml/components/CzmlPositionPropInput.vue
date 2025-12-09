@@ -33,15 +33,31 @@
 
       <div class="czml_combine_topgap"></div>
 
+      <div class="col_nw_fs_fs czml_props_used_box">
+        <div class="row_nw_fs_ce wh_auto_100p" style="margin-bottom: 1rem">
+          <div class="row_nw_fs_ce czml_props_used_label">请选择使用的属性</div>
+          <div class="row_nw_fs_ce czml_props_used_enlabel">Please select the attribute to use.</div>
+        </div>
+        <el-select v-model="usedComp" placeholder="Select" @change="usedCompChangedHd">
+          <el-option
+            v-for="item in currentProp.compUsedOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
+      </div>
+
       <div
         v-if="currentProp && currentProp.properties"
         class="col_nw_fs_fs czml_combine_propbox"
         :class="{ czml_combine_bigpropbox: currentProp.isExpand }"
       >
         <div v-for="childProp in currentProp.properties" :key="childProp.id" class="col_nw_ce_ce props_ic_box">
-          <component :is="childProp.tag" :vdata="childProp"></component>
-          <div class="props_ic_gap"></div>
+          <component v-if="childProp.isUsed" :is="childProp.tag" :vdata="childProp"></component>
+          <div v-if="childProp.isUsed" class="props_ic_gap"></div>
         </div>
+        <div class="props_ic_gap"></div>
       </div>
     </div>
   </div>
@@ -49,7 +65,6 @@
 
 <script setup lang="ts">
   import { ref, reactive, onMounted, computed, watch, nextTick } from "vue";
-  import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
   import RjBooleanSwitchInput from "@/components/form/RjBooleanSwitchInput.vue";
 
   const props = defineProps({
@@ -64,11 +79,35 @@
     },
   });
 
-  const { editorConfig } = useEditorConfigStore();
-  const id = "";
-  const name = "";
   const currentProp = ref({});
   const isEnable = ref(false);
+  const usedComp = ref("cartesian");
+  let oldCompKey = "cartesian";
+
+  // const componentOptions = computed(() => {
+  //   if (currentProp.value.properties) {
+  //     const keys = Object.keys(currentProp.value.properties);
+  //     if (keys && keys.length) {
+  //       const reVal = [];
+  //       for (let i = 0; i < keys.length; i++) {
+  //         reVal.push({ label: keys[i], value: keys[i] });
+  //       }
+  //       return reVal;
+  //     } else {
+  //       return [];
+  //     }
+  //   } else {
+  //     return [];
+  //   }
+  // });
+
+  function usedCompChangedHd(key) {
+    if (currentProp.value.properties) {
+      currentProp.value.properties[oldCompKey].isUsed = false;
+      currentProp.value.properties[key].isUsed = true;
+      oldCompKey = key;
+    }
+  }
 
   function init() {
     if (props.vdata && props.vdata.id && props.vdata.name) {
@@ -210,6 +249,30 @@
   .czml_combine_topgap {
     width: 100%;
     height: 2rem;
+  }
+
+  .czml_props_used_box {
+    width: calc(100% - 2rem);
+    height: auto;
+    margin-bottom: 1rem;
+  }
+
+  .czml_props_used_label {
+    width: max-content;
+    height: 100%;
+    color: rgba(255, 255, 255, 1);
+    font-size: var(--czml-fs-ppl-zh);
+    font-weight: 400;
+    margin-right: 0.75rem;
+  }
+
+  .czml_props_used_enlabel {
+    width: max-content;
+    height: 100%;
+    color: rgba(255, 255, 255, 1);
+    font-size: var(--czml-fs-ppl-en);
+    font-weight: 400;
+    margin-top: 0.25rem;
   }
 
   .czml_combine_propbox {

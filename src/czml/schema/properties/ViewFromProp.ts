@@ -13,11 +13,13 @@ export class czmlViewFromProp {
 
   public description =
     "A suggested initial camera position offset when tracking this object, specified as a Cartesian position. Typically defined in the East (x), North (y), Up (z) reference frame relative to the object's position, but may use another frame depending on the object's velocity.";
+  public descriptionZh = "";
+
   public type = "property";
   public componentType = "czml#packet#property";
   public tag = "CzmlCombinePropInput";
   public isEnable = true; // for can edit
-  public isUsed = true; // for can used
+  public isUsed = false; // for can used
   public isExpand = true; // for UI
   public _isEntity = false;
   public isCombinedProperty = true;
@@ -27,6 +29,7 @@ export class czmlViewFromProp {
     cartesian: new czmlCartesian3PureProp(null),
     reference: new czmlStringProp({
       name: "reference",
+      czmlName: "reference",
       labelZh: "参考",
       labelEn: "reference",
       value: "",
@@ -70,6 +73,10 @@ export class czmlViewFromProp {
 
     if (options.description) {
       this.description = options.description;
+    }
+
+    if (options.descriptionZh) {
+      this.descriptionZh = options.descriptionZh;
     }
 
     if (options.tag) {

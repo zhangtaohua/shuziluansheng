@@ -17,6 +17,8 @@ export class czmlUriProp {
   public labelEn = "uri";
   public title = "Uri";
   public description = "A URI value. The URI can optionally vary with time.";
+  public descriptionZh = "";
+
   public type = "property";
   public componentType = "czml#packet#property";
   public tag = "CzmlUriPropInput";
@@ -77,6 +79,10 @@ export class czmlUriProp {
 
     if (options.description) {
       this.description = options.description;
+    }
+
+    if (options.descriptionZh) {
+      this.descriptionZh = options.descriptionZh;
     }
 
     if (options.tag) {

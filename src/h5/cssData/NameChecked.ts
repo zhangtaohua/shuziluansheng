@@ -1,6 +1,5 @@
 import { nanoid } from "@/utils/common/nanoid";
 
-
 export class CssCheckedInput {
   public id = "css_checked_color_" + nanoid(10);
   public name = "checked";
@@ -10,6 +9,8 @@ export class CssCheckedInput {
   public tag = "CheckInput";
   public _value = "false";
   public description = "";
+  public descriptionZh = "";
+
   public isEnable = true;
 
   constructor(options: any) {
@@ -22,6 +23,14 @@ export class CssCheckedInput {
 
     this._value = options.value;
     this.isEnable = options.isEnable ?? true;
+
+    if (options.description) {
+      this.description = options.description;
+    }
+
+    if (options.descriptionZh) {
+      this.descriptionZh = options.descriptionZh;
+    }
   }
 
   get value() {

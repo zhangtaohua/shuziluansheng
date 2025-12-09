@@ -8,6 +8,8 @@ export class czmlOptionsPureProp {
   public labelEn = "pure options";
   public title = "Pure Options";
   public description = "The pure options select.";
+  public descriptionZh = "";
+
   public type = "property";
   public componentType = "czml#packet#property";
   public tag = "CzmlOptionsPurePropInput";
@@ -55,6 +57,10 @@ export class czmlOptionsPureProp {
 
     if (options.description) {
       this.description = options.description;
+    }
+
+    if (options.descriptionZh) {
+      this.descriptionZh = options.descriptionZh;
     }
 
     if (options.tag) {

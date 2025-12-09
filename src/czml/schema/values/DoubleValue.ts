@@ -6,6 +6,8 @@ export class czmlDoubleValue {
   public title = "Double";
   public description =
     "A floating-point number. The value may be a single number, or an array with one element, in which case the value is constant. If it is an array with two or more elements, they are time-tagged samples arranged as `[Time, Value, Time, Value, ...]`, where Time is an ISO 8601 date and time string or seconds since epoch.";
+  public descriptionZh = "";
+
   public type = ["number", "array"];
   public czmlValue = true;
 

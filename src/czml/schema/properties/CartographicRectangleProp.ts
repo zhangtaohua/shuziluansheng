@@ -28,6 +28,7 @@ export class czmlCartographicRectangleProp {
   public title = "CartographicRectangle";
   public description =
     "A two-dimensional region specified as `[WestLongitude, SouthLatitude, EastLongitude, NorthLatitude]`, with values in degrees. If the array has four elements, the value is constant. If it has five or more elements, they are time-tagged samples arranged as `[Time, WestLongitude, SouthLatitude, EastLongitude, NorthLatitude, Time, WestLongitude, SouthLatitude, EastLongitude, NorthLatitude, ...]`, where Time is an ISO 8601 date and time string or seconds since epoch.";
+  public descriptionZh = "";
 
   public type = "property";
   public componentType = "czml#packet#property";
@@ -97,6 +98,10 @@ export class czmlCartographicRectangleProp {
 
     if (options.description) {
       this.description = options.description;
+    }
+
+    if (options.descriptionZh) {
+      this.descriptionZh = options.descriptionZh;
     }
 
     if (options.tag) {

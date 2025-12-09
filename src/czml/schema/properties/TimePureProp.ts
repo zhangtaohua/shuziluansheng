@@ -11,6 +11,8 @@ export class czmlTimePureProp {
   public labelEn = "current time";
   public title = "Current Time";
   public description = "The current time, specified in ISO8601 format.";
+  public descriptionZh = "";
+
   public type = "property";
   public componentType = "czml#packet#property";
   public tag = "CzmlTimePurePropInput";
@@ -57,6 +59,10 @@ export class czmlTimePureProp {
 
     if (options.description) {
       this.description = options.description;
+    }
+
+    if (options.descriptionZh) {
+      this.descriptionZh = options.descriptionZh;
     }
 
     if (options.tag) {

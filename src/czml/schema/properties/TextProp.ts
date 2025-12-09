@@ -8,6 +8,8 @@ export class czmlTextProp {
   public labelEn = "text";
   public title = "Text";
   public description = "The big string value.";
+  public descriptionZh = "";
+
   public tag = "CzmlTextPropInput";
   public type = "property";
   public componentType = "czml#packet#property";
@@ -54,6 +56,10 @@ export class czmlTextProp {
 
     if (options.description) {
       this.description = options.description;
+    }
+
+    if (options.descriptionZh) {
+      this.descriptionZh = options.descriptionZh;
     }
 
     if (options.tag) {

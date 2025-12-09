@@ -8,6 +8,7 @@ export class czmlBooleanPureProp {
   public labelEn = "boolean";
   public title = "Boolean";
   public description = "The boolean value.";
+  public descriptionZh = "";
   public type = "property";
   public componentType = "czml#packet#property";
   public czmlValue = true; // 这个用于标示是不是 czml value的
@@ -58,6 +59,10 @@ export class czmlBooleanPureProp {
 
     if (options.description) {
       this.description = options.description;
+    }
+
+    if (options.descriptionZh) {
+      this.descriptionZh = options.descriptionZh;
     }
 
     if (options.tag) {

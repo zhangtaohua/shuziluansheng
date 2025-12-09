@@ -11,6 +11,8 @@ export class czmlTimeIntervalProp {
   public labelEn = "interval";
   public title = "Time Interval";
   public description = "The current time, specified in ISO8601 format.";
+  public descriptionZh = "";
+
   public type = "property";
   public componentType = "czml#packet#property";
   public tag = "CzmlTimeIntervalPropInput";
@@ -58,6 +60,10 @@ export class czmlTimeIntervalProp {
 
     if (options.description) {
       this.description = options.description;
+    }
+
+    if (options.descriptionZh) {
+      this.descriptionZh = options.descriptionZh;
     }
 
     if (options.tag) {

@@ -15,6 +15,8 @@ export class CssColorOptionsInput {
   public _isColorValue = false;
   public _isPureColor = true;
   public description = "";
+  public descriptionZh = "";
+
   public options = [];
   public isEnable = true;
 
@@ -46,6 +48,14 @@ export class CssColorOptionsInput {
 
     this.options = options.options;
     this.isEnable = options.isEnable ?? true;
+
+    if (options.description) {
+      this.description = options.description;
+    }
+
+    if (options.descriptionZh) {
+      this.descriptionZh = options.descriptionZh;
+    }
   }
 
   get value() {

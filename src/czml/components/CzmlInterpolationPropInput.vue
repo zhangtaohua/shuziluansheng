@@ -19,7 +19,7 @@
       </div>
 
       <div class="col_nw_fs_ce props_interpolation_nosuebox">
-        <label class="row_nw_fs_ce props_interpolation_nousetipzh">使用插值算法,请注意值值是否含有时间标记</label>
+        <label class="row_nw_fs_ce props_interpolation_nousetipzh">使用插值算法,请注意值是否含有时间标记</label>
         <label class="row_nw_fs_ce props_interpolation_nousetipeng">
           Use interpolateable properties the value need time-tagged
         </label>

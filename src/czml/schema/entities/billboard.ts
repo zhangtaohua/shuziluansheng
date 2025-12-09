@@ -47,6 +47,9 @@ export class czmlBillboard {
   public title = "Billboard";
   public description =
     "A billboard, or viewport-aligned image. The billboard is positioned in the scene by the `position` property. A billboard is sometimes called a marker.";
+
+  public descriptionZh = "";
+
   public type = "entity";
   public componentType = "czml#packet#entity";
   public tag = "CzmlEntityRender";
@@ -90,6 +93,10 @@ export class czmlBillboard {
 
     if (options.description) {
       this.description = options.description;
+    }
+
+    if (options.descriptionZh) {
+      this.descriptionZh = options.descriptionZh;
     }
 
     if (options.tag) {

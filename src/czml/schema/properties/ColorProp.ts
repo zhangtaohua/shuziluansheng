@@ -28,6 +28,7 @@ export class czmlColorProp {
   public labelEn = "color";
   public title = "color";
   public description = "A color. The color can optionally vary over time.";
+  public descriptionZh = "";
 
   public type = "property";
   public componentType = "czml#packet#property";
@@ -96,6 +97,10 @@ export class czmlColorProp {
 
     if (options.description) {
       this.description = options.description;
+    }
+
+    if (options.descriptionZh) {
+      this.descriptionZh = options.descriptionZh;
     }
 
     if (options.tag) {

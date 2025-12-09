@@ -15,6 +15,7 @@ export class czmlReferencesProp {
   public labelEn = "reference";
   public title = "reference";
   public description = "The offset specified as a reference to another property.";
+  public descriptionZh = "";
 
   public type = "property";
   public componentType = "czml#packet#property";
@@ -69,6 +70,10 @@ export class czmlReferencesProp {
 
     if (options.description) {
       this.description = options.description;
+    }
+
+    if (options.descriptionZh) {
+      this.descriptionZh = options.descriptionZh;
     }
 
     if (options.tag) {

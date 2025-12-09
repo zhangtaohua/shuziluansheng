@@ -5,6 +5,8 @@ import { nanoid } from "@/utils/common/nanoid";
 export class czmlUriValue {
   public title = "Uri";
   public description = "A URI value.";
+  public descriptionZh = "";
+
   public type = "string";
   public czmlValue = true;
 

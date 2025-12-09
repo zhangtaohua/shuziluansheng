@@ -15,6 +15,7 @@ export class czmlCartesian2ListProp {
   public labelEn = "cartesian2 list";
   public title = "cartesian2";
   public description = "A list of two-dimensional Cartesian values specified as `[X, Y, X, Y, ...]`.";
+  public descriptionZh = "";
 
   public type = "property";
   public componentType = "czml#packet#property";
@@ -72,6 +73,10 @@ export class czmlCartesian2ListProp {
 
     if (options.description) {
       this.description = options.description;
+    }
+
+    if (options.descriptionZh) {
+      this.descriptionZh = options.descriptionZh;
     }
 
     if (options.tag) {

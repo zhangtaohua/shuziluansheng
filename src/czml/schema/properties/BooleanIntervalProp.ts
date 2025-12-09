@@ -18,6 +18,7 @@ export class czmlBooleanIntervalProp {
   public title = "Show";
 
   public description = "Whether or not the object is shown.";
+  public descriptionZh = "";
   public type = "property";
   public componentType = "czml#packet#property";
   public czmlValue = true; // 这个用于标示是不是 czml value的
@@ -80,6 +81,10 @@ export class czmlBooleanIntervalProp {
 
     if (options.description) {
       this.description = options.description;
+    }
+
+    if (options.descriptionZh) {
+      this.descriptionZh = options.descriptionZh;
     }
 
     if (options.tag) {

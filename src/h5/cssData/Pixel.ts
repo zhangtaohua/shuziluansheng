@@ -10,6 +10,8 @@ export default class CssNamePixel {
   private _step = 1;
   private _retainDecimalPlaces = 0;
   public isEnable = true;
+  public description = "";
+  public descriptionZh = "";
 
   // constructor(value: number = 1920, unit: "px" | "%" | "vw" | "vh" = "px", min = -1, max = -1, step = 1) {
   //   this._value = value;
@@ -50,6 +52,14 @@ export default class CssNamePixel {
 
     if (options.retainDecimalPlaces) {
       this._retainDecimalPlaces = +options.retainDecimalPlaces;
+    }
+
+    if (options.description) {
+      this.description = options.description;
+    }
+
+    if (options.descriptionZh) {
+      this.descriptionZh = options.descriptionZh;
     }
   }
 

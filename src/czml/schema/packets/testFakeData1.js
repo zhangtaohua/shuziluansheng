@@ -18,9 +18,9 @@ export const testFakeData = [
   {
     id: "billboard_id_init0Ed5pFPm9O",
     // delete: true,
-    position: {
-      cartographicDegrees: [121.92203, 23.896242, 1.99],
-    },
+    // position: {
+    //   cartographicDegrees: [121.92203, 23.896242, 1.99],
+    // },
     name: "billboard_name_initknWXJEsiuq",
     parent: "billboard_parent_id_initnJFTMPvpHn",
     description: "Describes the graphical properties of a single object in a scene, such as a single aircraft.",
@@ -133,6 +133,75 @@ export const TCdata = [
       // pixelOffsetScaleByDistance: {
       //   nearFarScalar: [1.0, 20.0, 10000.0, 30.0],
       // },
+    },
+  },
+];
+
+export const testFakeData2 = [
+  {
+    id: "document",
+    name: "document_initZBNi7TurXL",
+    version: "1.0",
+    description: "Describes a CZML document.",
+    title: "Document",
+    clock: {
+      interval: "2025-12-09T02:40:08.000Z/2025-12-10T02:40:08.000Z",
+      currentTime: "2025-12-09T02:40:08.000Z",
+      multiplier: 2,
+      // clockRange: "LOOP_STOP",
+      // clockStep: "SYSTEM_CLOCK_MULTIPLIER",
+    },
+  },
+  {
+    id: "billboard_id_initu8c8FmQY5F",
+    name: "billboard_name_initSYRwLYTWfq",
+    parent: "billboard_parent_id_initfVifM9kJX6",
+    description: "Describes the graphical properties of a single object in a scene, such as a single aircraft.",
+    customProperties: {
+      key: "value",
+    },
+    position: {
+      referenceFrame: "INERTIAL",
+      epoch: "2025-12-09T02:40:08.000Z",
+      interpolationAlgorithm: "LINEAR",
+      interpolationDegree: 5,
+      cartesian: [
+        0, -2050774.1784038027, 5516954.424819249, 2448551.206111823, 30, -2340535.026839573, 5263441.992313775,
+        2729159.9540509447, 60, -2322692.265201465, 5436218.663965235, 2385872.2915551024, 90, -2660683.33660443,
+        5259087.91447377, 2429458.073955668, 120, -2484178.412315433, 5178339.890761802, 2764102.895379449, 150,
+        -2759005.3754505576, 5128607.15438816, 2591986.284738193, 180, -2846448.8044145345, 5188810.993232936,
+        2369403.591396906, 210, -2617295.630360829, 5353744.05759274, 2265293.408596045, 240, -2875442.376909191,
+        5293242.233063217, 2088776.2227430332, 270, -2937143.763354216, 5134958.0594465, 2375945.0583125222,
+      ],
+    },
+    billboard: {
+      show: true,
+      image: [
+        {
+          interval: "2025-12-09T02:40:08.000Z/2025-12-09T02:42:08.000Z",
+          uri: "https://images.pexels.com/photos/35046781/pexels-photo-35046781.jpeg",
+        },
+        {
+          interval: "2025-12-09T02:42:09.000Z/2025-12-09T04:44:33.000Z",
+          uri: "https://images.pexels.com/photos/34198331/pexels-photo-34198331.jpeg",
+        },
+      ],
+      scale: 0.05,
+      // pixelOffset: [0, 0],
+      // eyeOffset: [0, 0, 0],
+      horizontalOrigin: "CENTER",
+      verticalOrigin: "CENTER",
+      heightReference: "NONE",
+      rotation: 1,
+      // alignedAxis: [1, 1, 1],
+      sizeInMeters: false,
+      width: 32,
+      height: 20,
+      // scaleByDistance: [0, 0, 0, 0],
+      // translucencyByDistance: [0, 0, 0, 0],
+      // pixelOffsetScaleByDistance: [0, 0, 0, 0],
+      // BoundingRectangle: [0, 0],
+      // disableDepthTestDistance: 1,
     },
   },
 ];

@@ -23,6 +23,8 @@ export class czmlInterpolatableProp {
   public title = "Interpolatable";
   public description =
     "The base schema for a property whose value may be determined by interpolating over provided time-tagged samples.";
+  public descriptionZh = "";
+
   public type = "property";
   public componentType = "czml#packet#property";
   public tag = "CzmlInterpolationPropInput";
@@ -76,6 +78,10 @@ export class czmlInterpolatableProp {
 
     if (options.description) {
       this.description = options.description;
+    }
+
+    if (options.descriptionZh) {
+      this.descriptionZh = options.descriptionZh;
     }
 
     if (options.tag) {
