@@ -53,7 +53,7 @@
     <div v-else-if="currentProp.valueType == 'Intervals'" class="col_nw_fs_fs props_it_box">
       <div class="col_nw_fs_fs props_it_wrapper" :class="{ props_it_samllwrapper: isFoldIntervals }">
         <div class="col_nw_fs_fs props_it_inwrapper">
-          <div v-for="(inval, index) in intervalsValues" :key="inval.startTime" class="col_nw_fs_fs props_it_itembox">
+          <div v-for="(inval, index) in intervalsValues" :key="id + index" class="col_nw_fs_fs props_it_itembox">
             <div class="row_nw_fs_ce props_it_tbox">
               <span class="row_nw_fs_ce props_it_tlabel">startTime:</span>
               <div class="row_nw_fs_ce props_it_tinputbox">
@@ -141,8 +141,7 @@
 <script setup lang="ts">
   // 说明： 这个主要用于设置像 图片链接 这样的属性，是否显示，还是按时间段显示
 
-  import { ref, reactive, onMounted, computed, watch, nextTick } from "vue";
-  import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
+  import { ref, onMounted, watch, nextTick } from "vue";
   import RjRadioTabInput from "@/components/form/RjRadioTabInput.vue";
   import RjBooleanSwitchInput from "@/components/form/RjBooleanSwitchInput.vue";
 
@@ -150,6 +149,7 @@
   import { cloneDeep } from "es-toolkit";
   import { isArray } from "es-toolkit/compat";
   import dayjs from "dayjs";
+  import { nanoid } from "@/utils/common/nanoid";
 
   const props = defineProps({
     vdata: {
@@ -163,7 +163,7 @@
     },
   });
 
-  const { editorConfig, setEditorRefreshShape } = useEditorConfigStore();
+  const id = nanoid(10);
   const currentProp = ref({});
   const isEnable = ref(false);
   const intervalsValues = ref([

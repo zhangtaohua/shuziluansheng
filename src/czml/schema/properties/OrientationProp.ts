@@ -4,6 +4,7 @@ import { czmlUnitQuaternionInterpolationProp } from "./UnitQuaternionInterpolati
 import { czmlUnitQuaternionProp } from "./UnitQuaternionProp.ts";
 import czmlStringProp from "../properties/StringProp";
 import czmlInterpolatableProp from "./InterpolatablePropertyProp.ts";
+import czmlReferencesProp from "./ReferencesProps.ts";
 
 export class czmlOrientationProp {
   public id = "czml_prop_orientation_" + nanoid(10);
@@ -21,6 +22,7 @@ export class czmlOrientationProp {
   public tag = "CzmlCombinePropInput";
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
+  public isShowUsed = true;
   public isExpand = true; // for UI
   public _isEntity = false;
   public isCombinedProperty = true;
@@ -35,14 +37,15 @@ export class czmlOrientationProp {
         "The orientation specified as a 4-dimensional unit magnitude quaternion, specified as `[X, Y, Z, W]`.",
     }),
     // unitQuaternionWithInterpolate: new czmlUnitQuaternionInterpolationProp(null),
-    reference: new czmlStringProp({
+    reference: new czmlReferencesProp({
       name: "reference",
       czmlName: "reference",
       labelZh: "参考",
       labelEn: "reference",
       value: "",
       isEnable: true,
-      isUsed: true,
+      isUsed: false,
+      isShowUsed: true,
       $ref: "Values/ReferenceValue.json",
       description: "The orientation specified as a reference to another property.",
     }),
@@ -53,7 +56,8 @@ export class czmlOrientationProp {
       labelEn: "velocity reference",
       value: "",
       isEnable: true,
-      isUsed: true,
+      isUsed: false,
+      isShowUsed: true,
       $ref: "Values/VelocityReferenceValue.json",
       description:
         "The orientation specified as the normalized velocity vector of a position property. The reference must be to a `position` property.",
@@ -105,6 +109,7 @@ export class czmlOrientationProp {
 
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
+    this.isShowUsed = options.isShowUsed ?? true;
     this.isExpand = options.isExpand ?? true;
   }
 

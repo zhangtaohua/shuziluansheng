@@ -67,7 +67,7 @@
     <div v-else-if="currentProp.timeType == CZMLTIMESECONDS" class="col_nw_fs_fs props_it_box">
       <div class="col_nw_fs_fs props_it_wrapper">
         <div class="col_nw_fs_fs props_it_inwrapper">
-          <div v-for="(inval, index) in intervalsValues" :key="inval[0]" class="col_nw_fs_fs props_it_itembox">
+          <div v-for="(inval, index) in intervalsValues" :key="id + index" class="col_nw_fs_fs props_it_itembox">
             <div class="row_nw_fs_ce props_qtinput_linetime">
               <div class="row_nw_fs_ce props_qtinput_linetimelabel">秒 seconds:</div>
               <div class="row_nw_fs_ce props_qtinput_linetimeinputbox">
@@ -162,7 +162,11 @@
     <div v-else-if="currentProp.timeType == CZMLTIMESTRING" class="col_nw_fs_fs props_it_box">
       <div class="col_nw_fs_fs props_it_wrapper" :class="{ props_it_samllwrapper: isFoldTimestrIntervals }">
         <div class="col_nw_fs_fs props_it_inwrapper">
-          <div v-for="(inval, index2) in timestrIntervalsValues" :key="inval[0]" class="col_nw_fs_fs props_it_itembox">
+          <div
+            v-for="(inval, index2) in timestrIntervalsValues"
+            :key="id + '_str_' + index2"
+            class="col_nw_fs_fs props_it_itembox"
+          >
             <div class="row_nw_fs_ce props_qtinput_linetime">
               <div class="row_nw_fs_ce props_qtinput_linetimelabel">时间串 time:</div>
               <div class="row_nw_fs_ce props_qtinput_linetimeinputbox">
@@ -261,6 +265,7 @@
     CZMLTIMESTRING,
     defaultTimeFormatStr,
   } from "@/czml/schema/properties/commondata.ts";
+  import { nanoid } from "@/utils/common/nanoid";
 
   const props = defineProps({
     vdata: {
@@ -274,8 +279,7 @@
     },
   });
 
-  const id = "";
-  const name = "";
+  const id = nanoid(10);
   const currentProp = ref({});
   const isEnable = ref(false);
   const pureValue = ref([0, 0, 0]);

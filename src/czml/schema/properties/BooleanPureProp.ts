@@ -19,6 +19,7 @@ export class czmlBooleanPureProp {
   public default = true;
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
+  public isShowUsed = true;
   public isExpand = true; // for UI
   public _isEntity = false;
   public isCombinedProperty = false;
@@ -69,13 +70,11 @@ export class czmlBooleanPureProp {
       this.tag = options.tag;
     }
 
-    if (options.value) {
-      this._value = options.value;
-    }
-
+    this._value = options.value ?? true;
     this.default = options.default ?? true;
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
+    this.isShowUsed = options.isShowUsed ?? true;
     this.isExpand = options.isExpand ?? true;
   }
 
@@ -147,5 +146,8 @@ export const czmlSizeInMetersOptions = {
   labelZh: "以米为单位",
   labelEn: "size in meters",
   tag: "CzmlBooleanPurePropInput",
+  value: false,
   isEnable: true,
+  isUsed: false,
+  isShowUsed: true,
 };

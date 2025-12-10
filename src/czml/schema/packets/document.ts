@@ -18,6 +18,7 @@ export class czmlDocument {
 
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
+  public isShowUsed = true;
   public isExpand = true; // for UI
 
   constructor(options: any) {

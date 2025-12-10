@@ -4,7 +4,11 @@ import czmlUriProp from "../properties/UriProp";
 import czmlStringProp from "../properties/StringProp";
 import czmlTextProp from "../properties/TextProp";
 import czmlPositionProp from "../properties/PositionProp";
-import czmlDoubleProp from "../properties/DoubleProp";
+import {
+  czmlDoubleProp,
+  czmlScaleDoubleOptions,
+  czmlDisableDepthTestDistanceDoubleOptions,
+} from "../properties/DoubleProp";
 import {
   czmlDoublePureProp,
   czmlScalePureOptions,
@@ -35,10 +39,11 @@ import {
   czmlScaleByDistanceOptions,
   czmlTranslucencyByDistanceOptions,
   czmlPixelOffsetScaleByDistanceOptions,
+  czmlImageSubRegionOptions,
   czmlBoundingRectangleOptions,
 } from "../properties/Cartesian4Prop";
 
-export class czmlBillboard {
+export class czmlBillboardEntity {
   public id = "czml_entity_billboard_" + nanoid(10);
   public name = "billboard";
   public _czmlName = "billboard";
@@ -55,6 +60,7 @@ export class czmlBillboard {
   public tag = "CzmlEntityRender";
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
+  public isShowUsed = true;
   public isExpand = true; // for UI
   public _isEntity = true;
   public isCombinedProperty = false;
@@ -105,6 +111,7 @@ export class czmlBillboard {
 
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
+    this.isShowUsed = options.isShowUsed ?? true;
     this.isExpand = options.isExpand ?? true;
   }
 
@@ -117,23 +124,27 @@ export class czmlBillboard {
     image: new czmlUriProp({
       $ref: "Uri.json",
       name: "image",
+      czmlName: "image",
+      isUsed: true,
+      isShowUsed: true,
       description:
         'The URI of the image displayed on the billboard. For broadest client compatibility, the URI should be accessible via Cross-Origin Resource Sharing (CORS). The URI may also be a <a href="https://developer.mozilla.org/en/data_URIs">data URI</a>.',
       czmlRequiredForDisplay: true,
     }),
-    // scale: new czmlDoubleProp({
-    //   $ref: "Double.json",
-    //   description:
-    //     "The scale of the billboard. The scale is multiplied with the pixel size of the billboard's `image`. For example, if the scale is 2.0, the billboard will be rendered with twice the number of pixels, in each direction, of the `image`.",
-    //   default: 1.0,
-    // }),
-    scale: new czmlDoublePureProp({
-      ...czmlScalePureOptions,
+    scale: new czmlDoubleProp({
+      ...czmlScaleDoubleOptions,
       $ref: "Double.json",
       description:
         "The scale of the billboard. The scale is multiplied with the pixel size of the billboard's `image`. For example, if the scale is 2.0, the billboard will be rendered with twice the number of pixels, in each direction, of the `image`.",
       default: 1.0,
     }),
+    // scale: new czmlDoublePureProp({
+    //   ...czmlScalePureOptions,
+    //   $ref: "Double.json",
+    //   description:
+    //     "The scale of the billboard. The scale is multiplied with the pixel size of the billboard's `image`. For example, if the scale is 2.0, the billboard will be rendered with twice the number of pixels, in each direction, of the `image`.",
+    //   default: 1.0,
+    // }),
     pixelOffset: new czmlCartesian2Prop({
       ...czmlPixelOffsetOptions,
       $ref: "PixelOffset.json",
@@ -171,6 +182,8 @@ export class czmlBillboard {
     }),
     color: new czmlColorProp({
       $ref: "Color.json",
+      isUsed: false,
+      isShowUsed: true,
       description:
         "The color of the billboard. This color value is multiplied with the values of the billboard's `image` to produce the final color.",
       // default: "white",
@@ -180,6 +193,7 @@ export class czmlBillboard {
       ...czmlRotationPureOptions,
       $ref: "Double.json",
       description: "The rotation of the billboard, in radians, counter-clockwise from the alignedAxis.",
+      value: 0.0,
       default: 0.0,
     }),
     alignedAxis: new czmlDoubleFixedNumberProp({
@@ -227,19 +241,19 @@ export class czmlBillboard {
         "How the billboard's pixel offset should change based on the billboard's distance from the camera. This scalar value will be multiplied by `pixelOffset`.",
     }),
     imageSubRegion: new czmlCartesian4Prop({
-      ...czmlPixelOffsetScaleByDistanceOptions,
+      ...czmlImageSubRegionOptions,
       $ref: "BoundingRectangle.json",
       description:
         "A sub-region of the image which will be used for the billboard, rather than the entire image, measured in pixels from the bottom-left.",
     }),
     distanceDisplayCondition: new czmlCartesian2Prop({
-      ...czmlBoundingRectangleOptions,
+      ...czmlDistanceDisplayConditionOptions,
       $ref: "DistanceDisplayCondition.json",
       description:
         "The display condition specifying the distance from the camera at which this billboard will be displayed.",
     }),
-    disableDepthTestDistance: new czmlDoublePureProp({
-      ...czmlDisableDepthTestDistancePureOptions,
+    disableDepthTestDistance: new czmlDoubleProp({
+      ...czmlDisableDepthTestDistanceDoubleOptions,
       $ref: "Double.json",
       description:
         "The distance from the camera at which to disable the depth test. This can be used to prevent clipping against terrain, for example. When set to zero, the depth test is always applied. When set to Infinity, the depth test is never applied.",
@@ -307,4 +321,4 @@ export class czmlBillboard {
   }
 }
 
-export default czmlBillboard;
+export default czmlBillboardEntity;

@@ -45,6 +45,7 @@ export class czmlDoubleProp {
   private _retainDecimalPlaces = 3;
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
+  public isShowUsed = true;
   public isExpand = true; // for UI
   public _isEntity = false;
   public isCombinedProperty = false;
@@ -110,6 +111,7 @@ export class czmlDoubleProp {
 
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
+    this.isShowUsed = options.isShowUsed ?? true;
     this.isExpand = options.isExpand ?? true;
 
     if (options.max != undefined && options.min != undefined && +options.max > +options.min) {
@@ -241,7 +243,7 @@ export class czmlDoubleProp {
   public getCzmlValue() {
     if (this.isUsed) {
       if (this._timeType == CZMLPUREVALUE) {
-        return this._value.map(Number);
+        return +this._value[0];
       } else if (this._timeType == CZMLTIMESECONDS) {
         const flattenArr = this._value.flat(Infinity);
         return flattenArr.map(Number);
@@ -270,3 +272,25 @@ export class czmlDoubleProp {
 }
 
 export default czmlDoubleProp;
+
+export const czmlScaleDoubleOptions = {
+  name: "scale",
+  czmlName: "scale",
+  labelZh: "比例",
+  labelEn: "scale",
+  tag: "CzmlNumberPropInput",
+  isEnable: true,
+  isUsed: true,
+  isShowUsed: true,
+};
+
+export const czmlDisableDepthTestDistanceDoubleOptions = {
+  name: "disableDepthTestDistance",
+  czmlName: "disableDepthTestDistance",
+  labelZh: "禁止深度测试距离",
+  labelEn: "disable depth test distance",
+  tag: "CzmlNumberPropInput",
+  isEnable: true,
+  isUsed: false,
+  isShowUsed: true,
+};

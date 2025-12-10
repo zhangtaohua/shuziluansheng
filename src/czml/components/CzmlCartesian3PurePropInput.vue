@@ -141,8 +141,6 @@
     setCzmlMapViewDrawData,
     setCzmlIsViewDrawDataPath,
   } = useCzmlMapDataConfigStore();
-  const id = "";
-  const name = "";
   const currentProp = ref({});
   const isEnable = ref(false);
   const pureValue = ref([0, 0, 0]);

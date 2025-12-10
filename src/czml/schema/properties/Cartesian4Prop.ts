@@ -47,6 +47,7 @@ export class czmlCartesian4Prop {
 
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
+  public isShowUsed = true;
   public isExpand = true; // for UI
   public _isEntity = false;
   public isCombinedProperty = false;
@@ -115,6 +116,7 @@ export class czmlCartesian4Prop {
     this.isFixedXyzUnitType = options.isFixedXyzUnitType ?? true;
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
+    this.isShowUsed = options.isShowUsed ?? true;
     this.isExpand = options.isExpand ?? true;
   }
 
@@ -234,6 +236,8 @@ export const czmlScaleByDistanceOptions = {
   labelEn: "scale by distance",
   tag: "CzmlCartesian4NFScalerPropInput",
   isEnable: true,
+  isUsed: false,
+  isShowUsed: true,
 };
 
 export const czmlTranslucencyByDistanceOptions = {
@@ -243,6 +247,8 @@ export const czmlTranslucencyByDistanceOptions = {
   labelEn: "translucency by distance",
   tag: "CzmlCartesian4NFScalerPropInput",
   isEnable: true,
+  isUsed: false,
+  isShowUsed: true,
 };
 
 export const czmlPixelOffsetScaleByDistanceOptions = {
@@ -252,6 +258,19 @@ export const czmlPixelOffsetScaleByDistanceOptions = {
   labelEn: "pixel offset scale by distance",
   tag: "CzmlCartesian4NFScalerPropInput",
   isEnable: true,
+  isUsed: false,
+  isShowUsed: true,
+};
+
+export const czmlImageSubRegionOptions = {
+  name: "imageSubRegion",
+  czmlName: "imageSubRegion",
+  labelZh: "图像子域",
+  labelEn: "image sub region",
+  tag: "CzmlBoundingRectanglePropInput",
+  isEnable: true,
+  isUsed: false,
+  isShowUsed: true,
 };
 
 export const czmlBoundingRectangleOptions = {
@@ -261,4 +280,6 @@ export const czmlBoundingRectangleOptions = {
   labelEn: "bounding rectangle",
   tag: "CzmlBoundingRectanglePropInput",
   isEnable: true,
+  isUsed: false,
+  isShowUsed: true,
 };

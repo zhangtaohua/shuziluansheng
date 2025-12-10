@@ -19,7 +19,7 @@
           </div>
         </el-tooltip>
 
-        <div class="row_nw_fs_ce props_timecol_isusedbox">
+        <div v-if="currentProp.isShowUsed" class="row_nw_fs_ce props_timecol_isusedbox">
           <RjBooleanSwitchInput v-model="currentProp.isUsed"></RjBooleanSwitchInput>
         </div>
       </div>

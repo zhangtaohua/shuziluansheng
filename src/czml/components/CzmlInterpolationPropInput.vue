@@ -14,7 +14,7 @@
             </div>
           </template>
           <div class="row_nw_fs_ce czml_combine_lefttbox">
-            <img src="@/assets/images/icons/e-cube.svg" alt="icon" class="czml_combine_icon" />
+            <img src="@/assets/images/icons/csetting.svg" alt="icon" class="czml_combine_icon" />
             <label class="row_nw_fs_ce czml_entitych_label">{{ currentProp.labelZh }}</label>
             <label class="row_nw_fs_fe czml_entityogi_label">{{ currentProp.labelEn }}</label>
 
@@ -41,16 +41,16 @@
           <component :is="childProp.tag" :vdata="childProp"></component>
           <div class="props_ic_gap"></div>
         </div>
+
+        <div class="col_nw_fs_ce props_interpolation_nosuebox">
+          <label class="row_nw_fs_ce props_interpolation_nousetipzh">使用插值算法,请注意值是否含有时间标记</label>
+          <label class="row_nw_fs_ce props_interpolation_nousetipeng">
+            Use interpolateable properties the value need time-tagged
+          </label>
+        </div>
       </div>
 
       <div class="props_ic_gap"></div>
-
-      <div class="col_nw_fs_ce props_interpolation_nosuebox">
-        <label class="row_nw_fs_ce props_interpolation_nousetipzh">使用插值算法,请注意值是否含有时间标记</label>
-        <label class="row_nw_fs_ce props_interpolation_nousetipeng">
-          Use interpolateable properties the value need time-tagged
-        </label>
-      </div>
     </div>
   </div>
 </template>
@@ -265,7 +265,7 @@
   }
 
   .props_interpolation_nosuebox {
-    width: calc(100% - 2rem);
+    width: 100%;
     height: auto;
     margin-bottom: 1rem;
     padding: 0.5rem 0.5rem;

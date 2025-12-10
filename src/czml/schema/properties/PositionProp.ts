@@ -17,10 +17,11 @@ import {
 } from "./commondata.ts";
 
 import { czmlOptionsPureProp, CzmlReferenceFrameOptions } from "./OptionsPureProp";
-import { czmlStringProp, czmlReferenceValueOptions } from "./StringProp";
+import { czmlStringProp, czmlReferenceValueStrOptions } from "./StringProp";
 import czmlCartesian3Prop from "./Cartesian3Prop";
 import czmlCartesian3VelocityProp from "./Cartesian3VelocityProp.ts";
 import czmlInterpolatableProp from "./InterpolatablePropertyProp.ts";
+import { czmlReferencesProp, czmlReferenceValueOptions } from "./ReferencesProps.ts";
 
 export class czmlPositionProp {
   public id = "czml_prop_position_" + nanoid(10);
@@ -37,6 +38,7 @@ export class czmlPositionProp {
   public tag = "CzmlPositionPropInput";
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
+  public isShowUsed = true;
   public isExpand = true; // for UI
   public _isEntity = false;
   public isCombinedProperty = true;
@@ -84,7 +86,13 @@ export class czmlPositionProp {
       isUsed: false,
     }),
     // RJTODO 这里是错的 暂时为了调试用
-    references: new czmlStringProp({ ...czmlReferenceValueOptions, isUsed: true }),
+    // references: new czmlStringProp({ ...czmlReferenceValueStrOptions, isUsed: true, czmlName: "references", }),
+    references: new czmlReferencesProp({
+      ...czmlReferenceValueOptions,
+      isUsed: false,
+      isShowUsed: true,
+      czmlName: "references",
+    }),
   };
 
   constructor(options: any) {
@@ -132,6 +140,7 @@ export class czmlPositionProp {
 
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
+    this.isShowUsed = options.isShowUsed ?? true;
     this.isExpand = options.isExpand ?? true;
   }
 

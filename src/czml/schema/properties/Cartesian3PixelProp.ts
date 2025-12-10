@@ -47,6 +47,7 @@ export class czmlCartesian3PixelProp {
 
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
+  public isShowUsed = true;
   public isExpand = true; // for UI
   public _isEntity = false;
   public isCombinedProperty = false;
@@ -115,6 +116,7 @@ export class czmlCartesian3PixelProp {
     this.isFixedXyzUnitType = options.isFixedXyzUnitType ?? true;
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
+    this.isShowUsed = options.isShowUsed ?? true;
     this.isExpand = options.isExpand ?? true;
   }
 
@@ -234,6 +236,8 @@ export const czmlEyeOffsetCartesian3PixelOptions = {
   labelEn: "eye offset",
   tag: "CzmlCartesian3PxPropInput",
   isEnable: true,
+  isUsed: false,
+  isShowUsed: true,
 };
 
 export const czmlAlignedAxisCartesian3PixelOptions = {
@@ -243,4 +247,6 @@ export const czmlAlignedAxisCartesian3PixelOptions = {
   labelEn: "aligned axis",
   tag: "CzmlCartesian3PxPropInput",
   isEnable: true,
+  isUsed: false,
+  isShowUsed: true,
 };

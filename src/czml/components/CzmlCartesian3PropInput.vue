@@ -116,7 +116,7 @@
     <div v-else-if="currentProp.timeType == CZMLTIMESECONDS" class="col_nw_fs_fs props_it_box">
       <div class="col_nw_fs_fs props_it_wrapper">
         <div class="col_nw_fs_fs props_it_inwrapper">
-          <div v-for="(inval, index) in intervalsValuesShow" :key="inval[0]" class="col_nw_fs_fs props_it_itembox">
+          <div v-for="(inval, index) in intervalsValuesShow" :key="id + index" class="col_nw_fs_fs props_it_itembox">
             <div class="row_nw_fs_ce props_qtinput_linetime">
               <div class="row_nw_fs_ce props_qtinput_linetimelabel">秒 seconds:</div>
               <div class="row_nw_fs_ce props_qtinput_linetimeinputbox">
@@ -232,7 +232,7 @@
         <div class="col_nw_fs_fs props_it_inwrapper">
           <div
             v-for="(inval, index2) in timestrIntervalsValuesShow"
-            :key="inval[0]"
+            :key="id + '_str_' + index2"
             class="col_nw_fs_fs props_it_itembox"
           >
             <div class="row_nw_fs_ce props_qtinput_linetime">
@@ -338,12 +338,10 @@
 <script setup lang="ts">
   // 说明： 这个主要用于设置 有时间类型的 cartesian 3 的值
 
-  import { ref, reactive, onMounted, computed, watch, nextTick } from "vue";
-  import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
+  import { ref, onMounted, watch, nextTick } from "vue";
   import RjRadioTabInput from "@/components/form/RjRadioTabInput.vue";
   import RjRadioInput from "@/components/form/RjRadioInput.vue";
   import RjBooleanSwitchInput from "@/components/form/RjBooleanSwitchInput.vue";
-  import LineGap from "@/h5/components/LineGap.vue";
 
   import { nanoid } from "@/utils/common/nanoid";
   import { cartesian3ToWgs84, cartesian3ToDegrees, cartesian3ToRadians } from "@/utils/map/cesium/csTools";
@@ -387,7 +385,6 @@
     },
   });
 
-  const { editorConfig, setEditorRefreshShape } = useEditorConfigStore();
   const {
     czmlMapDataConfig,
     setCzmlMapCurrentAction,
@@ -396,8 +393,7 @@
     setCzmlIsViewDrawDataPath,
   } = useCzmlMapDataConfigStore();
 
-  const id = "";
-  const name = "";
+  const id = nanoid(10);
   const currentProp = ref({});
   const isEnable = ref(false);
   const pureValue = ref([0, 0, 0]);

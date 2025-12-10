@@ -25,7 +25,7 @@
       </div>
     </div>
 
-    <div class="row_nw_fe_ce props_input_nbox">
+    <div class="row_nw_fs_ce props_input_nbox">
       <div
         class="row_nw_fs_ce props_input_box"
         :class="{ props_input_box_act: isShowArrow, props_input_box_disabled: !currentProp.isEnable }"

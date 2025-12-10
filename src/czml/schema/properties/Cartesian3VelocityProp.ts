@@ -17,6 +17,8 @@ import {
 } from "./commondata.ts";
 import czmlInterpolatableProp from "./InterpolatablePropertyProp.ts";
 
+import { cartesian3ToWgs84, cartesian3ToDegrees, cartesian3ToRadians } from "@/utils/map/cesium/csTools";
+
 // 用于生成 Cartesian3 数值，纯数值，或者是带时间序的多个值。
 export class czmlCartesian3VelocityProp {
   public id = "czml_prop_cartesianvelocity_timetagged_" + nanoid(10);
@@ -47,6 +49,7 @@ export class czmlCartesian3VelocityProp {
 
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
+  public isShowUsed = true;
   public isExpand = true; // for UI
   public _isEntity = false;
   public isCombinedProperty = false;
@@ -126,6 +129,7 @@ export class czmlCartesian3VelocityProp {
     this.isFixedXyzUnitType = options.isFixedXyzUnitType ?? true;
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
+    this.isShowUsed = options.isShowUsed ?? true;
     this.isExpand = options.isExpand ?? true;
   }
 

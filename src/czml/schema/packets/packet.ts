@@ -11,7 +11,8 @@ import czmlCartesian3Prop from "../properties/Cartesian3Prop.ts";
 import czmlCartesian3ListProp from "../properties/Cartesian3ListProp.ts";
 import czmlCartographicRectangleProp from "../properties/CartographicRectangleProp.ts";
 
-import czmlBillboard from "../entities/billboard";
+import czmlBillboardEntity from "../entities/billboard";
+import czmlBoxEntity from "../entities/box.ts";
 import czmlColorProp from "../properties/ColorProp.ts";
 import czmlDoubleFixedNumberProp from "../properties/DoubleFixedNumberProp.ts";
 import czmlReferencesProp from "../properties/ReferencesProps.ts";
@@ -29,6 +30,7 @@ export class czmlPacket {
   public componentType = "czml#packet";
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
+  public isShowUsed = true;
   public isExpand = true; // for UI
 
   public domMaxHeight = "fit-content";
@@ -80,7 +82,8 @@ export class czmlPacket {
       labelEn: "delete",
       value: false,
       isEnable: true,
-      isUsed: true,
+      isUsed: false,
+      isShowUsed: true,
       description:
         "Whether the client should delete all existing data for this object, identified by ID. If true, all other properties in this packet will be ignored.",
       type: "boolean",
@@ -94,15 +97,17 @@ export class czmlPacket {
       isEnable: true,
       isUsed: true,
       description: "The name of the object. It does not have to be unique and is intended for user consumption.",
+      type: "string",
     }),
     parent: new czmlStringProp({
       name: "parent",
       czmlName: "parent",
       labelZh: "父级",
       labelEn: "parent",
-      value: "billboard_parent_id_init" + nanoid(10),
+      value: "",
       isEnable: true,
-      isUsed: true,
+      isUsed: false,
+      isShowUsed: true,
       description: "The ID of the parent object, if any.",
       type: "string",
     }),
@@ -138,6 +143,7 @@ export class czmlPacket {
       default: "0000-00-00T00:00:00Z/9999-12-31T24:00:00Z",
       isEnable: true,
       isUsed: false,
+      isShowUsed: true,
     }),
     properties: new czmlCustomPropertiesProp({
       ...czmlCustomPropertiesOptions,
@@ -151,19 +157,23 @@ export class czmlPacket {
       czmlExamples: ["Examples/SimplePosition.json", "Examples/TimeVaryingPosition.json"],
       default: null,
       isUsed: true,
+      isShowUsed: true,
     }),
     orientation: new czmlOrientationProp({
       $ref: "Orientation.json",
+      isUsed: false,
+      isShowUsed: true,
       description:
         "The orientation of the object in the world. The orientation has no direct visual representation, but it is used to orient models, cones, pyramids, and other graphical items attached to the object.",
     }),
     viewFrom: new czmlViewFromProp({
       $ref: "ViewFrom.json",
       isUsed: false,
+      isShowUsed: true,
       description:
         "A suggested camera location when viewing this object. The property is specified as a Cartesian position in the East (x), North (y), Up (z) reference frame relative to the object's position.",
     }),
-    billboard: new czmlBillboard(null),
+    billboard: new czmlBillboardEntity(null),
     // RJTODO 下面的要删除
     // cartesian: new czmlCartesian3Prop(null),
     // cartesianList: new czmlCartesian3ListProp(null),
@@ -172,11 +182,11 @@ export class czmlPacket {
     // fixedCnt: new czmlDoubleFixedNumberProp({ fixedCounter: 20 }),
     // refreees: new czmlReferencesProp(null),
     // RJTODO 上面的要删除
-    box: {
+    box: new czmlBoxEntity({
       $ref: "Box.json",
       description:
         "A box, which is a closed rectangular cuboid. The box is positioned and oriented using the `position` and `orientation` properties.",
-    },
+    }),
     corridor: {
       $ref: "Corridor.json",
       description: "A corridor, which is a shape defined by a centerline and width.",
@@ -298,4 +308,4 @@ export class czmlPacket {
   }
 }
 
-export default czmlBillboard;
+export default czmlPacket;

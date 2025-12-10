@@ -1,29 +1,15 @@
 import { nanoid } from "@/utils/common/nanoid";
+import czmlCartesian3PixelProp from "./Cartesian3PixelProp";
+import czmlReferencesProp from "./ReferencesProps";
+import czmlColorProp from "./ColorProp";
 
-import {
-  czmlOptionsPureProp,
-  CzmlInterpolationAlgorithmOptions,
-  CzmlForwardExtrapolationTypeOptions,
-  CzmlBackwardExtrapolationTypeOptions,
-} from "./OptionsPureProp.ts";
-import {
-  czmlDoublePureProp,
-  czmlInterpolationDegreeOptions,
-  czmlForwardExtrapolationDurationOptions,
-  czmlBackwardExtrapolationDurationOptions,
-} from "./DoublePureProp.ts";
-import { czmlTimePureProp, czmlEpochimeOptions } from "./TimePureProp.ts";
-
-import { czmlTimeIntervalProp, czmlClockIntervalOptions } from "./TimeIntervalProp.ts";
-
-export class czmlInterpolatableProp {
-  public id = "czml_prop_interpolatable_" + nanoid(10);
-  public name = "InterpolatableProperty";
-  public _czmlName = "InterpolatableProperty";
-  public labelZh = "插值";
-  // public labelEn = "interpolatable property";
-  public labelEn = "interpolatable";
-  public title = "Interpolatable";
+export class czmlCombineProp {
+  public id = "czml_prop_combine_" + nanoid(10);
+  public name = "CombineProperty";
+  public _czmlName = "CombineProperty";
+  public labelZh = "组合值";
+  public labelEn = "combine";
+  public title = "CombineProperty";
   public description =
     "The base schema for a property whose value may be determined by interpolating over provided time-tagged samples.";
   public descriptionZh = "";
@@ -39,32 +25,7 @@ export class czmlInterpolatableProp {
   public isCombinedProperty = true;
   public isComplexProperty = false;
 
-  public properties = {
-    epoch: new czmlTimePureProp(czmlEpochimeOptions),
-    interpolationAlgorithm: new czmlOptionsPureProp(CzmlInterpolationAlgorithmOptions),
-    interpolationDegree: new czmlDoublePureProp(czmlInterpolationDegreeOptions),
-    interval: new czmlTimeIntervalProp({ ...czmlClockIntervalOptions, isUsed: false, isShowUsed: false }), // 有些有，有些又没有
-    forwardExtrapolationType: new czmlOptionsPureProp({
-      ...CzmlForwardExtrapolationTypeOptions,
-      isUsed: false,
-      isShowUsed: false,
-    }),
-    forwardExtrapolationDuration: new czmlDoublePureProp({
-      ...czmlForwardExtrapolationDurationOptions,
-      isUsed: false,
-      isShowUsed: false,
-    }),
-    backwardExtrapolationType: new czmlOptionsPureProp({
-      ...CzmlBackwardExtrapolationTypeOptions,
-      isUsed: false,
-      isShowUsed: false,
-    }),
-    backwardExtrapolationDuration: new czmlDoublePureProp({
-      ...czmlBackwardExtrapolationDurationOptions,
-      isUsed: false,
-      isShowUsed: false,
-    }),
-  };
+  public properties = {};
 
   constructor(options: any) {
     if (!options) {
@@ -74,7 +35,11 @@ export class czmlInterpolatableProp {
     if (options.id) {
       this.id = options.id;
     } else if (options.name) {
-      this.id = "czml_prop_interpolatable_" + options.name + "_" + nanoid(10);
+      this.id = "czml_prop_combine_" + options.name + "_" + nanoid(10);
+    }
+
+    if (options.properties) {
+      this.properties = options.properties;
     }
 
     if (options.name) {
@@ -174,4 +139,36 @@ export class czmlInterpolatableProp {
   }
 }
 
-export default czmlInterpolatableProp;
+export default czmlCombineProp;
+
+export const czmlBoxDimensionsOptions = {
+  id: "czml_prop_dimensions_" + nanoid(10),
+  name: "dimensions",
+  czmlName: "dimensions",
+  labelZh: "维度",
+  labelEn: "dimensions",
+  isEnable: true,
+  isUsed: true,
+  isShowUsed: true,
+  description: "The dimensions of the box.",
+  properties: {
+    cartesian: new czmlCartesian3PixelProp({
+      czmlName: "cartesian",
+      $ref: "Values/Cartesian3Value.json",
+      description:
+        "The dimensions specified as a three-dimensional Cartesian value `[X, Y, Z]`, with X representing width, Y representing depth, and Z representing height, in world coordinates in meters.",
+    }),
+    reference: new czmlReferencesProp({
+      name: "reference",
+      czmlName: "reference",
+      labelZh: "参考",
+      labelEn: "reference",
+      value: "",
+      isEnable: true,
+      isUsed: false,
+      isShowUsed: true,
+      $ref: "Values/ReferenceValue.json",
+      description: "The dimensions specified as a reference to another property.",
+    }),
+  },
+};

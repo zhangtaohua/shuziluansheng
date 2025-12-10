@@ -26,7 +26,7 @@
     <div class="col_nw_fs_fs props_it_box">
       <div class="col_nw_fs_fs props_it_wrapper" :class="{ props_it_samllwrapper: isFoldIntervals }">
         <div class="col_nw_fs_fs props_it_inwrapper">
-          <div v-for="(inval, index) in intervalsValues" :key="'ref_' + inval[0]" class="col_nw_fs_fs props_it_itembox">
+          <div v-for="(inval, index) in intervalsValues" :key="id + index" class="col_nw_fs_fs props_it_itembox">
             <div class="row_nw_fs_ce props_qtinput_line1">
               <div class="row_nw_fs_ce props_qtinput_itembox">
                 <el-autocomplete
@@ -104,10 +104,9 @@
   import { ref, reactive, onMounted, computed, watch, nextTick } from "vue";
   import RjBooleanSwitchInput from "@/components/form/RjBooleanSwitchInput.vue";
 
-  import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
-
   import { cloneDeep } from "es-toolkit";
   import { isArray } from "es-toolkit/compat";
+  import { nanoid } from "@/utils/common/nanoid";
 
   const props = defineProps({
     vdata: {
@@ -121,10 +120,9 @@
     },
   });
 
-  const { editorConfig, setEditorRefreshShape } = useEditorConfigStore();
+  const id = nanoid(10);
 
   const currentProp = ref({});
-  const currentText = ref("");
   const isEnable = ref(false);
 
   const intervalsValues = ref([[""]]);

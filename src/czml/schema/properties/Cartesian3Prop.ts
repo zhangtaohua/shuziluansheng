@@ -17,6 +17,8 @@ import {
 } from "./commondata.ts";
 import czmlInterpolatableProp from "./InterpolatablePropertyProp.ts";
 
+import { cartesian3ToWgs84, cartesian3ToDegrees, cartesian3ToRadians } from "@/utils/map/cesium/csTools";
+
 // 用于生成 Cartesian3 数值，纯数值，或者是带时间序的多个值。
 export class czmlCartesian3Prop {
   public id = "czml_prop_cartesian3_timetagged_" + nanoid(10);
@@ -47,6 +49,7 @@ export class czmlCartesian3Prop {
 
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
+  public isShowUsed = true;
   public isExpand = true; // for UI
   public _isEntity = false;
   public isCombinedProperty = false;
@@ -126,6 +129,7 @@ export class czmlCartesian3Prop {
     this.isFixedXyzUnitType = options.isFixedXyzUnitType ?? true;
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
+    this.isShowUsed = options.isShowUsed ?? true;
     this.isExpand = options.isExpand ?? true;
   }
 
@@ -212,19 +216,59 @@ export class czmlCartesian3Prop {
   public getCzmlValue() {
     if (this.isUsed) {
       if (this._timeType == CZMLPUREVALUE) {
-        return this._value.map(Number);
+        if (this._xyzUnitType == CZMLCARTESIAN3METERTYPE) {
+          return this._value.map(Number);
+        } else if (this._xyzUnitType == CZMLCARTESIAN3DEGREESTYPE) {
+          const cart = cartesian3ToDegrees({ x: this._value[0], y: this._value[1], z: this._value[2] });
+          return [cart.longitude, cart.latitude, cart.height];
+        } else if (this._xyzUnitType == CZMLCARTESIAN3RADIANSTYPE) {
+          const cart = cartesian3ToRadians({ x: this._value[0], y: this._value[1], z: this._value[2] });
+          return [cart.longitude, cart.latitude, cart.height];
+        }
       } else if (this._timeType == CZMLTIMESECONDS) {
         const revals = [];
-        for (let i = 0; i < this._value.length; i++) {
-          const temp = this._value[i];
-          revals.push(+temp[0], +temp[1], +temp[2], +temp[3]);
+        if (this._xyzUnitType == CZMLCARTESIAN3METERTYPE) {
+          for (let i = 0; i < this._value.length; i++) {
+            const temp = this._value[i];
+            revals.push(+temp[0], +temp[1], +temp[2], +temp[3]);
+          }
+        } else if (this._xyzUnitType == CZMLCARTESIAN3DEGREESTYPE) {
+          for (let i = 0; i < this._value.length; i++) {
+            const temp = this._value[i];
+            const cartesian3 = { x: +temp[1], y: +temp[2], z: +temp[3] };
+            const cart = cartesian3ToDegrees(cartesian3);
+            revals.push(+temp[0], cart.longitude, cart.latitude, cart.height);
+          }
+        } else if (this._xyzUnitType == CZMLCARTESIAN3RADIANSTYPE) {
+          for (let i = 0; i < this._value.length; i++) {
+            const temp = this._value[i];
+            const cartesian3 = { x: +temp[1], y: +temp[2], z: +temp[3] };
+            const cart = cartesian3ToRadians(cartesian3);
+            revals.push(+temp[0], cart.longitude, cart.latitude, cart.height);
+          }
         }
         return revals;
       } else if (this._timeType == CZMLTIMESTRING) {
         const revals = [];
-        for (let i = 0; i < this._value.length; i++) {
-          const temp = this._value[i];
-          revals.push(dayjs(temp[0]).toISOString(), +temp[1], +temp[2], +temp[3]);
+        if (this._xyzUnitType == CZMLCARTESIAN3METERTYPE) {
+          for (let i = 0; i < this._value.length; i++) {
+            const temp = this._value[i];
+            revals.push(dayjs(temp[0]).toISOString(), +temp[1], +temp[2], +temp[3]);
+          }
+        } else if (this._xyzUnitType == CZMLCARTESIAN3DEGREESTYPE) {
+          for (let i = 0; i < this._value.length; i++) {
+            const temp = this._value[i];
+            const cartesian3 = { x: +temp[1], y: +temp[2], z: +temp[3] };
+            const cart = cartesian3ToDegrees(cartesian3);
+            revals.push(dayjs(temp[0]).toISOString(), cart.longitude, cart.latitude, cart.height);
+          }
+        } else if (this._xyzUnitType == CZMLCARTESIAN3RADIANSTYPE) {
+          for (let i = 0; i < this._value.length; i++) {
+            const temp = this._value[i];
+            const cartesian3 = { x: +temp[1], y: +temp[2], z: +temp[3] };
+            const cart = cartesian3ToRadians(cartesian3);
+            revals.push(dayjs(temp[0]).toISOString(), cart.longitude, cart.latitude, cart.height);
+          }
         }
         return revals;
       }

@@ -18,6 +18,8 @@ import {
 } from "./commondata.ts";
 import czmlInterpolatableProp from "./InterpolatablePropertyProp.ts";
 
+import { cartesian3ToWgs84, cartesian3ToDegrees, cartesian3ToRadians } from "@/utils/map/cesium/csTools";
+
 // 用于生成 rectangle 数值，纯数值，或者是带时间序的多个值。
 export class czmlCartographicRectangleProp {
   public id = "czml_prop_cartographicRectang_timetagged_" + nanoid(10);
@@ -48,6 +50,7 @@ export class czmlCartographicRectangleProp {
 
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
+  public isShowUsed = true;
   public isExpand = true; // for UI
   public _isEntity = false;
   public isCombinedProperty = false;
@@ -119,6 +122,7 @@ export class czmlCartographicRectangleProp {
     this.isFixedXyzUnitType = options.isFixedXyzUnitType ?? true;
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
+    this.isShowUsed = options.isShowUsed ?? true;
     this.isExpand = options.isExpand ?? true;
   }
 
@@ -205,19 +209,54 @@ export class czmlCartographicRectangleProp {
   public getCzmlValue() {
     if (this.isUsed) {
       if (this._timeType == CZMLPUREVALUE) {
-        return this._value.map(Number);
+        if (this._xyzUnitType == CZMLCARTESIAN3METERTYPE || this._xyzUnitType == CZMLCARTESIAN3DEGREESTYPE) {
+          return this._value.map(Number);
+        } else if (this._xyzUnitType == CZMLCARTESIAN3RADIANSTYPE) {
+          return [
+            Cesium.Math.toRadians(+this._value[0]),
+            Cesium.Math.toRadians(+this._value[1]),
+            Cesium.Math.toRadians(+this._value[2]),
+            Cesium.Math.toRadians(+this._value[3]),
+          ];
+        }
       } else if (this._timeType == CZMLTIMESECONDS) {
         const revals = [];
-        for (let i = 0; i < this._value.length; i++) {
-          const temp = this._value[i];
-          revals.push(+temp[0], +temp[1], +temp[2], +temp[3], +temp[4]);
+        if (this._xyzUnitType == CZMLCARTESIAN3METERTYPE || this._xyzUnitType == CZMLCARTESIAN3DEGREESTYPE) {
+          for (let i = 0; i < this._value.length; i++) {
+            const temp = this._value[i];
+            revals.push(+temp[0], +temp[1], +temp[2], +temp[3], +temp[4]);
+          }
+        } else if (this._xyzUnitType == CZMLCARTESIAN3RADIANSTYPE) {
+          for (let i = 0; i < this._value.length; i++) {
+            const temp = this._value[i];
+            revals.push(
+              +temp[0],
+              Cesium.Math.toRadians(+temp[1]),
+              Cesium.Math.toRadians(+temp[2]),
+              Cesium.Math.toRadians(+temp[3]),
+              Cesium.Math.toRadians(+temp[4]),
+            );
+          }
         }
         return revals;
       } else if (this._timeType == CZMLTIMESTRING) {
         const revals = [];
-        for (let i = 0; i < this._value.length; i++) {
-          const temp = this._value[i];
-          revals.push(dayjs(temp[0]).toISOString(), +temp[1], +temp[2], +temp[3], +temp[4]);
+        if (this._xyzUnitType == CZMLCARTESIAN3METERTYPE || this._xyzUnitType == CZMLCARTESIAN3DEGREESTYPE) {
+          for (let i = 0; i < this._value.length; i++) {
+            const temp = this._value[i];
+            revals.push(dayjs(temp[0]).toISOString(), +temp[1], +temp[2], +temp[3], +temp[4]);
+          }
+        } else if (this._xyzUnitType == CZMLCARTESIAN3RADIANSTYPE) {
+          for (let i = 0; i < this._value.length; i++) {
+            const temp = this._value[i];
+            revals.push(
+              dayjs(temp[0]).toISOString(),
+              Cesium.Math.toRadians(+temp[1]),
+              Cesium.Math.toRadians(+temp[2]),
+              Cesium.Math.toRadians(+temp[3]),
+              Cesium.Math.toRadians(+temp[4]),
+            );
+          }
         }
         return revals;
       }

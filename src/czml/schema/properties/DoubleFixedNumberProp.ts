@@ -45,6 +45,7 @@ export class czmlDoubleFixedNumberProp {
 
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
+  public isShowUsed = true;
   public isExpand = true; // for UI
   public _isEntity = false;
   public isCombinedProperty = false;
@@ -106,10 +107,11 @@ export class czmlDoubleFixedNumberProp {
       const values = [];
       const secondsValues = [];
       const timestrValues = [];
+      const initValue = options.fixedInitValue ?? 0.0;
       for (let i = 0; i < this.fixedCounter; i++) {
-        values.push([1.0]);
-        secondsValues.push([i * this.secondsStep, 1.0]);
-        timestrValues.push([dayjs().format(defaultTimeFormatStr), 1.0]);
+        values.push([initValue]);
+        secondsValues.push([i * this.secondsStep, initValue]);
+        timestrValues.push([dayjs().format(defaultTimeFormatStr), initValue]);
       }
 
       this._value = values;
@@ -137,6 +139,7 @@ export class czmlDoubleFixedNumberProp {
 
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
+    this.isShowUsed = options.isShowUsed ?? true;
     this.isExpand = options.isExpand ?? true;
 
     if (options.max != undefined && options.min != undefined && +options.max > +options.min) {
@@ -269,7 +272,11 @@ export class czmlDoubleFixedNumberProp {
     if (this.isUsed) {
       if (this._timeType == CZMLPUREVALUE) {
         const flattenArr = this._value.flat(Infinity);
-        return flattenArr.map(Number);
+        if (flattenArr.length == 1) {
+          return +flattenArr[0];
+        } else {
+          return flattenArr.map(Number);
+        }
       } else if (this._timeType == CZMLTIMESECONDS) {
         const flattenArr = this._value.flat(Infinity);
         return flattenArr.map(Number);
@@ -307,10 +314,13 @@ export const czmlAlignedAxisDoubleFixedNumberOptions = {
   labelZh: "对齐轴",
   labelEn: "aligned axis",
   fixedCounter: 3,
+  fixedInitValue: 0,
   tag: "CzmlNumberFixedCntPropInput",
   value: 1.0,
   max: 360,
   min: 0,
   setp: 0.1,
   isEnable: true,
+  isUsed: false,
+  isShowUsed: true,
 };

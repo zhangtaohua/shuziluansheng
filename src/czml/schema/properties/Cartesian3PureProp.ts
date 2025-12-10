@@ -8,6 +8,8 @@ import {
   propValuesCartesian3TypeOptions,
 } from "./commondata";
 
+import { cartesian3ToWgs84, cartesian3ToDegrees, cartesian3ToRadians } from "@/utils/map/cesium/csTools";
+
 // 只能用于生成纯粹的三位数值的 Cartensian3，但可以改变单位， 是原始值，还是换算成经纬度，经纬度值可以是度 或者 弧度。
 export class czmlCartesian3PureProp {
   public id = "czml_prop_cartesian3_pure_" + nanoid(10);
@@ -34,6 +36,7 @@ export class czmlCartesian3PureProp {
   public default = [0, 0, 0];
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
+  public isShowUsed = true;
   public isExpand = true; // for UI
   public _isEntity = false;
   public isCombinedProperty = false; // Composite Values
@@ -105,6 +108,7 @@ export class czmlCartesian3PureProp {
     this.isFixedXyzUnitType = options.isFixedXyzUnitType ?? true;
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
+    this.isShowUsed = options.isShowUsed ?? true;
     this.isExpand = options.isExpand ?? true;
   }
 

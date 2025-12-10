@@ -18,6 +18,7 @@ export class czmlTextProp {
   public default = "";
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
+  public isShowUsed = false;
   public isExpand = true; // for UI
   public _isEntity = false;
   public isCombinedProperty = false;
@@ -76,6 +77,7 @@ export class czmlTextProp {
 
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
+    this.isShowUsed = options.isShowUsed ?? false;
     this.isExpand = options.isExpand ?? true;
   }
 

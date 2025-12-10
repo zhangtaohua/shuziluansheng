@@ -19,7 +19,7 @@
           </div>
         </el-tooltip>
 
-        <div class="row_nw_fs_ce props_timecol_isusedbox">
+        <div v-if="currentProp.isShowUsed" class="row_nw_fs_ce props_timecol_isusedbox">
           <RjBooleanSwitchInput v-model="currentProp.isUsed"></RjBooleanSwitchInput>
         </div>
       </div>
@@ -171,7 +171,7 @@
     position: relative;
     width: calc(100% - 0.25rem);
     margin-left: 0.125rem;
-    height: 2rem;
+    height: 2.5rem;
     background-color: rgba(0, 0, 0, 1);
     border-radius: 0.5rem;
   }
@@ -188,7 +188,7 @@
   .props_input {
     align-self: flex-start;
     width: 100%;
-    height: 2rem;
+    height: 2.5rem;
     padding: 0.5rem 0.5rem;
     color: rgba(255, 255, 255, 1);
     font-size: 0.875rem;

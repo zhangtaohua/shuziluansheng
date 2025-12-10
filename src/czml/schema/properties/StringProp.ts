@@ -18,6 +18,7 @@ export class czmlStringProp {
   public default = "";
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
+  public isShowUsed = false;
   public isExpand = true; // for UI
   public _isEntity = false;
   public isCombinedProperty = false;
@@ -76,6 +77,7 @@ export class czmlStringProp {
 
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
+    this.isShowUsed = options.isShowUsed ?? false;
     this.isExpand = options.isExpand ?? true;
   }
 
@@ -141,13 +143,41 @@ export class czmlStringProp {
 
 export default czmlStringProp;
 
-export const czmlReferenceValueOptions = {
+export const czmlReferenceValueStrOptions = {
   name: "reference",
   czmlName: "reference",
   labelZh: "参考值",
   labelEn: "reference",
   value: "",
   isEnable: true,
+  isUsed: false,
+  isShowUsed: true,
   description:
     "Represents a reference to another property. References can be used to specify that two properties on different objects are in fact, the same property.",
+};
+
+export const czmlFontOptions = {
+  name: "font",
+  czmlName: "font",
+  labelZh: "字体",
+  labelEn: "font",
+  value: "", // "30px sans-serif"
+  isEnable: true,
+  isUsed: false,
+  isShowUsed: true,
+  description: 'A font, specified using the same syntax as the CSS "font" property.',
+};
+
+export const czmlVelocityReferenceOptions = {
+  name: "velocityReference",
+  czmlName: "velocityReference",
+  labelZh: "速度参考",
+  labelEn: "velocity reference",
+  value: "",
+  isEnable: true,
+  isUsed: false,
+  isShowUsed: true,
+  $ref: "Values/VelocityReferenceValue.json",
+  description:
+    "The orientation specified as the normalized velocity vector of a position property. The reference must be to a `position` property.",
 };

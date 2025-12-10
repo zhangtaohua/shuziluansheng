@@ -21,6 +21,7 @@ export class czmlTimePureProp {
   public default = dayjs().format(defaultTimeFormatStr);
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
+  public isShowUsed = true;
   public isExpand = true; // for UI
   public _isEntity = false;
   public isCombinedProperty = false;
@@ -79,6 +80,7 @@ export class czmlTimePureProp {
 
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
+    this.isShowUsed = options.isShowUsed ?? true;
     this.isExpand = options.isExpand ?? true;
   }
 
@@ -150,6 +152,8 @@ export const czmlClockCurrentTimeOptions = {
   labelZh: "当前时间",
   labelEn: "current time",
   isEnable: true,
+  isUsed: true,
+  isShowUsed: true,
 };
 
 export const czmlEpochimeOptions = {

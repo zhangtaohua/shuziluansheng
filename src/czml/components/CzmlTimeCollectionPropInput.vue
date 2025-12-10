@@ -26,7 +26,7 @@
     <div class="col_nw_fs_fs props_it_box">
       <div class="col_nw_fs_fs props_it_wrapper" :class="{ props_it_samllwrapper: isFoldIntervals }">
         <div class="col_nw_fs_fs props_it_inwrapper">
-          <div v-for="(inval, index) in intervalsValues" :key="inval.startTime" class="col_nw_fs_fs props_it_itembox">
+          <div v-for="(inval, index) in intervalsValues" :key="id + index" class="col_nw_fs_fs props_it_itembox">
             <div class="row_nw_fs_ce props_it_tbox">
               <span class="row_nw_fs_ce props_it_tlabel">startTime:</span>
               <div class="row_nw_fs_ce props_it_tinputbox">
@@ -101,14 +101,14 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, reactive, onMounted, computed, watch, nextTick } from "vue";
-  import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
+  import { ref, onMounted, watch } from "vue";
   import RjBooleanSwitchInput from "@/components/form/RjBooleanSwitchInput.vue";
 
   import { defaultTimeFormatStr } from "@/czml/schema/properties/commondata";
   import { cloneDeep } from "es-toolkit";
   import { isArray } from "es-toolkit/compat";
   import dayjs from "dayjs";
+  import { nanoid } from "@/utils/common/nanoid";
 
   const props = defineProps({
     vdata: {
@@ -122,9 +122,7 @@
     },
   });
 
-  const { editorConfig, setEditorRefreshShape } = useEditorConfigStore();
-  const id = "";
-  const name = "";
+  const id = nanoid;
   const currentProp = ref({});
   const isEnable = ref(false);
   const intervalsValues = ref([

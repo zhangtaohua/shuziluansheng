@@ -3,7 +3,7 @@
     <div v-for="packet in currentPackets.packets" :id="packet.id" :key="packet.id" class="col_nw_fs_ce config_czml_box">
       <div class="row_nw_fs_ce czml_packet_tbox">
         <div class="row_nw_fs_ce wh_auto_100p">
-          <img src="@/assets/images/icons/packetsetting.svg" alt="icon" class="czml_packet_icon" />
+          <img src="@/assets/images/icons/package-setting.svg" alt="icon" class="czml_packet_icon" />
           <label class="row_nw_fs_ce czml_ch_label">{{ packet.labelZh }}</label>
           <label class="row_nw_fs_ce czml_ogi_label">{{ packet.labelEn }}</label>
         </div>

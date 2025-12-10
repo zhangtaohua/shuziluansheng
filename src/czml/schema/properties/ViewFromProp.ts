@@ -2,6 +2,7 @@ import { nanoid } from "@/utils/common/nanoid";
 
 import czmlStringProp from "../properties/StringProp";
 import czmlCartesian3PureProp from "../properties/Cartesian3PureProp";
+import czmlReferencesProp from "./ReferencesProps";
 
 export class czmlViewFromProp {
   public id = "czml_prop_view_from_" + nanoid(10);
@@ -25,16 +26,19 @@ export class czmlViewFromProp {
   public isCombinedProperty = true;
   public isComplexProperty = false;
 
+  public isShowUsed = true;
+
   public properties = {
     cartesian: new czmlCartesian3PureProp(null),
-    reference: new czmlStringProp({
+    reference: new czmlReferencesProp({
       name: "reference",
       czmlName: "reference",
       labelZh: "参考",
       labelEn: "reference",
       value: "",
       isEnable: true,
-      isUsed: true,
+      isUsed: false,
+      isShowUsed: true,
       $ref: "Values/ReferenceValue.json",
       description: "The orientation specified as a reference to another property.",
     }),
@@ -85,6 +89,7 @@ export class czmlViewFromProp {
 
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
+    this.isShowUsed = options.isShowUsed ?? true;
     this.isExpand = options.isExpand ?? true;
   }
 

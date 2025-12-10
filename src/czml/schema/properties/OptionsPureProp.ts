@@ -19,6 +19,7 @@ export class czmlOptionsPureProp {
   public options = [];
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
+  public isShowUsed = true;
   public isExpand = true; // for UI
   public _isEntity = false;
   public isCombinedProperty = false;
@@ -77,6 +78,7 @@ export class czmlOptionsPureProp {
 
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
+    this.isShowUsed = options.isShowUsed ?? true;
     this.isExpand = options.isExpand ?? true;
 
     this.options = options.options;
@@ -264,10 +266,14 @@ export const CzmlSensorVolumePortionToDisplayOptions = {
 
 export const CzmlClockRangeOptions = {
   name: "clockRange",
-  czmlName: "clockRange",
+  czmlName: "range",
   labelZh: "时钟范围",
   labelEn: "clock range",
   isEnable: true,
+  isUsed: true,
+  isShowUsed: true,
+  description: "The behavior of a clock when its current time reaches its start or end time.",
+  type: "string",
 
   // real default value is static
   value: "LOOP_STOP",
@@ -308,10 +314,12 @@ export const CzmlClockRangeOptions = {
 
 export const CzmlClockStepOptions = {
   name: "clockStep",
-  czmlName: "clockStep",
+  czmlName: "step",
   labelZh: "时钟步长",
   labelEn: "clock step",
   isEnable: true,
+  description: "Defines how a clock advances each tick.",
+  type: "string",
 
   // real default value is static
   value: "SYSTEM_CLOCK_MULTIPLIER",
@@ -497,6 +505,8 @@ export const CzmlHorizontalOriginOptions = {
   labelZh: "水平原点",
   labelEn: "horizontal origin",
   isEnable: true,
+  isUsed: false,
+  isShowUsed: true,
 
   // real default value is static
   value: "CENTER",
@@ -540,6 +550,8 @@ export const CzmlVerticalOriginOptions = {
   labelZh: "垂直原点",
   labelEn: "vertical origin",
   isEnable: true,
+  isUsed: false,
+  isShowUsed: true,
 
   // real default value is static
   value: "CENTER",
@@ -594,6 +606,8 @@ export const CzmlHeightReferenceOptions = {
   labelZh: "高度参考",
   labelEn: "height reference",
   isEnable: true,
+  isUsed: false,
+  isShowUsed: true,
 
   // real default value is static
   value: "NONE",
@@ -631,25 +645,312 @@ export const CzmlHeightReferenceOptions = {
   ],
 };
 
-export const CzmlSampleOptions = {
-  name: "arcType",
-  czmlName: "arcType",
-  labelZh: "弧型",
-  labelEn: "arcType",
+export const CzmlClassificationTypeOptions = {
+  name: "classificationType",
+  czmlName: "classificationType",
+  labelZh: "分类类型",
+  labelEn: "classification type",
   isEnable: true,
+  isUsed: false,
+  isShowUsed: true,
+  $schema: "http://json-schema.org/draft-07/schema#",
+  $id: "https://analyticalgraphicsinc.github.io/czml-writer/Schema/Values/ClassificationTypeValue.json",
+  title: "ClassificationType",
+  description: "Whether a classification affects terrain, 3D Tiles, or both.",
+  type: "string",
+  czmlValue: true,
 
   // real default value is static
-  value: "NONE",
+  value: "BOTH",
   options: [
     {
-      id: "NONE",
-      value: "NONE",
-      label: "无",
-      labelZh: "无",
-      labelEn: "NONE",
-      note: "NONE",
+      id: "TERRAIN",
+      value: "TERRAIN",
+      label: "地形",
+      labelZh: "地形",
+      labelEn: "TERRAIN",
+      note: "TERRAIN",
+      default: false,
+      description: "Only terrain will be classified.",
+    },
+    {
+      id: "CESIUM_3D_TILE",
+      value: "CESIUM_3D_TILE",
+      label: "3d瓦片",
+      labelZh: "3d瓦片",
+      labelEn: "CESIUM_3D_TILE",
+      note: "CESIUM_3D_TILE",
+      default: false,
+      description: "Only 3D Tiles will be classified.",
+    },
+    {
+      id: "BOTH",
+      value: "BOTH",
+      label: "全部",
+      labelZh: "全部",
+      labelEn: "BOTH",
+      note: "BOTH",
       default: true,
-      description: "",
+      description: "Both terrain and 3D Tiles will be classified.",
+    },
+  ],
+};
+
+export const CzmlColorBlendModeOptions = {
+  name: "colorBlendMode",
+  czmlName: "colorBlendMode",
+  labelZh: "颜色混合模式",
+  labelEn: "color blend mode",
+  isEnable: true,
+  isUsed: false,
+  isShowUsed: true,
+
+  $schema: "http://json-schema.org/draft-07/schema#",
+  $id: "https://analyticalgraphicsinc.github.io/czml-writer/Schema/Values/ColorBlendModeValue.json",
+  title: "ColorBlendMode",
+  description: "The mode of blending between a target color and an entity's source color.",
+  type: "string",
+  czmlValue: true,
+
+  // real default value is static
+  value: "HIGHLIGHT",
+  options: [
+    {
+      id: "HIGHLIGHT",
+      value: "HIGHLIGHT",
+      label: "高亮",
+      labelZh: "高亮",
+      labelEn: "HIGHLIGHT",
+      note: "HIGHLIGHT",
+      default: true,
+      description: "Multiplies the source color by the target color.",
+    },
+    {
+      id: "REPLACE",
+      value: "REPLACE",
+      label: "替换",
+      labelZh: "替换",
+      labelEn: "REPLACE",
+      note: "REPLACE",
+      default: false,
+      description: "Replaces the source color with the target color.",
+    },
+    {
+      id: "MIX",
+      value: "MIX",
+      label: "混合",
+      labelZh: "混合",
+      labelEn: "MIX",
+      note: "MIX",
+      default: false,
+      description: "Blends the source color and target color together.",
+    },
+  ],
+};
+
+export const CzmlCornerTypeOptions = {
+  name: "cornerType",
+  czmlName: "cornerType",
+  labelZh: "圆角类型",
+  labelEn: "corner type",
+  isEnable: true,
+  isUsed: false,
+  isShowUsed: true,
+
+  $schema: "http://json-schema.org/draft-07/schema#",
+  $id: "https://analyticalgraphicsinc.github.io/czml-writer/Schema/Values/CornerTypeValue.json",
+  title: "CornerType",
+  description: "The style of a corner.",
+  type: "string",
+  czmlValue: true,
+
+  // real default value is static
+  value: "ROUNDED",
+  options: [
+    {
+      id: "ROUNDED",
+      value: "ROUNDED",
+      label: "高亮",
+      labelZh: "高亮",
+      labelEn: "ROUNDED",
+      note: "ROUNDED",
+      default: true,
+      description: "The corner has a smooth edge.",
+    },
+    {
+      id: "MITERED",
+      value: "MITERED",
+      label: "交点",
+      labelZh: "交点",
+      labelEn: "MITERED",
+      note: "MITERED",
+      default: false,
+      description: "The corner point is the intersection of adjacent edges.",
+    },
+    {
+      id: "BEVELED",
+      value: "BEVELED",
+      label: "斜切",
+      labelZh: "斜切",
+      labelEn: "BEVELED",
+      note: "BEVELED",
+      default: false,
+      description: "The corner is clipped.",
+    },
+  ],
+};
+
+export const CzmlLabelStyleOptions = {
+  name: "labelStyle",
+  czmlName: "labelStyle",
+  labelZh: "标签样式",
+  labelEn: "label style",
+  isEnable: true,
+  isUsed: false,
+  isShowUsed: true,
+
+  $schema: "http://json-schema.org/draft-07/schema#",
+  $id: "https://analyticalgraphicsinc.github.io/czml-writer/Schema/Values/LabelStyleValue.json",
+  title: "LabelStyle",
+  description: "The style of a label.",
+  type: "string",
+  czmlValue: true,
+
+  // real default value is static
+  value: "FILL",
+  options: [
+    {
+      id: "FILL",
+      value: "FILL",
+      label: "填充",
+      labelZh: "填充",
+      labelEn: "FILL",
+      note: "FILL",
+      default: true,
+      description: "The text of the label is filled, but not outlined.",
+    },
+    {
+      id: "OUTLINE",
+      value: "OUTLINE",
+      label: "轮廓线",
+      labelZh: "轮廓线",
+      labelEn: "OUTLINE",
+      note: "OUTLINE",
+      default: false,
+      description: "The text of the label is outlined, but not filled.",
+    },
+    {
+      id: "FILL_AND_OUTLINE",
+      value: "FILL_AND_OUTLINE",
+      label: "填充+轮廓线",
+      labelZh: "填充+轮廓线",
+      labelEn: "FILL_AND_OUTLINE",
+      note: "FILL_AND_OUTLINE",
+      default: false,
+      description: "The text of the label is both filled and outlined.",
+    },
+  ],
+};
+
+export const CzmlShadowModeOptions = {
+  name: "shadows",
+  czmlName: "shadows",
+  labelZh: "阴影",
+  labelEn: "shadow mode",
+  isEnable: true,
+  isUsed: false,
+  isShowUsed: true,
+
+  $schema: "http://json-schema.org/draft-07/schema#",
+  $id: "https://analyticalgraphicsinc.github.io/czml-writer/Schema/Values/ShadowModeValue.json",
+  title: "ShadowMode",
+  description: "Whether or not an object casts or receives shadows from each light source when shadows are enabled.",
+  type: "string",
+  czmlValue: true,
+  // real default value is static
+  value: "DISABLED",
+  options: [
+    {
+      id: "DISABLED",
+      value: "DISABLED",
+      label: "禁用",
+      labelZh: "禁用",
+      labelEn: "DISABLED",
+      note: "DISABLED",
+      default: true,
+      description: "The object does not cast or receive shadows.",
+    },
+    {
+      id: "ENABLED",
+      value: "ENABLED",
+      label: "启用",
+      labelZh: "启用",
+      labelEn: "ENABLED",
+      note: "ENABLED",
+      default: false,
+      description: "The object casts and receives shadows.",
+    },
+    {
+      id: "CAST_ONLY",
+      value: "CAST_ONLY",
+      label: "生成阴影",
+      labelZh: "生成阴影",
+      labelEn: "CAST_ONLY",
+      note: "CAST_ONLY",
+      default: false,
+      description: "The object casts shadows only.",
+    },
+    {
+      id: "RECEIVE_ONLY",
+      value: "RECEIVE_ONLY",
+      label: "接收阴影",
+      labelZh: "接收阴影",
+      labelEn: "RECEIVE_ONLY",
+      note: "RECEIVE_ONLY",
+      default: false,
+      description: "The object receives shadows only.",
+    },
+  ],
+};
+
+export const CzmlStripeOrientationOptions = {
+  name: "stripeOrientation",
+  czmlName: "stripeOrientation", // orientation
+  labelZh: "条纹方向",
+  labelEn: "stripe orientation",
+  isEnable: true,
+  isUsed: false,
+  isShowUsed: true,
+
+  $schema: "http://json-schema.org/draft-07/schema#",
+  $id: "https://analyticalgraphicsinc.github.io/czml-writer/Schema/Values/StripeOrientationValue.json",
+  title: "StripeOrientation",
+  description: "The orientation of stripes in the stripe material.",
+  type: "string",
+  czmlValue: true,
+
+  // real default value is static
+  value: "HORIZONTAL",
+  options: [
+    {
+      id: "HORIZONTAL",
+      value: "HORIZONTAL",
+      label: "水平",
+      labelZh: "水平",
+      labelEn: "HORIZONTAL",
+      note: "HORIZONTAL",
+      default: true,
+      description: "The stripes are oriented horizontally along the X axis.",
+    },
+    {
+      id: "VERTICAL",
+      value: "VERTICAL",
+      label: "垂直",
+      labelZh: "垂直",
+      labelEn: "VERTICAL",
+      note: "VERTICAL",
+      default: false,
+      description: "The stripes are oriented vertically along the Y axis.",
     },
   ],
 };

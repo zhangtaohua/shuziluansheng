@@ -54,7 +54,7 @@
     <div class="col_nw_fs_fs props_it_box">
       <div class="col_nw_fs_fs props_it_wrapper" :class="{ props_it_samllwrapper: isFoldIntervals }">
         <div class="col_nw_fs_fs props_it_inwrapper">
-          <div v-for="(inval, index) in intervalsValuesShow" :key="inval[0]" class="col_nw_fs_fs props_it_itembox">
+          <div v-for="(inval, index) in intervalsValuesShow" :key="id + index" class="col_nw_fs_fs props_it_itembox">
             <div class="row_nw_fs_ce props_qtinput_line1">
               <div class="row_nw_fs_ce props_qtinput_itemlabelleft">X:</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
@@ -197,8 +197,7 @@
   const { czmlMapDataConfig, setCzmlMapCurrentAction, setCzmlMapViewDrawData, setCzmlIsViewDrawDataPath } =
     useCzmlMapDataConfigStore();
 
-  const id = "";
-  const name = "";
+  const id = nanoid(10);
   const currentProp = ref({});
   const isEnable = ref(false);
   const intervalsValues = ref([[0, 0, 0]]);

@@ -22,6 +22,7 @@ export class czmlDoublePureProp {
   private _retainDecimalPlaces = 3;
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
+  public isShowUsed = true;
   public isExpand = true; // for UI
   public _isEntity = false;
   public isCombinedProperty = false;
@@ -70,16 +71,18 @@ export class czmlDoublePureProp {
       this.tag = options.tag;
     }
 
-    if (options.value) {
-      this._value = options.value;
-    }
+    // if (options.value) {
+    //   this._value = options.value;
+    // }
 
     if (options.default) {
       this.default = options.default;
     }
 
+    this._value = options.value ?? true;
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
+    this.isShowUsed = options.isShowUsed ?? true;
     this.isExpand = options.isExpand ?? true;
 
     if (options.max != undefined && options.min != undefined && +options.max > +options.min) {
@@ -209,6 +212,8 @@ export const czmlClockMultiplierOptions = {
   min: 0,
   setp: 0.1,
   isEnable: true,
+  isUsed: true,
+  isShowUsed: true,
 };
 
 export const czmlInterpolationDegreeOptions = {
@@ -272,6 +277,8 @@ export const czmlScalePureOptions = {
   min: 0,
   setp: 0.1,
   isEnable: true,
+  isUsed: true,
+  isShowUsed: true,
 };
 
 export const czmlRotationPureOptions = {
@@ -285,6 +292,8 @@ export const czmlRotationPureOptions = {
   min: 0,
   setp: 0.05,
   isEnable: true,
+  isUsed: false,
+  isShowUsed: true,
 };
 
 export const czmlDisableDepthTestDistancePureOptions = {
@@ -298,4 +307,6 @@ export const czmlDisableDepthTestDistancePureOptions = {
   min: 0,
   setp: 0.05,
   isEnable: true,
+  isUsed: false,
+  isShowUsed: true,
 };

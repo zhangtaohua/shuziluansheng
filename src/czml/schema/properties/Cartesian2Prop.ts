@@ -47,6 +47,7 @@ export class czmlCartesian2Prop {
 
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
+  public isShowUsed = true;
   public isExpand = true; // for UI
   public _isEntity = false;
   public isCombinedProperty = false;
@@ -115,6 +116,7 @@ export class czmlCartesian2Prop {
     this.isFixedXyzUnitType = options.isFixedXyzUnitType ?? true;
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
+    this.isShowUsed = options.isShowUsed ?? true;
     this.isExpand = options.isExpand ?? true;
   }
 
@@ -234,6 +236,8 @@ export const czmlPixelOffsetOptions = {
   labelEn: "pixel offset",
   tag: "CzmlCartesian2PropInput",
   isEnable: true,
+  isUsed: false,
+  isShowUsed: true,
 };
 
 export const czmlDistanceDisplayConditionOptions = {
@@ -243,4 +247,6 @@ export const czmlDistanceDisplayConditionOptions = {
   labelEn: "distance display condition",
   tag: "CzmlCartesian2NFPropInput",
   isEnable: true,
+  isUsed: false,
+  isShowUsed: true,
 };

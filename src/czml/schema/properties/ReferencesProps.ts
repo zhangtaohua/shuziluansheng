@@ -30,6 +30,7 @@ export class czmlReferencesProp {
 
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
+  public isShowUsed = false;
   public isExpand = true; // for UI
   public _isEntity = false;
   public isCombinedProperty = false;
@@ -90,6 +91,7 @@ export class czmlReferencesProp {
 
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
+    this.isShowUsed = options.isShowUsed ?? false;
     this.isExpand = options.isExpand ?? true;
   }
 
@@ -178,3 +180,16 @@ export class czmlReferencesProp {
 }
 
 export default czmlReferencesProp;
+
+export const czmlReferenceValueOptions = {
+  name: "reference",
+  czmlName: "reference",
+  labelZh: "参考值",
+  labelEn: "reference",
+  value: "",
+  isEnable: true,
+  isUsed: true,
+  isShowUsed: true,
+  description:
+    "Represents a reference to another property. References can be used to specify that two properties on different objects are in fact, the same property.",
+};

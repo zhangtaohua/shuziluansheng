@@ -22,6 +22,7 @@ export class czmlIntegerPureProp {
   private _retainDecimalPlaces = 0;
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
+  public isShowUsed = true;
   public isExpand = true; // for UI
   public _isEntity = false;
   public isCombinedProperty = false;
@@ -80,6 +81,7 @@ export class czmlIntegerPureProp {
 
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
+    this.isShowUsed = options.isShowUsed ?? true;
     this.isExpand = options.isExpand ?? true;
 
     if (options.max != undefined && options.min != undefined && +options.max > +options.min) {

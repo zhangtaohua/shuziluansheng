@@ -7,6 +7,8 @@ import {
   propValuesCartesian3TypeOptions,
 } from "./commondata.ts";
 
+import { cartesian3ToWgs84, cartesian3ToDegrees, cartesian3ToRadians } from "@/utils/map/cesium/csTools";
+
 export class czmlCartesian3ListProp {
   public id = "czml_prop_cartesian3_list_" + nanoid(10);
   public name = "cartesian3";
@@ -31,6 +33,7 @@ export class czmlCartesian3ListProp {
 
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
+  public isShowUsed = true;
   public isExpand = true; // for UI
   public _isEntity = false;
   public isCombinedProperty = false;
@@ -97,6 +100,7 @@ export class czmlCartesian3ListProp {
     this.isFixedXyzUnitType = options.isFixedXyzUnitType ?? true;
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
+    this.isShowUsed = options.isShowUsed ?? true;
     this.isExpand = options.isExpand ?? true;
   }
 
@@ -155,9 +159,27 @@ export class czmlCartesian3ListProp {
 
   public getCzmlValue() {
     if (this.isUsed) {
-      const flattenArr = this._value.flat(Infinity);
-      // return flattenArr.map(item => parseInt(item, 10));
-      return flattenArr.map(Number);
+      const revals = [];
+      if (this._xyzUnitType == CZMLCARTESIAN3METERTYPE) {
+        const flattenArr = this._value.flat(Infinity);
+        // return flattenArr.map(item => parseInt(item, 10));
+        return flattenArr.map(Number);
+      } else if (this._xyzUnitType == CZMLCARTESIAN3DEGREESTYPE) {
+        for (let i = 0; i < this._value.length; i++) {
+          const temp = this._value[i];
+          const cartesian3 = { x: +temp[0], y: +temp[1], z: +temp[2] };
+          const cart = cartesian3ToDegrees(cartesian3);
+          revals.push(cart.longitude, cart.latitude, cart.height);
+        }
+      } else if (this._xyzUnitType == CZMLCARTESIAN3RADIANSTYPE) {
+        for (let i = 0; i < this._value.length; i++) {
+          const temp = this._value[i];
+          const cartesian3 = { x: +temp[0], y: +temp[1], z: +temp[2] };
+          const cart = cartesian3ToRadians(cartesian3);
+          revals.push(cart.longitude, cart.latitude, cart.height);
+        }
+      }
+      return revals;
     } else {
       return null;
     }

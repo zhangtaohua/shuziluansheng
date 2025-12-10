@@ -22,6 +22,7 @@ export class czmlTimeIntervalProp {
   public default = "";
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
+  public isShowUsed = true;
   public isExpand = true; // for UI
   public _isEntity = false;
   public isCombinedProperty = false;
@@ -76,6 +77,7 @@ export class czmlTimeIntervalProp {
 
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
+    this.isShowUsed = options.isShowUsed ?? true;
     this.isExpand = options.isExpand ?? true;
   }
 
@@ -157,4 +159,6 @@ export const czmlClockIntervalOptions = {
   labelZh: "时间间隔",
   labelEn: "interval",
   isEnable: true,
+  isUsed: true,
+  isShowUsed: true,
 };

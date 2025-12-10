@@ -2,7 +2,7 @@ import { nanoid } from "@/utils/common/nanoid";
 
 import { czmlPacket } from "./packet";
 import { czmlDocument } from "./document";
-import { testFakeData, TCdata, testFakeData2 } from "./testFakeData1.js";
+import { testFakeData, TCdata, testFakeData2, testFakeData3 } from "./testFakeData1.js";
 
 import colorsvg from "@/assets/images/icons/colors.svg";
 
@@ -20,6 +20,7 @@ export class CzmlDataMaker {
   public flyTo = true;
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
+  public isShowUsed = true;
   public isExpand = true; // for UI
 
   constructor(options: any) {
@@ -58,7 +59,7 @@ export class CzmlDataMaker {
   }
 
   // RJTODO 后期要用 set 实现
-  public data = testFakeData;
+  public data = testFakeData2;
 
   // RJTODO
   // 1 要可以手动增加packet;
