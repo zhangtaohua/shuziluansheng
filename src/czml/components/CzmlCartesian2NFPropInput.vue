@@ -557,7 +557,7 @@
   }
 
   .props_qtinput_itemlabelleft {
-    width: 1.5rem;
+    width: 3.25rem;
     height: 100%;
     color: rgba(255, 255, 255, 1);
     font-size: var(--czml-fs-sl-label);
@@ -566,7 +566,7 @@
   }
 
   .props_qtinput_itemlabelright {
-    width: 1.5rem;
+    width: 3.25rem;
     height: 100%;
     color: rgba(255, 255, 255, 1);
     font-size: var(--czml-fs-sl-label);
@@ -576,7 +576,7 @@
   }
 
   .props_qtinput_itembox {
-    width: calc(50% - 2.25rem);
+    width: calc(50% - 4rem);
     height: 100%;
   }
 

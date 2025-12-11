@@ -109,11 +109,23 @@ export class czmlColorProp {
     }
 
     if (options.value) {
-      this._value = options.value;
-    }
-
-    if (options.default) {
-      this.default = options.default;
+      if (chroma.valid(options.value)) {
+        const color = `rgba(${chroma(options.value).rgba().join(",")})`;
+        this._value = [color];
+        this._oldPureValue = [color];
+        this._oldSecondsValue = [[0, color]];
+        this._oldTimestringValue = [[dayjs().format(defaultTimeFormatStr), color]];
+        this.default = [color];
+      }
+    } else if (options.default) {
+      if (chroma.valid(options.default)) {
+        const color = `rgba(${chroma(options.default).rgba().join(",")})`;
+        this._value = [color];
+        this._oldPureValue = [color];
+        this._oldSecondsValue = [[0, color]];
+        this._oldTimestringValue = [[dayjs().format(defaultTimeFormatStr), color]];
+        this.default = [color];
+      }
     }
 
     if (options.colorType) {

@@ -43,13 +43,14 @@ import {
   czmlImageSubRegionOptions,
   czmlBoundingRectangleOptions,
 } from "../properties/Cartesian4Prop";
-import { czmlCombineProp, czmlBoxDimensionsOptions } from "../properties/combinePropertyProp";
+import { czmlCombineProp, czmlBoxDimensionsOptions } from "../properties/CombinePropertyProp";
+import czmlMaterialProp from "../properties/MaterialProp";
 
 export class czmlBoxEntity {
   public id = "czml_entity_box_" + nanoid(10);
   public name = "box";
   public _czmlName = "box";
-  public labelZh = "广告牌";
+  public labelZh = "3D盒子";
   public labelEn = "box";
   public title = "box";
   public description =
@@ -148,11 +149,11 @@ export class czmlBoxEntity {
       description: "Whether or not the box is filled.",
       default: true,
     }),
-    material: {
+    material: new czmlMaterialProp({
       $ref: "Material.json",
       description: "The material to display on the surface of the box.",
       default: "solid white",
-    },
+    }),
     outline: new czmlBooleanIntervalProp({
       ...czmlShowOptions,
       id: "czml_prop_outline_" + nanoid(10),
@@ -182,7 +183,8 @@ export class czmlBoxEntity {
       labelEn: "outline width",
       $ref: "Double.json",
       description: "The width of the box outline.",
-      default: 1.0,
+      value: [1.0],
+      default: [1.0],
     }),
     shadows: new czmlOptionsPureProp({
       ...CzmlShadowModeOptions,

@@ -174,14 +174,15 @@ export class czmlPositionProp {
       const czmlData = {};
       const keys = Object.keys(this.properties);
 
-      const rfProp = this.properties["referenceFrame"];
-      let isUseInterpolate = false;
-      if (rfProp) {
-        const propValue = rfProp.getCzmlValue();
-        if (propValue && propValue == "INERTIAL") {
-          isUseInterpolate = true;
-        }
-      }
+      // const rfProp = this.properties["referenceFrame"];
+      const isUseInterpolate = true;
+      // "FIXED" 的值 也是可以设置inter 值的
+      // if (rfProp) {
+      //   const propValue = rfProp.getCzmlValue();
+      //   if (propValue && propValue == "INERTIAL") {
+      //     isUseInterpolate = true;
+      //   }
+      // }
 
       for (let i = 0; i < keys.length; i++) {
         const key = keys[i];

@@ -16,7 +16,8 @@ export class czmlCombineProp {
 
   public type = "property";
   public componentType = "czml#packet#property";
-  public tag = "CzmlInterpolationPropInput";
+  // public tag = "CzmlCombinePropInput";
+  public tag = "CzmlCombineSmPropInput";
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
   public isShowUsed = true;
@@ -151,6 +152,7 @@ export const czmlBoxDimensionsOptions = {
   isUsed: true,
   isShowUsed: true,
   description: "The dimensions of the box.",
+  tag: "CzmlCombineSmPropInput",
   properties: {
     cartesian: new czmlCartesian3PixelProp({
       czmlName: "cartesian",

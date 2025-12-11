@@ -56,10 +56,13 @@ import CzmlCartographicRectanglePropInput from "@/czml/components/CzmlCartograph
 import CzmlColorPropInput from "@/czml/components/CzmlColorPropInput.vue";
 
 import CzmlCombinePropInput from "@/czml/components/CzmlCombinePropInput.vue";
+import CzmlCombineSmPropInput from "@/czml/components/CzmlCombineSmPropInput.vue";
 import CzmlCustomPropertiesPropInput from "@/czml/components/CzmlCustomPropertiesPropInput.vue";
 
 import CzmlEntityRender from "@/czml/components/CzmlEntityRender.vue";
 import CzmlInterpolationPropInput from "@/czml/components/CzmlInterpolationPropInput.vue";
+
+import CzmlMaterialPropInput from "@/czml/components/CzmlMaterialPropInput.vue";
 
 import CzmlNumberFixedCntPropInput from "@/czml/components/CzmlNumberFixedCntPropInput.vue";
 
@@ -142,10 +145,14 @@ app.component("CzmlCartographicRectanglePropInput", CzmlCartographicRectanglePro
 app.component("CzmlColorPropInput", CzmlColorPropInput);
 
 app.component("CzmlCombinePropInput", CzmlCombinePropInput);
+app.component("CzmlCombineSmPropInput", CzmlCombineSmPropInput);
+
 app.component("CzmlCustomPropertiesPropInput", CzmlCustomPropertiesPropInput);
 app.component("CzmlEntityRender", CzmlEntityRender);
 
 app.component("CzmlInterpolationPropInput", CzmlInterpolationPropInput);
+
+app.component("CzmlMaterialPropInput", CzmlMaterialPropInput);
 
 app.component("CzmlNumberFixedCntPropInput", CzmlNumberFixedCntPropInput);
 app.component("CzmlNumberListPropInput", CzmlNumberListPropInput);

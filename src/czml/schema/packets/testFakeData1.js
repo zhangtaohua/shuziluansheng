@@ -110,7 +110,7 @@ export const TCdata = [
   {
     id: "油田联合站",
     position: {
-      cartographicDegrees: [121.92203, 23.896242, 1.99],
+      cartographicDegrees: [116.69536591018894, 24.780408830621177, 110.217640780775888],
     },
     billboard: {
       image: colorsvg,
@@ -158,12 +158,13 @@ export const testFakeData2 = [
     description: "Describes the graphical properties of a single object in a scene, such as a single aircraft.",
     position: {
       // interval: "2025-12-10T03:58:33.000Z/2025-12-11T03:58:33.000Z",
-      referenceFrame: "INERTIAL",
+      // referenceFrame: "INERTIAL",
+      referenceFrame: "FIXED",
       epoch: "2025-12-10T03:58:33.000Z",
       interpolationAlgorithm: "LAGRANGE",
       interpolationDegree: 5,
       cartographicDegrees: [
-        0.0001, 116.69536591018894, 24.780408830621177, 110.217640780775888, 30, 116.6942229022418, 24.923077745296798,
+        0, 116.69536591018894, 24.780408830621177, 110.217640780775888, 30, 116.6942229022418, 24.923077745296798,
         80.962529816534532, 60, 116.69225513258822, 25.131079568545157, 70.505204277745625, 90, 116.72657182104861,
         25.31756312321329, 7.819013874459529, 120, 116.73695061163492, 25.459518382164998, 12.456495346274192, 150,
         116.81998538954161, 25.602765169508945, 9.482329925004235, 180, 116.92617922757114, 25.81122627173451,
@@ -204,6 +205,22 @@ export const testFakeData2 = [
       scale: 1,
       width: 64,
       height: 20,
+    },
+    box: {
+      show: true,
+      dimensions: {
+        cartesian: [10000, 15000, 20000],
+      },
+      fill: true,
+      material: {
+        solidColor: {
+          color: [198, 52, 52, 255],
+        },
+      },
+      outline: true,
+      outlineColor: [0, 0, 0, 255],
+      outlineWidth: 1,
+      shadows: "DISABLED",
     },
   },
 ];
