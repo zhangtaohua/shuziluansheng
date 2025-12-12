@@ -25,58 +25,27 @@
 
     <div class="col_nw_fs_fs props_radiobox">
       <div class="row_nw_fs_ce props_radiobox_title">
-        <label class="row_nw_fs_ce props_radioch_label">值是否含有时间标记</label>
-        <label class="row_nw_fs_fe props_radioogi_label">is with time-tagged</label>
-      </div>
-      <div class="row_nw_fs_ce props_radioinbox">
-        <RjRadioTabInput
-          :name="currentProp.id"
-          :options="currentProp.timeTypeOptions"
-          :initValue="currentProp.timeType"
-          :isRefresh="refreshTimeTypeFlag"
-          @onChange="timeTypesOptionChangedHd"
-        ></RjRadioTabInput>
+        <label class="row_nw_fs_ce props_radioch_label">角度单位: 弧度</label>
+        <label class="row_nw_fs_fe props_radioogi_label">angles in radians</label>
       </div>
     </div>
 
-    <div v-if="currentProp.timeType == CZMLPUREVALUE" class="col_nw_fs_fs props_it_box">
+    <div class="col_nw_fs_fs props_it_box">
       <div class="col_nw_fs_fs props_it_wrapper" :class="{ props_it_samllwrapper: isFoldIntervals }">
-        <div class="col_nw_fs_fs props_it_inwrapper">
-          <div class="col_nw_fs_fs props_it_itembox">
-            <div class="row_nw_fs_ce props_qtinput_line1">
-              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">X:</div>
-              <div class="row_nw_fs_ce props_qtinput_itembox">
-                <el-input v-model="pureValue[0]" placeholder="Please input" type="number" />
-              </div>
-              <div class="row_nw_fs_ce props_qtinput_itemlabelright">Y:</div>
-              <div class="row_nw_fs_ce props_qtinput_itembox">
-                <el-input v-model="pureValue[1]" placeholder="Please input" type="number" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div v-else-if="currentProp.timeType == CZMLTIMESECONDS" class="col_nw_fs_fs props_it_box">
-      <div class="col_nw_fs_fs props_it_wrapper">
         <div class="col_nw_fs_fs props_it_inwrapper">
           <div v-for="(inval, index) in intervalsValues" :key="id + index" class="col_nw_fs_fs props_it_itembox">
             <div class="row_nw_fs_ce props_qtinput_linetime">
-              <div class="row_nw_fs_ce props_qtinput_linetimelabel">秒 seconds:</div>
-              <div class="row_nw_fs_ce props_qtinput_linetimeinputbox">
-                <el-input v-model="inval[0]" placeholder="Please input" type="number" />
-              </div>
-
               <div class="row_nw_fs_ce props_qtinput_linetimeindex">SN:{{ index + 1 }}</div>
             </div>
+
             <div class="row_nw_fs_ce props_qtinput_line1">
-              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">X:</div>
+              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">Clock:</div>
+              <div class="row_nw_fs_ce props_qtinput_itembox">
+                <el-input v-model="inval[0]" placeholder="Please input" type="number" />
+              </div>
+              <div class="row_nw_fs_ce props_qtinput_itemlabelright">Cone:</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
                 <el-input v-model="inval[1]" placeholder="Please input" type="number" />
-              </div>
-              <div class="row_nw_fs_ce props_qtinput_itemlabelright">Y:</div>
-              <div class="row_nw_fs_ce props_qtinput_itembox">
-                <el-input v-model="inval[2]" placeholder="Please input" type="number" />
               </div>
             </div>
           </div>
@@ -84,15 +53,6 @@
       </div>
 
       <div class="col_nw_fs_fs props_it_secondsactbox">
-        <div class="row_nw_fs_ce props_it_secondssetbox">
-          <div class="row_nw_fs_ce props_it_secondssetbox_lable">开始秒数 start seconds:</div>
-          <el-input v-model="currentProp.secondsStart" placeholder="Please input" type="number" min="0" />
-        </div>
-        <div class="row_nw_fs_ce props_it_secondssetbox">
-          <div class="row_nw_fs_ce props_it_secondssetbox_lable">秒数步长 step:</div>
-          <el-input v-model="currentProp.secondsStep" placeholder="Please input" type="number" min="0" />
-        </div>
-
         <div class="row_nw_fs_ce props_it_secondssetbox">
           <div class="row_nw_fs_ce props_it_secondssetbox_lable">一次增加数量 count:</div>
           <el-input v-model="currentProp.secondsOnceAddCount" placeholder="Please input" type="number" min="1" />
@@ -144,106 +104,17 @@
         </el-icon>
       </div>
     </div>
-
-    <div v-else-if="currentProp.timeType == CZMLTIMESTRING" class="col_nw_fs_fs props_it_box">
-      <div class="col_nw_fs_fs props_it_wrapper" :class="{ props_it_samllwrapper: isFoldTimestrIntervals }">
-        <div class="col_nw_fs_fs props_it_inwrapper">
-          <div
-            v-for="(inval, index2) in timestrIntervalsValues"
-            :key="id + '_str_' + index2"
-            class="col_nw_fs_fs props_it_itembox"
-          >
-            <div class="row_nw_fs_ce props_qtinput_linetime">
-              <div class="row_nw_fs_ce props_qtinput_linetimelabel">时间串 time:</div>
-              <div class="row_nw_fs_ce props_qtinput_linetimeinputbox">
-                <el-date-picker
-                  v-model="inval[0]"
-                  type="datetime"
-                  placeholder="Select start datetime"
-                  :format="defaultTimeFormatStr"
-                  :value-format="defaultTimeFormatStr"
-                />
-              </div>
-              <div class="row_nw_fs_ce props_qtinput_linetimeindex">SN:{{ index2 + 1 }}</div>
-            </div>
-            <div class="row_nw_fs_ce props_qtinput_line1">
-              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">X:</div>
-              <div class="row_nw_fs_ce props_qtinput_itembox">
-                <el-input v-model="inval[1]" placeholder="Please input" type="number" />
-              </div>
-              <div class="row_nw_fs_ce props_qtinput_itemlabelright">Y:</div>
-              <div class="row_nw_fs_ce props_qtinput_itembox">
-                <el-input v-model="inval[2]" placeholder="Please input" type="number" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="row_nw_fe_ce props_it_actbox">
-        <el-tag type="info">{{ "Total: " + timestrIntervalsValues.length }}</el-tag>
-
-        <el-icon
-          v-if="isFoldTimestrIntervals"
-          color="rgba(15, 55, 175, 1)"
-          size="1.5rem"
-          class="row_nw_ce_ce props_it_acticon"
-          @click="setIsFoldTimestrIntervals(false)"
-        >
-          <CaretBottom />
-        </el-icon>
-        <el-icon
-          v-else
-          color="rgba(15, 55, 175, 1)"
-          size="1.5rem"
-          class="row_nw_ce_ce props_it_acticon"
-          @click="setIsFoldTimestrIntervals(true)"
-        >
-          <CaretTop />
-        </el-icon>
-
-        <el-icon color="#f56c6c" size="1.25rem" class="row_nw_ce_ce props_it_acticon" @click="clearTimesIntervals">
-          <DeleteFilled />
-        </el-icon>
-
-        <el-icon
-          :color="timestrIntervalsValues.length >= 2 ? 'rgba(15, 55, 175, 1)' : '#f56c6c'"
-          size="1.5rem"
-          class="row_nw_ce_ce props_it_acticon"
-          :class="{ props_it_dis_action: timestrIntervalsValues.length <= 1 }"
-          @click="popTimestringIntervalValue"
-        >
-          <RemoveFilled />
-        </el-icon>
-        <el-icon
-          color="rgba(15, 55, 175, 1)"
-          size="1.5rem"
-          class="row_nw_ce_ce props_it_acticon2"
-          @click="pushTimestringIntervalValue"
-        >
-          <CirclePlusFilled />
-        </el-icon>
-      </div>
-    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  // 说明： 这个主要用于设置 有时间类型的 cartesian 2 的值
+  // 说明： 这个主要用于设置 没有时间类型的 cartesian2  list 的值, 可能有一个元素,也可能有多个
 
-  import { ref, onMounted, watch, nextTick } from "vue";
-  import RjRadioTabInput from "@/components/form/RjRadioTabInput.vue";
+  import { ref, onMounted, watch } from "vue";
   import RjBooleanSwitchInput from "@/components/form/RjBooleanSwitchInput.vue";
 
   import { cloneDeep } from "es-toolkit";
   import { isArray } from "es-toolkit/compat";
-  import dayjs from "dayjs";
-  import {
-    CZMLPUREVALUE,
-    CZMLTIMESECONDS,
-    CZMLTIMESTRING,
-    defaultTimeFormatStr,
-  } from "@/czml/schema/properties/commondata.ts";
   import { nanoid } from "@/utils/common/nanoid";
 
   const props = defineProps({
@@ -261,35 +132,15 @@
   const id = nanoid(10);
   const currentProp = ref({});
   const isEnable = ref(false);
-  const pureValue = ref([0, 0]);
-  const intervalsValues = ref([[0, 0, 0]]);
+  const intervalsValues = ref([[0, 0]]);
   const isFoldIntervals = ref(false);
 
-  const timestrIntervalsValues = ref([[dayjs().format(defaultTimeFormatStr), 0, 0]]);
-  const isFoldTimestrIntervals = ref(false);
-
-  const refreshTimeTypeFlag = ref(0);
-
   function clearintervalsValues() {
-    intervalsValues.value = [[0, 0, 0]];
-  }
-
-  function clearTimesIntervals() {
-    timestrIntervalsValues.value = [[dayjs().format(defaultTimeFormatStr), 0, 0]];
+    intervalsValues.value = [[0, 0]];
   }
 
   function setIsFoldIntervals(isFold: boolean) {
     isFoldIntervals.value = isFold;
-  }
-
-  function setIsFoldTimestrIntervals(isFold: boolean) {
-    isFoldTimestrIntervals.value = isFold;
-  }
-
-  function timeTypesOptionChangedHd(value: string) {
-    if (currentProp.value) {
-      currentProp.value.timeType = value;
-    }
   }
 
   const popSecondsIntervalValue = () => {
@@ -305,35 +156,10 @@
 
   const pushSecondsIntervalValue = () => {
     if (isArray(intervalsValues.value)) {
-      const length = intervalsValues.value.length;
-      const { secondsStart, secondsStep, secondsOnceAddCount } = currentProp.value;
-      const last = length - 1;
-      if (length == 1) {
-        intervalsValues.value[0][0] = +secondsStart;
-      }
-
-      const lastItem = intervalsValues.value[last];
-      const secondsStepNumber = +secondsStep;
-      let nextSeconds = +lastItem[0];
-
+      const { secondsOnceAddCount } = currentProp.value;
       for (let i = 0; i < +secondsOnceAddCount; i++) {
-        nextSeconds = nextSeconds + secondsStepNumber;
-        intervalsValues.value.push([nextSeconds, 0, 0]);
+        intervalsValues.value.push([0, 0]);
       }
-    }
-  };
-
-  const popTimestringIntervalValue = () => {
-    if (isArray(timestrIntervalsValues.value)) {
-      if (timestrIntervalsValues.value.length >= 2) {
-        timestrIntervalsValues.value.pop();
-      }
-    }
-  };
-
-  const pushTimestringIntervalValue = () => {
-    if (isArray(timestrIntervalsValues.value)) {
-      timestrIntervalsValues.value.push([dayjs().format(defaultTimeFormatStr), 0, 0]);
     }
   };
 
@@ -341,19 +167,11 @@
     if (props.vdata && props.vdata.id && props.vdata.name) {
       isEnable.value = true;
       currentProp.value = props.vdata;
-      if (currentProp.value.timeType == CZMLPUREVALUE) {
-        pureValue.value = cloneDeep(currentProp.value.value);
-      } else if (currentProp.value.timeType == CZMLTIMESECONDS) {
-        intervalsValues.value = cloneDeep(currentProp.value.value);
-      } else if (currentProp.value.timeType == CZMLTIMESTRING) {
-        timestrIntervalsValues.value = cloneDeep(currentProp.value.value);
-      }
+      intervalsValues.value = cloneDeep(currentProp.value.value);
     } else {
       isEnable.value = false;
       currentProp.value = {};
-      pureValue.value = [0, 0];
-      intervalsValues.value = [[0, 0, 0]];
-      timestrIntervalsValues.value = [[dayjs().format(defaultTimeFormatStr), 0, 0]];
+      intervalsValues.value = [[0, 0]];
     }
   }
 
@@ -362,63 +180,10 @@
   });
 
   watch(
-    () => currentProp.value.timeType,
-    () => {
-      nextTick(() => {
-        console.log("currentProp.valueType", currentProp.value);
-        if (currentProp.value.timeType == CZMLPUREVALUE) {
-          pureValue.value = cloneDeep(currentProp.value.value);
-        } else if (currentProp.value.timeType == CZMLTIMESECONDS) {
-          intervalsValues.value = cloneDeep(currentProp.value.value);
-        } else if (currentProp.value.timeType == CZMLTIMESTRING) {
-          timestrIntervalsValues.value = cloneDeep(currentProp.value.value);
-        } else {
-          pureValue.value = [0, 0];
-          intervalsValues.value = [[0, 0, 0]];
-          timestrIntervalsValues.value = [[dayjs().format(defaultTimeFormatStr), 0, 0]];
-        }
-      });
-    },
-    {
-      immediate: false,
-      deep: false,
-    },
-  );
-
-  watch(
-    pureValue,
-    () => {
-      if (currentProp.value && currentProp.value.timeType == CZMLPUREVALUE) {
-        // console.log("cartesian2 pureValue", pureValue.value);
-        currentProp.value.value = pureValue.value;
-      }
-    },
-    {
-      immediate: false,
-      deep: false,
-    },
-  );
-
-  watch(
     intervalsValues,
     () => {
-      if (currentProp.value && currentProp.value.timeType == CZMLTIMESECONDS) {
-        // console.log("cartesian2 intervalsValues", intervalsValues.value);
+      if (currentProp.value) {
         currentProp.value.value = intervalsValues.value;
-      }
-    },
-    {
-      immediate: false,
-      deep: false,
-    },
-  );
-
-  watch(
-    timestrIntervalsValues,
-    () => {
-      if (currentProp.value && currentProp.value.timeType == CZMLTIMESTRING) {
-        // console.log("cartesian2 timestrIntervalsValues", timestrIntervalsValues.value);
-        currentProp.value.value = timestrIntervalsValues.value;
       }
     },
     {
@@ -557,7 +322,7 @@
   }
 
   .props_qtinput_itemlabelleft {
-    width: 1.5rem;
+    width: 5.75rem;
     height: 100%;
     color: rgba(255, 255, 255, 1);
     font-size: var(--czml-fs-sl-label);
@@ -566,7 +331,7 @@
   }
 
   .props_qtinput_itemlabelright {
-    width: 1.5rem;
+    width: 5.75rem;
     height: 100%;
     color: rgba(255, 255, 255, 1);
     font-size: var(--czml-fs-sl-label);
@@ -576,7 +341,7 @@
   }
 
   .props_qtinput_itembox {
-    width: calc(50% - 2.25rem);
+    width: calc(50% - 6.5rem);
     height: 100%;
   }
 
@@ -650,25 +415,8 @@
     margin-bottom: 0.5rem;
   }
 
-  .props_qtinput_linetimelabel {
-    width: 7rem;
-    height: 100%;
-    color: rgba(255, 255, 255, 1);
-    font-size: 1rem;
-    font-weight: bold;
-  }
-
-  .props_qtinput_linetimeinputbox {
-    width: calc(100% - 16rem);
-    height: 100%;
-  }
-
-  :deep(.props_qtinput_linetimeinputbox .el-input) {
-    width: 100%;
-  }
-
   .props_qtinput_linetimeindex {
-    width: 8rem;
+    width: calc(50% - 0.25rem);
     height: 100%;
     color: rgba(230, 230, 230, 1);
     font-size: 0.75rem;

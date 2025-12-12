@@ -91,6 +91,9 @@ import CzmlTimeCollectionPropInput from "./czml/components/CzmlTimeCollectionPro
 import CzmlTimeIntervalPropInput from "./czml/components/CzmlTimeIntervalPropInput.vue";
 import CzmlTimePurePropInput from "./czml/components/CzmlTimePurePropInput.vue";
 
+import CzmlUnitSphericalListPropInput from "@/czml/components/CzmlUnitSphericalListPropInput.vue";
+import CzmlUnitSphericalPropInput from "@/czml/components/CzmlUnitSphericalPropInput.vue";
+
 import CzmlUriPropInput from "@/czml/components/CzmlUriPropInput.vue";
 
 import App from "./App.vue";
@@ -181,4 +184,6 @@ app.component("CzmlTimeCollectionPropInput", CzmlTimeCollectionPropInput);
 app.component("CzmlTimeIntervalPropInput", CzmlTimeIntervalPropInput);
 app.component("CzmlTimePurePropInput", CzmlTimePurePropInput);
 
+app.component("CzmlUnitSphericalListPropInput", CzmlUnitSphericalListPropInput);
+app.component("CzmlUnitSphericalPropInput", CzmlUnitSphericalPropInput);
 app.component("CzmlUriPropInput", CzmlUriPropInput);

@@ -364,17 +364,15 @@ export class czmlBillboardEntity {
           description:
             "The axis specified as a three-dimensional unit magnitude Cartesian value `[X, Y, Z]`, in world coordinates.",
         }),
-        // RJTODO
-        // 这里可能不是要三个值的，只需要两个值的，是不是要重新搞一个两个值的组件
-        unitSpherical: new czmlCartesian3PixelProp({
+        unitSpherical: new czmlCartesian2Prop({
           name: "unitCartesian",
           czmlName: "unitCartesian",
-          labelZh: "单位XYZ",
+          labelZh: "单位球角度",
           labelEn: "unit cartesian",
           isEnable: true,
           isUsed: false,
           isShowUsed: true,
-          tag: "CzmlSphericalPropInput",
+          tag: "CzmlUnitSphericalPropInput",
           $ref: "Values/UnitSphericalValue.json",
           description:
             "The axis specified as a unit spherical value `[Clock, Cone]`, in radians. The clock angle is measured in the XY plane from the positive X axis toward the positive Y axis. The cone angle is the angle from the positive Z axis toward the negative Z axis.",

@@ -28,6 +28,12 @@
         <label class="row_nw_fs_ce props_radioch_label">值是否含有时间标记</label>
         <label class="row_nw_fs_fe props_radioogi_label">is with time-tagged</label>
       </div>
+
+      <div class="row_nw_fs_ce props_radiobox_title">
+        <label class="row_nw_fs_ce props_radioch_label">角度单位: 弧度;</label>
+        <label class="row_nw_fs_fe props_radioogi_label">angles in radians</label>
+      </div>
+
       <div class="row_nw_fs_ce props_radioinbox">
         <RjRadioTabInput
           :name="currentProp.id"
@@ -44,11 +50,11 @@
         <div class="col_nw_fs_fs props_it_inwrapper">
           <div class="col_nw_fs_fs props_it_itembox">
             <div class="row_nw_fs_ce props_qtinput_line1">
-              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">X:</div>
+              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">Clock:</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
                 <el-input v-model="pureValue[0]" placeholder="Please input" type="number" />
               </div>
-              <div class="row_nw_fs_ce props_qtinput_itemlabelright">Y:</div>
+              <div class="row_nw_fs_ce props_qtinput_itemlabelright">Cone:</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
                 <el-input v-model="pureValue[1]" placeholder="Please input" type="number" />
               </div>
@@ -70,11 +76,11 @@
               <div class="row_nw_fs_ce props_qtinput_linetimeindex">SN:{{ index + 1 }}</div>
             </div>
             <div class="row_nw_fs_ce props_qtinput_line1">
-              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">X:</div>
+              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">Clock:</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
                 <el-input v-model="inval[1]" placeholder="Please input" type="number" />
               </div>
-              <div class="row_nw_fs_ce props_qtinput_itemlabelright">Y:</div>
+              <div class="row_nw_fs_ce props_qtinput_itemlabelright">Cone:</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
                 <el-input v-model="inval[2]" placeholder="Please input" type="number" />
               </div>
@@ -167,11 +173,11 @@
               <div class="row_nw_fs_ce props_qtinput_linetimeindex">SN:{{ index2 + 1 }}</div>
             </div>
             <div class="row_nw_fs_ce props_qtinput_line1">
-              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">X:</div>
+              <div class="row_nw_fs_ce props_qtinput_itemlabelleft">Clock:</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
                 <el-input v-model="inval[1]" placeholder="Please input" type="number" />
               </div>
-              <div class="row_nw_fs_ce props_qtinput_itemlabelright">Y:</div>
+              <div class="row_nw_fs_ce props_qtinput_itemlabelright">Cone:</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
                 <el-input v-model="inval[2]" placeholder="Please input" type="number" />
               </div>
@@ -229,9 +235,9 @@
 </template>
 
 <script setup lang="ts">
-  // 说明： 这个主要用于设置 有时间类型的 cartesian 2 的值
+  // 说明： 这个主要用于设置 有时间类型的 cartesian 4 的值
 
-  import { ref, onMounted, watch, nextTick } from "vue";
+  import { ref, reactive, onMounted, computed, watch, nextTick } from "vue";
   import RjRadioTabInput from "@/components/form/RjRadioTabInput.vue";
   import RjBooleanSwitchInput from "@/components/form/RjBooleanSwitchInput.vue";
 
@@ -389,7 +395,7 @@
     pureValue,
     () => {
       if (currentProp.value && currentProp.value.timeType == CZMLPUREVALUE) {
-        // console.log("cartesian2 pureValue", pureValue.value);
+        // console.log("spherical pureValue", pureValue.value);
         currentProp.value.value = pureValue.value;
       }
     },
@@ -403,7 +409,7 @@
     intervalsValues,
     () => {
       if (currentProp.value && currentProp.value.timeType == CZMLTIMESECONDS) {
-        // console.log("cartesian2 intervalsValues", intervalsValues.value);
+        // console.log("spherical intervalsValues", intervalsValues.value);
         currentProp.value.value = intervalsValues.value;
       }
     },
@@ -417,7 +423,7 @@
     timestrIntervalsValues,
     () => {
       if (currentProp.value && currentProp.value.timeType == CZMLTIMESTRING) {
-        // console.log("cartesian2 timestrIntervalsValues", timestrIntervalsValues.value);
+        // console.log("spherical timestrIntervalsValues", timestrIntervalsValues.value);
         currentProp.value.value = timestrIntervalsValues.value;
       }
     },
@@ -557,7 +563,7 @@
   }
 
   .props_qtinput_itemlabelleft {
-    width: 1.5rem;
+    width: 5.75rem;
     height: 100%;
     color: rgba(255, 255, 255, 1);
     font-size: var(--czml-fs-sl-label);
@@ -566,7 +572,7 @@
   }
 
   .props_qtinput_itemlabelright {
-    width: 1.5rem;
+    width: 5.75rem;
     height: 100%;
     color: rgba(255, 255, 255, 1);
     font-size: var(--czml-fs-sl-label);
@@ -576,7 +582,7 @@
   }
 
   .props_qtinput_itembox {
-    width: calc(50% - 2.25rem);
+    width: calc(50% - 6.5rem);
     height: 100%;
   }
 
