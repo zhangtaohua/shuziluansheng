@@ -806,7 +806,7 @@ export const CzmlLabelStyleOptions = {
   labelZh: "标签样式",
   labelEn: "label style",
   isEnable: true,
-  isUsed: false,
+  isUsed: true,
   isShowUsed: true,
 
   $schema: "http://json-schema.org/draft-07/schema#",

@@ -7,15 +7,10 @@ import { czmlTimeCollectionProp, czmlAvailabilityOptions } from "../properties/T
 import { czmlCustomPropertiesProp, czmlCustomPropertiesOptions } from "../properties/CustomPropertiesProp";
 import { czmlOrientationProp } from "../properties/OrientationProp.ts";
 import czmlViewFromProp from "../properties/ViewFromProp.ts";
-import czmlCartesian3Prop from "../properties/Cartesian3Prop.ts";
-import czmlCartesian3ListProp from "../properties/Cartesian3ListProp.ts";
-import czmlCartographicRectangleProp from "../properties/CartographicRectangleProp.ts";
 
 import czmlBillboardEntity from "../entities/billboard";
 import czmlBoxEntity from "../entities/box.ts";
-import czmlColorProp from "../properties/ColorProp.ts";
-import czmlDoubleFixedNumberProp from "../properties/DoubleFixedNumberProp.ts";
-import czmlReferencesProp from "../properties/ReferencesProps.ts";
+import czmlLableEntity from "../entities/label.ts";
 
 export class czmlPacket {
   public id = "czml_packet_" + nanoid(10);
@@ -178,7 +173,6 @@ export class czmlPacket {
     // cartesian: new czmlCartesian3Prop(null),
     // cartesianList: new czmlCartesian3ListProp(null),
     // rectTest: new czmlCartographicRectangleProp(null),
-    // color: new czmlColorProp(null),
     // fixedCnt: new czmlDoubleFixedNumberProp({ fixedCounter: 20 }),
     // refreees: new czmlReferencesProp(null),
     // RJTODO 上面的要删除
@@ -206,10 +200,10 @@ export class czmlPacket {
       description:
         "An ellipsoid, which is a closed quadric surface that is a three-dimensional analogue of an ellipse. The ellipsoid is positioned and oriented using the `position` and `orientation` properties.",
     },
-    label: {
+    label: new czmlLableEntity({
       $ref: "Label.json",
       description: "A string of text. The label is positioned in the scene by the `position` property.",
-    },
+    }),
     model: {
       $ref: "Model.json",
       description:

@@ -28,7 +28,6 @@ import {
   CzmlHeightReferenceOptions,
   CzmlShadowModeOptions,
 } from "../properties/OptionsPureProp";
-import czmlColorProp from "../properties/ColorProp";
 import {
   czmlDoubleFixedNumberProp,
   czmlAlignedAxisDoubleFixedNumberOptions,
@@ -45,6 +44,7 @@ import {
 } from "../properties/Cartesian4Prop";
 import { czmlCombineProp, czmlBoxDimensionsOptions } from "../properties/CombinePropertyProp";
 import czmlMaterialProp from "../properties/MaterialProp";
+import czmlColorCombineProp from "../properties/ColorCombineProp";
 
 export class czmlBoxEntity {
   public id = "czml_entity_box_" + nanoid(10);
@@ -165,7 +165,7 @@ export class czmlBoxEntity {
       description: "Whether or not the box is outlined.",
       default: false,
     }),
-    outlineColor: new czmlColorProp({
+    outlineColor: new czmlColorCombineProp({
       id: "czml_prop_outlineColor_" + nanoid(10),
       name: "outlineColor",
       czmlName: "outlineColor",

@@ -22,12 +22,12 @@ import czmlCartesian3Prop from "./Cartesian3Prop.ts";
 import czmlCartesian3VelocityProp from "./Cartesian3VelocityProp.ts";
 import czmlInterpolatableProp from "./InterpolatablePropertyProp.ts";
 import { czmlReferencesProp, czmlReferenceValueOptions } from "./ReferencesProps.ts";
-import czmlColorProp from "./ColorProp.ts";
 import czmlUriProp from "./UriProp.ts";
 import czmlCartesian2Prop from "./Cartesian2Prop.ts";
 import czmlBooleanIntervalProp from "./BooleanIntervalProp.ts";
 import czmlDoubleProp from "./DoubleProp.ts";
 import czmlCombineProp from "./CombinePropertyProp.ts";
+import czmlColorCombineProp from "./ColorCombineProp.ts";
 
 export class czmlMaterialProp {
   public id = "czml_prop_material_" + nanoid(10);
@@ -68,7 +68,7 @@ export class czmlMaterialProp {
       $ref: "SolidColorMaterial.json",
       description: "A material that fills the surface with a solid color, which may be translucent.",
       properties: {
-        color: new czmlColorProp({
+        color: new czmlColorCombineProp({
           isUsed: true,
           isShowUsed: true,
           $ref: "Color.json",
@@ -87,6 +87,8 @@ export class czmlMaterialProp {
         image: new czmlUriProp({
           $ref: "Uri.json",
           name: "image",
+          labelZh: "图像",
+          labelEn: "image",
           czmlName: "image",
           isUsed: true,
           isShowUsed: true,
@@ -107,8 +109,6 @@ export class czmlMaterialProp {
             cartesian2: new czmlCartesian2Prop({
               name: "cartesian2",
               czmlName: "cartesian2",
-              labelZh: "重复数",
-              labelEn: "cartesian2",
               isEnable: true,
               isUsed: true,
               isShowUsed: true,
@@ -145,7 +145,7 @@ export class czmlMaterialProp {
         //   description: "The number of times the image repeats along each axis.",
         //   default: "[1, 1]",
         // }),
-        color: new czmlColorProp({
+        color: new czmlColorCombineProp({
           isUsed: false,
           isShowUsed: true,
           $ref: "Color.json",
@@ -176,7 +176,7 @@ export class czmlMaterialProp {
       $ref: "GridMaterial.json",
       description: "A material that fills the surface with a grid.",
       properties: {
-        color: new czmlColorProp({
+        color: new czmlColorCombineProp({
           isUsed: false,
           isShowUsed: true,
           $ref: "Color.json",
@@ -196,24 +196,47 @@ export class czmlMaterialProp {
           description: "The alpha value for the space between grid lines. This will be combined with the color alpha.",
           default: [0.1],
         }),
-        lineCount: new czmlCartesian2Prop({
+        lineCount: new czmlCombineProp({
           name: "lineCount",
           czmlName: "lineCount",
           labelZh: "间隔数",
-          labelEn: "lineCount",
+          labelEn: "line count",
           isEnable: true,
-          isUsed: false,
+          isUsed: true,
           isShowUsed: true,
-          value: [8, 8],
           $ref: "LineCount.json",
           description: "The number of grid lines along each axis.",
-          default: [8, 8],
+          default: "[8, 8]",
+          properties: {
+            cartesian2: new czmlCartesian2Prop({
+              czmlName: "cartesian2",
+              isEnable: true,
+              isUsed: true,
+              isShowUsed: true,
+              value: [8, 8],
+              $ref: "Values/Cartesian2Value.json",
+              description: "The number of grid lines along each axis.",
+              default: [8, 8],
+            }),
+            reference: new czmlReferencesProp({
+              name: "reference",
+              czmlName: "reference",
+              labelZh: "参考",
+              labelEn: "reference",
+              value: "",
+              isEnable: true,
+              isUsed: false,
+              isShowUsed: true,
+              $ref: "Values/ReferenceValue.json",
+              description: "The number of grid lines along each axis specified as a reference to another property.",
+            }),
+          },
         }),
-        lineThickness: new czmlCartesian2Prop({
+        lineThickness: new czmlCombineProp({
           name: "lineThickness",
           czmlName: "lineThickness",
-          labelZh: "间隔数",
-          labelEn: "lineThickness",
+          labelZh: "行厚度",
+          labelEn: "line thickness",
           isEnable: true,
           isUsed: false,
           isShowUsed: true,
@@ -221,12 +244,37 @@ export class czmlMaterialProp {
           $ref: "LineThickness.json",
           description: "The thickness of grid lines along each axis, in pixels.",
           default: [1.0, 1.0],
+          properties: {
+            cartesian2: new czmlCartesian2Prop({
+              name: "cartesian2",
+              czmlName: "cartesian2",
+              isEnable: true,
+              isUsed: true,
+              isShowUsed: true,
+              value: [1.0, 1.0],
+              $ref: "Values/Cartesian2Value.json",
+              description: "The thickness specified as a two-dimensional Cartesian value `[X, Y]`, in pixels.",
+              default: [1.0, 1.0],
+            }),
+            reference: new czmlReferencesProp({
+              name: "reference",
+              czmlName: "reference",
+              labelZh: "参考",
+              labelEn: "reference",
+              value: "",
+              isEnable: true,
+              isUsed: false,
+              isShowUsed: true,
+              $ref: "Values/ReferenceValue.json",
+              description: "The thickness specified as a reference to another property.",
+            }),
+          },
         }),
-        lineOffset: new czmlCartesian2Prop({
+        lineOffset: new czmlCombineProp({
           name: "lineOffset",
           czmlName: "lineOffset",
           labelZh: "行偏移",
-          labelEn: "lineOffset",
+          labelEn: "line offset",
           isEnable: true,
           isUsed: false,
           isShowUsed: true,
@@ -234,6 +282,31 @@ export class czmlMaterialProp {
           $ref: "LineOffset.json",
           description: "The offset of grid lines along each axis, as a percentage from 0 to 1.",
           default: [0.0, 0.0],
+          properties: {
+            cartesian2: new czmlCartesian2Prop({
+              name: "cartesian2",
+              czmlName: "cartesian2",
+              isEnable: true,
+              isUsed: true,
+              isShowUsed: true,
+              value: [0.0, 0.0],
+              $ref: "Values/Cartesian2Value.json",
+              description: "The offset of grid lines along each axis, specified as a percentage from 0 to 1.",
+              default: [0.0, 0.0],
+            }),
+            reference: new czmlReferencesProp({
+              name: "reference",
+              czmlName: "reference",
+              labelZh: "参考",
+              labelEn: "reference",
+              value: "",
+              isEnable: true,
+              isUsed: false,
+              isShowUsed: true,
+              $ref: "Values/ReferenceValue.json",
+              description: "The offset of grid lines along each axis specified as a reference to another property.",
+            }),
+          },
         }),
       },
     },
@@ -244,14 +317,39 @@ export class czmlMaterialProp {
       $ref: "StripeMaterial.json",
       description: "A material that fills the surface with alternating colors.",
       properties: {
-        orientation: new czmlOptionsPureProp({
-          ...CzmlStripeOrientationOptions,
+        orientation: new czmlCombineProp({
+          name: "orientation",
           czmlName: "orientation",
+          labelZh: "方向",
+          labelEn: "orientation",
+          isEnable: true,
+          isUsed: true,
+          isShowUsed: true,
           $ref: "StripeOrientation.json",
           description: "The value indicating if the stripes are horizontal or vertical.",
           default: "HORIZONTAL",
+          properties: {
+            stripeOrientation: new czmlOptionsPureProp({
+              ...CzmlStripeOrientationOptions,
+              $ref: "Values/StripeOrientationValue.json",
+              description: "The orientation of stripes in the stripe material.",
+              default: "HORIZONTAL",
+            }),
+            reference: new czmlReferencesProp({
+              name: "reference",
+              czmlName: "reference",
+              labelZh: "参考",
+              labelEn: "reference",
+              value: "",
+              isEnable: true,
+              isUsed: false,
+              isShowUsed: true,
+              $ref: "Values/ReferenceValue.json",
+              description: "The orientation of stripes specified as a reference to another property.",
+            }),
+          },
         }),
-        evenColor: new czmlColorProp({
+        evenColor: new czmlColorCombineProp({
           labelZh: "偶颜色",
           labelEn: "even color",
           czmlName: "evenColor",
@@ -261,7 +359,7 @@ export class czmlMaterialProp {
           description: "The even color.",
           default: "white",
         }),
-        oddColor: new czmlColorProp({
+        oddColor: new czmlColorCombineProp({
           labelZh: "奇颜色",
           labelEn: "odd color",
           czmlName: "oddColor",
@@ -307,7 +405,7 @@ export class czmlMaterialProp {
       $ref: "CheckerboardMaterial.json",
       description: "A material that fills the surface with a checkerboard pattern.",
       properties: {
-        evenColor: new czmlColorProp({
+        evenColor: new czmlColorCombineProp({
           labelZh: "偶颜色",
           labelEn: "even color",
           czmlName: "evenColor",
@@ -317,7 +415,7 @@ export class czmlMaterialProp {
           description: "The even color.",
           default: "white",
         }),
-        oddColor: new czmlColorProp({
+        oddColor: new czmlColorCombineProp({
           labelZh: "奇颜色",
           labelEn: "odd color",
           czmlName: "oddColor",
@@ -327,7 +425,7 @@ export class czmlMaterialProp {
           description: "The odd color.",
           default: "black",
         }),
-        repeat: new czmlCartesian2Prop({
+        repeat: new czmlCombineProp({
           name: "repeat",
           czmlName: "repeat",
           labelZh: "重复数",
@@ -335,10 +433,34 @@ export class czmlMaterialProp {
           isEnable: true,
           isUsed: true,
           isShowUsed: true,
-          value: [1, 1],
           $ref: "Repeat.json",
-          description: "The number of times the tiles repeat along each axis.",
+          description: "The number of times the image repeats along each axis.",
           default: [2, 2],
+          properties: {
+            cartesian2: new czmlCartesian2Prop({
+              name: "cartesian2",
+              czmlName: "cartesian2",
+              isEnable: true,
+              isUsed: true,
+              isShowUsed: true,
+              value: [2, 2],
+              $ref: "Repeat.json",
+              description: "The number of times the tiles repeat along each axis.",
+              default: [2, 2],
+            }),
+            reference: new czmlReferencesProp({
+              name: "reference",
+              czmlName: "reference",
+              labelZh: "参考",
+              labelEn: "reference",
+              value: "",
+              isEnable: true,
+              isUsed: false,
+              isShowUsed: true,
+              $ref: "Values/ReferenceValue.json",
+              description: "The number of times the image repeats specified as a reference to another property.",
+            }),
+          },
         }),
       },
     },

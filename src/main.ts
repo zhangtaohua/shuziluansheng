@@ -57,6 +57,7 @@ import CzmlColorPropInput from "@/czml/components/CzmlColorPropInput.vue";
 
 import CzmlCombinePropInput from "@/czml/components/CzmlCombinePropInput.vue";
 import CzmlCombineSmPropInput from "@/czml/components/CzmlCombineSmPropInput.vue";
+import CzmlCombineSelectSmPropInput from "./czml/components/CzmlCombineSelectSmPropInput.vue";
 import CzmlCustomPropertiesPropInput from "@/czml/components/CzmlCustomPropertiesPropInput.vue";
 
 import CzmlEntityRender from "@/czml/components/CzmlEntityRender.vue";
@@ -146,6 +147,7 @@ app.component("CzmlColorPropInput", CzmlColorPropInput);
 
 app.component("CzmlCombinePropInput", CzmlCombinePropInput);
 app.component("CzmlCombineSmPropInput", CzmlCombineSmPropInput);
+app.component("CzmlCombineSelectSmPropInput", CzmlCombineSelectSmPropInput);
 
 app.component("CzmlCustomPropertiesPropInput", CzmlCustomPropertiesPropInput);
 app.component("CzmlEntityRender", CzmlEntityRender);

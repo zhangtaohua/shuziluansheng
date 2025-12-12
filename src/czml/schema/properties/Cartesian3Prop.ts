@@ -18,6 +18,7 @@ import {
 import czmlInterpolatableProp from "./InterpolatablePropertyProp.ts";
 
 import { cartesian3ToWgs84, cartesian3ToDegrees, cartesian3ToRadians } from "@/utils/map/cesium/csTools";
+import { isArray, isNumber } from "es-toolkit/compat";
 
 // 用于生成 Cartesian3 数值，纯数值，或者是带时间序的多个值。
 export class czmlCartesian3Prop {
@@ -115,11 +116,31 @@ export class czmlCartesian3Prop {
     }
 
     if (options.value) {
-      this._value = options.value;
-    }
+      let temp = [0, 0, 0];
+      if (isArray(options.value) && options.value.length >= 3) {
+        temp = [options.value[0], options.value[1], options.value[2]];
+      } else if (isNumber(options.value)) {
+        temp = [options.value, options.value, options.value];
+      }
+      this._value = temp;
+      this._oldPureValue = temp;
+      this.default = temp;
 
-    if (options.default) {
-      this.default = options.default;
+      this._oldSecondsValue = [[0, temp[0], temp[1], temp[2]]];
+      this._oldTimestringValue = [[dayjs().format(defaultTimeFormatStr), temp[0], temp[1], temp[2]]];
+    } else if (options.default) {
+      let temp = [0, 0, 0];
+      if (isArray(options.default) && options.default.length >= 3) {
+        temp = [options.default[0], options.default[1], options.default[2]];
+      } else if (isNumber(options.default)) {
+        temp = [options.default, options.default, options.default];
+      }
+      this._value = temp;
+      this._oldPureValue = temp;
+      this.default = temp;
+
+      this._oldSecondsValue = [[0, temp[0], temp[1], temp[2]]];
+      this._oldTimestringValue = [[dayjs().format(defaultTimeFormatStr), temp[0], temp[1], temp[2]]];
     }
 
     if (options.xyzUnitType) {

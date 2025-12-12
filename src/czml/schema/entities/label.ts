@@ -1,7 +1,7 @@
 import { nanoid } from "@/utils/common/nanoid";
 import { czmlBooleanIntervalProp, czmlShowOptions } from "../properties/BooleanIntervalProp";
 import czmlUriProp from "../properties/UriProp";
-import czmlStringProp from "../properties/StringProp";
+import { czmlStringProp, czmlFontOptions } from "../properties/StringProp";
 import czmlTextProp from "../properties/TextProp";
 import czmlPositionProp from "../properties/PositionProp";
 import {
@@ -26,6 +26,7 @@ import {
   CzmlHorizontalOriginOptions,
   CzmlVerticalOriginOptions,
   CzmlHeightReferenceOptions,
+  CzmlLabelStyleOptions,
 } from "../properties/OptionsPureProp";
 import {
   czmlDoubleFixedNumberProp,
@@ -46,15 +47,14 @@ import czmlColorCombineProp from "../properties/ColorCombineProp";
 import czmlCombineProp from "../properties/CombinePropertyProp";
 import czmlReferencesProp from "../properties/ReferencesProps";
 
-export class czmlBillboardEntity {
-  public id = "czml_entity_billboard_" + nanoid(10);
-  public name = "billboard";
-  public _czmlName = "billboard";
-  public labelZh = "广告牌";
-  public labelEn = "billboard";
-  public title = "Billboard";
-  public description =
-    "A billboard, or viewport-aligned image. The billboard is positioned in the scene by the `position` property. A billboard is sometimes called a marker.";
+export class czmlLableEntity {
+  public id = "czml_entity_label_" + nanoid(10);
+  public name = "label";
+  public _czmlName = "label";
+  public labelZh = "标签";
+  public labelEn = "label";
+  public title = "label";
+  public description = "A string of text. The label is positioned in the scene by the `position` property.";
 
   public descriptionZh = "";
 
@@ -77,7 +77,7 @@ export class czmlBillboardEntity {
     if (options.id) {
       this.id = options.id;
     } else if (options.name) {
-      this.id = "czml_entity_billboard_" + options.name + "_" + nanoid(10);
+      this.id = "czml_entity_label_" + options.name + "_" + nanoid(10);
     }
 
     if (options.name) {
@@ -120,34 +120,131 @@ export class czmlBillboardEntity {
 
   public properties = {
     show: new czmlBooleanIntervalProp({
-      $ref: "Boolean.json",
-      default: true,
       ...czmlShowOptions,
+      $ref: "Boolean.json",
+      description: "Whether or not the label is shown.",
+      default: true,
     }),
-    image: new czmlUriProp({
-      $ref: "Uri.json",
-      name: "image",
-      czmlName: "image",
+    text: new czmlTextProp({
+      name: "text",
+      czmlName: "text",
       isUsed: true,
       isShowUsed: true,
-      description:
-        'The URI of the image displayed on the billboard. For broadest client compatibility, the URI should be accessible via Cross-Origin Resource Sharing (CORS). The URI may also be a <a href="https://developer.mozilla.org/en/data_URIs">data URI</a>.',
-      czmlRequiredForDisplay: true,
+      $ref: "String.json",
+      description: "The text displayed by the label. The newline character (\\n) indicates line breaks.",
+    }),
+    font: new czmlStringProp({
+      ...czmlFontOptions,
+      $ref: "Font.json",
+      description: "The font to use for the label.",
+      default: "30px sans-serif",
+    }),
+    style: new czmlCombineProp({
+      name: "style",
+      czmlName: "style",
+      labelZh: "样式",
+      labelEn: "style",
+      isEnable: true,
+      isUsed: true,
+      isShowUsed: true,
+      $ref: "LabelStyle.json",
+      description: "The style of the label.",
+      default: "FILL",
+      properties: {
+        labelStyle: new czmlOptionsPureProp({
+          ...CzmlLabelStyleOptions,
+          $ref: "Values/LabelStyleValue.json",
+          description: "The label style.",
+        }),
+        reference: new czmlReferencesProp({
+          name: "reference",
+          czmlName: "reference",
+          labelZh: "参考",
+          labelEn: "reference",
+          value: "",
+          isEnable: true,
+          isUsed: false,
+          isShowUsed: true,
+          $ref: "Values/ReferenceValue.json",
+          description: "The label style specified as a reference to another property.",
+        }),
+      },
     }),
     scale: new czmlDoubleProp({
-      ...czmlScaleDoubleOptions,
+      name: "cellAlpha",
+      czmlName: "cellAlpha",
+      labelZh: "间隔透明度",
+      labelEn: "cellAlpha",
+      isEnable: true,
+      isUsed: true,
+      isShowUsed: true,
+      value: [0.1],
       $ref: "Double.json",
       description:
-        "The scale of the billboard. The scale is multiplied with the pixel size of the billboard's `image`. For example, if the scale is 2.0, the billboard will be rendered with twice the number of pixels, in each direction, of the `image`.",
+        "The scale of the label. The scale is multiplied with the pixel size of the label's text. For example, if the scale is 2.0, the label will be rendered with twice the number of pixels, in each direction, of the text.",
       default: 1.0,
     }),
-    // scale: new czmlDoublePureProp({
-    //   ...czmlScalePureOptions,
-    //   $ref: "Double.json",
-    //   description:
-    //     "The scale of the billboard. The scale is multiplied with the pixel size of the billboard's `image`. For example, if the scale is 2.0, the billboard will be rendered with twice the number of pixels, in each direction, of the `image`.",
-    //   default: 1.0,
-    // }),
+    showBackground: new czmlBooleanIntervalProp({
+      name: "showBackground",
+      czmlName: "showBackground",
+      labelZh: "显示背景",
+      labelEn: "showBackground",
+      value: false,
+      isEnable: true,
+      isUsed: true,
+      isShowUsed: true,
+      $ref: "Boolean.json",
+      description: "Whether or not a background behind the label is shown.",
+      default: false,
+    }),
+    backgroundColor: new czmlColorCombineProp({
+      labelZh: "背景色",
+      labelEn: "background color",
+      czmlName: "backgroundColor",
+      isUsed: true,
+      isShowUsed: true,
+      $ref: "Color.json",
+      description: "The color of the background behind the label.",
+      default: "[0.165, 0.165, 0.165, 0.8]",
+    }),
+    backgroundPadding: new czmlCombineProp({
+      name: "backgroundPadding",
+      czmlName: "backgroundPadding",
+      labelZh: "背景填充",
+      labelEn: "background padding",
+      isEnable: true,
+      isUsed: true,
+      isShowUsed: true,
+      $ref: "BackgroundPadding.json",
+      description: "The amount of padding between the text and the label's background.",
+      default: [7, 5],
+      properties: {
+        cartesian2: new czmlCartesian2Prop({
+          name: "cartesian2",
+          czmlName: "cartesian2",
+          isEnable: true,
+          isUsed: true,
+          isShowUsed: true,
+          value: [7, 5],
+          $ref: "Values/Cartesian2Value.json",
+          description:
+            "The background padding specified as a two-dimensional Cartesian value `[X, Y]`, in pixels, where X is the horizontal padding, and Y is the vertical padding.",
+          default: [7, 5],
+        }),
+        reference: new czmlReferencesProp({
+          name: "reference",
+          czmlName: "reference",
+          labelZh: "参考",
+          labelEn: "reference",
+          value: "",
+          isEnable: true,
+          isUsed: false,
+          isShowUsed: true,
+          $ref: "Values/ReferenceValue.json",
+          description: "The background padding specified as a reference to another property.",
+        }),
+      },
+    }),
     pixelOffset: new czmlCombineProp({
       name: "backgroundPadding",
       czmlName: "backgroundPadding",
@@ -158,7 +255,7 @@ export class czmlBillboardEntity {
       isShowUsed: true,
       $ref: "PixelOffset.json",
       description:
-        "The offset, in viewport pixels, of the billboard origin from the `position`. A pixel offset is the number of pixels up and to the right to place the billboard, relative to the `position`.",
+        "The offset, in viewport pixels, of the label origin from the `position`. A pixel offset is the number of pixels up and to the right to place the label, relative to the `position`.",
       default: [0.0, 0.0],
       properties: {
         cartesian2: new czmlCartesian2Prop({
@@ -197,7 +294,7 @@ export class czmlBillboardEntity {
       isShowUsed: true,
       $ref: "EyeOffset.json",
       description:
-        "The eye offset of the billboard, which is the offset in eye coordinates at which to place the billboard relative to the `position` property. Eye coordinates are a left-handed coordinate system where the X-axis points toward the viewer's right, the Y-axis points up, and the Z-axis points into the screen.",
+        "The eye offset of the label, which is the offset in eye coordinates at which to place the label relative to the `position` property. Eye coordinates are a left-handed coordinate system where the X-axis points toward the viewer's right, the Y-axis points up, and the Z-axis points into the screen.",
       default: [0.0, 0.0, 0.0],
       properties: {
         cartesian: new czmlCartesian3PixelProp({
@@ -324,142 +421,39 @@ export class czmlBillboardEntity {
         }),
       },
     }),
-    color: new czmlColorCombineProp({
-      $ref: "Color.json",
-      isUsed: false,
+    fillColor: new czmlColorCombineProp({
+      labelZh: "填充色",
+      labelEn: "fill color",
+      czmlName: "fillColor",
+      isUsed: true,
       isShowUsed: true,
-      description:
-        "The color of the billboard. This color value is multiplied with the values of the billboard's `image` to produce the final color.",
+      $ref: "Color.json",
+      description: "The fill color of the label.",
       default: "white",
     }),
-    rotation: new czmlDoublePureProp({
-      ...czmlRotationPureOptions,
+    outlineColor: new czmlColorCombineProp({
+      id: "czml_prop_outlineColor_" + nanoid(10),
+      name: "outlineColor",
+      czmlName: "outlineColor",
+      labelZh: "轮廓颜色",
+      labelEn: "outline color",
+      $ref: "Color.json",
+      description: "The outline color of the label.",
+      default: "black",
+    }),
+    outlineWidth: new czmlDoubleProp({
+      id: "czml_prop_outlineWidth_" + nanoid(10),
+      name: "outlineWidth",
+      czmlName: "outlineWidth",
+      labelZh: "轮廓线宽",
+      labelEn: "outline width",
       $ref: "Double.json",
-      description: "The rotation of the billboard, in radians, counter-clockwise from the alignedAxis.",
-      value: 0.0,
-      default: 0.0,
-    }),
-    alignedAxis: new czmlCombineProp({
-      name: "alignedAxis",
-      czmlName: "alignedAxis",
-      labelZh: "对齐轴",
-      labelEn: "aligned axis",
-      isEnable: true,
-      isUsed: true,
-      isShowUsed: true,
-      $ref: "AlignedAxis.json",
-      description:
-        "The aligned axis is the unit vector, in world coordinates, that the billboard up vector points towards. The default is the zero vector, which means the billboard is aligned to the screen up vector.",
-      default: [0.0, 0.0, 0.0],
-      properties: {
-        unitCartesian: new czmlCartesian3PixelProp({
-          name: "unitCartesian",
-          czmlName: "unitCartesian",
-          labelZh: "单位XYZ",
-          labelEn: "unit cartesian",
-          isEnable: true,
-          isUsed: true,
-          isShowUsed: true,
-          $ref: "Values/UnitCartesian3Value.json",
-          description:
-            "The axis specified as a three-dimensional unit magnitude Cartesian value `[X, Y, Z]`, in world coordinates.",
-        }),
-        // RJTODO
-        // 这里可能不是要三个值的，只需要两个值的，是不是要重新搞一个两个值的组件
-        unitSpherical: new czmlCartesian3PixelProp({
-          name: "unitCartesian",
-          czmlName: "unitCartesian",
-          labelZh: "单位XYZ",
-          labelEn: "unit cartesian",
-          isEnable: true,
-          isUsed: false,
-          isShowUsed: true,
-          tag: "CzmlSphericalPropInput",
-          $ref: "Values/UnitSphericalValue.json",
-          description:
-            "The axis specified as a unit spherical value `[Clock, Cone]`, in radians. The clock angle is measured in the XY plane from the positive X axis toward the positive Y axis. The cone angle is the angle from the positive Z axis toward the negative Z axis.",
-        }),
-        reference: new czmlReferencesProp({
-          name: "reference",
-          czmlName: "reference",
-          labelZh: "参考",
-          labelEn: "reference",
-          value: "",
-          isEnable: true,
-          isUsed: false,
-          isShowUsed: true,
-          $ref: "Values/ReferenceValue.json",
-          description: "The pixel offset specified as a reference to another property.",
-        }),
-        velocityReference: new czmlReferencesProp({
-          name: "velocityReference",
-          czmlName: "velocityReference",
-          labelZh: "速率参考",
-          labelEn: "velocity reference",
-          value: "",
-          isEnable: true,
-          isUsed: false,
-          isShowUsed: true,
-          $ref: "Values/VelocityReferenceValue.json",
-          description:
-            "The axis specified as the normalized velocity vector of a position property. The reference must be to a `position` property.",
-        }),
-      },
-    }),
-    sizeInMeters: new czmlBooleanPureProp({
-      ...czmlSizeInMetersOptions,
-      $ref: "Boolean.json",
-      description:
-        "Whether this billboard's size (`width` and `height`) should be measured in meters, otherwise size is measured in pixels.",
-      default: false,
-    }),
-    width: new czmlIntegerPureProp({
-      ...czmlWidthIntPureOptions,
-      $ref: "Double.json",
-      description:
-        "The width of the billboard, in pixels (or meters, if `sizeInMeters` is true). By default, the native width of the image is used.",
-    }),
-    height: new czmlIntegerPureProp({
-      ...czmlHeightIntPureOptions,
-      $ref: "Double.json",
-      description:
-        "The height of the billboard, in pixels (or meters, if `sizeInMeters` is true). By default, the native height of the image is used.",
-    }),
-    scaleByDistance: new czmlCombineProp({
-      ...czmlScaleByDistanceOptions,
-      tag: "CzmlCombineSmPropInput",
-      $ref: "NearFarScalar.json",
-      description:
-        "How the label's scale should change based on the label's distance from the camera. This scalar value will be multiplied by `scale`.",
-      properties: {
-        nearFarScalar: new czmlCartesian4Prop({
-          ...czmlNearFarOptions,
-          $ref: "NearFarScalar.json",
-          description:
-            "How the billboard's translucency should change based on the billboard's distance from the camera. This scalar value should range from 0 to 1.",
-        }),
-        reference: new czmlReferencesProp({
-          name: "reference",
-          czmlName: "reference",
-          labelZh: "参考",
-          labelEn: "reference",
-          value: "",
-          isEnable: true,
-          isUsed: false,
-          isShowUsed: true,
-          $ref: "Values/ReferenceValue.json",
-          description: "The pixel offset specified as a reference to another property.",
-        }),
-      },
+      description: "The width of the box outline.",
+      value: [1.0],
+      default: [1.0],
     }),
     translucencyByDistance: new czmlCombineProp({
-      name: "translucencyByDistance",
-      czmlName: "translucencyByDistance",
-      labelZh: "透明度距离",
-      labelEn: "translucency by distance",
-      isEnable: true,
-      isUsed: true,
-      isShowUsed: true,
+      ...czmlTranslucencyByDistanceOptions,
       tag: "CzmlCombineSmPropInput",
       $ref: "NearFarScalar.json",
       description:
@@ -512,30 +506,18 @@ export class czmlBillboardEntity {
         }),
       },
     }),
-    imageSubRegion: new czmlCombineProp({
-      name: "imageSubRegion",
-      czmlName: "imageSubRegion",
-      labelZh: "图像子域",
-      labelEn: "image sub region",
-      isEnable: true,
-      isUsed: false,
-      isShowUsed: true,
+    scaleByDistance: new czmlCombineProp({
+      ...czmlScaleByDistanceOptions,
       tag: "CzmlCombineSmPropInput",
-      $ref: "BoundingRectangle.json",
+      $ref: "NearFarScalar.json",
       description:
-        "A sub-region of the image which will be used for the billboard, rather than the entire image, measured in pixels from the bottom-left.",
+        "How the label's scale should change based on the label's distance from the camera. This scalar value will be multiplied by `scale`.",
       properties: {
-        boundingRectangle: new czmlCartesian4Prop({
-          name: "boundingRectangle",
-          czmlName: "boundingRectangle",
-          labelZh: "包围矩形",
-          labelEn: "bounding rectangle",
-          tag: "CzmlBoundingRectanglePropInput",
-          isEnable: true,
-          isUsed: false,
-          isShowUsed: true,
-          $ref: "Values/BoundingRectangleValue.json",
-          description: "The bounding rectangle specified as `[X, Y, Width, Height]`.",
+        nearFarScalar: new czmlCartesian4Prop({
+          ...czmlNearFarOptions,
+          $ref: "NearFarScalar.json",
+          description:
+            "How the billboard's translucency should change based on the billboard's distance from the camera. This scalar value should range from 0 to 1.",
         }),
         reference: new czmlReferencesProp({
           name: "reference",
@@ -547,11 +529,10 @@ export class czmlBillboardEntity {
           isUsed: false,
           isShowUsed: true,
           $ref: "Values/ReferenceValue.json",
-          description: "The bounding rectangle specified as a reference to another property.",
+          description: "The pixel offset specified as a reference to another property.",
         }),
       },
     }),
-
     distanceDisplayCondition: new czmlCombineProp({
       ...czmlDistanceDisplayConditionOptions,
       tag: "CzmlCombineSmPropInput",
@@ -648,4 +629,4 @@ export class czmlBillboardEntity {
   }
 }
 
-export default czmlBillboardEntity;
+export default czmlLableEntity;

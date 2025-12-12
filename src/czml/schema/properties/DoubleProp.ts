@@ -133,7 +133,7 @@ export class czmlDoubleProp {
   }
 
   set value(newValue) {
-    return;
+    this._value = newValue;
   }
 
   get valueType() {

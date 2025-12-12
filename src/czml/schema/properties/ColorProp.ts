@@ -21,13 +21,14 @@ import {
 
 // 用于生成 color 像素 数值，纯数值，或者是带时间序的多个值。
 export class czmlColorProp {
-  public id = "czml_prop_color_timetagged_" + nanoid(10);
-  public name = "color";
-  public _czmlName = "color";
+  public id = "czml_prop_rgba_timetagged_" + nanoid(10);
+  public name = "rgba";
+  public _czmlName = "rgba";
   public labelZh = "颜色";
-  public labelEn = "color";
-  public title = "color";
-  public description = "A color. The color can optionally vary over time.";
+  public labelEn = "rgba";
+  public title = "rgba";
+  public description =
+    "The color specified as an array of color components `[Red, Green, Blue, Alpha]` where each component is an integer in the range 0-255.";
   public descriptionZh = "";
 
   public type = "property";

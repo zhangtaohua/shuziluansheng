@@ -1,7 +1,6 @@
 import { nanoid } from "@/utils/common/nanoid";
 import czmlCartesian3PixelProp from "./Cartesian3PixelProp";
 import czmlReferencesProp from "./ReferencesProps";
-import czmlColorProp from "./ColorProp";
 
 export class czmlCombineProp {
   public id = "czml_prop_combine_" + nanoid(10);

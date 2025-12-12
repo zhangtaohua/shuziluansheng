@@ -15,8 +15,10 @@
           </template>
           <div class="row_nw_fs_ce czml_combine_lefttbox">
             <img src="@/assets/images/icons/e-cube.svg" alt="icon" class="czml_combine_icon" />
-            <label class="row_nw_fs_ce czml_entitych_label">{{ currentProp.labelZh }}</label>
-            <label class="row_nw_fs_fe czml_entityogi_label">{{ currentProp.labelEn }}</label>
+            <div class="col_nw_fs_fs czml_combine_lefttsmbox">
+              <label class="row_nw_fs_ce czml_entitych_label">{{ currentProp.labelZh }}</label>
+              <label class="row_nw_fs_ce czml_entityogi_label">{{ currentProp.labelEn }}</label>
+            </div>
 
             <div
               class="row_nw_ce_ce czml_combine_downarrow"
@@ -129,7 +131,7 @@
       currentProp.value = {};
     }
 
-    console.log("position_currentProp", currentProp.value);
+    console.log("material_currentProp", currentProp.value);
   }
 
   onMounted(() => {
@@ -186,8 +188,8 @@
   .czml_combine_tbox {
     position: absolute;
     width: 100%;
-    height: 2rem;
-    top: -1rem;
+    height: 3rem;
+    top: -1.5rem;
     left: 0.5rem;
     background-color: transparent;
     padding: 0rem 0.5rem;
@@ -200,6 +202,11 @@
     padding: 0 0.875rem;
   }
 
+  .czml_combine_lefttsmbox {
+    width: auto;
+    height: 100%;
+  }
+
   .czml_combine_icon {
     width: auto;
     height: 1.5rem;
@@ -208,7 +215,7 @@
 
   .czml_entitych_label {
     width: max-content;
-    height: 100%;
+    height: 1.75rem;
     color: rgba(255, 255, 255, 1);
     font-size: var(--czml-fs-c-zh);
     font-weight: bold;
@@ -217,7 +224,7 @@
 
   .czml_entityogi_label {
     width: max-content;
-    height: 100%;
+    height: 1.25rem;
     color: rgba(230, 230, 230, 1);
     font-size: var(--czml-fs-c-en);
     font-weight: bold;
@@ -259,7 +266,7 @@
 
   .czml_combine_topgap {
     width: 100%;
-    height: 2rem;
+    height: 3rem;
   }
 
   .czml_props_used_box {

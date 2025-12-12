@@ -214,11 +214,15 @@ export const testFakeData2 = [
       fill: true,
       material: {
         solidColor: {
-          color: [198, 52, 52, 255],
+          color: {
+            rgba: [198, 0, 0, 255],
+          },
         },
       },
       outline: true,
-      outlineColor: [0, 0, 0, 255],
+      outlineColor: {
+        rgba: [255, 255, 0, 255],
+      },
       outlineWidth: 1,
       shadows: "DISABLED",
     },

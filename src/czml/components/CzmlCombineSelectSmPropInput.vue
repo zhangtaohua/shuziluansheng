@@ -19,7 +19,6 @@
               <label class="row_nw_fs_ce czml_entitych_label">{{ currentProp.labelZh }}</label>
               <label class="row_nw_fs_ce czml_entityogi_label">{{ currentProp.labelEn }}</label>
             </div>
-
             <div
               class="row_nw_ce_ce czml_combine_downarrow"
               :class="{ czml_combine_arrowup_show: currentProp.isExpand }"
@@ -35,14 +34,29 @@
 
       <div class="czml_combine_topgap"></div>
 
+      <div class="col_nw_fs_fs czml_props_used_box">
+        <div class="row_nw_fs_ce wh_auto_100p" style="margin-bottom: 1rem">
+          <div class="row_nw_fs_ce czml_props_used_label">请选择使用的属性</div>
+          <div class="row_nw_fs_ce czml_props_used_enlabel">Please select the attribute to use.</div>
+        </div>
+        <el-select v-model="usedComp" placeholder="Select" @change="usedCompChangedHd">
+          <el-option
+            v-for="item in currentProp.compUsedOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
+      </div>
+
       <div
         v-if="currentProp && currentProp.properties"
         class="col_nw_fs_fs czml_combine_propbox"
         :class="{ czml_combine_bigpropbox: currentProp.isExpand }"
       >
         <div v-for="childProp in currentProp.properties" :key="childProp.id" class="col_nw_ce_ce props_ic_box">
-          <component :is="childProp.tag" :vdata="childProp"></component>
-          <div class="props_ic_gap"></div>
+          <component v-if="childProp.isUsed" :is="childProp.tag" :vdata="childProp"></component>
+          <div v-if="childProp.isUsed" class="props_ic_gap"></div>
         </div>
         <div class="props_ic_gap"></div>
       </div>
@@ -51,6 +65,7 @@
 </template>
 
 <script setup lang="ts">
+  // 这个基本和 CzmlPositionPropInput.vue 是一样的，就是从那里复制过来的，只是改了点样式
   import { ref, reactive, onMounted, computed, watch, nextTick } from "vue";
   import RjBooleanSwitchInput from "@/components/form/RjBooleanSwitchInput.vue";
 
@@ -68,17 +83,47 @@
 
   const currentProp = ref({});
   const isEnable = ref(false);
+  const usedComp = ref("cartesian");
+  let oldCompKey = "cartesian";
+
+  // const componentOptions = computed(() => {
+  //   if (currentProp.value.properties) {
+  //     const keys = Object.keys(currentProp.value.properties);
+  //     if (keys && keys.length) {
+  //       const reVal = [];
+  //       for (let i = 0; i < keys.length; i++) {
+  //         reVal.push({ label: keys[i], value: keys[i] });
+  //       }
+  //       return reVal;
+  //     } else {
+  //       return [];
+  //     }
+  //   } else {
+  //     return [];
+  //   }
+  // });
+
+  function usedCompChangedHd(key) {
+    if (currentProp.value.properties) {
+      currentProp.value.currentProperty = key;
+      currentProp.value.properties[oldCompKey].isUsed = false;
+      currentProp.value.properties[key].isUsed = true;
+      oldCompKey = key;
+    }
+  }
 
   function init() {
     if (props.vdata && props.vdata.id && props.vdata.name) {
       isEnable.value = true;
       currentProp.value = props.vdata;
+      usedComp.value = props.vdata.currentProperty;
+      oldCompKey = props.vdata.currentProperty;
     } else {
       isEnable.value = false;
       currentProp.value = {};
     }
 
-    console.log("Current_Combine_Sm_Prop", currentProp.value);
+    console.log("Current_Combine_Sel_Sm_Prop", currentProp.value);
   }
 
   onMounted(() => {
@@ -147,6 +192,7 @@
     height: 100%;
     background-color: rgba(26, 30, 39, 1);
     padding: 0 0.875rem;
+    flex-wrap: wrap;
   }
 
   .czml_combine_lefttsmbox {

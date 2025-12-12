@@ -355,13 +355,13 @@
     if (props.vdata && props.vdata.id && props.vdata.name) {
       isEnable.value = true;
       currentProp.value = props.vdata;
-      if (currentProp.value.timeType == CZMLPUREVALUE) {
-        pureValue.value = cloneDeep(currentProp.value.value);
-      } else if (currentProp.value.timeType == CZMLTIMESECONDS) {
-        intervalsValues.value = cloneDeep(currentProp.value.value);
-      } else if (currentProp.value.timeType == CZMLTIMESTRING) {
-        timestrIntervalsValues.value = cloneDeep(currentProp.value.value);
-      }
+      pureValue.value = cloneDeep(currentProp.value._oldPureValue);
+      intervalsValues.value = cloneDeep(currentProp.value._oldSecondsValue);
+      timestrIntervalsValues.value = cloneDeep(currentProp.value._oldTimestringValue);
+      // if (currentProp.value.timeType == CZMLPUREVALUE) {
+      // } else if (currentProp.value.timeType == CZMLTIMESECONDS) {
+      // } else if (currentProp.value.timeType == CZMLTIMESTRING) {
+      // }
     } else {
       isEnable.value = false;
       currentProp.value = {};

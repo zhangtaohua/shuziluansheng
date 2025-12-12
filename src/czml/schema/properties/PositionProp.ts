@@ -48,7 +48,10 @@ export class czmlPositionProp {
     { label: "cartesian 笛卡尔", value: "cartesian" },
     { label: "cartographicDegrees wgs84经纬度", value: "cartographicDegrees" },
     { label: "cartographicRadians wgs84弧度", value: "cartographicRadians" },
+    { label: "references 参考值", value: "references" },
   ];
+
+  public currentProperty = "cartesian";
 
   public properties = {
     referenceFrame: new czmlOptionsPureProp({

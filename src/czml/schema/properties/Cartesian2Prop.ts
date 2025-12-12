@@ -16,6 +16,7 @@ import {
   propValuesTimeTypeOptions,
 } from "./commondata.ts";
 import czmlInterpolatableProp from "./InterpolatablePropertyProp.ts";
+import { isArray, isNumber } from "es-toolkit/compat";
 
 // 用于生成 Cartesian2 数值，纯数值，或者是带时间序的多个值。
 export class czmlCartesian2Prop {
@@ -106,11 +107,31 @@ export class czmlCartesian2Prop {
     }
 
     if (options.value) {
-      this._value = options.value;
-    }
+      let temp = [0, 0];
+      if (isArray(options.value) && options.value.length >= 2) {
+        temp = [options.value[0], options.value[1]];
+      } else if (isNumber(options.value)) {
+        temp = [options.value, options.value];
+      }
+      this._value = temp;
+      this._oldPureValue = temp;
+      this.default = temp;
 
-    if (options.default) {
-      this.default = options.default;
+      this._oldSecondsValue = [[0, temp[0], temp[1]]];
+      this._oldTimestringValue = [[dayjs().format(defaultTimeFormatStr), temp[0], temp[1]]];
+    } else if (options.default) {
+      let temp = [0, 0];
+      if (isArray(options.default) && options.default.length >= 2) {
+        temp = [options.default[0], options.default[1]];
+      } else if (isNumber(options.default)) {
+        temp = [options.default, options.default];
+      }
+      this._value = temp;
+      this._oldPureValue = temp;
+      this.default = temp;
+
+      this._oldSecondsValue = [[0, temp[0], temp[1]]];
+      this._oldTimestringValue = [[dayjs().format(defaultTimeFormatStr), temp[0], temp[1]]];
     }
 
     this.isFixedXyzUnitType = options.isFixedXyzUnitType ?? true;

@@ -16,6 +16,7 @@ import {
   propValuesTimeTypeOptions,
 } from "./commondata.ts";
 import czmlInterpolatableProp from "./InterpolatablePropertyProp.ts";
+import { isArray, isNumber } from "es-toolkit/compat";
 
 // 用于生成 Cartesian4 数值，纯数值，或者是带时间序的多个值。
 export class czmlCartesian4Prop {
@@ -106,11 +107,31 @@ export class czmlCartesian4Prop {
     }
 
     if (options.value) {
-      this._value = options.value;
-    }
+      let temp = [0, 0, 0, 0];
+      if (isArray(options.value) && options.value.length >= 4) {
+        temp = [options.value[0], options.value[1], options.value[2], options.value[3]];
+      } else if (isNumber(options.value)) {
+        temp = [options.value, options.value, options.value, options.value];
+      }
+      this._value = temp;
+      this._oldPureValue = temp;
+      this.default = temp;
 
-    if (options.default) {
-      this.default = options.default;
+      this._oldSecondsValue = [[0, temp[0], temp[1], temp[2], temp[3]]];
+      this._oldTimestringValue = [[dayjs().format(defaultTimeFormatStr), temp[0], temp[1], temp[2], temp[3]]];
+    } else if (options.default) {
+      let temp = [0, 0, 0, 0];
+      if (isArray(options.default) && options.default.length >= 3) {
+        temp = [options.default[0], options.default[1], options.default[2], options.default[3]];
+      } else if (isNumber(options.default)) {
+        temp = [options.default, options.default, options.default, options.default];
+      }
+      this._value = temp;
+      this._oldPureValue = temp;
+      this.default = temp;
+
+      this._oldSecondsValue = [[0, temp[0], temp[1], temp[2], temp[3]]];
+      this._oldTimestringValue = [[dayjs().format(defaultTimeFormatStr), temp[0], temp[1], temp[2], temp[3]]];
     }
 
     this.isFixedXyzUnitType = options.isFixedXyzUnitType ?? true;
@@ -245,6 +266,17 @@ export const czmlTranslucencyByDistanceOptions = {
   czmlName: "translucencyByDistance",
   labelZh: "透明度距离",
   labelEn: "translucency by distance",
+  tag: "CzmlCartesian4NFScalerPropInput",
+  isEnable: true,
+  isUsed: false,
+  isShowUsed: true,
+};
+
+export const czmlNearFarOptions = {
+  name: "nearFarScalar",
+  czmlName: "nearFarScalar",
+  labelZh: "近远放大比例",
+  labelEn: "near far scalar",
   tag: "CzmlCartesian4NFScalerPropInput",
   isEnable: true,
   isUsed: false,
