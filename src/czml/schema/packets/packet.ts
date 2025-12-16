@@ -1,16 +1,16 @@
 import { nanoid } from "@/utils/common/nanoid";
-import czmlBooleanPureProp from "../properties/BooleanPureProp.ts";
-import czmlStringProp from "../properties/StringProp";
-import czmlTextProp from "../properties/TextProp";
-import czmlPositionProp from "../properties/PositionProp";
-import { czmlTimeCollectionProp, czmlAvailabilityOptions } from "../properties/TimeCollectionProp";
-import { czmlCustomPropertiesProp, czmlCustomPropertiesOptions } from "../properties/CustomPropertiesProp";
-import { czmlOrientationProp } from "../properties/OrientationProp.ts";
-import czmlViewFromProp from "../properties/ViewFromProp.ts";
 
 import czmlBillboardEntity from "../entities/billboard";
 import czmlBoxEntity from "../entities/box.ts";
 import czmlLableEntity from "../entities/label.ts";
+import { createDescriptionProp, createIdProp, createNameProp, createParentProp } from "../properties/stringTextProp.ts";
+import { createDeleteProp } from "../properties/booleanProp.ts";
+import { createAvailabilityProp } from "../properties/timeProp.ts";
+import { createCustomPropertiesProp } from "../properties/customProperiesProp.ts";
+import { createPositionProp } from "../properties/positionProp.ts";
+import { createOrientationProp } from "../properties/orientationProp.ts";
+import { createViewFromProp } from "../properties/viewFromProp.ts";
+import czmlModelEntity from "../entities/model.ts";
 
 export class czmlPacket {
   public id = "czml_packet_" + nanoid(10);
@@ -58,11 +58,7 @@ export class czmlPacket {
   }
 
   public properties = {
-    id: new czmlStringProp({
-      name: "id",
-      czmlName: "id",
-      labelZh: "标示",
-      labelEn: "id",
+    id: createIdProp({
       value: "billboard_id_init" + nanoid(10),
       isEnable: true,
       isUsed: true,
@@ -70,47 +66,24 @@ export class czmlPacket {
         "The ID of the object described by this packet. IDs do not need to be GUIDs, but they do need to uniquely identify a single object within a CZML source and any other CZML sources loaded into the same scope. If this property is not specified, the client will automatically generate a unique one. However, this prevents later packets from referring to this object in order to add more data to it.",
       type: "string",
     }),
-    delete: new czmlBooleanPureProp({
-      name: "delete",
-      czmlName: "delete",
-      labelZh: "删除",
-      labelEn: "delete",
-      value: false,
-      isEnable: true,
-      isUsed: false,
-      isShowUsed: true,
+    delete: createDeleteProp({
       description:
         "Whether the client should delete all existing data for this object, identified by ID. If true, all other properties in this packet will be ignored.",
       type: "boolean",
     }),
-    name: new czmlStringProp({
-      name: "name",
-      czmlName: "name",
-      labelZh: "名称",
-      labelEn: "name",
+    name: createNameProp({
       value: "billboard_name_init" + nanoid(10),
-      isEnable: true,
-      isUsed: true,
       description: "The name of the object. It does not have to be unique and is intended for user consumption.",
       type: "string",
     }),
-    parent: new czmlStringProp({
-      name: "parent",
-      czmlName: "parent",
-      labelZh: "父级",
-      labelEn: "parent",
-      value: "",
+    parent: createParentProp({
       isEnable: true,
       isUsed: false,
       isShowUsed: true,
       description: "The ID of the parent object, if any.",
       type: "string",
     }),
-    description: new czmlTextProp({
-      name: "description",
-      czmlName: "description",
-      labelZh: "描述",
-      labelEn: "description",
+    description: createDescriptionProp({
       value: this.description,
       isEnable: true,
       isUsed: true,
@@ -120,18 +93,11 @@ export class czmlPacket {
     //   $ref: "Clock.json",
     //   description: "The clock settings for the entire data set. Only valid on the document object.",
     // },
-    // version: new czmlStringProp({
-    //   name: "version",
-    //   labelZh: "版本号",
-    //   labelEn: "version",
-    //   value: "1.0",
-    //   isEnable: true,
-    //   isUsed: true,
+    // version: {
     //   description: "The CZML version being written. Only valid on the document object.",
     //   type: "string",
-    // }),
-    availability: new czmlTimeCollectionProp({
-      ...czmlAvailabilityOptions,
+    // },
+    availability: createAvailabilityProp({
       $ref: "Values/TimeIntervalCollectionValue.json",
       description:
         "The set of time intervals over which data for an object is available. The property can be a single string specifying a single interval, or an array of strings representing intervals. A later CZML packet can update this availability if it changes or is found to be incorrect. For example, an SGP4 propagator may initially report availability for all time, but then later the propagator throws an exception and the availability can be adjusted to end at that time. If this optional property is not present, the object is assumed to be available for all time. Availability is scoped to a particular CZML stream, so two different streams can list different availability for a single object. Within a single stream, the last availability stated for an object is the one in effect and any availabilities in previous packets are ignored. If an object is not available at a time, the client will not draw that object.",
@@ -140,28 +106,24 @@ export class czmlPacket {
       isUsed: false,
       isShowUsed: true,
     }),
-    properties: new czmlCustomPropertiesProp({
-      ...czmlCustomPropertiesOptions,
+    properties: createCustomPropertiesProp({
       $ref: "CustomProperties.json",
       description: "A set of custom properties for this object.",
     }),
-    position: new czmlPositionProp({
+    position: createPositionProp({
       $ref: "Position.json",
       description:
         "The position of the object in the world. The position has no direct visual representation, but it is used to locate billboards, labels, and other graphical items attached to the object.",
       czmlExamples: ["Examples/SimplePosition.json", "Examples/TimeVaryingPosition.json"],
       default: null,
-      isUsed: true,
-      isShowUsed: true,
     }),
-    orientation: new czmlOrientationProp({
+    orientation: createOrientationProp({
       $ref: "Orientation.json",
       isUsed: false,
-      isShowUsed: true,
       description:
         "The orientation of the object in the world. The orientation has no direct visual representation, but it is used to orient models, cones, pyramids, and other graphical items attached to the object.",
     }),
-    viewFrom: new czmlViewFromProp({
+    viewFrom: createViewFromProp({
       $ref: "ViewFrom.json",
       isUsed: false,
       isShowUsed: true,
@@ -169,13 +131,6 @@ export class czmlPacket {
         "A suggested camera location when viewing this object. The property is specified as a Cartesian position in the East (x), North (y), Up (z) reference frame relative to the object's position.",
     }),
     billboard: new czmlBillboardEntity(null),
-    // RJTODO 下面的要删除
-    // cartesian: new czmlCartesian3Prop(null),
-    // cartesianList: new czmlCartesian3ListProp(null),
-    // rectTest: new czmlCartographicRectangleProp(null),
-    // fixedCnt: new czmlDoubleFixedNumberProp({ fixedCounter: 20 }),
-    // refreees: new czmlReferencesProp(null),
-    // RJTODO 上面的要删除
     box: new czmlBoxEntity({
       $ref: "Box.json",
       description:
@@ -204,11 +159,11 @@ export class czmlPacket {
       $ref: "Label.json",
       description: "A string of text. The label is positioned in the scene by the `position` property.",
     }),
-    model: {
+    model: new czmlModelEntity({
       $ref: "Model.json",
       description:
         "A 3D model. The model is positioned and oriented using the `position` and `orientation` properties.",
-    },
+    }),
     path: {
       $ref: "Path.json",
       description:

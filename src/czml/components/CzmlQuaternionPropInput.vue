@@ -271,7 +271,7 @@
     CZMLVALUESNOTINTERPOLATE,
     CZMLVALUESWITHINTERPOLATE,
     defaultTimeFormatStr,
-  } from "@/czml/schema/properties/commondata.ts";
+  } from "@/czml/schema/values/commondata.ts";
   import { nanoid } from "@/utils/common/nanoid";
 
   const props = defineProps({

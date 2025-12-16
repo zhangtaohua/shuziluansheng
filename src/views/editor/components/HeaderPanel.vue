@@ -164,7 +164,7 @@
   }
 
   function addBillboard() {
-    const czmlOpt = new CzmlDataMaker();
+    const czmlOpt = new CzmlDataMaker({});
     console.log("czmlOpt", czmlOpt);
     csMap.addCzmlGraphicLayer(czmlOpt);
     setEditorCurrentParentComp(czmlOpt);

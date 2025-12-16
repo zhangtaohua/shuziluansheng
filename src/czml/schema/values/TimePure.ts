@@ -1,0 +1,147 @@
+import { nanoid } from "@/utils/common/nanoid";
+import dayjs from "dayjs";
+
+import { defaultTimeFormatStr } from "./commondata";
+
+export class czmlTimePureProp {
+  public id = "czml_prop_time_pure_" + nanoid(10);
+  public name = "currentTime";
+  public _czmlName = "currentTime";
+  public labelZh = "当前时间";
+  public labelEn = "current time";
+  public title = "Current Time";
+  public description = "The current time, specified in ISO8601 format.";
+  public descriptionZh = "";
+
+  public type = "property";
+  public componentType = "czml#packet#property";
+  public tag = "CzmlTimePurePropInput";
+  public _value = dayjs().format(defaultTimeFormatStr);
+  public _valueType = "";
+  public default = dayjs().format(defaultTimeFormatStr);
+  public isEnable = true; // for can edit
+  public isUsed = true; // for can used
+  public isShowUsed = true;
+  public isExpand = true; // for UI
+  public _isEntity = false;
+  public isCombinedProperty = false;
+  public isComplexProperty = false;
+
+  constructor(options: any) {
+    if (!options) {
+      return;
+    }
+
+    if (options.id) {
+      this.id = options.id;
+    } else if (options.name) {
+      this.id = "czml_prop_time_pure_" + options.name + "_" + nanoid(10);
+    }
+
+    if (options.name) {
+      this.name = options.name;
+    }
+
+    if (options.czmlName) {
+      this._czmlName = options.czmlName;
+    }
+
+    if (options.labelZh) {
+      this.labelZh = options.labelZh;
+    }
+
+    if (options.labelEn) {
+      this.labelEn = options.labelEn;
+    }
+
+    if (options.title) {
+      this.title = options.title;
+    }
+
+    if (options.description) {
+      this.description = options.description;
+    }
+
+    if (options.descriptionZh) {
+      this.descriptionZh = options.descriptionZh;
+    }
+
+    if (options.tag) {
+      this.tag = options.tag;
+    }
+
+    if (options.value) {
+      this._value = options.value;
+    }
+
+    if (options.default) {
+      this.default = options.default;
+    }
+
+    this.isEnable = options.isEnable ?? true;
+    this.isUsed = options.isUsed ?? true;
+    this.isShowUsed = options.isShowUsed ?? true;
+    this.isExpand = options.isExpand ?? true;
+  }
+
+  get value() {
+    return this._value;
+  }
+
+  set value(newValue) {
+    this._value = newValue;
+  }
+
+  get valueType() {
+    return this._valueType;
+  }
+
+  set valueType(newValue) {
+    this._valueType = newValue;
+  }
+
+  get isEntity() {
+    return this._isEntity;
+  }
+
+  set isEntity(newValue) {
+    return;
+  }
+
+  get czmlName() {
+    return this._czmlName;
+  }
+
+  set czmlName(newValue) {
+    return;
+    // this._czmlName = newValue;
+  }
+
+  public getCzmlName() {
+    if (this.isUsed) {
+      return this.czmlName;
+    } else {
+      return null;
+    }
+  }
+
+  public getCzmlValue() {
+    if (this.isUsed) {
+      return dayjs(this.value).toISOString();
+    } else {
+      return null;
+    }
+  }
+
+  public getCzmlData() {
+    if (this.isUsed) {
+      return {
+        [this.czmlName]: this.getCzmlValue(),
+      };
+    } else {
+      return null;
+    }
+  }
+}
+
+export default czmlTimePureProp;

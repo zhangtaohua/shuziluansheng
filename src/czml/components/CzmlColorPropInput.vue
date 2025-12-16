@@ -245,7 +245,7 @@
     CZMLTIMESECONDS,
     CZMLTIMESTRING,
     defaultTimeFormatStr,
-  } from "@/czml/schema/properties/commondata.ts";
+  } from "@/czml/schema/values/commondata.ts";
 
   const props = defineProps({
     vdata: {

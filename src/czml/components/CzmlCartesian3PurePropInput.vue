@@ -107,7 +107,7 @@
     CZMLCARTESIAN3METERTYPE,
     CZMLCARTESIAN3DEGREESTYPE,
     CZMLCARTESIAN3RADIANSTYPE,
-  } from "@/czml/schema/properties/commondata";
+  } from "@/czml/schema/values/commondata.ts";
 
   import RjRadioTabInput from "@/components/form/RjRadioTabInput.vue";
   import RjBooleanSwitchInput from "@/components/form/RjBooleanSwitchInput.vue";

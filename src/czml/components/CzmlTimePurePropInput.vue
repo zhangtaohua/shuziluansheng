@@ -48,7 +48,7 @@
   import RjRadioTabInput from "@/components/form/RjRadioTabInput.vue";
   import RjBooleanSwitchInput from "@/components/form/RjBooleanSwitchInput.vue";
 
-  import { defaultTimeFormatStr } from "@/czml/schema/properties/commondata";
+  import { defaultTimeFormatStr } from "@/czml/schema/values/commondata.ts";
   import { cloneDeep } from "es-toolkit";
   import { isArray } from "es-toolkit/compat";
   import dayjs from "dayjs";

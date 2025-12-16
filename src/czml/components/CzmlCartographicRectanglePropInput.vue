@@ -393,7 +393,7 @@
     CZMLCARTESIAN3METERTYPE,
     CZMLCARTESIAN3DEGREESTYPE,
     CZMLCARTESIAN3RADIANSTYPE,
-  } from "@/czml/schema/properties/commondata.ts";
+  } from "@/czml/schema/values/commondata.ts";
 
   const props = defineProps({
     vdata: {
