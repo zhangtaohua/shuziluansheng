@@ -5,7 +5,7 @@ import { createStripeOrientationProp } from "./optionsProp";
 
 export function createStripeOrientationCombineProp(options = {}) {
   return new czmlCombineProp({
-    id: "czml_prop_sporientation_" + nanoid(10),
+    id: "czml_prop_sporientation_combine_" + nanoid(10),
     name: "orientation",
     czmlName: "orientation",
     labelZh: "方向",

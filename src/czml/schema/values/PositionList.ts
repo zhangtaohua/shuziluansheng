@@ -19,17 +19,16 @@ import czmlInterpolatableProp from "./InterpolatableProperty.ts";
 
 import { createReferencesProp } from "../properties/referenceProp.ts";
 import { createReferenceFrameProp } from "../properties/optionsProp.ts";
-import { createCartesianMapProp, createCartesianVelocityProp } from "../properties/cartesian3Prop.ts";
-import { createInterpolatableProp } from "../properties/interpolatableProp.ts";
+import { createCartesianListMapProp } from "../properties/cartesian3Prop.ts";
 
-export class czmlPositionProp {
-  public id = "czml_prop_position_" + nanoid(10);
-  public name = "position";
-  public _czmlName = "position";
-  public labelZh = "位置";
-  public labelEn = "position";
-  public title = "Position";
-  public description = "Defines a position. The position can optionally vary over time.";
+export class czmlPositionListProp {
+  public id = "czml_prop_positions_" + nanoid(10);
+  public name = "positions";
+  public _czmlName = "positions";
+  public labelZh = "位置列表";
+  public labelEn = "positions";
+  public title = "Positions";
+  public description = "A list of positions.";
   public descriptionZh = "";
 
   public type = "property";
@@ -61,48 +60,40 @@ export class czmlPositionProp {
       type: "string",
       default: "FIXED",
     }),
-    interpolate: createInterpolatableProp(),
-    cartesian: createCartesianMapProp({
+    cartesian: createCartesianListMapProp({
       czmlName: "cartesian",
       isEnable: true,
       isFixedXyzUnitType: true,
       isUsed: true,
       xyzUnitType: CZMLCARTESIAN3METERTYPE,
-      $ref: "Values/Cartesian3Value.json",
+      $ref: "Values/Cartesian3ListValue.json",
       description:
-        "The position specified as a three-dimensional Cartesian value, `[X, Y, Z]`, in meters relative to the `referenceFrame`.",
+        "The list of positions specified as three-dimensional Cartesian values, `[X, Y, Z, X, Y, Z, ...]`, in meters relative to the `referenceFrame`.",
     }),
-    cartographicRadians: createCartesianMapProp({
+    cartographicRadians: createCartesianListMapProp({
       czmlName: "cartographicRadians",
       isEnable: true,
       isFixedXyzUnitType: true,
       isUsed: false,
       xyzUnitType: CZMLCARTESIAN3RADIANSTYPE,
-      $ref: "Values/CartographicRadiansValue.json",
+      $ref: "Values/CartographicRadiansListValue.json",
       description:
-        "The position specified in Cartographic WGS84 coordinates, `[Longitude, Latitude, Height]`, where Longitude and Latitude are in radians and Height is in meters.",
-      czmlExamples: ["Examples/PositionCartographicRadians.json"],
+        "The list of positions specified in Cartographic WGS84 coordinates, `[Longitude, Latitude, Height, Longitude, Latitude, Height, ...]`, where Longitude and Latitude are in radians and Height is in meters.",
     }),
-    cartographicDegrees: createCartesianMapProp({
+    cartographicDegrees: createCartesianListMapProp({
       czmlName: "cartographicDegrees",
       isEnable: true,
       isFixedXyzUnitType: true,
       isUsed: false,
       xyzUnitType: CZMLCARTESIAN3DEGREESTYPE,
-      $ref: "Values/CartographicDegreesValue.json",
+      $ref: "Values/CartographicDegreesListValue.json",
       description:
-        "The position specified in Cartographic WGS84 coordinates, `[Longitude, Latitude, Height]`, where Longitude and Latitude are in degrees and Height is in meters.",
-      czmlExamples: ["Examples/PositionCartographicDegrees.json"],
-    }),
-    cartesianVelocity: createCartesianVelocityProp({
-      isUsed: false,
-      $ref: "Values/Cartesian3VelocityValue.json",
-      description:
-        "The position and velocity specified as a three-dimensional Cartesian value and its derivative, `[X, Y, Z, dX, dY, dZ]`, in meters relative to the `referenceFrame`.",
+        "The list of positions specified in Cartographic WGS84 coordinates, `[Longitude, Latitude, Height, Longitude, Latitude, Height, ...]`, where Longitude and Latitude are in degrees and Height is in meters.",
     }),
     references: createReferencesProp({
-      $ref: "Values/ReferenceValue.json",
-      description: "The position specified as a reference to another property.",
+      $ref: "Values/ReferenceListValue.json",
+      description:
+        "The list of positions specified as references. Each reference is to a property that defines a single position, which may change with time.",
     }),
   };
 
@@ -230,4 +221,4 @@ export class czmlPositionProp {
   }
 }
 
-export default czmlPositionProp;
+export default czmlPositionListProp;

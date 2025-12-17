@@ -1,14 +1,12 @@
 import { nanoid } from "@/utils/common/nanoid";
 
-import { createColorProp, createEvenColorProp, createOddColorProp } from "../properties/colorProp.ts";
-import { createImageProp } from "../properties/urlProp.ts";
-import { createRepeatProp } from "../properties/repeatProp.ts";
-import { createTransparentProp } from "../properties/booleanProp.ts";
-import { createCellAlphaDoubleProp, createOffsetDoubleProp, createRepeatDoubleProp } from "../properties/doubleProp.ts";
-import { createLineCountProp } from "../properties/lineCountProp.ts";
-import { createLineThicknessProp } from "../properties/lineThicknessProp.ts";
-import { createLineOffsetProp } from "../properties/lineOffsetProp.ts";
-import { createStripeOrientationCombineProp } from "../properties/stripeProp.ts";
+import {
+  createCheckerboardMaterialProp,
+  createGridMaterialProp,
+  createImageMaterialProp,
+  createSolidColorMaterialProp,
+  createStripeMaterialProp,
+} from "../properties/materialProp.ts";
 
 export class czmlMaterialProp {
   public id = "czml_prop_material_" + nanoid(10);
@@ -42,122 +40,11 @@ export class czmlMaterialProp {
   public currentProperty = "solidColor";
 
   public properties = {
-    solidColor: {
-      id: nanoid(),
-      czmlName: "solidColor",
-      isUsed: true,
-      $ref: "SolidColorMaterial.json",
-      description: "A material that fills the surface with a solid color, which may be translucent.",
-      properties: {
-        color: createColorProp({
-          isUsed: true,
-          isShowUsed: true,
-          $ref: "Color.json",
-          description: "The color of the surface.",
-          default: "white",
-        }),
-      },
-    },
-    image: {
-      id: nanoid(),
-      czmlName: "image",
-      isUsed: false,
-      $ref: "ImageMaterial.json",
-      description: "A material that fills the surface with an image.",
-      properties: {
-        image: createImageProp({
-          $ref: "Uri.json",
-          name: "image",
-          labelZh: "图像链接",
-          labelEn: "image uri",
-          czmlName: "image",
-          isUsed: true,
-          isShowUsed: true,
-          description: "The image to display on the surface.",
-        }),
-        repeat: createRepeatProp(),
-        color: createColorProp({
-          isUsed: false,
-          isShowUsed: true,
-          $ref: "Color.json",
-          description:
-            "The color of the image. This color value is multiplied with the image to produce the final color.",
-          default: "white",
-        }),
-        transparent: createTransparentProp({
-          value: false,
-          isEnable: true,
-          isUsed: true,
-          isShowUsed: true,
-          $ref: "Boolean.json",
-          description: "Whether or not the image has transparency.",
-          default: false,
-        }),
-      },
-    },
-    grid: {
-      id: nanoid(),
-      czmlName: "grid",
-      isUsed: false,
-      $ref: "GridMaterial.json",
-      description: "A material that fills the surface with a grid.",
-      properties: {
-        color: createColorProp({
-          isUsed: false,
-          isShowUsed: true,
-          $ref: "Color.json",
-          description: "The color of the surface.",
-          default: "white",
-        }),
-        cellAlpha: createCellAlphaDoubleProp({
-          $ref: "Double.json",
-          description: "The alpha value for the space between grid lines. This will be combined with the color alpha.",
-        }),
-        lineCount: createLineCountProp(),
-        lineThickness: createLineThicknessProp(),
-        lineOffset: createLineOffsetProp(),
-      },
-    },
-    stripe: {
-      id: nanoid(),
-      czmlName: "stripe",
-      isUsed: false,
-      $ref: "StripeMaterial.json",
-      description: "A material that fills the surface with alternating colors.",
-      properties: {
-        orientation: createStripeOrientationCombineProp(),
-        evenColor: createEvenColorProp(),
-        oddColor: createOddColorProp(),
-        offset: createOffsetDoubleProp({
-          $ref: "Double.json",
-          description:
-            "The value indicating where in the pattern to begin drawing, with 0.0 being the beginning of the even color, 1.0 the beginning of the odd color, 2.0 being the even color again, and any multiple or fractional values being in between.",
-          default: [0.0],
-        }),
-        repeat: createRepeatDoubleProp({
-          value: [1.0],
-          $ref: "Double.json",
-          description: "The number of times the stripes repeat.",
-          default: [1.0],
-        }),
-      },
-    },
-    checkerboard: {
-      id: nanoid(),
-      czmlName: "checkerboard",
-      isUsed: false,
-      $ref: "CheckerboardMaterial.json",
-      description: "A material that fills the surface with a checkerboard pattern.",
-      properties: {
-        evenColor: createEvenColorProp(),
-        oddColor: createOddColorProp(),
-        repeat: createRepeatProp({
-          $ref: "Repeat.json",
-          description: "The number of times the image repeats along each axis.",
-          default: [2, 2],
-        }),
-      },
-    },
+    solidColor: createSolidColorMaterialProp(),
+    image: createImageMaterialProp(),
+    grid: createGridMaterialProp(),
+    stripe: createStripeMaterialProp(),
+    checkerboard: createCheckerboardMaterialProp(),
   };
 
   constructor(options: any) {
@@ -201,6 +88,18 @@ export class czmlMaterialProp {
 
     if (options.tag) {
       this.tag = options.tag;
+    }
+
+    if (options.properties) {
+      this.properties = options.properties;
+    }
+
+    if (options.compUsedOptions) {
+      this.compUsedOptions = options.compUsedOptions;
+    }
+
+    if (options.currentProperty) {
+      this.currentProperty = options.currentProperty;
     }
 
     this.isEnable = options.isEnable ?? true;

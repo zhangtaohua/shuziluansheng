@@ -11,7 +11,7 @@ export function createNodeTransformationProp(options = {}) {
     name: "nodeTransformation",
     czmlName: options.nodeName ? options.nodeName : "nodeTransformation",
     labelZh: "节点变换",
-    labelEn: "nodeTransformation",
+    labelEn: options.nodeName ? options.nodeName : "node transformation",
     title: "nodeTransformation",
     isEnable: true,
     isUsed: false,

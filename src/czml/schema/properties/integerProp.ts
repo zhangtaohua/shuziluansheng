@@ -1,0 +1,85 @@
+import { nanoid } from "@/utils/common/nanoid";
+import czmlCombineProp from "../values/CombinePropert";
+import czmlDoubleProp from "../values/Double";
+import { createReferenceProp } from "./referenceProp";
+
+export function createIntegerValueProp(options = {}) {
+  return new czmlDoubleProp({
+    id: "czml_prop_integernumber_" + nanoid(10),
+    name: "number",
+    czmlName: "number",
+    labelZh: "数值",
+    labelEn: "number",
+    type: "number",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    value: 255,
+    max: 99999999999,
+    min: 0,
+    setp: 1,
+    $ref: "Values/IntegerValue.json",
+    description: "The integer.",
+    descriptionZh: "",
+    ...options,
+  });
+}
+
+export function createIntegerProp(
+  options = {
+    name: "integer",
+    czmlName: "integer",
+    labelZh: "整数",
+    labelEn: "integer",
+  },
+) {
+  return new czmlCombineProp({
+    id: `czml_prop_${options.czmlName}_` + nanoid(10),
+    tag: "CzmlCombineSmPropInput",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    $ref: "Integer.json",
+    title: "Integer",
+    description: "An integer number.",
+    descriptionZh: "",
+    default: "HORIZONTAL",
+    ...options,
+    properties: {
+      number: createIntegerValueProp(),
+      reference: createReferenceProp({
+        isUsed: false,
+        $ref: "Values/ReferenceValue.json",
+        description: "The integer specified as a reference to another property.",
+      }),
+    },
+  });
+}
+
+export function createDashPatternIntegerProp(options = {}) {
+  return createIntegerProp({
+    name: "dashPattern",
+    czmlName: "dashPattern",
+    labelZh: "虚线数",
+    labelEn: "dashPattern",
+    $ref: "Integer.json",
+    description:
+      "A 16-bit bitfield representing which portions along a single dashLength are the dash (1) and which are the gap (0). The default value, 255 (0000000011111111), indicates 50% gap followed by 50% dash.",
+    default: 255,
+    ...options,
+  });
+}
+
+export function createZIndexIntegerProp(options = {}) {
+  return createIntegerProp({
+    name: "zIndex",
+    czmlName: "zIndex",
+    labelZh: "Z层级",
+    labelEn: "zIndex",
+    $ref: "Integer.json",
+    description:
+      "The z-index of the corridor, used for ordering ground geometry. Only has an effect if the corridor is constant, and `height` and `extrudedHeight` are not specified.",
+    default: 0,
+    ...options,
+  });
+}

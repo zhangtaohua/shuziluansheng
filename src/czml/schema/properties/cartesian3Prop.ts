@@ -1,4 +1,5 @@
 import czmlCartesian3Prop from "../values/Cartesian3";
+import czmlCartesian3ListProp from "../values/Cartesian3List";
 import czmlCartesian3PixelProp from "../values/Cartesian3Pixel";
 import czmlCartesian3PixelListProp from "../values/Cartesian3PixelList";
 import czmlCartesian3PureProp from "../values/Cartesian3Pure";
@@ -90,6 +91,22 @@ export function createUnitCartesianListProp(options = {}) {
 
 export function createCartesianVelocityProp(options = {}) {
   return new czmlCartesian3VelocityProp({
+    ...options,
+  });
+}
+
+export function createCartesianListMapProp(options = {}) {
+  return new czmlCartesian3ListProp({
+    name: "cartesian",
+    czmlName: "cartesian",
+    labelZh: "XYZ坐标列表",
+    labelEn: "cartesian3 list",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    $ref: "Values/Cartesian3ListValue.json",
+    description:
+      "The list of positions specified as three-dimensional Cartesian values, `[X, Y, Z, X, Y, Z, ...]`, in meters relative to the `referenceFrame`.",
     ...options,
   });
 }

@@ -162,3 +162,21 @@ export function createSilhouetteColorProp(options = {}) {
     ...options,
   });
 }
+
+export function createGapColorProp(options = {}) {
+  return new czmlColorCombineProp({
+    id: "czml_prop_gapColor_" + nanoid(10),
+    name: "gapColor",
+    czmlName: "gapColor",
+    labelZh: "间隔颜色",
+    labelEn: "gap color",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    $ref: "Color.json",
+    description: "The color of the gaps between dashes on the line.",
+    descriptionZh: "",
+    default: "white",
+    ...options,
+  });
+}

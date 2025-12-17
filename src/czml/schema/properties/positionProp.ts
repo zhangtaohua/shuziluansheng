@@ -1,5 +1,6 @@
 import { nanoid } from "@/utils/common/nanoid";
 import czmlPositionProp from "../values/Position";
+import czmlPositionListProp from "../values/PositionList";
 
 export function createPositionProp(options = {}) {
   return new czmlPositionProp({
@@ -14,6 +15,24 @@ export function createPositionProp(options = {}) {
     $ref: "Position.json",
     description:
       "The position of the object in the world. The position has no direct visual representation, but it is used to locate billboards, labels, and other graphical items attached to the object.",
+
+    descriptionZh: "",
+    ...options,
+  });
+}
+
+export function createPositionListProp(options = {}) {
+  return new czmlPositionListProp({
+    id: "czml_prop_positions_" + nanoid(10),
+    name: "positions",
+    czmlName: "positions",
+    labelZh: "位置列表",
+    labelEn: "positions",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    $ref: "PositionList.json",
+    description: "The array of positions defining the centerline of the corridor.",
 
     descriptionZh: "",
     ...options,

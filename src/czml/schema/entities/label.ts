@@ -22,7 +22,7 @@ import {
 } from "../properties/nearFarDistanceProp";
 import { createDistanceDisplayConditionProp } from "../properties/distanceDisplayConditionProp";
 
-export class czmlLableEntity {
+export class czmlLabelEntity {
   public id = "czml_entity_label_" + nanoid(10);
   public name = "label";
   public _czmlName = "label";
@@ -266,4 +266,4 @@ export class czmlLableEntity {
   }
 }
 
-export default czmlLableEntity;
+export default czmlLabelEntity;

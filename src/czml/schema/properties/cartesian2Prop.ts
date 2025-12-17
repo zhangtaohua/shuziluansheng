@@ -67,7 +67,7 @@ export function createUnitSphericalListProp(options = {}) {
 }
 
 export function createCartesian2DistanceDisplayConditionProp(options = {}) {
-  return new czmlCartesian2ListProp({
+  return new czmlCartesian2Prop({
     name: "distanceDisplayCondition",
     czmlName: "distanceDisplayCondition",
     labelZh: "显示距离",

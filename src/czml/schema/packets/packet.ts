@@ -2,7 +2,7 @@ import { nanoid } from "@/utils/common/nanoid";
 
 import czmlBillboardEntity from "../entities/billboard";
 import czmlBoxEntity from "../entities/box.ts";
-import czmlLableEntity from "../entities/label.ts";
+import czmlLabelEntity from "../entities/label.ts";
 import { createDescriptionProp, createIdProp, createNameProp, createParentProp } from "../properties/stringTextProp.ts";
 import { createDeleteProp } from "../properties/booleanProp.ts";
 import { createAvailabilityProp } from "../properties/timeProp.ts";
@@ -11,6 +11,8 @@ import { createPositionProp } from "../properties/positionProp.ts";
 import { createOrientationProp } from "../properties/orientationProp.ts";
 import { createViewFromProp } from "../properties/viewFromProp.ts";
 import czmlModelEntity from "../entities/model.ts";
+import czmlPathEntity from "../entities/path.ts";
+import czmlCorridorEntity from "../entities/corridor.ts";
 
 export class czmlPacket {
   public id = "czml_packet_" + nanoid(10);
@@ -136,10 +138,10 @@ export class czmlPacket {
       description:
         "A box, which is a closed rectangular cuboid. The box is positioned and oriented using the `position` and `orientation` properties.",
     }),
-    corridor: {
+    corridor: new czmlCorridorEntity({
       $ref: "Corridor.json",
       description: "A corridor, which is a shape defined by a centerline and width.",
-    },
+    }),
     cylinder: {
       $ref: "Cylinder.json",
       description:
@@ -155,7 +157,7 @@ export class czmlPacket {
       description:
         "An ellipsoid, which is a closed quadric surface that is a three-dimensional analogue of an ellipse. The ellipsoid is positioned and oriented using the `position` and `orientation` properties.",
     },
-    label: new czmlLableEntity({
+    label: new czmlLabelEntity({
       $ref: "Label.json",
       description: "A string of text. The label is positioned in the scene by the `position` property.",
     }),
@@ -164,11 +166,11 @@ export class czmlPacket {
       description:
         "A 3D model. The model is positioned and oriented using the `position` and `orientation` properties.",
     }),
-    path: {
+    path: new czmlPathEntity({
       $ref: "Path.json",
       description:
         "A path, which is a polyline defined by the motion of an object over time. The possible vertices of the path are specified by the `position` property.",
-    },
+    }),
     point: {
       $ref: "Point.json",
       description:

@@ -483,3 +483,210 @@ export function createColorBlendAmountDoubleProp(options = {}) {
     ...options,
   });
 }
+
+export function createLeadTimeDoubleProp(options = {}) {
+  return new czmlDoubleProp({
+    id: "czml_prop_leadTime_" + nanoid(10),
+    name: "leadTime",
+    czmlName: "leadTime",
+    labelZh: "头偏移时间",
+    labelEn: "lead time",
+    type: "number",
+    unit: "seconds",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    value: 0.5,
+    max: 99999999999,
+    min: 0,
+    setp: 1,
+    $ref: "Double.json",
+    description: "",
+    descriptionZh: "",
+    ...options,
+  });
+}
+
+export function createTrailTimeDoubleProp(options = {}) {
+  return new czmlDoubleProp({
+    id: "czml_prop_trailTime_" + nanoid(10),
+    name: "trailTime",
+    czmlName: "trailTime",
+    labelZh: "尾偏移时间",
+    labelEn: "trail time",
+    type: "number",
+    unit: "seconds",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    value: 0.5,
+    max: 99999999999,
+    min: 0,
+    setp: 1,
+    $ref: "Double.json",
+    description: "",
+    descriptionZh: "",
+    ...options,
+  });
+}
+
+export function createResolutionDoubleProp(options = {}) {
+  return new czmlDoubleProp({
+    id: "czml_prop_resolution_" + nanoid(10),
+    name: "resolution",
+    czmlName: "resolution",
+    labelZh: "解决",
+    labelEn: "resolution",
+    type: "number",
+    unit: "seconds",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    value: 0.5,
+    max: 99999999999,
+    min: 0,
+    setp: 1,
+    $ref: "Double.json",
+    description: "",
+    descriptionZh: "",
+    ...options,
+  });
+}
+
+export function createDashLengthDoubleProp(options = {}) {
+  return new czmlDoubleProp({
+    id: "czml_prop_dashLength_" + nanoid(10),
+    name: "dashLength",
+    czmlName: "dashLength",
+    labelZh: "虚线长度",
+    labelEn: "dash length",
+    type: "number",
+    unit: "meters",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    value: 0.5,
+    max: 99999999999,
+    min: 0,
+    setp: 1,
+    $ref: "Double.json",
+    description: "",
+    descriptionZh: "",
+    ...options,
+  });
+}
+
+export function createExtrudedHeightDoubleProp(options = {}) {
+  return new czmlDoubleProp({
+    id: "czml_prop_extrudedHeight_" + nanoid(10),
+    name: "extrudedHeight",
+    czmlName: "extrudedHeight",
+    labelZh: "挤出高度",
+    labelEn: "extrude height",
+    type: "number",
+    unit: "meters",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    value: 0.5,
+    max: 99999999999,
+    min: 0,
+    setp: 1,
+    $ref: "Double.json",
+    description: "",
+    descriptionZh: "",
+    ...options,
+  });
+}
+
+export function createGranularityDoubleProp(options = {}) {
+  return new czmlDoubleProp({
+    id: "czml_prop_granularity_" + nanoid(10),
+    name: "granularity",
+    czmlName: "granularity",
+    labelZh: "粒度",
+    labelEn: "granularity",
+    type: "number",
+    unit: "meters",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    value: 0.5,
+    max: 99999999999,
+    min: 0,
+    setp: 1,
+    $ref: "Double.json",
+    description: "",
+    descriptionZh: "",
+    ...options,
+  });
+}
+
+export function createLengthDoubleProp(options = {}) {
+  return new czmlDoubleProp({
+    id: "czml_prop_length_" + nanoid(10),
+    name: "length",
+    czmlName: "length",
+    labelZh: "长度",
+    labelEn: "length",
+    type: "number",
+    unit: "meters",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    value: 0.5,
+    max: 99999999999,
+    min: 0,
+    setp: 1,
+    $ref: "Double.json",
+    description: "",
+    descriptionZh: "",
+    ...options,
+  });
+}
+
+export function createTopRadiusDoubleProp(options = {}) {
+  return new czmlDoubleProp({
+    id: "czml_prop_topRadius_" + nanoid(10),
+    name: "topRadius",
+    czmlName: "topRadius",
+    labelZh: "顶半径",
+    labelEn: "top radius",
+    type: "number",
+    unit: "meters",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    value: 0.5,
+    max: 99999999999,
+    min: 0,
+    setp: 1,
+    $ref: "Double.json",
+    description: "",
+    descriptionZh: "",
+    ...options,
+  });
+}
+
+export function createBottomRadiusDoubleProp(options = {}) {
+  return new czmlDoubleProp({
+    id: "czml_prop_bottomRadius_" + nanoid(10),
+    name: "bottomRadius",
+    czmlName: "bottomRadius",
+    labelZh: "底半径",
+    labelEn: "bottom radius",
+    type: "number",
+    unit: "meters",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    value: 0.5,
+    max: 99999999999,
+    min: 0,
+    setp: 1,
+    $ref: "Double.json",
+    description: "",
+    descriptionZh: "",
+    ...options,
+  });
+}

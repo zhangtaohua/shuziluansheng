@@ -81,3 +81,37 @@ export function createHeightReferenceProp(options = {}) {
     },
   });
 }
+
+export function createExtrudedHeightReferenceProp(options = {}) {
+  const heightOpt = {
+    ...CzmlHeightReferenceOptions,
+    id: "czml_prop_heightReference_" + nanoid(10),
+    $ref: "Values/HeightReferenceValue.json",
+    description: "The height reference.",
+    default: "NONE",
+  };
+
+  return new czmlCombineProp({
+    id: "czml_prop_extrudedHeightReference_" + nanoid(10),
+    name: "extrudedHeightReference",
+    czmlName: "extrudedHeightReference",
+    labelZh: "挤出高度参考",
+    labelEn: "extruded height reference",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    $ref: "HeightReference.json",
+    description:
+      "The extruded height reference of the corridor, which indicates if `extrudedHeight` is relative to terrain or not.",
+    descriptionZh: "",
+    default: "NONE",
+    ...options,
+    properties: {
+      heightReference: new czmlOptionsPureProp(heightOpt),
+      reference: createReferenceProp({
+        $ref: "Values/ReferenceValue.json",
+        description: "The height reference specified as a reference to another property.",
+      }),
+    },
+  });
+}

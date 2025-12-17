@@ -7,8 +7,10 @@ import {
 import { createGltfProp } from "../properties/urlProp";
 import {
   createColorBlendAmountDoubleProp,
+  createMaximumScaleDoubleProp,
   createMiniMumPixelSizeDoubleProp,
   createScaleDoubleProp,
+  createSilhouetteSizeDoubleProp,
 } from "../properties/doubleProp";
 import { createShadowsProp } from "../properties/shadowsProp";
 import { createHeightReferenceProp } from "../properties/heightReferenceProp";
@@ -111,7 +113,7 @@ export class czmlModelEntity {
       description: "The approximate minimum pixel size of the model regardless of zoom.",
       default: 0.0,
     }),
-    maximumScale: createScaleDoubleProp({
+    maximumScale: createMaximumScaleDoubleProp({
       $ref: "Double.json",
       description: "The maximum scale size of the model. This is used as an upper limit for `minimumPixelSize`.",
     }),
@@ -140,7 +142,7 @@ export class czmlModelEntity {
       description: "The color of the silhouette drawn around the model.",
       default: "red",
     }),
-    silhouetteSize: createSilhouetteColorProp({
+    silhouetteSize: createSilhouetteSizeDoubleProp({
       $ref: "Double.json",
       description: "The size, in pixels, of the silhouette drawn around the model.",
       default: 0.0,
