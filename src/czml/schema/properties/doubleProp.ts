@@ -690,3 +690,49 @@ export function createBottomRadiusDoubleProp(options = {}) {
     ...options,
   });
 }
+
+export function createGlowPowerDoubleProp(options = {}) {
+  return new czmlDoubleProp({
+    id: "czml_prop_glowPower_" + nanoid(10),
+    name: "glowPower",
+    czmlName: "glowPower",
+    labelZh: "发光指数",
+    labelEn: "glow power",
+    type: "number",
+    unit: "meters",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    value: 0.25,
+    max: 99999999999,
+    min: 0,
+    setp: 1,
+    $ref: "Double.json",
+    description: "",
+    descriptionZh: "",
+    ...options,
+  });
+}
+
+export function createTaperPowerDoubleProp(options = {}) {
+  return new czmlDoubleProp({
+    id: "czml_prop_taperPower_" + nanoid(10),
+    name: "taperPower",
+    czmlName: "taperPower",
+    labelZh: "衰减指数",
+    labelEn: "taper power",
+    type: "number",
+    unit: "meters",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    value: 1.0,
+    max: 99999999999,
+    min: 0,
+    setp: 1,
+    $ref: "Double.json",
+    description: "",
+    descriptionZh: "",
+    ...options,
+  });
+}

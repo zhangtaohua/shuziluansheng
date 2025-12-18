@@ -13,6 +13,7 @@ import { createViewFromProp } from "../properties/viewFromProp.ts";
 import czmlModelEntity from "../entities/model.ts";
 import czmlPathEntity from "../entities/path.ts";
 import czmlCorridorEntity from "../entities/corridor.ts";
+import czmlCylinderEntity from "../entities/cylinder.ts";
 
 export class czmlPacket {
   public id = "czml_packet_" + nanoid(10);
@@ -142,11 +143,11 @@ export class czmlPacket {
       $ref: "Corridor.json",
       description: "A corridor, which is a shape defined by a centerline and width.",
     }),
-    cylinder: {
+    cylinder: new czmlCylinderEntity({
       $ref: "Cylinder.json",
       description:
         "A cylinder, truncated cone, or cone defined by a length, top radius, and bottom radius. The cylinder is positioned and oriented using the `position` and `orientation` properties.",
-    },
+    }),
     ellipse: {
       $ref: "Ellipse.json",
       description:

@@ -83,3 +83,29 @@ export function createZIndexIntegerProp(options = {}) {
     ...options,
   });
 }
+
+export function createNumberOfVerticalLinesIntegerProp(options = {}) {
+  return createIntegerProp({
+    name: "numberOfVerticalLines",
+    czmlName: "numberOfVerticalLines",
+    labelZh: "垂直线数",
+    labelEn: "number of vertical lines",
+    $ref: "Integer.json",
+    description: "The number of vertical lines to draw along the perimeter for the outline.",
+    default: 16,
+    ...options,
+  });
+}
+
+export function createSlicesIntegerProp(options = {}) {
+  return createIntegerProp({
+    name: "slices",
+    czmlName: "slices",
+    labelZh: "切片数",
+    labelEn: "slices",
+    $ref: "Integer.json",
+    description: "The number of edges around the perimeter of the cylinder.",
+    default: 128,
+    ...options,
+  });
+}

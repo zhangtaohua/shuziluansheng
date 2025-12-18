@@ -1,16 +1,21 @@
 import { nanoid } from "@/utils/common/nanoid";
-import { createShowProp } from "../properties/booleanProp";
+import { createFillProp, createOutlineProp, createShowProp } from "../properties/booleanProp";
 import {
   createBottomRadiusDoubleProp,
   createLeadTimeDoubleProp,
   createLengthDoubleProp,
+  createOutlineWidthDoubleProp,
   createResolutionDoubleProp,
   createTopRadiusDoubleProp,
   createTrailTimeDoubleProp,
   createWidthDoubleProp,
 } from "../properties/doubleProp";
 import { createDistanceDisplayConditionProp } from "../properties/distanceDisplayConditionProp";
-import { createPolylineMaterialProp } from "../properties/materialProp";
+import { createMaterialProp, createPolylineMaterialProp } from "../properties/materialProp";
+import { createHeightReferenceProp } from "../properties/heightReferenceProp";
+import { createOutlineColorProp } from "../properties/colorProp";
+import { createNumberOfVerticalLinesIntegerProp, createSlicesIntegerProp } from "../properties/integerProp";
+import { createShadowsProp } from "../properties/shadowsProp";
 
 export class czmlCylinderEntity {
   public id = "czml_entity_cylinder_" + nanoid(10);
@@ -105,57 +110,57 @@ export class czmlCylinderEntity {
       description: "The radius of the bottom of the cylinder.",
       czmlRequiredForDisplay: true,
     }),
-    heightReference: {
+    heightReference: createHeightReferenceProp({
       $ref: "HeightReference.json",
       description:
         "The height reference of the cylinder, which indicates if the position is relative to terrain or not.",
       default: "NONE",
-    },
-    fill: {
+    }),
+    fill: createFillProp({
       $ref: "Boolean.json",
       description: "Whether or not the cylinder is filled.",
       default: true,
-    },
-    material: {
+    }),
+    material: createMaterialProp({
       $ref: "Material.json",
       description: "The material to display on the surface of the cylinder.",
       default: "solid white",
-    },
-    outline: {
+    }),
+    outline: createOutlineProp({
       $ref: "Boolean.json",
       description: "Whether or not the cylinder is outlined.",
       default: false,
-    },
-    outlineColor: {
+    }),
+    outlineColor: createOutlineColorProp({
       $ref: "Color.json",
       description: "The color of the cylinder outline.",
       default: "black",
-    },
-    outlineWidth: {
+    }),
+    outlineWidth: createOutlineWidthDoubleProp({
       $ref: "Double.json",
       description: "The width of the cylinder outline.",
       default: 1.0,
-    },
-    numberOfVerticalLines: {
+    }),
+    numberOfVerticalLines: createNumberOfVerticalLinesIntegerProp({
       $ref: "Integer.json",
       description: "The number of vertical lines to draw along the perimeter for the outline.",
       default: 16,
-    },
-    slices: {
+    }),
+    slices: createSlicesIntegerProp({
       $ref: "Integer.json",
       description: "The number of edges around the perimeter of the cylinder.",
       default: 128,
-    },
-    shadows: {
+    }),
+    shadows: createShadowsProp({
       $ref: "ShadowMode.json",
       description: "Whether or not the cylinder casts or receives shadows.",
       default: "DISABLED",
-    },
-    distanceDisplayCondition: {
+    }),
+    distanceDisplayCondition: createDistanceDisplayConditionProp({
       $ref: "DistanceDisplayCondition.json",
       description:
         "The display condition specifying the distance from the camera at which this cylinder will be displayed.",
-    },
+    }),
   };
   // end properties
 

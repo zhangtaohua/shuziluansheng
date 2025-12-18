@@ -7,9 +7,11 @@ import { createTransparentProp } from "./booleanProp";
 import {
   createCellAlphaDoubleProp,
   createDashLengthDoubleProp,
+  createGlowPowerDoubleProp,
   createOffsetDoubleProp,
   createOutlineWidthDoubleProp,
   createRepeatDoubleProp,
+  createTaperPowerDoubleProp,
 } from "./doubleProp";
 import { createLineCountProp } from "./lineCountProp";
 import { createLineThicknessProp } from "./lineThicknessProp";
@@ -243,6 +245,36 @@ export function createPolylineDashMaterialProp(options = {}) {
   };
 }
 
+export function createPolylineGlowMaterialProp(options = {}) {
+  return {
+    id: "czml_prop_polylineGlowMaterial_" + nanoid(10),
+    czmlName: "polylineGlowMaterial",
+    isUsed: false,
+    $ref: "PolylineGlowMaterial.json",
+    description: "A material that fills the surface of a line with a glowing color.",
+    ...options,
+    properties: {
+      color: createColorProp({
+        isUsed: false,
+        isShowUsed: true,
+        $ref: "Color.json",
+        description: "The color of the dashes on the line.",
+        default: "white",
+      }),
+      glowPower: createGlowPowerDoubleProp({
+        $ref: "Double.json",
+        description: "The strength of the glow.",
+        default: 0.25,
+      }),
+      taperPower: createTaperPowerDoubleProp({
+        $ref: "Double.json",
+        description: "The strength of the tapering effect.  1.0 and higher means no tapering.",
+        default: 1.0,
+      }),
+    },
+  };
+}
+
 export function createMaterialProp(options = {}) {
   return new czmlMaterialProp({
     id: "czml_prop_material_" + nanoid(10),
@@ -279,6 +311,10 @@ export function createPolylineMaterialProp(options = {}) {
     default: "solid white",
     compUsedOptions: [
       { label: "solidColor 固定色", value: "solidColor" },
+      { label: "polylineOutline 轮廓线", value: "polylineOutline" },
+      { label: "polylineArrow 箭头", value: "polylineArrow" },
+      { label: "polylineDash 虚线", value: "polylineDash" },
+      { label: "polylineGlow 发光", value: "polylineGlow" },
       { label: "image 图像", value: "image" },
       { label: "grid 网格", value: "grid" },
       { label: "stripe 条状", value: "stripe" },
@@ -286,42 +322,51 @@ export function createPolylineMaterialProp(options = {}) {
     ],
     currentProperty: "solidColor",
     properties: {
-      solidColor: {
+      solidColor: createSolidColorMaterialProp({
+        isUsed: true,
         $ref: "SolidColorMaterial.json",
         description: "A material that fills the line with a solid color, which may be translucent.",
-      },
-      polylineOutline: {
+      }),
+      polylineOutline: createPolylineOutlineMaterialProp({
+        isUsed: false,
         $ref: "PolylineOutlineMaterial.json",
         description: "A material that fills the line with a color and outline.",
-      },
-      polylineArrow: {
+      }),
+      polylineArrow: createPolylineArrowMaterialProp({
+        isUsed: false,
         $ref: "PolylineArrowMaterial.json",
         description: "A material that fills the line with an arrow.",
-      },
-      polylineDash: {
+      }),
+      polylineDash: createPolylineDashMaterialProp({
+        isUsed: false,
         $ref: "PolylineDashMaterial.json",
         description: "A material that fills the line with a pattern of dashes.",
-      },
-      polylineGlow: {
+      }),
+      polylineGlow: createPolylineGlowMaterialProp({
+        isUsed: false,
         $ref: "PolylineGlowMaterial.json",
         description: "A material that fills the line with a glowing color.",
-      },
-      image: {
+      }),
+      image: createImageMaterialProp({
+        isUsed: false,
         $ref: "ImageMaterial.json",
         description: "A material that fills the line with an image.",
-      },
-      grid: {
+      }),
+      grid: createGridMaterialProp({
+        isUsed: false,
         $ref: "GridMaterial.json",
         description: "A material that fills the line with a grid.",
-      },
-      stripe: {
+      }),
+      stripe: createStripeMaterialProp({
+        isUsed: false,
         $ref: "StripeMaterial.json",
         description: "A material that fills the line with alternating colors.",
-      },
-      checkerboard: {
+      }),
+      checkerboard: createCheckerboardMaterialProp({
+        isUsed: false,
         $ref: "CheckerboardMaterial.json",
         description: "A material that fills the line with a checkerboard pattern.",
-      },
+      }),
     },
     ...options,
   });
