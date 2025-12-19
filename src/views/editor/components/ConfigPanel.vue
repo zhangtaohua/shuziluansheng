@@ -1,75 +1,49 @@
 <template>
-  <div v-if="isShowProps" class="row_nw_ce_ce config_container">
-    <div
-      v-if="editorConfig.currentParentComp && editorConfig.currentParentComp.componentType == 'html'"
-      class="config_wraper"
-    >
-      <div v-for="scitem in editorConfig.currentParentComp.styles" :key="scitem.id" class="col_nw_ce_ce config_h5_box">
-        <component :is="scitem.tag" :vdata="scitem"></component>
-        <LineGap></LineGap>
-      </div>
-      <div v-if="editorConfig.currentParentComp.text" class="col_nw_ce_ce config_h5_box">
-        <TextInput></TextInput>
-        <LineGap></LineGap>
-      </div>
-    </div>
-
-    <div
-      v-if="editorConfig.currentParentComp && editorConfig.currentParentComp.componentType == 'czml'"
-      class="config_wraper"
-    >
-      <CzmlPackagesRender :vdata="editorConfig.currentParentComp"></CzmlPackagesRender>
-    </div>
-  </div>
+  <div class="row_nw_fs_ce header_container"></div>
 </template>
 
 <script setup lang="ts">
   import { ref, reactive, computed, watch, onUnmounted } from "vue";
-  import LineGap from "@/h5/components/LineGap.vue";
-
+  import { useRoute } from "vue-router";
+  import { useSystemConfigStore } from "@/stores/systemConfig";
   import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
 
-  const { editorConfig } = useEditorConfigStore();
-
-  const isShowProps = computed(() => {
-    if (editorConfig.currentParentComp) {
-      console.log("configPanel", editorConfig.currentParentComp);
-      return true;
-    } else {
-      return false;
-    }
-  });
+  import { nanoid } from "@/utils/common/nanoid";
+  import { cloneDeep } from "es-toolkit";
 </script>
 
 <style scoped lang="scss">
-  .config_container {
+  .header_container {
     position: fixed;
-    bottom: 3rem;
-    right: 0;
-    z-index: 10;
-    width: auto;
-    min-width: 30rem;
-    height: calc(100vh - 7rem);
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: 100vw;
+    height: 3rem;
     background-color: rgba(26, 30, 39, 1);
-    border-radius: 0.75rem 0 0 0.75rem;
-    padding: 0rem 1rem 0rem 1rem;
   }
 
-  .config_wraper {
+  .header_item {
     width: auto;
-    height: calc(100% - 2rem);
-    color: white;
+    height: 100%;
+    color: rgba(255, 255, 255, 1);
     font-size: 1rem;
-    overflow-y: scroll;
-    overflow-x: hidden;
+    background-color: red;
+    padding: 0 0.75rem;
+    margin-right: 0.75rem;
   }
 
-  .config_wraper::-webkit-scrollbar {
-    display: none;
-  }
-
-  .config_h5_box {
-    width: 28rem;
-    height: auto;
+  .header_small {
+    position: fixed;
+    top: 0.75rem;
+    right: 0.75rem;
+    z-index: 999999;
+    width: 3rem;
+    height: 3rem;
+    background-color: rgba(26, 30, 39, 1);
+    border-radius: 0;
+    cursor: pointer;
+    padding: 0 0.75rem;
+    border: 1px solid red;
   }
 </style>

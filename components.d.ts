@@ -14,6 +14,7 @@ declare module 'vue' {
     EchartsErrorNoData: typeof import('./src/components/echarts/EchartsErrorNoData.vue')['default']
     EchartsOptionBase: typeof import('./src/components/echarts/EchartsOptionBase.vue')['default']
     ElAutocomplete: typeof import('element-plus/es')['ElAutocomplete']
+    ElButton: typeof import('element-plus/es')['ElButton']
     ElDatePicker: typeof import('element-plus/es')['ElDatePicker']
     ElIcon: typeof import('element-plus/es')['ElIcon']
     ElInput: typeof import('element-plus/es')['ElInput']

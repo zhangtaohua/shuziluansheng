@@ -18,6 +18,7 @@
   "dependencies": {
     "@cyhnkckali/vue3-color-picker": "^2.1.5",
     "@element-plus/icons-vue": "^2.3.2",
+    "@scena/guides": "^0.29.2",
     "@tailwindcss/vite": "^4.1.12",
     "axios": "^1.11.0",
     "chroma-js": "^3.1.2",

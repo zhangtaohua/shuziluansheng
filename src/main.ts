@@ -16,10 +16,10 @@ import "default-passive-events";
 
 // 一定会用公共组件
 // 渲染控制
-import CommonDiv from "@/views/editor/components/CommonDiv.vue";
-import CommonDivText from "@/views/editor/components/CommonDivText.vue";
-import CommonDivImage from "@/views/editor/components/CommonDivImage.vue";
-import CommonDivCesium from "@/views/editor/components/CommonDivCesium.vue";
+import CommonDiv from "@/views/editorOld/components/CommonDiv.vue";
+import CommonDivText from "@/views/editorOld/components/CommonDivText.vue";
+import CommonDivImage from "@/views/editorOld/components/CommonDivImage.vue";
+import CommonDivCesium from "@/views/editorOld/components/CommonDivCesium.vue";
 
 // h5属性设置
 import NumberInputSlider from "@/h5/components/NumberInputSlider.vue";

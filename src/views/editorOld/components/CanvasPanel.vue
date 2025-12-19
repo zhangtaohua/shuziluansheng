@@ -1,5 +1,5 @@
 <template>
-  <div class="row_nw_ce_ce canvas_container">
+  <div id="editor_workarea_id" class="row_nw_ce_ce canvas_container">
     <div
       ref="controlRef"
       id="control_container"
@@ -7,8 +7,20 @@
       :style="controlStyle"
       @dblclick="changeToRenderLayer"
     ></div>
-    <div id="render_container" class="canvas_ctx_wraper" :style="renderStyle" @click="setEditorCurrentParentCompHd">
+    <div
+      id="editor_render_container"
+      class="canvas_ctx_wraper"
+      :style="renderStyle"
+      @click="setEditorCurrentParentCompHd"
+    >
       <component v-for="comp in editorConfig.components" :key="comp.id" :is="comp.tag" :vNodeData="comp"></component>
+      <CommonWraper>
+        <div>我是内容</div>
+      </CommonWraper>
+
+      <CommonWraper>
+        <div>我是内容2</div>
+      </CommonWraper>
     </div>
   </div>
 </template>
@@ -19,6 +31,8 @@
   import { useSystemConfigStore } from "@/stores/systemConfig";
   import { useEditorConfigStore, globalEditor, getParentComponentTransforms } from "@/stores/editorConfig";
   import { getControlTransform } from "@/h5/cssData/globalCss";
+
+  import CommonWraper from "./CommonWraper.vue";
 
   const { systemConfig } = useSystemConfigStore();
   const { editorConfig, setEditorRefreshComp, setEditorCurrentParentComp } = useEditorConfigStore();
@@ -265,7 +279,7 @@
 
     // add the layer to the stage
     stage.add(layer);
-    createRuler(editorConfig.grid);
+    // createRuler(editorConfig.grid);
 
     console.log("nodes", tr.nodes());
   }
@@ -365,17 +379,16 @@
     position: fixed;
     top: 3rem;
     left: 0;
-    z-index: 1;
+    z-index: 2;
     width: 100vw;
     height: calc(100vh - 5rem);
-    background-color: rgba(255, 255, 255, 1);
   }
 
   .control_wrapper {
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    // background-color: rgba(0, 0, 0, 0.5);
     top: 0px;
     left: 0px;
     z-index: 1;
@@ -387,7 +400,7 @@
     height: 100%;
     top: 0px;
     left: 0px;
-    z-index: 2;
-    background-color: rgba(255, 0, 0, 0.3);
+    z-index: 3;
+    // background-color: rgba(255, 0, 0, 0.3);
   }
 </style>

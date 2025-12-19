@@ -1,19 +1,22 @@
 <template>
   <div class="editor_container">
     <HeaderPanel></HeaderPanel>
+    <horizontalRuler></horizontalRuler>
+    <VerticalRuler></VerticalRuler>
+    <WorkspacePanel></WorkspacePanel>
+    <RightParamsWraper></RightParamsWraper>
     <InfoPanel></InfoPanel>
-    <CanvasPanel></CanvasPanel>
-    <ConfigPanel></ConfigPanel>
   </div>
 </template>
 
 <script setup lang="ts">
   import { onMounted } from "vue";
-  import Konva from "konva";
   import HeaderPanel from "@/views/editor/components/HeaderPanel.vue";
+  import WorkspacePanel from "@/views/editor/components/WorkspacePanel.vue";
+  import RightParamsWraper from "./components/RightParamsWraper.vue";
+  import horizontalRuler from "./components/horizontalRuler.vue";
+  import VerticalRuler from "./components/VerticalRuler.vue";
   import InfoPanel from "@/views/editor/components/InfoPanel.vue";
-  import ConfigPanel from "@/views/editor/components/ConfigPanel.vue";
-  import CanvasPanel from "@/views/editor/components/CanvasPanel.vue";
 
   function init() {}
 
@@ -27,5 +30,6 @@
     position: relative;
     width: 100vw;
     height: 100vh;
+    z-index: 2;
   }
 </style>
