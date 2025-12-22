@@ -60,9 +60,9 @@
 <style scoped lang="scss">
   .vertical_ruler_container {
     position: fixed;
-    width: 3rem;
-    height: calc(100vh - 6rem);
-    top: 6rem;
+    width: 2rem;
+    height: calc(100vh - 5rem);
+    top: 5rem;
     left: 0;
     z-index: 10;
   }

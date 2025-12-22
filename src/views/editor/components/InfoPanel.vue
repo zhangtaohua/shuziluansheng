@@ -16,7 +16,7 @@
     position: fixed;
     bottom: 0;
     left: 0;
-    z-index: 1;
+    z-index: 100;
     width: 100vw;
     height: 2rem;
     background-color: rgba(26, 30, 39, 1);

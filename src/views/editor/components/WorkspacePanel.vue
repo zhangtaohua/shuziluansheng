@@ -1,5 +1,5 @@
 <template>
-  <div id="editor_workspace_id" class="row_nw_ce_ce ws_container">
+  <div id="editor_workspace_id" class="row_nw_ce_ce ws_container red_debug">
     <div id="editor_render_id" class="ws_ctx_wraper">
       <!-- <component v-for="comp in editorConfig.components" :key="comp.id" :is="comp.tag" :vNodeData="comp"></component> -->
       <CommonWraper>
@@ -24,12 +24,13 @@
 
 <style scoped lang="scss">
   .ws_container {
-    width: calc(100vw - 3rem);
-    height: calc(100vh - 6rem);
     position: fixed;
-    top: 6rem;
-    left: 3rem;
-    z-index: 3;
+    width: calc(100vw - 2rem);
+    height: calc(100vh - 5rem);
+    top: 5rem;
+    left: 2rem;
+    z-index: 1;
+    background-color: rebeccapurple;
   }
 
   .ws_ctx_wraper {
@@ -38,6 +39,11 @@
     height: 100%;
     top: 0px;
     left: 0px;
-    z-index: 3;
+    z-index: 2;
+    overflow: scroll;
+  }
+
+  .ws_ctx_wraper::-webkit-scrollbar {
+    display: none;
   }
 </style>

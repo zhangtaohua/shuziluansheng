@@ -17,7 +17,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 1;
+    z-index: 100;
     width: 100vw;
     height: 3rem;
     background-color: rgba(26, 30, 39, 1);
@@ -37,7 +37,7 @@
     position: fixed;
     top: 0.75rem;
     right: 0.75rem;
-    z-index: 999999;
+    z-index: 100;
     width: 3rem;
     height: 3rem;
     background-color: rgba(26, 30, 39, 1);

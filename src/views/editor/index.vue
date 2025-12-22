@@ -4,7 +4,7 @@
     <horizontalRuler></horizontalRuler>
     <VerticalRuler></VerticalRuler>
     <WorkspacePanel></WorkspacePanel>
-    <RightParamsWraper></RightParamsWraper>
+    <!-- <RightParamsWraper></RightParamsWraper> -->
     <InfoPanel></InfoPanel>
   </div>
 </template>

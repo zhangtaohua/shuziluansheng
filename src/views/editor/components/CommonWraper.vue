@@ -10,25 +10,29 @@
       ></div>
     </Teleport>
 
-    <Teleport v-if="isShowAlignAxis" to="body">
+    <Teleport v-if="isShowAlignAxis" to="#editor_workspace_id">
       <div class="dw_ctl_hline" :style="alignAxisXStyle"></div>
       <div class="row_nw_ce_ce dw_ctl_hlabelbox" :style="alignAxisHLabelStyle">
-        <div class="row_nw_ce_ce dw_ctl_hlabel">{{ bboxShow.left }}</div>
+        <div class="row_nw_ce_ce dw_ctl_hlabel">{{ calcBbox.leftShow }}</div>
       </div>
       <div class="dw_ctl_vline" :style="alignAxisYStyle"></div>
       <div class="row_nw_ce_ce dw_ctl_vlabelbox" :style="alignAxisVLabelStyle">
-        <div class="row_nw_ce_ce dw_ctl_vlabel">{{ bboxShow.top }}</div>
+        <div class="row_nw_ce_ce dw_ctl_vlabel">{{ calcBbox.topShow }}</div>
       </div>
     </Teleport>
 
-    <Teleport v-if="isShowBoundingBox" to="body">
+    <Teleport v-if="isShowBoundingBox" to="#editor_workspace_id">
       <div class="dw_ctl_bbox" :style="bboxStyle"></div>
+    </Teleport>
+
+    <Teleport v-if="isShowRestrictRect" to="#editor_workspace_id">
+      <div class="dw_ctl_limit_rect" :style="restrictRectStyle"></div>
     </Teleport>
 
     <div class="dw_ctl_rotate">
       <div class="dw_ctl_rotateline"></div>
       <div class="dw_ctl_rotatebtn">
-        <el-tooltip effect="dark" content="拖拽旋转,双击恢复" placement="top-start" :auto-close="1500" size="small">
+        <el-tooltip effect="dark" content="拖拽旋转,双击恢复" placement="top" :auto-close="1500" size="small">
           <el-button
             type="success"
             icon="RefreshLeft"
@@ -44,7 +48,7 @@
     </div>
     <div class="row_nw_ce_ce dw_ctl_action">
       <div class="row_nw_ce_ce dw_ctl_actionbtn">
-        <el-tooltip effect="dark" content="拖拽移动,双击恢复" placement="top-start" :auto-close="1500" size="small">
+        <el-tooltip effect="dark" content="拖拽移动" placement="top" :auto-close="1500" size="small">
           <el-button
             type="success"
             icon="Rank"
@@ -59,10 +63,10 @@
       </div>
 
       <div class="row_nw_ce_ce dw_ctl_actionbtn">
-        <el-tooltip v-if="isLocked" effect="dark" content="解锁" placement="top-start" :auto-close="1500" size="small">
+        <el-tooltip v-if="isLocked" effect="dark" content="解锁" placement="top" :auto-close="1500" size="small">
           <el-button type="success" icon="Unlock" circle size="small" @click="setDomLocked(false)" />
         </el-tooltip>
-        <el-tooltip v-else effect="dark" content="锁定" placement="top-start" :auto-close="1500" size="small">
+        <el-tooltip v-else effect="dark" content="锁定" placement="top" :auto-close="1500" size="small">
           <el-button type="success" icon="Lock" circle size="small" @click="setDomLocked(true)" />
         </el-tooltip>
       </div>
@@ -132,6 +136,9 @@
 
 <script setup lang="ts">
   import { ref, reactive, watch, onMounted, computed, nextTick } from "vue";
+  // import { nanoid } from "@/utils/common/nanoid";
+
+  // const wraperId = nanoid();
 
   const ctlCursor = {
     rotate: "grabbing",
@@ -148,9 +155,11 @@
   };
 
   const divWrapperRef = ref(null);
+
   const isShowCtlMask = ref(false);
-  const isShowAlignAxis = ref(true);
-  const isShowBoundingBox = ref(true);
+  const isShowAlignAxis = ref(false);
+  const isShowBoundingBox = ref(false);
+  const isShowRestrictRect = ref(false);
   const isLocked = ref(false);
 
   let currentDirection = "";
@@ -159,13 +168,18 @@
   const isSnapToGrid = true;
 
   const restrictRect = {
-    width: 100,
-    height: 100,
-    top: 90,
-    left: 90,
-    bottom: 390,
-    right: 390,
+    top: 10,
+    left: 10,
+    bottom: 600,
+    right: 600,
   };
+
+  const restrictRectStyle = reactive({
+    top: "10px",
+    left: "10px",
+    width: "590px",
+    height: "590px",
+  });
 
   const maskStyle = reactive({
     cursor: "grab",
@@ -192,14 +206,18 @@
     };
   });
 
+  const calcBbox = reactive({
+    topShow: `${calcContainer.top - 2}px`,
+    leftShow: `${calcContainer.left - 2}px`,
+    top: calcContainer.top,
+    left: calcContainer.left,
+    bottom: calcContainer.bottom,
+    right: calcContainer.right,
+  });
+
   const bboxStyle = reactive({
     width: `${calcContainer.right - calcContainer.left + 4}px`,
     height: `${calcContainer.bottom - calcContainer.top + 4}px`,
-    top: `${calcContainer.top - 2}px`,
-    left: `${calcContainer.left - 2}px`,
-  });
-
-  const bboxShow = reactive({
     top: `${calcContainer.top - 2}px`,
     left: `${calcContainer.left - 2}px`,
   });
@@ -222,30 +240,109 @@
     left: "50px",
   });
 
+  // function getLimitRect() {
+  //   const relativeDom = document.getElementById("editor_workspace_id");
+  //   if (divWrapperRef.value && relativeDom) {
+  //     const rect = divWrapperRef.value.getBoundingClientRect();
+  //     const relativeRect = relativeDom.getBoundingClientRect();
+
+  //     const top = rect.top - relativeRect.top;
+  //     const left = rect.left - relativeRect.left;
+  //     const bottom = top + rect.height;
+  //     const right = left + rect.width;
+  //     return {
+  //       limitTop: top - restrictRect.top,
+  //       limitBottom: restrictRect.bottom - bottom,
+  //       limitLeft: left - restrictRect.left,
+  //       limitRight: restrictRect.right - right,
+  //     };
+  //   } else {
+  //     return {
+  //       limitTop: 9999999999,
+  //       limitBottom: 9999999999,
+  //       limitLeft: 9999999999,
+  //       limitRight: 9999999999,
+  //     };
+  //   }
+  // }
+
+  function reCalcLimitRect() {
+    nextTick(() => {
+      const relativeDom = document.getElementById("editor_workspace_id");
+      if (divWrapperRef.value && relativeDom) {
+        const rect = divWrapperRef.value.getBoundingClientRect();
+        const relativeRect = relativeDom.getBoundingClientRect();
+
+        if (rect && relativeRect) {
+          const top = rect.top - relativeRect.top;
+          const left = rect.left - relativeRect.left;
+          const bottom = top + rect.height;
+          const right = left + rect.width;
+
+          let newTop = 0;
+          let newLeft = 0;
+          let newBottom = 0;
+          let newRight = 0;
+
+          if (restrictRect.top && top < restrictRect.top) {
+            newTop = restrictRect.top - top;
+          }
+
+          if (restrictRect.left && left < restrictRect.left) {
+            newLeft = restrictRect.left - left;
+          }
+
+          if (restrictRect.bottom && bottom > restrictRect.bottom) {
+            newBottom = bottom - restrictRect.bottom;
+          }
+
+          if (restrictRect.right && right > restrictRect.right) {
+            newRight = right - restrictRect.right;
+          }
+
+          // console.log("reCalcLimitRect", calcContainer.top, newTop, newLeft, newBottom, newRight);
+
+          calcContainer.top = calcContainer.top + newTop;
+          calcContainer.left = calcContainer.left + newLeft;
+          calcContainer.bottom = calcContainer.bottom - newBottom;
+          calcContainer.right = calcContainer.right - newRight;
+          // console.log("reCalcLimitRect2", calcContainer.top);
+        }
+      }
+    });
+  }
+
   watch(
     calcContainer,
     () => {
       nextTick(() => {
-        if (divWrapperRef.value) {
+        const relativeDom = document.getElementById("editor_workspace_id");
+        if (divWrapperRef.value && relativeDom) {
           const rect = divWrapperRef.value.getBoundingClientRect();
+          const relativeRect = relativeDom.getBoundingClientRect();
+
+          // 获取滚动偏移
+          // const scrollX = window.scrollX || document.documentElement.scrollLeft;
+          // const scrollY = window.scrollY || document.documentElement.scrollTop;
+          // console.log("relativeRect", rect, relativeRect);
+
           if (rect) {
+            const axisTop = rect.top - relativeRect.top - 2;
+            const axisLeft = rect.left - relativeRect.left - 2;
+
             bboxStyle.width = `${rect.width + 4}px`;
             bboxStyle.height = `${rect.height + 4}px`;
-            bboxStyle.top = `${rect.top - 2}px`;
-            bboxStyle.left = `${rect.left - 2}px`;
+            bboxStyle.top = `${axisTop}px`;
+            bboxStyle.left = `${axisLeft}px`;
 
-            bboxShow.top = `${rect.top.toFixed(0)}px`;
-            bboxShow.left = `${rect.left.toFixed(0)}px`;
+            calcBbox.topShow = `${(rect.top - relativeRect.top).toFixed(0)}px`;
+            calcBbox.leftShow = `${(rect.left - relativeRect.left).toFixed(0)}px`;
 
-            let axisTop = rect.top - 2;
-            let axisLeft = rect.left - 2;
-            if (axisTop < 64) {
-              axisTop = 64;
-            }
+            calcBbox.top = rect.top - relativeRect.top;
+            calcBbox.left = rect.left - relativeRect.left;
 
-            if (axisLeft < 48) {
-              axisLeft = 48;
-            }
+            calcBbox.bottom = calcBbox.top + rect.height;
+            calcBbox.right = calcBbox.left + rect.width;
 
             alignAxisXStyle.top = `${axisTop}px`;
 
@@ -271,11 +368,13 @@
     },
   );
 
-  // onMounted(() => {
-  //   nextTick(() => {
-  //     isShowBoundingBox.value = true;
-  //   });
-  // });
+  onMounted(() => {
+    nextTick(() => {
+      isShowAlignAxis.value = true;
+      isShowBoundingBox.value = true;
+      isShowRestrictRect.value = true;
+    });
+  });
 
   function getPosXY(pos, gap = 16) {
     const pp = pos / gap;
@@ -335,6 +434,15 @@
         if (left >= calcContainer.right - limit) {
           left = calcContainer.right - limit;
         }
+
+        // if (restrictRect.top && top <= restrictRect.top) {
+        //   top = restrictRect.top;
+        // }
+
+        // if (restrictRect.left && left <= restrictRect.left) {
+        //   left = restrictRect.left;
+        // }
+
         calcContainer.top = top;
         calcContainer.left = left;
       } else if (direction == "lm") {
@@ -342,6 +450,11 @@
         if (left >= calcContainer.right - limit) {
           left = calcContainer.right - limit;
         }
+
+        // if (restrictRect.left && left <= restrictRect.left) {
+        //   left = restrictRect.left;
+        // }
+
         calcContainer.left = left;
       } else if (direction == "lb") {
         let bottom = calcContainer.bottom + offsetY;
@@ -353,6 +466,14 @@
         if (left >= calcContainer.right - limit) {
           left = calcContainer.right - limit;
         }
+
+        // if (restrictRect.bottom && bottom >= restrictRect.bottom) {
+        //   bottom = restrictRect.bottom;
+        // }
+
+        // if (restrictRect.left && left <= restrictRect.left) {
+        //   left = restrictRect.left;
+        // }
 
         calcContainer.bottom = bottom;
         calcContainer.left = left;
@@ -367,6 +488,14 @@
           right = calcContainer.left + limit;
         }
 
+        // if (restrictRect.top && top <= restrictRect.top) {
+        //   top = restrictRect.top;
+        // }
+
+        // if (restrictRect.right && right >= restrictRect.right) {
+        //   right = restrictRect.right;
+        // }
+
         calcContainer.top = top;
         calcContainer.right = right;
       } else if (direction == "rm") {
@@ -374,6 +503,11 @@
         if (right <= calcContainer.left + limit) {
           right = calcContainer.left + limit;
         }
+
+        // if (restrictRect.right && right >= restrictRect.right) {
+        //   right = restrictRect.right;
+        // }
+
         calcContainer.right = right;
       } else if (direction == "rb") {
         let bottom = calcContainer.bottom + offsetY;
@@ -386,6 +520,14 @@
           right = calcContainer.left + limit;
         }
 
+        // if (restrictRect.bottom && bottom >= restrictRect.bottom) {
+        //   bottom = restrictRect.bottom;
+        // }
+
+        // if (restrictRect.right && right >= restrictRect.right) {
+        //   right = restrictRect.right;
+        // }
+
         calcContainer.bottom = bottom;
         calcContainer.right = right;
       } else if (direction == "mt") {
@@ -394,6 +536,10 @@
           top = calcContainer.bottom - limit;
         }
 
+        // if (restrictRect.top && top <= restrictRect.top) {
+        //   top = restrictRect.top;
+        // }
+
         calcContainer.top = top;
       } else if (direction == "mb") {
         let bottom = calcContainer.bottom + offsetY;
@@ -401,20 +547,97 @@
           bottom = calcContainer.top + limit;
         }
 
+        // if (restrictRect.bottom && bottom >= restrictRect.bottom) {
+        //   bottom = restrictRect.bottom;
+        // }
+
         calcContainer.bottom = bottom;
       } else if (direction == "pan") {
-        calcContainer.top = calcContainer.top + offsetY;
-        calcContainer.bottom = calcContainer.bottom + offsetY;
-        calcContainer.left = calcContainer.left + offsetX;
-        calcContainer.right = calcContainer.right + offsetX;
+        let top = offsetY;
+        let bottom = offsetY;
+
+        let left = offsetX;
+        let right = offsetX;
+
+        if (isShowRestrictRect.value) {
+          if (offsetY < 0 && restrictRect.top && calcBbox.top > restrictRect.top) {
+            top = Math.max(offsetY, restrictRect.top - calcBbox.top);
+            bottom = top;
+          } else if (offsetY < 0 && restrictRect.top && calcBbox.top <= restrictRect.top) {
+            top = 0;
+            bottom = 0;
+          }
+
+          if (offsetY > 0 && restrictRect.bottom && calcBbox.bottom < restrictRect.bottom) {
+            bottom = Math.min(offsetY, restrictRect.bottom - calcBbox.bottom);
+            top = bottom;
+          } else if (offsetY > 0 && restrictRect.bottom && calcBbox.bottom >= restrictRect.bottom) {
+            top = 0;
+            bottom = 0;
+          }
+
+          if (offsetX < 0 && restrictRect.left && calcBbox.left > restrictRect.left) {
+            left = Math.max(offsetX, restrictRect.left - calcBbox.left);
+            right = left;
+          } else if (offsetX < 0 && restrictRect.left && calcBbox.left <= restrictRect.left) {
+            left = 0;
+            right = 0;
+          }
+
+          if (offsetX > 0 && restrictRect.right && calcBbox.right < restrictRect.right) {
+            right = Math.min(offsetX, restrictRect.right - calcBbox.right);
+            left = right;
+          } else if (offsetX > 0 && restrictRect.right && calcBbox.right >= restrictRect.right) {
+            left = 0;
+            right = 0;
+          }
+
+          // console.log("offsetY", offsetY, offsetX, left, right, top, bottom);
+        }
+
+        calcContainer.top = calcContainer.top + top;
+        calcContainer.bottom = calcContainer.bottom + bottom;
+        calcContainer.left = calcContainer.left + left;
+        calcContainer.right = calcContainer.right + right;
       }
+    }
+
+    if (direction != "pan" && isShowRestrictRect.value) {
+      // if (calcContainer.rotate != 0) {
+      reCalcLimitRect();
+      // }
     }
   }
 
-  function ctlMouseDownHandle(event, direction = "lt") {
+  let dblclickDownTimer: number | null = null;
+  let isCheckDblClick = false;
+  let dblclickCnt = 0;
+
+  function ctlMouseDownHandle(event: MouseEvent, direction = "lt") {
     if (isLocked.value) {
       return;
     }
+
+    if (!isCheckDblClick && !dblclickDownTimer) {
+      isCheckDblClick = true;
+    }
+
+    if (isCheckDblClick) {
+      dblclickDownTimer = setTimeout(() => {
+        dblclickCnt = 0;
+        isCheckDblClick = false;
+        dblclickDownTimer = null;
+      }, 500);
+
+      dblclickCnt = dblclickCnt + 1;
+      if (dblclickCnt >= 2) {
+        clearTimeout(dblclickDownTimer);
+        dblclickCnt = 0;
+        isCheckDblClick = false;
+        calcContainer.rotate = 0;
+      }
+    }
+
     isShowCtlMask.value = true;
     currentDirection = direction;
     maskStyle.cursor = ctlCursor[direction];
@@ -532,6 +755,17 @@
     z-index: 3;
   }
 
+  .dw_ctl_limit_rect {
+    position: absolute;
+    background-color: transparent;
+    outline: 1px solid #ff6464;
+    z-index: 1;
+    box-shadow:
+      0 0 2px #ff6464,
+      /* 内层柔光 */ 0 0 6px #ff6464,
+      /* 中层光晕 */ 0 0 8px #ff6464; /* 外层强光 */
+  }
+
   .dw_ctl_actionbtn {
     width: 1.5rem;
     height: 1.5rem;
@@ -639,7 +873,7 @@
   }
 
   .dw_ctl_bbox {
-    position: fixed;
+    position: absolute;
     border: 1px dashed pink;
     z-index: 1;
   }
@@ -651,8 +885,8 @@
   }
 
   .dw_ctl_hline {
-    position: fixed;
-    width: 100vw;
+    position: absolute;
+    width: 100%;
     height: 0;
     left: 0px;
     border-top: 1px dashed pink;
@@ -660,16 +894,16 @@
   }
 
   .dw_ctl_vline {
-    position: fixed;
+    position: absolute;
     width: 0;
-    height: calc(100vh - 3rem);
+    height: 100%;
     top: 0px;
     border-left: 1px dashed pink;
     z-index: 10;
   }
 
   .dw_ctl_hlabelbox {
-    position: fixed;
+    position: absolute;
     width: max-content;
     height: 1.25rem;
     top: 3rem;
@@ -683,7 +917,7 @@
   }
 
   .dw_ctl_vlabelbox {
-    position: fixed;
+    position: absolute;
     width: max-content;
     height: 1.25rem;
     top: 3rem;

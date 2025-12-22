@@ -152,7 +152,7 @@
     top: 3rem;
     border-top-left-radius: 0.25rem;
     border-bottom-left-radius: 0.25rem;
-    z-index: 11;
+    z-index: 30;
   }
 
   .rparams_samllcontainer {
@@ -166,7 +166,7 @@
     top: 3rem;
     border-top-left-radius: 0.25rem;
     border-bottom-left-radius: 0.25rem;
-    z-index: 11;
+    z-index: 30;
   }
 
   .rparams_mousemask {
@@ -176,7 +176,7 @@
     background-color: transparent;
     top: 0;
     right: 0;
-    z-index: 20;
+    z-index: 99999;
     cursor: e-resize;
   }
 
@@ -187,7 +187,7 @@
     background-color: blue;
     top: 0;
     left: 0;
-    z-index: 13;
+    z-index: 32;
     cursor: e-resize;
   }
 
@@ -198,7 +198,7 @@
     background-color: transparent;
     top: 0;
     left: 0;
-    z-index: 12;
+    z-index: 31;
     cursor: e-resize;
   }
 

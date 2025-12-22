@@ -58,10 +58,10 @@
 <style scoped lang="scss">
   .horizontal_ruler_container {
     position: fixed;
-    width: 100vw;
-    height: 3rem;
+    width: calc(100vw - 2rem);
+    height: 2rem;
     top: 3rem;
-    left: 0px;
+    left: 2rem;
     z-index: 10;
   }
 </style>
