@@ -240,32 +240,6 @@
     left: "50px",
   });
 
-  // function getLimitRect() {
-  //   const relativeDom = document.getElementById("editor_workspace_id");
-  //   if (divWrapperRef.value && relativeDom) {
-  //     const rect = divWrapperRef.value.getBoundingClientRect();
-  //     const relativeRect = relativeDom.getBoundingClientRect();
-
-  //     const top = rect.top - relativeRect.top;
-  //     const left = rect.left - relativeRect.left;
-  //     const bottom = top + rect.height;
-  //     const right = left + rect.width;
-  //     return {
-  //       limitTop: top - restrictRect.top,
-  //       limitBottom: restrictRect.bottom - bottom,
-  //       limitLeft: left - restrictRect.left,
-  //       limitRight: restrictRect.right - right,
-  //     };
-  //   } else {
-  //     return {
-  //       limitTop: 9999999999,
-  //       limitBottom: 9999999999,
-  //       limitLeft: 9999999999,
-  //       limitRight: 9999999999,
-  //     };
-  //   }
-  // }
-
   function reCalcLimitRect() {
     nextTick(() => {
       const relativeDom = document.getElementById("editor_workspace_id");
@@ -435,14 +409,6 @@
           left = calcContainer.right - limit;
         }
 
-        // if (restrictRect.top && top <= restrictRect.top) {
-        //   top = restrictRect.top;
-        // }
-
-        // if (restrictRect.left && left <= restrictRect.left) {
-        //   left = restrictRect.left;
-        // }
-
         calcContainer.top = top;
         calcContainer.left = left;
       } else if (direction == "lm") {
@@ -450,10 +416,6 @@
         if (left >= calcContainer.right - limit) {
           left = calcContainer.right - limit;
         }
-
-        // if (restrictRect.left && left <= restrictRect.left) {
-        //   left = restrictRect.left;
-        // }
 
         calcContainer.left = left;
       } else if (direction == "lb") {
@@ -466,14 +428,6 @@
         if (left >= calcContainer.right - limit) {
           left = calcContainer.right - limit;
         }
-
-        // if (restrictRect.bottom && bottom >= restrictRect.bottom) {
-        //   bottom = restrictRect.bottom;
-        // }
-
-        // if (restrictRect.left && left <= restrictRect.left) {
-        //   left = restrictRect.left;
-        // }
 
         calcContainer.bottom = bottom;
         calcContainer.left = left;
@@ -488,14 +442,6 @@
           right = calcContainer.left + limit;
         }
 
-        // if (restrictRect.top && top <= restrictRect.top) {
-        //   top = restrictRect.top;
-        // }
-
-        // if (restrictRect.right && right >= restrictRect.right) {
-        //   right = restrictRect.right;
-        // }
-
         calcContainer.top = top;
         calcContainer.right = right;
       } else if (direction == "rm") {
@@ -503,10 +449,6 @@
         if (right <= calcContainer.left + limit) {
           right = calcContainer.left + limit;
         }
-
-        // if (restrictRect.right && right >= restrictRect.right) {
-        //   right = restrictRect.right;
-        // }
 
         calcContainer.right = right;
       } else if (direction == "rb") {
@@ -520,14 +462,6 @@
           right = calcContainer.left + limit;
         }
 
-        // if (restrictRect.bottom && bottom >= restrictRect.bottom) {
-        //   bottom = restrictRect.bottom;
-        // }
-
-        // if (restrictRect.right && right >= restrictRect.right) {
-        //   right = restrictRect.right;
-        // }
-
         calcContainer.bottom = bottom;
         calcContainer.right = right;
       } else if (direction == "mt") {
@@ -536,20 +470,12 @@
           top = calcContainer.bottom - limit;
         }
 
-        // if (restrictRect.top && top <= restrictRect.top) {
-        //   top = restrictRect.top;
-        // }
-
         calcContainer.top = top;
       } else if (direction == "mb") {
         let bottom = calcContainer.bottom + offsetY;
         if (bottom <= calcContainer.top + limit) {
           bottom = calcContainer.top + limit;
         }
-
-        // if (restrictRect.bottom && bottom >= restrictRect.bottom) {
-        //   bottom = restrictRect.bottom;
-        // }
 
         calcContainer.bottom = bottom;
       } else if (direction == "pan") {

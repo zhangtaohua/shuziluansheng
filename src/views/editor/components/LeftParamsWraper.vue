@@ -1,36 +1,36 @@
 <template>
-  <div class="row_nw_ce_ce rparams_container" :class="{ rparams_samllcontainer: !isExpanded }" :style="leftStyle">
+  <div class="row_nw_ce_ce left_container" :class="{ left_samllcontainer: !isExpanded }" :style="leftStyle">
     <Teleport v-if="isResize" to="body">
       <div
-        class="rparams_mousemask"
+        class="left_mousemask"
         @mouseup="handleRisizeMouseupHd"
         @mousemove="handleRisizeMousemoveHd"
         @mouseout="handleRisizeMouseoutHd"
       ></div>
     </Teleport>
     <div
-      class="rparams_slider"
-      :class="{ row_nw_ce_ce: !isExpanded, rparams_smallslider: !isExpanded }"
+      class="left_slider"
+      :class="{ row_nw_ce_ce: !isExpanded, left_smallslider: !isExpanded }"
       @mouseup="handleRisizeMouseupHd"
       @mousedown="handleRisizeMousedownHd"
     >
-      <div v-if="!isExpanded" class="row_nw_ce_ce rparams_slider_dec">
-        <div class="row_nw_ce_ce rparams_sider_img">
-          <img class="rparams_sider_show" src="@/assets/images/editor/shouqi.png" alt="dec" />
+      <div v-if="!isExpanded" class="row_nw_ce_ce left_slider_dec">
+        <div class="row_nw_ce_ce left_sider_img">
+          <img class="left_sider_show" src="@/assets/images/editor/shouqi.png" alt="dec" />
         </div>
       </div>
     </div>
 
-    <div v-if="isExpanded" class="row_nw_ce_ce rparams_wrapper">
+    <div v-show="isExpanded" class="col_nw_fs_fs left_wrapper">
       <slot></slot>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { ref, reactive, nextTick } from "vue";
+  import { reactive, ref, nextTick } from "vue";
 
-  // const vueInstance = getCurrentInstance();
+  // 以下是用于拖拽功能的，暂时可以不用修改。
   const isExpanded = ref(true);
   const isResize = ref(false);
   const leftStyle = reactive({
@@ -43,9 +43,7 @@
   let time = 0;
   function handleRisizeMousedownHd(event) {
     isResize.value = true;
-    const clientXTemp = event.clientX;
-    const bodyClientWidth = document.body.clientWidth;
-    moveX = Math.abs(bodyClientWidth - clientXTemp);
+    moveX = event.clientX;
     time = Date.now();
   }
 
@@ -59,13 +57,9 @@
 
   function handleRisizeMousemoveHd(event) {
     if (isResize.value) {
-      const clientXTemp = event.clientX;
-      const bodyClientWidth = document.body.clientWidth;
-      const clientX = Math.abs(bodyClientWidth - clientXTemp);
-
-      // console.log("body", bodyClientWidth, clientXTemp, clientX)
+      const clientX = event.clientX;
       if (Math.abs(clientX - moveX) > offset) {
-        if (clientX > 280) {
+        if (clientX > 120) {
           leftStyle.width = clientX + "px";
           leftStyle.transition = null;
           if (clientX > 760) {
@@ -73,7 +67,7 @@
           }
         } else {
           if (clientX > 10) {
-            leftStyle.width = "280px";
+            leftStyle.width = "120px";
             isExpanded.value = true;
           } else {
             leftStyle.width = "1rem";
@@ -86,7 +80,6 @@
   }
 
   function handleRisizeClickHd() {
-    console.log("click");
     if (isExpanded.value) {
       leftStyle.transition = "width 0.5s";
       nextTick(() => {
@@ -94,7 +87,7 @@
         isExpanded.value = false;
       });
     } else {
-      leftStyle.width = "22.5rem";
+      leftStyle.width = "30rem";
       isExpanded.value = true;
 
       setTimeout(() => {
@@ -110,34 +103,34 @@
 </script>
 
 <style scoped>
-  .rparams_container {
+  .left_container {
     position: fixed;
-    width: 30rem;
-    height: calc(100vh - 3rem);
+    width: auto;
+    height: calc(100% - 3rem);
     background-color: transparent;
     margin: 0;
     padding: 0;
-    right: 0;
+    left: 0;
     top: 3rem;
-    border-top-left-radius: 0.5rem;
-    border-bottom-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
     z-index: 40;
   }
 
-  .rparams_samllcontainer {
+  .left_samllcontainer {
     position: fixed;
     width: 1rem;
-    height: calc(100vh - 3rem);
+    height: calc(100% - 3rem);
     background-color: transparent;
     overflow: hidden;
     margin: 0;
     padding: 0;
-    right: 0;
+    left: 0;
     top: 3rem;
     z-index: 40;
   }
 
-  .rparams_mousemask {
+  .left_mousemask {
     position: fixed;
     width: 100vw;
     height: 100vh;
@@ -148,53 +141,46 @@
     cursor: e-resize;
   }
 
-  .rparams_slider {
+  .left_slider {
     position: absolute;
     width: 0.625rem;
     height: 100%;
     background-color: transparent;
     top: 0;
-    left: -0.3125rem;
+    right: -0.3125rem;
     z-index: 42;
     cursor: e-resize;
   }
 
-  .rparams_smallslider {
+  .left_smallslider {
     position: absolute;
     width: 1rem;
     height: 100%;
     background-color: transparent;
     top: 0;
-    left: 0;
+    right: 0;
     z-index: 41;
     cursor: e-resize;
   }
 
-  .rparams_slider_dec {
+  .left_slider_dec {
     width: 100%;
     height: 100%;
   }
 
-  .rparams_sider_img {
+  .left_sider_img {
     width: 100%;
     height: 100%;
   }
 
-  .rparams_sider_show {
+  .left_sider_show {
+    width: 100%;
+    height: 100%;
+    transform: rotate(180deg);
+  }
+
+  .left_wrapper {
     width: 100%;
     height: 100%;
   }
-
-  .rparams_wrapper {
-    width: 100%;
-    height: 100%;
-  }
-
-  /*
-:deep(.el-button--primary) {
-  --el-button-bg-color: rgb(18, 66, 245);
-  --el-button-border-color: #409eff;
-  --el-button-hover-bg-color: #79bbff;
-  --el-button-hover-border-color: #79bbff;
-} */
 </style>
