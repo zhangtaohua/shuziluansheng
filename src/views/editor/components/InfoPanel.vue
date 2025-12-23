@@ -1,17 +1,14 @@
 <template>
-  <div class="row_nw_fs_ce info_container">
-    <div class="row_nw_ce_ce info_item">添加</div>
-  </div>
-  <!-- <div v-else class="row_nw_center_center info_small" @click="setIsFullView(false)"></div> -->
+  <div v-if="isShowInfoPanel" class="row_nw_fs_ce info_container"></div>
 </template>
 
 <script setup lang="ts">
   import { ref, reactive, computed, watch, onUnmounted } from "vue";
-  import { useRoute } from "vue-router";
   // import { useSystemStore } from "@/store/systemConfig";
+  const isShowInfoPanel = ref(true);
 </script>
 
-<style scoped lang="scss">
+<style scoped>
   .info_container {
     position: fixed;
     bottom: 0;

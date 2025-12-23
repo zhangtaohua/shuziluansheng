@@ -91,7 +91,7 @@
   });
 </script>
 
-<style scoped lang="scss">
+<style scoped>
   .text_comp_container {
     position: relative;
     width: 100%;

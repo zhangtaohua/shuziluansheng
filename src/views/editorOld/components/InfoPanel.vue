@@ -11,7 +11,7 @@
   // import { useSystemStore } from "@/store/systemConfig";
 </script>
 
-<style scoped lang="scss">
+<style scoped>
   .info_container {
     position: fixed;
     bottom: 0;

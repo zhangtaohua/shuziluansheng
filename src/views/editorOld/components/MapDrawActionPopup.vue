@@ -36,7 +36,7 @@
   };
 </script>
 
-<style scoped lang="scss">
+<style scoped>
   .ld_act_pop_container {
     position: fixed;
     width: 5rem;

@@ -105,7 +105,7 @@
   );
 </script>
 
-<style scoped lang="scss">
+<style scoped>
   .active_container {
     outline: 1px solid rgba(235, 3, 3, 1);
     box-shadow: 0 0 10px rgba(235, 3, 3, 0.5);

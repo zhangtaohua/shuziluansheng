@@ -1,9 +1,23 @@
 <template>
-  <div class="row_nw_fs_ce header_container"></div>
+  <div class="row_nw_sb_ce header_container">
+    <div class="row_nw_fs_ce header_compbox">
+      <HeaderComponents></HeaderComponents>
+    </div>
+    <div class="row_nw_fs_ce header_actbox">
+      <HeaderQuickAction></HeaderQuickAction>
+      <HeaderMenu></HeaderMenu>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
   import { ref, reactive, computed, watch, onUnmounted } from "vue";
+
+  import HeaderComponents from "./HeaderComponents.vue";
+
+  import HeaderQuickAction from "./HeaderQuickAction.vue";
+  import HeaderMenu from "./HeaderMenu.vue";
+
   import { useRoute } from "vue-router";
   import { useSystemConfigStore } from "@/stores/systemConfig";
   import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
@@ -12,7 +26,7 @@
   import { cloneDeep } from "es-toolkit";
 </script>
 
-<style scoped lang="scss">
+<style scoped>
   .header_container {
     position: fixed;
     top: 0;
@@ -23,27 +37,15 @@
     background-color: rgba(26, 30, 39, 1);
   }
 
-  .header_item {
-    width: auto;
+  .header_compbox {
+    width: max-content;
     height: 100%;
-    color: rgba(255, 255, 255, 1);
-    font-size: 1rem;
-    background-color: red;
-    padding: 0 0.75rem;
-    margin-right: 0.75rem;
+    margin-right: 2rem;
+    margin-left: 1rem;
   }
 
-  .header_small {
-    position: fixed;
-    top: 0.75rem;
-    right: 0.75rem;
-    z-index: 100;
-    width: 3rem;
-    height: 3rem;
-    background-color: rgba(26, 30, 39, 1);
-    border-radius: 0;
-    cursor: pointer;
-    padding: 0 0.75rem;
-    border: 1px solid red;
+  .header_actbox {
+    width: max-content;
+    height: 100%;
   }
 </style>

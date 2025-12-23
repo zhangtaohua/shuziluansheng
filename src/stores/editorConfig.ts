@@ -119,7 +119,9 @@ export const useEditorConfigStore = defineStore("useEditorConfigStore", () => {
     grid: {
       ...initEditorConfig.grid,
     },
+    scale: initEditorConfig.scale,
     currentParentComp: null,
+    currentComp: null,
     currentShapeOptions: null,
     refreshCompToShapeFlag: 0,
     refreshShapeToCompFlag: 0,

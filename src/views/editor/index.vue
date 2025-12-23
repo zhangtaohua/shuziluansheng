@@ -4,8 +4,6 @@
     <horizontalRuler></horizontalRuler>
     <VerticalRuler></VerticalRuler>
     <WorkspacePanel></WorkspacePanel>
-    <!-- <RightParamsWraper></RightParamsWraper> -->
-    <!-- <LeftParamsWraper></LeftParamsWraper> -->
     <InfoPanel></InfoPanel>
   </div>
 </template>
@@ -14,8 +12,6 @@
   import { onMounted } from "vue";
   import HeaderPanel from "@/views/editor/components/HeaderPanel.vue";
   import WorkspacePanel from "@/views/editor/components/WorkspacePanel.vue";
-  // import RightParamsWraper from "./components/RightParamsWraper.vue";
-  // import LeftParamsWraper from "./components/LeftParamsWraper.vue";
   import horizontalRuler from "./components/horizontalRuler.vue";
   import VerticalRuler from "./components/VerticalRuler.vue";
   import InfoPanel from "@/views/editor/components/InfoPanel.vue";

@@ -55,7 +55,7 @@
   });
 </script>
 
-<style scoped lang="scss">
+<style scoped>
   .horizontal_ruler_container {
     position: fixed;
     width: calc(100vw - 2rem);

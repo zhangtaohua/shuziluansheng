@@ -2,17 +2,12 @@
   <div id="editor_workspace_id" class="row_nw_ce_ce ws_container red_debug">
     <div id="editor_render_id" class="ws_ctx_wraper">
       <!-- <component v-for="comp in editorConfig.components" :key="comp.id" :is="comp.tag" :vNodeData="comp"></component> -->
-      <CommonWraper>
-        <div>我是内容</div>
-      </CommonWraper>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
   import { ref, reactive, computed, watch, onUnmounted } from "vue";
-
-  import CommonWraper from "./CommonWraper.vue";
 
   import { useRoute } from "vue-router";
   import { useSystemConfigStore } from "@/stores/systemConfig";
@@ -22,7 +17,7 @@
   import { cloneDeep } from "es-toolkit";
 </script>
 
-<style scoped lang="scss">
+<style scoped>
   .ws_container {
     position: fixed;
     width: calc(100vw - 2rem);

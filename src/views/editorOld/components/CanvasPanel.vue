@@ -374,7 +374,7 @@
   );
 </script>
 
-<style scoped lang="scss">
+<style scoped>
   .canvas_container {
     position: fixed;
     top: 3rem;

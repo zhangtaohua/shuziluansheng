@@ -41,7 +41,7 @@
   });
 </script>
 
-<style scoped lang="scss">
+<style scoped>
   .config_container {
     position: fixed;
     bottom: 3rem;

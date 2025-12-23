@@ -12,7 +12,7 @@
   import { cloneDeep } from "es-toolkit";
 </script>
 
-<style scoped lang="scss">
+<style scoped>
   .config_container {
     position: fixed;
     top: 0;

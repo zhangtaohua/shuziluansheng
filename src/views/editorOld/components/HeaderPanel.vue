@@ -279,7 +279,7 @@
   // });
 </script>
 
-<style scoped lang="scss">
+<style scoped>
   .header_container {
     position: fixed;
     top: 0;

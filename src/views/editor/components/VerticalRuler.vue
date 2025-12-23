@@ -57,7 +57,7 @@
   });
 </script>
 
-<style scoped lang="scss">
+<style scoped>
   .vertical_ruler_container {
     position: fixed;
     width: 2rem;
