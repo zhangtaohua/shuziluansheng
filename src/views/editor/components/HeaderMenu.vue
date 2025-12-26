@@ -138,20 +138,4 @@
     font-size: 1rem;
     color: rgba(255, 255, 255, 1) !important;
   }
-
-  :deep(.header_submenu_box .el-menu--horizontal .el-menu--popup-container) {
-    border: none;
-    outline: none;
-  }
-
-  :deep(.header_submenu_box .el-popper) {
-    border: none;
-    outline: none;
-  }
-
-  :deep(.header_submenu_box .el-menu--popup) {
-    border: none;
-    outline: none;
-    box-shadow: none;
-  }
 </style>

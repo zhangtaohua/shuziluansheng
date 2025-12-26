@@ -54,7 +54,7 @@
 
 <script setup lang="ts">
   import { ref, reactive, onMounted, computed } from "vue";
-  import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
+  import { useEditorComponentstore, globalEditor } from "@/stores/editorConfig";
 
   const props = defineProps({
     vdata: {
@@ -68,9 +68,7 @@
     },
   });
 
-  const { editorConfig, setEditorRefreshShape } = useEditorConfigStore();
-  let id = "";
-  let name = "";
+  const { editorComponents, setEditorRefreshTransToCompFlag } = useEditorComponentstore();
   let currentStyle = {};
   const isEnable = ref(false);
 
@@ -78,16 +76,11 @@
 
   function init() {
     if (props.vdata && props.vdata.id && props.vdata.name) {
-      const styles = editorConfig.currentParentComp.styles;
-      id = props.vdata.id;
-      name = props.vdata.name;
-      if (styles[name] && styles[name].id === id) {
-        isEnable.value = true;
-        currentStyle = styles[name];
-      } else {
-        isEnable.value = false;
-        currentStyle = null;
-      }
+      isEnable.value = true;
+      currentStyle = props.vdata;
+    } else {
+      isEnable.value = false;
+      currentStyle = null;
     }
   }
 
@@ -110,7 +103,7 @@
   function setOptions(opt: any) {
     currentStyle.value = opt.value;
     isShowOp.value = false;
-    setEditorRefreshShape();
+    setEditorRefreshTransToCompFlag();
   }
 
   let disTime = null;

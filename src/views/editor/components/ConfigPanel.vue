@@ -1,25 +1,49 @@
 <template>
-  <div class="row_nw_fs_ce config_container"></div>
+  <RightParamsWraper v-if="isCanConfig" ref="RightParamsWraperRef">
+    <ConfigHtml v-if="isHtmlConfigPanel" @unExpand="unExpandClickHd"></ConfigHtml>
+  </RightParamsWraper>
 </template>
 
 <script setup lang="ts">
-  import { ref, reactive, computed, watch, onUnmounted } from "vue";
-  import { useRoute } from "vue-router";
-  import { useSystemConfigStore } from "@/stores/systemConfig";
-  import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
+  import { ref, watch } from "vue";
+  import RightParamsWraper from "@/components/wrapper/RightParamsWraper.vue";
+  import ConfigHtml from "./ConfigHtml.vue";
 
-  import { nanoid } from "@/utils/common/nanoid";
-  import { cloneDeep } from "es-toolkit";
+  import { useEditorComponentstore } from "@/stores/editorConfig";
+
+  const { editorComponents } = useEditorComponentstore();
+
+  const RightParamsWraperRef = ref(null);
+  const isHtmlConfigPanel = ref(false);
+
+  const isCanConfig = ref(false);
+
+  watch(
+    () => editorComponents.currentComp,
+    () => {
+      if (editorComponents.currentComp) {
+        if (editorComponents.currentComp.componentType == "html") {
+          isHtmlConfigPanel.value = true;
+        } else {
+          isHtmlConfigPanel.value = false;
+        }
+        isCanConfig.value = true;
+      } else {
+        isCanConfig.value = false;
+        isHtmlConfigPanel.value = false;
+      }
+    },
+    {
+      immediate: true,
+      deep: false,
+    },
+  );
+
+  function unExpandClickHd() {
+    if (RightParamsWraperRef.value) {
+      RightParamsWraperRef.value.unExpandClickHd();
+    }
+  }
 </script>
 
-<style scoped>
-  .config_container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 30;
-    width: 100vw;
-    height: 3rem;
-    background-color: rgba(26, 30, 39, 1);
-  }
-</style>
+<style scoped></style>

@@ -16,8 +16,9 @@ import "default-passive-events";
 
 // 一定会用公共组件
 // 渲染控制
-import CommonDiv from "@/views/editorOld/components/CommonDiv.vue";
-import CommonDivText from "@/views/editorOld/components/CommonDivText.vue";
+import CommonWorkspace from "@/views/editor/components/CommonWorkspace.vue";
+import CommonDiv from "@/views/editor/components/CommonDiv.vue";
+import CommonDivText from "@/views/editor/components/CommonDivText.vue";
 import CommonDivImage from "@/views/editorOld/components/CommonDivImage.vue";
 import CommonDivCesium from "@/views/editorOld/components/CommonDivCesium.vue";
 
@@ -110,6 +111,7 @@ app.use(router);
 
 app.mount("#app");
 
+app.component("CommonWorkspace", CommonWorkspace);
 app.component("CommonDiv", CommonDiv);
 app.component("CommonDivText", CommonDivText);
 app.component("CommonDivImage", CommonDivImage);

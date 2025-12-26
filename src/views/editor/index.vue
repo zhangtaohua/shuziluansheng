@@ -4,6 +4,7 @@
     <horizontalRuler></horizontalRuler>
     <VerticalRuler></VerticalRuler>
     <WorkspacePanel></WorkspacePanel>
+    <ConfigPanel></ConfigPanel>
     <InfoPanel></InfoPanel>
   </div>
 </template>
@@ -15,6 +16,7 @@
   import horizontalRuler from "./components/horizontalRuler.vue";
   import VerticalRuler from "./components/VerticalRuler.vue";
   import InfoPanel from "@/views/editor/components/InfoPanel.vue";
+  import ConfigPanel from "./components/ConfigPanel.vue";
 
   function init() {}
 

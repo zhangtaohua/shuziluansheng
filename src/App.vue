@@ -11,6 +11,7 @@
 <script setup lang="ts">
   import { ref, nextTick, provide } from "vue";
   import { useWindowResize } from "@/hooks/useWindowSize";
+  import { useWindowContexMenu } from "./hooks/useKeyEvents";
 
   import { ElConfigProvider } from "element-plus";
 
@@ -18,6 +19,7 @@
   // import BackEarth from "@/components/common/BackEarth.vue";
 
   useWindowResize();
+  useWindowContexMenu();
 
   const refreshRouter = ref(true);
   function reloadApp() {

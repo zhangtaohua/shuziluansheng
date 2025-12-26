@@ -7,135 +7,145 @@
       </div>
     </div>
 
-    <div class="row_nw_ce_ce props_input_sbox"
-    :class="{ props_input_sbox_act: isFoucus,
-      props_input_sbox_disabled: !currentComp.isEnable
-     }">
-      <input :id="currentComp.id" :name="currentComp.id"
-      class="props_input" v-model="currentImageUrl" rows="5"
+    <div
+      class="row_nw_ce_ce props_input_sbox"
+      :class="{ props_input_sbox_act: isFoucus, props_input_sbox_disabled: !currentComp.isEnable }"
+    >
+      <input
+        :id="currentComp.id"
+        :name="currentComp.id"
+        class="props_input"
+        v-model="currentImageUrl"
+        rows="5"
         :disabled="!currentComp.isEnable"
         @focus="setIsFoucus(true)"
-        @blur="() => { setIsFoucus(false); imageUrlChangeHd() }">
-      </input>
+        @blur="
+          () => {
+            setIsFoucus(false);
+            imageUrlChangeHd();
+          }
+        "
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, computed, watch, nextTick } from "vue";
-import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
+  import { ref, reactive, onMounted, computed, watch, nextTick } from "vue";
+  import { useEditorComponentstore, globalEditor } from "@/stores/editorConfig";
 
-const { editorConfig, setEditorRefreshShape } = useEditorConfigStore();
-const currentImageUrl = ref("");
-let currentComp =  null;
-const isEnable = ref(false);
-const isFoucus = ref(false);
+  const { editorComponents, setEditorRefreshTransToCompFlag } = useEditorComponentstore();
+  const currentImageUrl = ref("");
+  let currentComp = null;
+  const isEnable = ref(false);
+  const isFoucus = ref(false);
 
-function init() {
-  if (editorConfig.currentParentComp && editorConfig.currentParentComp.image) {
-    isEnable.value = true;
-    currentImageUrl.value = editorConfig.currentParentComp.image;
-    currentComp = editorConfig.currentParentComp;
-  } else {
-    isEnable.value = false;
-    currentImageUrl.value = "";
-    currentComp = null;
+  function init() {
+    if (editorComponents.currentComp && editorComponents.currentComp.image) {
+      isEnable.value = true;
+      currentImageUrl.value = editorComponents.currentComp.image;
+      currentComp = editorComponents.currentComp;
+    } else {
+      isEnable.value = false;
+      currentImageUrl.value = "";
+      currentComp = null;
+    }
   }
-}
 
-onMounted(() => {
-  init();
-});
+  onMounted(() => {
+    init();
+  });
 
-function imageUrlChangeHd() {
-  if (isEnable.value && editorConfig.currentParentComp) {
-    editorConfig.currentParentComp.image = currentImageUrl.value;
+  function imageUrlChangeHd() {
+    if (isEnable.value && editorComponents.currentComp) {
+      editorComponents.currentComp.image = currentImageUrl.value;
+      setEditorRefreshTransToCompFlag();
+    }
   }
-}
 
-function setIsFoucus(isFos: boolean) {
-  isFoucus.value = isFos;
-}
+  function setIsFoucus(isFos: boolean) {
+    isFoucus.value = isFos;
+  }
 </script>
 
 <style scoped>
-.props_container {
-  width: 100%;
-  height: auto;
-  background-color: transparent;
-}
+  .props_container {
+    width: 100%;
+    height: auto;
+    background-color: transparent;
+  }
 
-.props_box {
-  width: 100%;
-  height: 2.5rem;
-}
+  .props_box {
+    width: 100%;
+    height: 2.5rem;
+  }
 
-.props_lbox {
-  width: max-content;
-  height: 100%;
-}
+  .props_lbox {
+    width: max-content;
+    height: 100%;
+  }
 
-.props_ch_label {
-  width: max-content;
-  height: 100%;
-  color: rgba(255, 255, 255, 1);
-  font-size: var(--czml-fs-pp-zh);
-  font-weight: 500;
-  margin-right: 0.5rem;
-  margin-left: 0.25rem;
-}
+  .props_ch_label {
+    width: max-content;
+    height: 100%;
+    color: rgba(255, 255, 255, 1);
+    font-size: var(--czml-fs-pp-zh);
+    font-weight: 500;
+    margin-right: 0.5rem;
+    margin-left: 0.25rem;
+  }
 
-.props_ogi_label {
-  width: max-content;
-  height: 1rem;
-  color: rgba(200, 200, 200, 1);
-  font-size: var(--czml-fs-pp-en);
-  font-weight: 400;
-}
+  .props_ogi_label {
+    width: max-content;
+    height: 1rem;
+    color: rgba(200, 200, 200, 1);
+    font-size: var(--czml-fs-pp-en);
+    font-weight: 400;
+  }
 
-.props_input_sbox {
-  position: relative;
-  width: calc(100% - 0.25rem);
-  margin-left: 0.125rem;
-  height: 2.5rem;
-  background-color: rgba(0, 0, 0, 1);
-  border-radius: 0.5rem;
-}
+  .props_input_sbox {
+    position: relative;
+    width: calc(100% - 0.25rem);
+    margin-left: 0.125rem;
+    height: 2.5rem;
+    background-color: rgba(0, 0, 0, 1);
+    border-radius: 0.5rem;
+  }
 
-.props_input_sbox_act {
-  outline: 1px solid rgba(15, 55, 175, 1);
-}
+  .props_input_sbox_act {
+    outline: 1px solid rgba(15, 55, 175, 1);
+  }
 
-.props_input_sbox_disabled {
-  outline: 1px solid rgba(15, 55, 175, 0.5);
-  cursor: not-allowed;
-}
+  .props_input_sbox_disabled {
+    outline: 1px solid rgba(15, 55, 175, 0.5);
+    cursor: not-allowed;
+  }
 
-.props_input {
-  align-self: flex-start;
-  width: 100%;
-  height: 100%;
-  padding: 0rem 0.5rem;
-  color: rgba(255, 255, 255, 1);
-  font-size: 0.875rem;
-  background-color: transparent;
-  font-weight: 400;
-  border: none;
-  line-height: 1.75rem;
-  -moz-appearance: textfield;
-  resize: none;
-}
+  .props_input {
+    align-self: flex-start;
+    width: 100%;
+    height: 100%;
+    padding: 0rem 0.5rem;
+    color: rgba(255, 255, 255, 1);
+    font-size: 0.875rem;
+    background-color: transparent;
+    font-weight: 400;
+    border: none;
+    line-height: 1.75rem;
+    -moz-appearance: textfield;
+    resize: none;
+  }
 
-.props_input:disabled {
-  cursor: not-allowed;
-}
+  .props_input:disabled {
+    cursor: not-allowed;
+  }
 
-.props_input::placeholder {
-  display: flex;
-  flex-direction: row;
-  place-items: center flex-start;
-  padding: 0;
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 0.875rem;
-}
+  .props_input::placeholder {
+    display: flex;
+    flex-direction: row;
+    place-items: center flex-start;
+    padding: 0;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.875rem;
+  }
 </style>

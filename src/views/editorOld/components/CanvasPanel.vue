@@ -346,7 +346,7 @@
     () => editorConfig.refreshCompToShapeFlag,
     () => {
       if (layer && editorConfig.currentShapeOptions) {
-        console.log("NNNNDDDD", editorConfig);
+        console.log("editorConfig", editorConfig);
         editorConfig.currentShapeOptions.transform = getControlTransform(editorConfig.currentShapeOptions.styles);
         currentShapeTransform = editorConfig.currentShapeOptions.transform;
         parentsShapeTransform = getParentComponentTransforms(

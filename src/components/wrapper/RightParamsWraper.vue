@@ -33,8 +33,10 @@
   // const vueInstance = getCurrentInstance();
   const isExpanded = ref(true);
   const isResize = ref(false);
+  const defaultWidth = "30rem";
+  const defaultMinWidth = "1rem";
   const leftStyle = reactive({
-    width: "30rem",
+    width: defaultWidth,
     transition: null,
   });
 
@@ -76,7 +78,7 @@
             leftStyle.width = "280px";
             isExpanded.value = true;
           } else {
-            leftStyle.width = "1rem";
+            leftStyle.width = defaultMinWidth;
             leftStyle.transition = "width 0.5s";
             isExpanded.value = false;
           }
@@ -90,11 +92,11 @@
     if (isExpanded.value) {
       leftStyle.transition = "width 0.5s";
       nextTick(() => {
-        leftStyle.width = "1rem";
+        leftStyle.width = defaultMinWidth;
         isExpanded.value = false;
       });
     } else {
-      leftStyle.width = "22.5rem";
+      leftStyle.width = defaultWidth;
       isExpanded.value = true;
 
       setTimeout(() => {
@@ -103,10 +105,24 @@
     }
   }
 
+  const unExpandClickHd = () => {
+    if (isExpanded.value) {
+      leftStyle.transition = "width 0.5s";
+      nextTick(() => {
+        leftStyle.width = defaultMinWidth;
+        isExpanded.value = false;
+      });
+    }
+  };
+
   function handleRisizeMouseoutHd(event) {
     handleRisizeMousemoveHd(event);
     handleRisizeMouseupHd();
   }
+
+  defineExpose({
+    unExpandClickHd,
+  });
 </script>
 
 <style scoped>

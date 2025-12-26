@@ -64,7 +64,7 @@
   import { ref, reactive, onMounted, computed } from "vue";
   import ColorInputBase from "./ColorInputBase.vue";
 
-  import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
+  import { useEditorComponentstore, globalEditor } from "@/stores/editorConfig";
 
   const props = defineProps({
     vdata: {
@@ -78,35 +78,28 @@
     },
   });
 
-  const { editorConfig } = useEditorConfigStore();
-  let id = "";
-  let name = "";
-  let currentStyle = {};
+  const { editorComponents, setEditorRefreshTransToCompFlag } = useEditorComponentstore();
+  const currentStyle = ref(null);
   const isEnable = ref(false);
   const isShowOp = ref(false);
   const isShowColorPanel = ref(false);
   const currentOptValue = ref(null);
 
   function init() {
-    if (props.vdata && props.vdata.id && props.vdata.name) {
-      const styles = editorConfig.currentParentComp.styles;
-      id = props.vdata.id;
-      name = props.vdata.name;
-      if (styles[name] && styles[name].id === id) {
-        isEnable.value = true;
-        currentStyle = styles[name];
-        if (currentStyle.isColorValue) {
-          currentOptValue.value = "value";
-          isShowColorPanel.value = true;
-        } else {
-          currentOptValue.value = styles[name].value;
-          isShowColorPanel.value = false;
-        }
+    if (props.vdata && props.vdata.id) {
+      isEnable.value = true;
+      currentStyle.value = props.vdata;
+      if (currentStyle.value.isColorValue) {
+        currentOptValue.value = "value";
+        isShowColorPanel.value = true;
       } else {
-        isEnable.value = false;
-        currentStyle = null;
-        currentOptValue.value = null;
+        currentOptValue.value = props.vdata.value;
+        isShowColorPanel.value = false;
       }
+    } else {
+      isEnable.value = false;
+      currentStyle.value = null;
+      currentOptValue.value = null;
     }
   }
 
@@ -115,13 +108,13 @@
   });
 
   function toggleIsShowOptions() {
-    if (currentStyle && currentStyle.isEnable) {
+    if (currentStyle.value && currentStyle.value.isEnable) {
       isShowOp.value = !isShowOp.value;
     }
   }
 
   function setIsShowOptions(isShow) {
-    if (currentStyle && currentStyle.isEnable) {
+    if (currentStyle.value && currentStyle.value.isEnable) {
       isShowOp.value = isShow;
     }
   }
@@ -134,19 +127,22 @@
       let color = "rgba(255, 0, 0, 0.5)";
       if (oldColor) {
         color = oldColor;
-      } else if (currentStyle.defaultColor) {
-        color = currentStyle.defaultColor;
+      } else if (currentStyle.value.defaultColor) {
+        color = currentStyle.value.defaultColor;
       }
       updateColorHd(color);
       isShowColorPanel.value = true;
     } else {
       isShowColorPanel.value = false;
-      currentStyle.value = opt.value;
+      currentStyle.value.value = opt.value;
+      currentStyle.value.isColorValue = false;
     }
+    setEditorRefreshTransToCompFlag();
   }
 
   function updateColorHd(color) {
-    currentStyle.value = color;
+    currentStyle.value.value = color;
+    currentStyle.value.isColorValue = true;
     oldColor = color;
   }
 

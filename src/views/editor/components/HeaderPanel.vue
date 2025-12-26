@@ -17,13 +17,6 @@
 
   import HeaderQuickAction from "./HeaderQuickAction.vue";
   import HeaderMenu from "./HeaderMenu.vue";
-
-  import { useRoute } from "vue-router";
-  import { useSystemConfigStore } from "@/stores/systemConfig";
-  import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
-
-  import { nanoid } from "@/utils/common/nanoid";
-  import { cloneDeep } from "es-toolkit";
 </script>
 
 <style scoped>

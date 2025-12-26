@@ -171,7 +171,7 @@ export class czmlPathEntity {
   public getCzmlData() {
     if (this.isUsed) {
       return {
-        [this.name]: this.getCzmlValue(),
+        [this.czmlName]: this.getCzmlValue(),
       };
     } else {
       return null;

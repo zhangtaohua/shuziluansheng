@@ -7,15 +7,10 @@ const EDITOR_CONFIG_KEY = "EDITOR_CONFIG_KEY";
 
 export const globalEditor = {
   editor: null,
+  stage: null,
+  layer: null,
   components: null,
-  zIndex: 0,
-  workSpace: null,
 };
-
-export function getGlobalZIndex() {
-  globalEditor.zIndex = globalEditor.zIndex + 1;
-  return globalEditor.zIndex;
-}
 
 export const editorConfigurations = {
   grid: {
@@ -23,23 +18,17 @@ export const editorConfigurations = {
     gapX: 10,
     gapY: 10,
   },
-  scale: 100,
-  workSpace: {
-    top: 50,
-    left: 50,
-    bottom: 50 + 1920,
-    right: 50 + 1080,
-    width: 1920,
-    height: 1080,
-    backgroundColor: "rgba(0, 0, 0, 1)",
-    zIndex: getGlobalZIndex(),
-  },
 };
 
 // Splicing magic characters
 export const SMC = "###";
 
 export function getComponentPath(id: string) {
+  // const ckeys = Object.keys(components);
+  // for (let i = 0; i < ckeys.length; i++) {
+  //   const key = ckeys[i];
+  //   const ctemp = components[key];
+  // }
   return id.split(SMC);
 }
 
@@ -109,24 +98,19 @@ export function getParentComponent(components: any, parentId: string, skipLeaf =
 export const getEditorStore = () => {
   let initEditorConfig = Storage.get(EDITOR_CONFIG_KEY);
   if (!initEditorConfig) {
-    console.log("nnd", editorConfigurations);
     initEditorConfig = editorConfigurations;
     Storage.set(EDITOR_CONFIG_KEY, initEditorConfig);
-  } else {
-    if (typeof initEditorConfig === "string") {
-      try {
-        initEditorConfig = JSON.parse(initEditorConfig);
-      } catch (error) {
-        initEditorConfig = editorConfigurations;
-      }
+  }
+  if (typeof initEditorConfig === "string") {
+    try {
+      initEditorConfig = JSON.parse(initEditorConfig);
+    } catch (error) {
+      initEditorConfig = editorConfigurations;
     }
   }
 
   return initEditorConfig;
 };
-
-const initEditorConfig = getEditorStore();
-globalEditor.workSpace = { ...initEditorConfig.workSpace };
 
 export const useEditorConfigStore = defineStore("useEditorConfigStore", () => {
   const initEditorConfig = getEditorStore();
@@ -136,7 +120,12 @@ export const useEditorConfigStore = defineStore("useEditorConfigStore", () => {
       ...initEditorConfig.grid,
     },
     scale: initEditorConfig.scale,
-    workspace: initEditorConfig.workSpace,
+    currentParentComp: null,
+    currentComp: null,
+    currentShapeOptions: null,
+    refreshCompToShapeFlag: 0,
+    refreshShapeToCompFlag: 0,
+    components: {},
   });
 
   function setEditorIsShowGrid(isShow: boolean) {
@@ -177,81 +166,32 @@ export const useEditorConfigStore = defineStore("useEditorConfigStore", () => {
     Storage.set(EDITOR_CONFIG_KEY, initEditorConfig);
   }
 
-  function setEditorScale(scale: number) {
-    editorConfig.scale = scale;
-
-    initEditorConfig.scale = scale;
-    Storage.set(EDITOR_CONFIG_KEY, initEditorConfig);
+  function setEditorCurrentShape(options: any) {
+    editorConfig.currentShapeOptions = options;
   }
 
-  function setEditorWorkSpaceStyles(options) {
-    const styles = { ...editorConfig.workspace, ...options };
-
-    editorConfig.workspace = styles;
-    initEditorConfig.workspace = styles;
-    globalEditor.workSpace = styles;
-    Storage.set(EDITOR_CONFIG_KEY, initEditorConfig);
+  function setEditorRefreshComp() {
+    editorConfig.refreshShapeToCompFlag++;
   }
 
-  return {
-    editorConfig,
-    setEditorIsShowGrid,
-    setEditorGridGapX,
-    setEditorGridGapY,
-    setEditorGridGap,
-    setEditorScale,
-    setEditorWorkSpaceStyles,
-  };
-});
-
-export const useEditorComponentstore = defineStore("useEditorComponentstore", () => {
-  const editorComponents = reactive({
-    currentComp: null,
-    currentNewComp: null,
-    refreshCompToTransFlag: 0,
-    refreshTransToCompFlag: 0,
-    components: {},
-    workSpace: null,
-  });
-
-  function setEditorCurrentComp(comp: any) {
-    editorComponents.currentComp = comp;
+  function setEditorRefreshShape() {
+    editorConfig.refreshCompToShapeFlag++;
   }
 
-  function setEditorCurrentNewComp(comp: any) {
-    editorComponents.currentNewComp = comp;
-  }
-
-  function setEditorWorkSpace(comp: any) {
-    editorComponents.workSpace = comp;
-  }
-
-  function setEditorRefreshTransToCompFlag(isReset = false) {
-    if (isReset) {
-      editorComponents.refreshTransToCompFlag = 0;
-    } else {
-      editorComponents.refreshTransToCompFlag++;
-    }
-  }
-
-  function setEditorRefreshCompToTransFlag(isReset = false) {
-    if (isReset) {
-      editorComponents.refreshCompToTransFlag = 0;
-    } else {
-      editorComponents.refreshCompToTransFlag++;
-    }
+  function setEditorCurrentParentComp(options: any) {
+    editorConfig.currentParentComp = options;
   }
 
   function addEditorComponents(options: any) {
-    if (editorComponents.currentComp) {
-      const parentId = editorComponents.currentComp.id;
+    if (editorConfig.currentParentComp) {
+      const parentId = editorConfig.currentParentComp.id;
       console.log("增加 寻找父组件ID", parentId);
-      const parentComp = getParentComponent(editorComponents.components, parentId);
+      const parentComp = getParentComponent(editorConfig.components, parentId);
       if (parentComp) {
         console.log("增加 找到父组件", parentComp);
-        const id = options.id;
-        // id = parentId + SMC + id;
-        // options.id = id;
+        let id = options.id;
+        id = parentId + SMC + id;
+        options.id = id;
 
         if (parentComp.children) {
           parentComp.children[id] = options;
@@ -262,12 +202,12 @@ export const useEditorComponentstore = defineStore("useEditorComponentstore", ()
       } else {
         console.log("增加 未找到父组件，增加到根目录下");
         const id = options.id;
-        editorComponents.components[id] = options;
+        editorConfig.components[id] = options;
       }
     } else {
       // 无父组件，直接增加
       const id = options.id;
-      editorComponents.components[id] = options;
+      editorConfig.components[id] = options;
     }
 
     // 全局记录的直接增加
@@ -282,18 +222,15 @@ export const useEditorComponentstore = defineStore("useEditorComponentstore", ()
 
   function removeEditorComponents(options: any) {
     const id = options.id;
-    console.log("删除 组件", options);
-    const parentComp = getParentComponent(editorComponents.components, id, true);
+    const parentComp = getParentComponent(editorConfig.components, id, true);
     if (parentComp) {
       console.log("删除 找到父组件", parentComp);
-      if (parentComp.children) {
-        parentComp.children[id] = null;
-        delete parentComp.children[id];
-      }
+      parentComp[id] = null;
+      delete parentComp[id];
     } else {
       console.log("删除 未找到父组件");
-      editorComponents.components[id] = null;
-      delete editorComponents.components[id];
+      editorConfig.components[id] = null;
+      delete editorConfig.components[id];
     }
 
     // 全局记录的直接删除
@@ -302,17 +239,20 @@ export const useEditorComponentstore = defineStore("useEditorComponentstore", ()
   }
 
   function clearEditorComponents() {
-    editorComponents.components = {};
+    editorConfig.components = {};
     globalEditor.components = {};
   }
 
   return {
-    editorComponents,
-    setEditorCurrentComp,
-    setEditorCurrentNewComp,
-    setEditorWorkSpace,
-    setEditorRefreshTransToCompFlag,
-    setEditorRefreshCompToTransFlag,
+    editorConfig,
+    setEditorIsShowGrid,
+    setEditorGridGapX,
+    setEditorGridGapY,
+    setEditorGridGap,
+    setEditorCurrentShape,
+    setEditorRefreshComp,
+    setEditorRefreshShape,
+    setEditorCurrentParentComp,
     addEditorComponents,
     removeEditorComponents,
     clearEditorComponents,

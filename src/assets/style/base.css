@@ -120,3 +120,14 @@ textarea:focus {
 button:focus {
   outline: none;
 }
+
+/* 完全不显示焦点轮廓 - 对可访问性不友好 */
+*:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* 或全局移除所有焦点样式 */
+*:focus {
+  outline: none !important;
+}

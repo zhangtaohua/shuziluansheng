@@ -173,7 +173,7 @@ export const CssPositionOptions = {
   // position: unset;
 };
 
-export const CssfontWeightOptions = {
+export const CssFontWeightOptions = {
   name: "font-weight",
   vueName: "fontWeight",
   labelZh: "字体粗细",
@@ -206,7 +206,7 @@ export const CssfontWeightOptions = {
   ],
 };
 
-export const CssfontStyleOptions = {
+export const CssFontStyleOptions = {
   name: "font-style",
   vueName: "fontStyle",
   labelZh: "字体样式",

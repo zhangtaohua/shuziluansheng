@@ -4,6 +4,7 @@
       <div class="row_nw_fs_ce props_lbox">
         <label class="row_nw_fs_ce props_ch_label">{{ currentStyle.labelZh }}</label>
         <label class="row_nw_fs_fe props_ogi_label">{{ currentStyle.labelEn }}</label>
+        <label v-show="currentStyle.unit" class="row_nw_fs_fe props_ogunit_label">{{ `(${currentStyle.unit})` }}</label>
       </div>
 
       <div class="row_nw_fs_ce props_input_nbox">
@@ -23,6 +24,7 @@
             placeholder="0"
             @focus="setIsShowArrow(true)"
             @blur="onBlur"
+            @change="onChange"
             :disabled="!currentStyle.isEnable"
           />
           <div v-show="isShowArrow && currentStyle.isEnable" class="props_input_uparrow" @click="plusNumber"></div>
@@ -47,7 +49,7 @@
         :max="currentStyle.max"
         :step="currentStyle.step"
         class="props_input_slider"
-        @change="sliderChangeHd"
+        @input="sliderChangeHd"
         :disabled="!currentStyle.isEnable"
       />
     </div>
@@ -55,8 +57,8 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, reactive, onMounted, computed, watch, nextTick } from "vue";
-  import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
+  import { ref, reactive, onMounted, computed, watch, nextTick, onBeforeMount } from "vue";
+  import { useEditorComponentstore, globalEditor } from "@/stores/editorConfig";
 
   const props = defineProps({
     vdata: {
@@ -70,23 +72,24 @@
     },
   });
 
-  const { editorConfig, setEditorRefreshShape } = useEditorConfigStore();
-  let id = "";
-  let name = "";
-  let currentStyle = {};
+  const { editorComponents, setEditorRefreshTransToCompFlag } = useEditorComponentstore();
+  const id = "";
+  const name = "";
+  const currentStyle = ref(null);
   const isEnable = ref(false);
 
   const rem = computed(() => {
-    if (currentStyle) {
-      return (currentStyle.value / 16).toFixed(3) + "rem";
+    if (currentStyle.value) {
+      return (currentStyle.value.value / 16).toFixed(3) + "rem";
     } else {
       return "0rem";
     }
   });
 
   const sliderBStyle = computed(() => {
-    if (currentStyle) {
-      const per = ((currentStyle.value - currentStyle.min) / (currentStyle.max - currentStyle.min)) * 100;
+    if (currentStyle.value) {
+      const per =
+        ((currentStyle.value.value - currentStyle.value.min) / (currentStyle.value.max - currentStyle.value.min)) * 100;
       if (per >= 0 && per <= 100) {
         return {
           width: per + "%",
@@ -109,17 +112,13 @@
   }
 
   function init() {
-    if (props.vdata && props.vdata.id && props.vdata.name) {
-      const styles = editorConfig.currentParentComp.styles;
-      id = props.vdata.id;
-      name = props.vdata.name;
-      if (styles[name] && styles[name].id === id) {
-        isEnable.value = true;
-        currentStyle = styles[name];
-      } else {
-        isEnable.value = false;
-        currentStyle = null;
-      }
+    if (props.vdata && props.vdata.id) {
+      currentStyle.value = props.vdata;
+
+      isEnable.value = true;
+    } else {
+      isEnable.value = false;
+      currentStyle.value = null;
     }
   }
 
@@ -128,32 +127,33 @@
   });
 
   function plusNumber() {
-    if (currentStyle && currentStyle.isEnable) {
-      const oldValue = currentStyle.value;
-      let newValue = currentStyle.value + currentStyle.step;
-      if (newValue > currentStyle.max) {
-        newValue = currentStyle.max;
+    if (currentStyle.value && currentStyle.value.isEnable) {
+      const oldValue = currentStyle.value.value;
+      let newValue = currentStyle.value.value + currentStyle.value.step;
+      if (newValue > currentStyle.value.max) {
+        newValue = currentStyle.value.max;
       }
+      console.log("currentStyle", currentStyle);
       if (oldValue === newValue) {
         return;
       }
-      currentStyle.value = newValue;
-      setEditorRefreshShape();
+      currentStyle.value.value = newValue;
+      setEditorRefreshTransToCompFlag();
     }
   }
 
   function reduceNuber() {
-    if (currentStyle && currentStyle.isEnable) {
-      const oldValue = currentStyle.value;
-      let newValue = currentStyle.value - currentStyle.step;
-      if (newValue < currentStyle.min) {
-        newValue = currentStyle.min;
+    if (currentStyle.value && currentStyle.value.isEnable) {
+      const oldValue = currentStyle.value.value;
+      let newValue = currentStyle.value.value - currentStyle.value.step;
+      if (newValue < currentStyle.value.min) {
+        newValue = currentStyle.value.min;
       }
       if (oldValue === newValue) {
         return;
       }
-      currentStyle.value = newValue;
-      setEditorRefreshShape();
+      currentStyle.value.value = newValue;
+      setEditorRefreshTransToCompFlag();
     }
   }
 
@@ -161,10 +161,14 @@
     isShowArrow.value = false;
   }
 
+  function onChange() {
+    setEditorRefreshTransToCompFlag();
+  }
+
   function sliderChangeHd() {
-    if (currentStyle && currentStyle.isEnable) {
-      currentStyle.value = +currentStyle.value;
-      setEditorRefreshShape();
+    if (currentStyle.value && currentStyle.value.isEnable) {
+      currentStyle.value.value = +currentStyle.value.value;
+      setEditorRefreshTransToCompFlag();
     }
   }
 </script>
@@ -202,6 +206,15 @@
     color: rgba(200, 200, 200, 1);
     font-size: var(--czml-fs-pp-en);
     font-weight: 400;
+  }
+
+  .props_ogunit_label {
+    width: max-content;
+    height: 1rem;
+    color: rgba(200, 200, 200, 1);
+    font-size: var(--czml-fs-pp-en);
+    font-weight: 400;
+    margin-left: 0.25rem;
   }
 
   .props_input_nbox {

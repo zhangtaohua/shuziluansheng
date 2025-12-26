@@ -1,20 +1,26 @@
 <template>
-  <div id="editor_workspace_id" class="row_nw_ce_ce ws_container red_debug">
+  <div id="editor_workspace_id" class="row_nw_ce_ce ws_container">
     <div id="editor_render_id" class="ws_ctx_wraper">
-      <!-- <component v-for="comp in editorConfig.components" :key="comp.id" :is="comp.tag" :vNodeData="comp"></component> -->
+      <component
+        v-if="editorComponents.workSpace"
+        :is="editorComponents.workSpace.tag"
+        :vNodeData="editorComponents.workSpace"
+      >
+        <component
+          v-for="comp in editorComponents.components"
+          :key="comp.id"
+          :is="comp.tag"
+          :vNodeData="comp"
+        ></component>
+      </component>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { ref, reactive, computed, watch, onUnmounted } from "vue";
+  import { useEditorComponentstore } from "@/stores/editorConfig";
 
-  import { useRoute } from "vue-router";
-  import { useSystemConfigStore } from "@/stores/systemConfig";
-  import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
-
-  import { nanoid } from "@/utils/common/nanoid";
-  import { cloneDeep } from "es-toolkit";
+  const { editorComponents } = useEditorComponentstore();
 </script>
 
 <style scoped>

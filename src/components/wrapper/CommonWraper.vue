@@ -1,16 +1,17 @@
 <template>
-  <div ref="divWrapperRef" class="row_nw_ce_ce dw_container" :style="containerStyle">
-    <Teleport v-if="isShowCtlMask" to="body">
+  <div ref="divWrapperRef" class="row_nw_ce_ce dw_container" :style="containerStyle" @click.stop.prevent>
+    <Teleport v-if="isActive && isShowCtlMask" to="body">
       <div
         class="dw_mask"
         :style="maskStyle"
         @mousemove="maskCtlMouseMoveHandle"
         @mouseout="maskCtlMouseOutHandle"
         @mouseup="maskCtlMouseUpHandle"
+        @click.stop.prevent
       ></div>
     </Teleport>
 
-    <Teleport v-if="isShowAlignAxis" to="#editor_workspace_id">
+    <Teleport v-if="isCalcShowAlignAxis" to="#editor_workspace_id">
       <div class="dw_ctl_hline" :style="alignAxisXStyle"></div>
       <div class="row_nw_ce_ce dw_ctl_hlabelbox" :style="alignAxisHLabelStyle">
         <div class="row_nw_ce_ce dw_ctl_hlabel">{{ calcBbox.leftShow }}</div>
@@ -21,15 +22,15 @@
       </div>
     </Teleport>
 
-    <Teleport v-if="isShowBoundingBox" to="#editor_workspace_id">
+    <Teleport v-if="isCalcShowBoundingBox" to="#editor_workspace_id">
       <div class="dw_ctl_bbox" :style="bboxStyle"></div>
     </Teleport>
 
-    <Teleport v-if="isShowRestrictRect" to="#editor_workspace_id">
+    <Teleport v-if="isCalcShowRestrictRect" to="#editor_workspace_id">
       <div class="dw_ctl_limit_rect" :style="restrictRectStyle"></div>
     </Teleport>
 
-    <div class="dw_ctl_rotate">
+    <div v-if="isActive" class="dw_ctl_rotate">
       <div class="dw_ctl_rotateline"></div>
       <div class="dw_ctl_rotatebtn">
         <el-tooltip effect="dark" content="拖拽旋转,双击恢复" placement="top" :auto-close="1500" size="small">
@@ -46,7 +47,7 @@
         </el-tooltip>
       </div>
     </div>
-    <div class="row_nw_ce_ce dw_ctl_action">
+    <div v-if="isActive" class="row_nw_ce_ce dw_ctl_action">
       <div class="row_nw_ce_ce dw_ctl_actionbtn">
         <el-tooltip effect="dark" content="拖拽移动" placement="top" :auto-close="1500" size="small">
           <el-button
@@ -70,9 +71,33 @@
           <el-button type="success" icon="Lock" circle size="small" @click="setDomLocked(true)" />
         </el-tooltip>
       </div>
+
+      <div class="row_nw_ce_ce dw_ctl_actionbtn">
+        <el-popconfirm title="Are you sure to delete this?" @confirm="confirmDeleteCompHd">
+          <template #reference>
+            <el-button type="danger" icon="Delete" circle size="small" />
+          </template>
+          <template #actions="{ confirm, cancel }">
+            <el-button size="small" @click="cancel">No</el-button>
+            <el-button type="danger" size="small" @click="confirm">Yes?!</el-button>
+          </template>
+        </el-popconfirm>
+      </div>
+    </div>
+
+    <div v-if="isActive && isShowContextMenu" class="row_nw_ce_ce dw_cm_wrapper" :style="contextmenuStyle">
+      <div class="col_nw_fs_ce dw_cm_box">
+        <div v-for="menu in contextMenus" :key="menu.id" class="row_nw_fs_ce dw_cm_item" @click="() => menu.action()">
+          <div v-if="menu.icon" class="row_nw_ce_ce ce dw_cm_itemicon">
+            <!--  -->
+          </div>
+          <div class="row_nw_ce_ce ce dw_cm_itemlabel">{{ menu.labelZh }}</div>
+        </div>
+      </div>
     </div>
 
     <div
+      v-if="isActive"
       class="dw_ctl_lt"
       :class="{ dw_ctl_locked: isLocked }"
       @mousedown="ctlMouseDownHandle($event, 'lt')"
@@ -80,6 +105,7 @@
       @mouseup="ctlMouseUpHandle($event, 'lt')"
     ></div>
     <div
+      v-if="isActive"
       class="dw_ctl_lm"
       :class="{ dw_ctl_locked: isLocked }"
       @mousedown="ctlMouseDownHandle($event, 'lm')"
@@ -87,6 +113,7 @@
       @mouseup="ctlMouseUpHandle($event, 'lm')"
     ></div>
     <div
+      v-if="isActive"
       class="dw_ctl_lb"
       :class="{ dw_ctl_locked: isLocked }"
       @mousedown="ctlMouseDownHandle($event, 'lb')"
@@ -94,6 +121,7 @@
       @mouseup="ctlMouseUpHandle($event, 'lb')"
     ></div>
     <div
+      v-if="isActive"
       class="dw_ctl_rt"
       :class="{ dw_ctl_locked: isLocked }"
       @mousedown="ctlMouseDownHandle($event, 'rt')"
@@ -101,6 +129,7 @@
       @mouseup="ctlMouseUpHandle($event, 'rt')"
     ></div>
     <div
+      v-if="isActive"
       class="dw_ctl_rm"
       :class="{ dw_ctl_locked: isLocked }"
       @mousedown="ctlMouseDownHandle($event, 'rm')"
@@ -108,6 +137,7 @@
       @mouseup="ctlMouseUpHandle($event, 'rm')"
     ></div>
     <div
+      v-if="isActive"
       class="dw_ctl_rb"
       :class="{ dw_ctl_locked: isLocked }"
       @mousedown="ctlMouseDownHandle($event, 'rb')"
@@ -115,6 +145,7 @@
       @mouseup="ctlMouseUpHandle($event, 'rb')"
     ></div>
     <div
+      v-if="isActive"
       class="dw_ctl_mt"
       :class="{ dw_ctl_locked: isLocked }"
       @mousedown="ctlMouseDownHandle($event, 'mt')"
@@ -122,23 +153,37 @@
       @mouseup="ctlMouseUpHandle($event, 'mt')"
     ></div>
     <div
+      v-if="isActive"
       class="dw_ctl_mb"
       :class="{ dw_ctl_locked: isLocked }"
       @mousedown="ctlMouseDownHandle($event, 'mb')"
       @mousemove="ctlMouseMoveHandle($event, 'mb')"
       @mouseup="ctlMouseUpHandle($event, 'mb')"
     ></div>
-    <div class="row_nw_ce_ce dw_ctx_wraper">
+    <div class="row_nw_ce_ce dw_ctx_wraper" @mousedown="ctlBodyMouseDownHandle($event, 'pan')">
       <slot></slot>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { ref, reactive, watch, onMounted, computed, nextTick } from "vue";
-  // import { nanoid } from "@/utils/common/nanoid";
+  import { ref, reactive, watch, onMounted, computed, nextTick, onUnmounted } from "vue";
 
-  // const wraperId = nanoid();
+  import { useEditorComponentstore, globalEditor } from "@/stores/editorConfig";
+  import { CssHeightOptions } from "@/h5/cssData/NamePixel";
+
+  const { editorComponents, setEditorCurrentComp, removeEditorComponents } = useEditorComponentstore();
+
+  const props = defineProps({
+    vNodeData: {
+      type: Object,
+      default() {
+        return null;
+      },
+    },
+  });
+
+  const currentModifyComp = ref(null);
 
   const ctlCursor = {
     rotate: "grabbing",
@@ -154,13 +199,36 @@
     mb: "n-resize",
   };
 
+  const isActive = computed(() => {
+    if (props.vNodeData && editorComponents.currentComp && props.vNodeData.id == editorComponents.currentComp.id) {
+      return true;
+    } else {
+      return false;
+    }
+  });
+
   const divWrapperRef = ref(null);
+  const isShowContextMenu = ref(false);
 
   const isShowCtlMask = ref(false);
+
   const isShowAlignAxis = ref(false);
   const isShowBoundingBox = ref(false);
+
   const isShowRestrictRect = ref(false);
   const isLocked = ref(false);
+
+  const isCalcShowAlignAxis = computed(() => {
+    return isShowCtlMask.value && isShowAlignAxis.value && isActive.value;
+  });
+
+  const isCalcShowBoundingBox = computed(() => {
+    return isShowCtlMask.value && isShowBoundingBox.value && isActive.value;
+  });
+
+  const isCalcShowRestrictRect = computed(() => {
+    return isShowCtlMask.value && isShowRestrictRect.value && isActive.value;
+  });
 
   let currentDirection = "";
   let oldX = -1;
@@ -168,17 +236,17 @@
   const isSnapToGrid = true;
 
   const restrictRect = {
-    top: 10,
-    left: 10,
-    bottom: 600,
-    right: 600,
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
   };
 
   const restrictRectStyle = reactive({
-    top: "10px",
-    left: "10px",
-    width: "590px",
-    height: "590px",
+    top: "0px",
+    left: "0px",
+    width: "0px",
+    height: "0px",
   });
 
   const maskStyle = reactive({
@@ -186,12 +254,12 @@
   });
 
   const calcContainer = reactive({
-    top: 90,
-    left: 90,
-    bottom: 390,
-    right: 390,
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
     rotate: 0,
-    backgroundColor: "blue",
+    zIndex: 1,
   });
 
   const containerStyle = computed(() => {
@@ -201,11 +269,12 @@
       top: `${calcContainer.top}px`,
       left: `${calcContainer.left}px`,
       transform: `rotate(${calcContainer.rotate}deg)`,
+      zIndex: calcContainer.zIndex,
       // transform: "rotateZ(0)",
-      backgroundColor: calcContainer.backgroundColor,
     };
   });
 
+  // 这是为了给 bbox 计算用的
   const calcBbox = reactive({
     topShow: `${calcContainer.top - 2}px`,
     leftShow: `${calcContainer.left - 2}px`,
@@ -239,6 +308,165 @@
     top: "50px",
     left: "50px",
   });
+
+  const contextmenuStyle = reactive({
+    top: "50px",
+    left: "50px",
+  });
+
+  const contextMenus = ref([
+    {
+      id: "uplayer",
+      labelZh: "上一层",
+      labelEn: "up layer",
+      icon: "",
+      action: () => {
+        isShowContextMenu.value = false;
+        if (props.vNodeData.styles) {
+          const styles = props.vNodeData.styles;
+          const zIndex = styles.zIndex;
+          if (zIndex) {
+            zIndex.value = zIndex.value + 1;
+            if (zIndex.value > zIndex.max) {
+              zIndex.value = zIndex.max;
+            }
+          }
+        }
+      },
+    },
+    {
+      id: "downlayer",
+      labelZh: "下一层",
+      labelEn: "down layer",
+      icon: "",
+      action: () => {
+        isShowContextMenu.value = false;
+        if (props.vNodeData.styles) {
+          const styles = props.vNodeData.styles;
+          const zIndex = styles.zIndex;
+          if (zIndex) {
+            zIndex.value = zIndex.value - 1;
+            if (zIndex.value > zIndex.min) {
+              zIndex.value = zIndex.min;
+            }
+          }
+        }
+      },
+    },
+  ]);
+  const initCalcContainer = () => {
+    const styles = props.vNodeData.styles;
+
+    currentModifyComp.value = props.vNodeData;
+    isLocked.value = props.vNodeData.isLocked;
+
+    calcContainer.top = +styles.top.value;
+    calcContainer.left = +styles.left.value;
+    calcContainer.bottom = +styles.top.value + +styles.height.value;
+    calcContainer.right = styles.left.value + +styles.width.value;
+
+    calcContainer.rotate = +styles.rotate.value;
+    calcContainer.zIndex = +styles.zIndex.value;
+
+    nextTick(() => {
+      reCalcLimitRect();
+      isShowAlignAxis.value = true;
+      isShowBoundingBox.value = true;
+    });
+  };
+
+  const updateRestrictRect = () => {
+    const vNodeData = props.vNodeData;
+    const styles = props.vNodeData.styles;
+    if (vNodeData.isUseRestrictRect) {
+      isShowRestrictRect.value = true;
+      if (
+        vNodeData.restrictRect.left == 0 &&
+        vNodeData.restrictRect.right == 0 &&
+        vNodeData.restrictRect.top == 0 &&
+        vNodeData.restrictRect.bottom == 0
+      ) {
+        isShowRestrictRect.value = false;
+      } else {
+        isShowRestrictRect.value = true;
+        restrictRect.left = vNodeData.restrictRect.left;
+        restrictRect.right = vNodeData.restrictRect.right;
+        restrictRect.top = vNodeData.restrictRect.top;
+        restrictRect.bottom = vNodeData.restrictRect.bottom;
+
+        restrictRectStyle.left = vNodeData.restrictRect.left + "px";
+        restrictRectStyle.width = vNodeData.restrictRect.right - vNodeData.restrictRect.left + "px";
+        restrictRectStyle.top = vNodeData.restrictRect.top + "px";
+        restrictRectStyle.height = vNodeData.restrictRect.bottom - vNodeData.restrictRect.top + "px";
+      }
+    } else {
+      isShowRestrictRect.value = false;
+    }
+  };
+
+  const updateBboxAlignStyle = () => {
+    const relativeDom = document.getElementById("editor_workspace_id");
+    if (divWrapperRef.value && relativeDom) {
+      const rect = divWrapperRef.value.getBoundingClientRect();
+      const relativeRect = relativeDom.getBoundingClientRect();
+
+      // 获取滚动偏移
+      // const scrollX = window.scrollX || document.documentElement.scrollLeft;
+      // const scrollY = window.scrollY || document.documentElement.scrollTop;
+      // console.log("relativeRect", rect, relativeRect);
+
+      if (rect) {
+        const axisTop = rect.top - relativeRect.top - 2;
+        const axisLeft = rect.left - relativeRect.left - 2;
+
+        bboxStyle.width = `${rect.width + 4}px`;
+        bboxStyle.height = `${rect.height + 4}px`;
+        bboxStyle.top = `${axisTop}px`;
+        bboxStyle.left = `${axisLeft}px`;
+
+        calcBbox.topShow = `${(rect.top - relativeRect.top).toFixed(0)}px`;
+        calcBbox.leftShow = `${(rect.left - relativeRect.left).toFixed(0)}px`;
+
+        calcBbox.top = rect.top - relativeRect.top;
+        calcBbox.left = rect.left - relativeRect.left;
+
+        calcBbox.bottom = calcBbox.top + rect.height;
+        calcBbox.right = calcBbox.left + rect.width;
+
+        alignAxisXStyle.top = `${axisTop}px`;
+
+        alignAxisYStyle.left = `${axisLeft}px`;
+
+        alignAxisHLabelStyle.top = `${axisTop}px`;
+        alignAxisHLabelStyle.left = `${axisLeft}px`;
+
+        alignAxisVLabelStyle.top = `${axisTop}px`;
+        alignAxisVLabelStyle.left = `${axisLeft}px`;
+      }
+    } else {
+      bboxStyle.width = `${calcContainer.right - calcContainer.left + 4}px`;
+      bboxStyle.height = `${calcContainer.bottom - calcContainer.top + 4}px`;
+      bboxStyle.top = `${calcContainer.top - 2}px`;
+      bboxStyle.left = `${calcContainer.left - 2}px`;
+
+      calcBbox.topShow = `${calcContainer.top - 2}px`;
+      calcBbox.leftShow = `${calcContainer.left - 2}px`;
+
+      calcBbox.top = calcContainer.top;
+      calcBbox.left = calcContainer.left;
+
+      calcBbox.bottom = calcContainer.bottom;
+      calcBbox.right = calcContainer.right;
+    }
+  };
+
+  function confirmDeleteCompHd() {
+    console.log("confirmDeleteCompHd");
+    if (currentModifyComp.value) {
+      removeEditorComponents(currentModifyComp.value);
+      setEditorCurrentComp(editorComponents.workSpace);
+    }
+  }
 
   function reCalcLimitRect() {
     nextTick(() => {
@@ -289,51 +517,32 @@
   watch(
     calcContainer,
     () => {
-      nextTick(() => {
-        const relativeDom = document.getElementById("editor_workspace_id");
-        if (divWrapperRef.value && relativeDom) {
-          const rect = divWrapperRef.value.getBoundingClientRect();
-          const relativeRect = relativeDom.getBoundingClientRect();
-
-          // 获取滚动偏移
-          // const scrollX = window.scrollX || document.documentElement.scrollLeft;
-          // const scrollY = window.scrollY || document.documentElement.scrollTop;
-          // console.log("relativeRect", rect, relativeRect);
-
-          if (rect) {
-            const axisTop = rect.top - relativeRect.top - 2;
-            const axisLeft = rect.left - relativeRect.left - 2;
-
-            bboxStyle.width = `${rect.width + 4}px`;
-            bboxStyle.height = `${rect.height + 4}px`;
-            bboxStyle.top = `${axisTop}px`;
-            bboxStyle.left = `${axisLeft}px`;
-
-            calcBbox.topShow = `${(rect.top - relativeRect.top).toFixed(0)}px`;
-            calcBbox.leftShow = `${(rect.left - relativeRect.left).toFixed(0)}px`;
-
-            calcBbox.top = rect.top - relativeRect.top;
-            calcBbox.left = rect.left - relativeRect.left;
-
-            calcBbox.bottom = calcBbox.top + rect.height;
-            calcBbox.right = calcBbox.left + rect.width;
-
-            alignAxisXStyle.top = `${axisTop}px`;
-
-            alignAxisYStyle.left = `${axisLeft}px`;
-
-            alignAxisHLabelStyle.top = `${axisTop}px`;
-            alignAxisHLabelStyle.left = `${axisLeft}px`;
-
-            alignAxisVLabelStyle.top = `${axisTop}px`;
-            alignAxisVLabelStyle.left = `${axisLeft}px`;
+      if (currentModifyComp.value) {
+        currentModifyComp.value.styles.top.value = calcContainer.top;
+        currentModifyComp.value.styles.left.value = calcContainer.left;
+        currentModifyComp.value.styles.width.value = calcContainer.right - calcContainer.left;
+        currentModifyComp.value.styles.height.value = calcContainer.bottom - calcContainer.top;
+        currentModifyComp.value.styles.rotate.value = calcContainer.rotate;
+        currentModifyComp.value.styles.zIndex.value = calcContainer.zIndex;
+        const childComps = currentModifyComp.value.children;
+        const workSpace = globalEditor.workSpace;
+        if (childComps) {
+          const ckeys = Object.keys(childComps);
+          for (let i = 0; i < ckeys.length; i++) {
+            const ckey = ckeys[i];
+            const cComp = childComps[ckey];
+            if (cComp) {
+              cComp.restrictRect.top = calcContainer.top + workSpace.top;
+              cComp.restrictRect.left = calcContainer.left + workSpace.left;
+              cComp.restrictRect.right = calcContainer.right + workSpace.left;
+              cComp.restrictRect.bottom = calcContainer.bottom + workSpace.top;
+            }
           }
-        } else {
-          bboxStyle.width = `${calcContainer.right - calcContainer.left + 4}px`;
-          bboxStyle.height = `${calcContainer.bottom - calcContainer.top + 4}px`;
-          bboxStyle.top = `${calcContainer.top - 2}px`;
-          bboxStyle.left = `${calcContainer.left - 2}px`;
         }
+      }
+
+      nextTick(() => {
+        updateBboxAlignStyle();
       });
     },
     {
@@ -342,12 +551,112 @@
     },
   );
 
+  watch(
+    isActive,
+    () => {
+      if (isActive.value) {
+        updateRestrictRect();
+        updateBboxAlignStyle();
+      }
+    },
+    {
+      immediate: false,
+      deep: true,
+    },
+  );
+
+  watch(
+    () => props.vNodeData.isUseRestrictRect,
+    () => {
+      updateRestrictRect();
+    },
+    {
+      immediate: false,
+      deep: true,
+    },
+  );
+
+  watch(
+    () => editorComponents.refreshTransToCompFlag,
+    () => {
+      if (isActive.value) {
+        initCalcContainer();
+        updateBboxAlignStyle();
+      }
+    },
+    {
+      immediate: false,
+      deep: false,
+    },
+  );
+
+  let isKeyCanPan = false;
+  let isKeyCanRotate = false;
+  const handleKeyDown = (e) => {
+    // ESC 键退出全屏
+    // if (e.key === 'Escape' && isFullscreen.value) {
+    //   e.preventDefault()
+    //   // exitFullscreen()
+    //   return
+    // }
+
+    if (e.code === "Space" && !isKeyCanPan) {
+      e.preventDefault();
+      isKeyCanPan = true;
+    }
+
+    if (e.code === "KeyR" && !isKeyCanRotate) {
+      e.preventDefault();
+      isKeyCanRotate = true;
+    }
+  };
+
+  // 键盘释放事件处理
+  const handleKeyUp = (e) => {
+    if (e.code === "Space" && isKeyCanPan) {
+      e.preventDefault();
+      isKeyCanPan = false;
+    }
+
+    if (e.code === "KeyR" && isKeyCanRotate) {
+      e.preventDefault();
+      isKeyCanRotate = false;
+    }
+
+    if (e.code === "KeyL") {
+      isLocked.value = !isLocked.value;
+      if (currentModifyComp.value) {
+        currentModifyComp.value.isLocked = isLocked.value;
+      }
+    }
+  };
+
+  const contextmenuHd = (e) => {
+    // console.log("menu", e);
+    if (e.button == 2) {
+      e.preventDefault();
+      e.stopPropagation();
+      contextmenuStyle.left = e.offsetX + "px";
+      contextmenuStyle.top = e.offsetY + "px";
+      isShowContextMenu.value = true;
+      return false;
+    } else {
+      isShowContextMenu.value = false;
+      e.stopPropagation();
+      return false;
+    }
+  };
+
   onMounted(() => {
-    nextTick(() => {
-      isShowAlignAxis.value = true;
-      isShowBoundingBox.value = true;
-      isShowRestrictRect.value = true;
-    });
+    initCalcContainer();
+    updateRestrictRect();
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+  });
+
+  onUnmounted(() => {
+    window.removeEventListener("keydown", handleKeyDown);
+    window.removeEventListener("keyup", handleKeyUp);
   });
 
   function getPosXY(pos, gap = 16) {
@@ -365,6 +674,9 @@
 
   function setDomLocked(isLock = false) {
     isLocked.value = isLock;
+    if (currentModifyComp.value) {
+      currentModifyComp.value.isLocked = isLock;
+    }
   }
 
   function resetCtlParams() {
@@ -610,11 +922,23 @@
   }
 
   function maskCtlMouseOutHandle(event) {
-    // resetCtlParams();
+    resetCtlParams();
   }
 
   function maskCtlMouseUpHandle(event) {
     resetCtlParams();
+  }
+
+  function ctlBodyMouseDownHandle(event: MouseEvent, direction = "pan") {
+    if (isKeyCanPan) {
+      direction = "pan";
+      ctlMouseDownHandle(event, direction);
+    } else if (isKeyCanRotate) {
+      direction = "rotate";
+      ctlMouseDownHandle(event, direction);
+    } else {
+      contextmenuHd(event);
+    }
   }
 </script>
 
@@ -685,7 +1009,7 @@
     position: absolute;
     background-color: transparent;
     outline: 1px solid #ff6464;
-    z-index: 1;
+    z-index: 10;
     box-shadow:
       0 0 2px #ff6464,
       /* 内层柔光 */ 0 0 6px #ff6464,
@@ -696,6 +1020,44 @@
     width: 1.5rem;
     height: 1.5rem;
     margin-left: 0.5rem;
+  }
+
+  .dw_cm_wrapper {
+    position: fixed;
+    width: max-content;
+    height: auto;
+    z-index: 10;
+    background-color: rgba(255, 255, 255, 1);
+    border-radius: 0.5rem;
+    padding: 1rem 0rem;
+  }
+
+  .dw_cm_box {
+    width: max-content;
+    height: auto;
+  }
+
+  .dw_cm_item {
+    width: max-content;
+    height: 2rem;
+    padding: 0rem 0.75rem;
+  }
+
+  .dw_cm_item:hover {
+    background: pink;
+  }
+
+  .dw_cm_itemicon {
+    width: 1.5rem;
+    height: 100%;
+    margin-right: 0.5rem;
+  }
+
+  .dw_cm_itemlabel {
+    width: max-content;
+    height: 100%;
+    font-size: 0.875rem;
+    color: rgba(0, 0, 0, 1);
   }
 
   .dw_ctl_lt {
@@ -801,13 +1163,14 @@
   .dw_ctl_bbox {
     position: absolute;
     border: 1px dashed pink;
-    z-index: 1;
+    z-index: 10;
   }
 
   .dw_ctx_wraper {
     width: 100%;
     height: 100%;
     z-index: 2;
+    background-color: transparent;
   }
 
   .dw_ctl_hline {

@@ -33,19 +33,19 @@
 
 <script setup lang="ts">
   import { ref, reactive, onMounted, computed, watch, nextTick } from "vue";
-  import { useEditorConfigStore, globalEditor } from "@/stores/editorConfig";
+  import { useEditorComponentstore, globalEditor } from "@/stores/editorConfig";
 
-  const { editorConfig, setEditorRefreshShape } = useEditorConfigStore();
+  const { editorComponents, setEditorRefreshTransToCompFlag } = useEditorComponentstore();
   const currentText = ref("");
   let currentComp = null;
   const isEnable = ref(false);
   const isFoucus = ref(false);
 
   function init() {
-    if (editorConfig.currentParentComp && editorConfig.currentParentComp.text) {
+    if (editorComponents.currentComp && editorComponents.currentComp.text) {
       isEnable.value = true;
-      currentText.value = editorConfig.currentParentComp.text;
-      currentComp = editorConfig.currentParentComp;
+      currentText.value = editorComponents.currentComp.text;
+      currentComp = editorComponents.currentComp;
     } else {
       isEnable.value = false;
       currentText.value = "";
@@ -58,8 +58,9 @@
   });
 
   function textChangeHd() {
-    if (isEnable.value && editorConfig.currentParentComp) {
-      editorConfig.currentParentComp.text = currentText.value;
+    if (isEnable.value && editorComponents.currentParentComp) {
+      editorComponents.currentParentComp.text = currentText.value;
+      setEditorRefreshTransToCompFlag();
     }
   }
 
