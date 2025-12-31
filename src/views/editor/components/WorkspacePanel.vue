@@ -27,7 +27,7 @@
   .ws_container {
     position: fixed;
     width: calc(100vw - 2rem);
-    height: calc(100vh - 5rem);
+    height: calc(100vh - 7rem);
     top: 5rem;
     left: 2rem;
     z-index: 1;
@@ -38,13 +38,20 @@
     position: absolute;
     width: 100%;
     height: 100%;
+    padding-right: 2rem;
+    padding-bottom: 2rem;
     top: 0px;
     left: 0px;
     z-index: 2;
     overflow: scroll;
   }
 
-  .ws_ctx_wraper::-webkit-scrollbar {
+  .ws_ctx_wraper::-webkit-scrollbar:vertical {
     display: none;
+    width: 0;
+  }
+
+  .ws_ctx_wraper::-webkit-scrollbar:horizontal {
+    display: block;
   }
 </style>
