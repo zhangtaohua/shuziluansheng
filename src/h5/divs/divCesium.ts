@@ -1,32 +1,30 @@
 import { nanoid } from "@/utils/common/nanoid";
 import {
-  createCssBottomProp,
   createCssHeightProp,
   createCssLeftProp,
-  createCssRightProp,
   createCssRotateProp,
   createCssToptProp,
   createCssWidthProp,
   createCssZIndexProp,
 } from "../cssProps/cssPixelProps";
-import { createCssBackgroundColorProp } from "../cssProps/cssColorProps";
+import { createCssBackgroundColorProp, createCssColorProp } from "../cssProps/cssColorProps";
 import { createCssBasicCombineProp, createCssBorderCombineProp } from "../cssProps/cssCombinesProps";
 
-export class h5DivContainer {
-  public id = "h5_div_" + nanoid(10);
+export class h5DivCesium {
+  public id = "h5_cesium_" + nanoid(10);
   public parentId = "";
-  public name = "div";
-  public title = "div";
+  public name = "cesium";
+  public title = "cesium";
 
-  public labelZh = "盒子";
-  public labelEn = "div";
-  public description = "A div box";
+  public labelZh = "3D地图";
+  public labelEn = "cesium";
+  public description = "A cesium box";
   public descriptionZh = "";
 
-  public type = "h5";
+  public type = "cesium";
   public componentType = "html";
   public componentProps = "h5#div";
-  public tag = "CommonDiv";
+  public tag = "CommonDivCesium";
   public h5Tag = "div";
 
   public children = undefined;
@@ -59,7 +57,7 @@ export class h5DivContainer {
     if (options.id) {
       this.id = options.id;
     } else if (options.name) {
-      this.id = "h5_div_" + options.name + "_" + nanoid(10);
+      this.id = "h5_cesium_" + options.name + "_" + nanoid(10);
     }
 
     if (options.parentId) {
@@ -181,4 +179,4 @@ export class h5DivContainer {
   }
 }
 
-export default h5DivContainer;
+export default h5DivCesium;

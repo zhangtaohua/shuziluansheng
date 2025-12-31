@@ -10,11 +10,6 @@
             </el-icon>
           </div>
         </div>
-
-        <div class="row_nw_ce_ce rparams_in_header_tabbox">
-          <el-button type="primary" plain>样式</el-button>
-          <el-button plain>数据</el-button>
-        </div>
       </div>
 
       <div class="grave_gap"></div>
@@ -35,16 +30,6 @@
             <el-tooltip v-else effect="dark" content="锁定" placement="top" :auto-close="1500" size="small">
               <el-button type="success" icon="Lock" circle size="small" @click="setDomLocked(true)" />
             </el-tooltip>
-
-            <el-popconfirm title="Are you sure to delete this?" @confirm="confirmDeleteCompHd">
-              <template #reference>
-                <el-button type="danger" icon="Delete" circle size="small" />
-              </template>
-              <template #actions="{ confirm, cancel }">
-                <el-button size="small" @click="cancel">No</el-button>
-                <el-button type="danger" size="small" @click="confirm">Yes?!</el-button>
-              </template>
-            </el-popconfirm>
           </div>
         </div>
 
@@ -68,7 +53,7 @@
 
   import { globalEditor, useEditorConfigStore, useEditorComponentstore } from "@/stores/editorConfig";
 
-  const { editorComponents, setEditorCurrentComp, removeEditorComponents } = useEditorComponentstore();
+  const { editorComponents } = useEditorComponentstore();
 
   const currentComp = ref(null);
   const emits = defineEmits(["unExpand"]);
@@ -91,13 +76,6 @@
   function setDomLocked(isLocked: boolean) {
     if (currentComp.value) {
       currentComp.value.isLocked = isLocked;
-    }
-  }
-
-  function confirmDeleteCompHd() {
-    if (currentComp.value) {
-      removeEditorComponents(currentComp.value);
-      setEditorCurrentComp(editorComponents.workSpace);
     }
   }
 

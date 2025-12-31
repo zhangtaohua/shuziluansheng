@@ -34,12 +34,17 @@
   const divStyles = computed(() => {
     if (props.vNodeData.styles) {
       const style = {};
-      const values = Object.values(props.vNodeData.styles);
-      values.forEach((prop: any) => {
-        if (prop.getStyleName() != "top" && prop.getStyleName() != "left" && prop.getStyleName() != "rotate") {
-          style[prop.getStyleName()] = prop.getStyleValue();
-        }
-      });
+      if (props.vNodeData.styles) {
+        const keys = Object.keys(props.vNodeData.styles);
+        keys.forEach((key) => {
+          const values = Object.values(props.vNodeData.styles[key].properties);
+          values.forEach((prop: any) => {
+            if (prop.getStyleName() != "top" && prop.getStyleName() != "left" && prop.getStyleName() != "rotate") {
+              style[prop.getStyleName()] = prop.getStyleValue();
+            }
+          });
+        });
+      }
       return style;
     } else {
       return {};

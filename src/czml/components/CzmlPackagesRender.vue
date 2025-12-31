@@ -65,7 +65,7 @@
 </script>
 
 <style scoped>
-  .props_container {
+  .czml_props_container {
     width: 100%;
     height: auto;
     background-color: transparent;

@@ -24,15 +24,24 @@
 
   const compsOptionsRef = ref(null);
 
-  const blankComponents = ref([]);
-
-  const currentComps = ref(blankComponents);
+  const currentComps = ref([]);
 
   const workSpaceComponents = ref([]);
+  const blankComponents = ref([]);
+  const cesiumComponents = ref([]);
 
   onMounted(() => {
-    workSpaceComponents.value = [compsOptionsRef.value.divOptions, compsOptionsRef.value.divTextOptions];
     blankComponents.value = [compsOptionsRef.value.workSpaceOptions];
+
+    workSpaceComponents.value = [
+      compsOptionsRef.value.divOptions,
+      compsOptionsRef.value.divImageOptions,
+      compsOptionsRef.value.divTextOptions,
+      compsOptionsRef.value.divCesiumOptions,
+    ];
+
+    cesiumComponents.value = [compsOptionsRef.value.cesiumCzmlOptions];
+    currentComps.value = blankComponents.value;
   });
 
   watch(
@@ -43,6 +52,8 @@
           const currentComp = editorComponents.currentComp;
           if (currentComp.type == "workspace") {
             currentComps.value = workSpaceComponents.value;
+          } else if (currentComp.type == "cesium") {
+            currentComps.value = cesiumComponents.value;
           }
         } else {
           currentComps.value = workSpaceComponents.value;

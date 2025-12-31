@@ -15,6 +15,7 @@ import {
 import { createCssBackgroundColorProp, createCssColorProp } from "../cssProps/cssColorProps";
 import { createCssFontStyleProp, createCssFontWeightProp } from "../cssProps/cssPureOptionsProps";
 import { createCssBackgroundClipTextProp } from "../cssProps/cssCheckedProps";
+import { createCssBasicCombineProp } from "../cssProps/cssCombinesProps";
 
 export class h5DivText {
   public id = "h5_text_" + nanoid(10);
@@ -46,21 +47,20 @@ export class h5DivText {
   public text =
     "London. Michaelmas term lately over,London.London. Michaelmas term lately over,London.London. Michaelmas term lately over,London.London. Michaelmas term lately over,London. Michaelmas term lately over,London. Michaelmas term lately over,London. Michaelmas term lately over,London. Michaelmas term lately over,";
   public styles = {
-    top: createCssToptProp(),
-    left: createCssLeftProp(),
-    width: createCssWidthProp(),
-    height: createCssHeightProp(),
-    rotate: createCssRotateProp(),
-    zIndex: createCssZIndexProp(),
-    "font-size": createCssFontSizeProp(),
-    "line-height": createCssLineHeightProp(),
-    color: createCssColorProp(),
-    "font-weight": createCssFontWeightProp(),
-    "font-style": createCssFontStyleProp(),
-    "text-ellipse-lines": createCssTextEllipseLinesProp(),
-    "background-clip-text": createCssBackgroundClipTextProp(),
-
-    backgroundColor: createCssBackgroundColorProp(),
+    basic: createCssBasicCombineProp(),
+    text: createCssBasicCombineProp({
+      labelZh: "文本样式",
+      labelEn: "text",
+      properties: {
+        "font-size": createCssFontSizeProp(),
+        "line-height": createCssLineHeightProp(),
+        color: createCssColorProp(),
+        "font-weight": createCssFontWeightProp(),
+        "font-style": createCssFontStyleProp(),
+        "text-ellipse-lines": createCssTextEllipseLinesProp(),
+        "background-clip-text": createCssBackgroundClipTextProp(),
+      },
+    }),
   };
   public restrictRect = {
     top: 0,
@@ -78,7 +78,7 @@ export class h5DivText {
     if (options.id) {
       this.id = options.id;
     } else if (options.name) {
-      this.id = "h5_div_" + options.name + "_" + nanoid(10);
+      this.id = "h5_text_" + options.name + "_" + nanoid(10);
     }
 
     if (options.parentId) {
@@ -129,8 +129,8 @@ export class h5DivText {
       this.classNames = options.classNames;
     }
 
-    if (options.classNames) {
-      this.classNames = options.classNames;
+    if (options.text) {
+      this.text = options.text;
     }
 
     if (options.styles) {
@@ -142,27 +142,27 @@ export class h5DivText {
     }
 
     if (options.width) {
-      this.styles.width = createCssWidthProp({
+      this.styles.basic.properties.width = createCssWidthProp({
         value: options.width,
       });
     }
 
     if (options.height) {
-      this.styles.height = createCssHeightProp({
+      this.styles.basic.properties.height = createCssHeightProp({
         value: options.height,
       });
     }
 
     if (options.zIndex) {
-      this.styles.zIndex = createCssZIndexProp({
+      this.styles.basic.properties.zIndex = createCssZIndexProp({
         value: options.zIndex,
-        min: options.zIndexMin ?? options.zIndex ?? 1,
+        min: options.zIndexMin ?? options.zIndex ?? 2,
         max: options.zIndexMax ?? 0,
       });
     }
 
     if (options.backgroundColor) {
-      this.styles.backgroundColor = createCssBackgroundColorProp({
+      this.styles.basic.properties.backgroundColor = createCssBackgroundColorProp({
         value: options.backgroundColor,
       });
     }

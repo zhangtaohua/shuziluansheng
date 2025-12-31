@@ -1,184 +1,97 @@
 import { nanoid } from "@/utils/common/nanoid";
-
-// width
-// height
-// max-width
-// min-width
-// max-height
-// min-height
-// font-size
-// margin
-// padding
-// border-width
-// top
-// bottom
-// left
-// right
-// line-height (行高，如果设置为具体值，可以使用 px)
-// border-radius (边框圆角半径)
-// box-shadow (盒子阴影的偏移量和模糊半径)
-// background-position (背景图片的定位)
-
-export const CssWidthOptions = {
-  name: "width",
-  vueName: "width",
-  labelZh: "宽度",
-  labelEn: "width",
-  tag: "NumberInputSlider",
-  value: 200,
-  unit: "px",
-  isEnable: true,
-};
-
-export const CssMaxWidthOptions = {
-  name: "max-width",
-  vueName: "maxWidth",
-  labelZh: "最大宽度",
-  labelEn: "max width",
-  tag: "NumberInputSlider",
-  value: 200,
-  unit: "px",
-  isEnable: true,
-};
-
-export const CssMinWidthOptions = {
-  name: "min-width",
-  vueName: "minWidth",
-  labelZh: "最小宽度",
-  labelEn: "min width",
-  tag: "NumberInputSlider",
-  value: 200,
-  unit: "px",
-  isEnable: true,
-};
-
-export const CssHeightOptions = {
-  name: "height",
-  vueName: "height",
-  labelZh: "高度",
-  labelEn: "height",
-  tag: "NumberInputSlider",
-  value: 200,
-  unit: "px",
-  isEnable: true,
-};
-
-export const CssMaxHeightOptions = {
-  name: "max-height",
-  vueName: "maxHeight",
-  labelZh: "最大高度",
-  labelEn: "max height",
-  tag: "NumberInputSlider",
-  value: 200,
-  unit: "px",
-  isEnable: true,
-};
-
-export const CssMinHeightOptions = {
-  name: "min-height",
-  vueName: "minHeight",
-  labelZh: "最小高度",
-  labelEn: "min height",
-  tag: "NumberInputSlider",
-  value: 200,
-  unit: "px",
-  isEnable: true,
-};
-
-export const CssFontSizeOptions = {
-  name: "font-size",
-  vueName: "fontSize",
-  labelZh: "文字大小",
-  labelEn: "font-size",
-  tag: "NumberInputSlider",
-  value: 16,
-  unit: "px",
-  max: 300,
-  min: 8,
-  isEnable: true,
-};
-
-export const CssLineHeightOptions = {
-  name: "line-height",
-  vueName: "lineHeight",
-  labelZh: "行高",
-  labelEn: "line height",
-  tag: "NumberInputSlider",
-  value: 16,
-  unit: "px",
-  max: 100,
-  min: 0,
-  isEnable: true,
-};
-
-export const CssTopOptions = {
-  name: "top",
-  vueName: "top",
-  labelZh: "顶部",
-  labelEn: "top",
-  tag: "NumberInputSlider",
-  value: 48,
-  unit: "px",
-  max: 2000,
-  min: -1000,
-  isEnable: true,
-};
-
-export const CssLeftOptions = {
-  name: "left",
-  vueName: "left",
-  labelZh: "左侧",
-  labelEn: "left",
-  tag: "NumberInputSlider",
-  value: 48,
-  unit: "px",
-  max: 2000,
-  min: -1000,
-  isEnable: true,
-};
-
-export const CssTextEllipseLines = {
-  name: "text-ellipse-lines",
-  vueName: "text-ellipse-lines",
-  labelZh: "文本省略行数",
-  labelEn: "text ellipse lines",
-  tag: "NumberInputSlider",
-  value: 0,
-  unit: "lines",
-  max: 10,
-  min: 0,
-  isEnable: true,
-};
+import { cssDataType } from "./globalCss";
 
 export class CssNamePixel {
   public id = "css_name_px_" + nanoid(10);
-  public name = "name";
-  public vueName = "name";
+  public name = "px";
+  public title = "px";
+
+  public vueStyleName = "name";
+  public cssStyleName = "name";
+
   public labelZh = "名称";
   public labelEn = "name";
-  public tag = "NumberInputSlider";
-  public _value = 200;
-  public unit = "px";
   public description = "";
   public descriptionZh = "";
+
+  public type = cssDataType.pureValue;
+
+  public tag = "NumberInputSlider";
+  public _value = 0;
+
+  public properties = undefined;
+
+  public unit = "px";
+  public unitOptions = null;
 
   private _min = 0;
   private _max = 5000;
   private _step = 1;
   private _retainDecimalPlaces = 0;
+
   public isEnable = true;
 
   constructor(options: any) {
-    this.id = options.id ? options.id : "css_" + options.name + "_" + nanoid(10);
-    this.name = options.name;
-    this.vueName = options.vueName ? options.vueName : options.name;
-    this.labelZh = options.labelZh ? options.labelZh : options.name;
-    this.labelEn = options.labelEn ? options.labelEn : options.name;
-    this.tag = options.tag ? options.tag : "NumberInputSlider";
+    if (!options) {
+      return;
+    }
 
-    this._value = options.value;
-    this.unit = options.unit;
-    this.isEnable = options.isEnable ?? true;
+    if (options.id) {
+      this.id = options.id;
+    } else if (options.name) {
+      this.id = "css_name_px_" + options.name + "_" + nanoid(10);
+    }
+
+    if (options.name) {
+      this.name = options.name;
+    }
+
+    if (options.title) {
+      this.title = options.title;
+    }
+
+    if (options.vueStyleName) {
+      this.vueStyleName = options.vueStyleName;
+    }
+
+    if (options.cssStyleName) {
+      this.cssStyleName = options.cssStyleName;
+    }
+
+    if (options.labelZh) {
+      this.labelZh = options.labelZh;
+    }
+
+    if (options.labelEn) {
+      this.labelEn = options.labelEn;
+    }
+
+    if (options.description) {
+      this.description = options.description;
+    }
+
+    if (options.descriptionZh) {
+      this.descriptionZh = options.descriptionZh;
+    }
+
+    if (options.type) {
+      this.type = options.type;
+    }
+
+    if (options.tag) {
+      this.tag = options.tag;
+    }
+
+    if (options.properties) {
+      this.properties = options.properties;
+    }
+
+    if (options.unitOptions) {
+      this.unitOptions = options.unitOptions;
+    }
+
+    this._value = options.value ?? 0;
+    this.unit = options.unit ?? "px";
 
     if (options.max != undefined && options.min != undefined && options.max > options.min) {
       this._max = options.max;
@@ -199,13 +112,7 @@ export class CssNamePixel {
       this._retainDecimalPlaces = +options.retainDecimalPlaces;
     }
 
-    if (options.description) {
-      this.description = options.description;
-    }
-
-    if (options.descriptionZh) {
-      this.descriptionZh = options.descriptionZh;
-    }
+    this.isEnable = options.isEnable ?? true;
   }
 
   get value() {
@@ -257,9 +164,9 @@ export class CssNamePixel {
   }
 
   getStyle(model = "vue", isPxToRem = false) {
-    let name = this.name;
+    let name = this.cssStyleName;
     if (model === "vue") {
-      name = this.vueName;
+      name = this.vueStyleName;
     }
     if (this.unit === "px" && isPxToRem) {
       // return `${name}: ${(+this.value / 16).toFixed(6) }rem`
@@ -270,9 +177,9 @@ export class CssNamePixel {
   }
 
   getStyleName(model = "vue") {
-    let name = this.name;
+    let name = this.cssStyleName;
     if (model === "vue") {
-      name = this.vueName;
+      name = this.vueStyleName;
     }
     return name;
   }
@@ -287,14 +194,14 @@ export class CssNamePixel {
 
   getClass(isPxToRem = false) {
     if (this.unit === "px" && isPxToRem) {
-      return `${this.name}: ${this.value}rem`;
+      return `${this.cssStyleName}: ${this.value}rem`;
     } else {
-      return `${this.name}: ${this.value}${this.unit}`;
+      return `${this.cssStyleName}: ${this.value}${this.unit}`;
     }
   }
 
   getClassName() {
-    return this.name;
+    return this.cssStyleName;
   }
 }
 

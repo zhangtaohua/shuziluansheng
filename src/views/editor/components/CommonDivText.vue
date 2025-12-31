@@ -74,41 +74,50 @@
   const divStyles = computed(() => {
     if (props.vNodeData.styles) {
       const style = {};
-      const values = Object.values(props.vNodeData.styles);
-      values.forEach((prop: any) => {
-        if (prop.name != "text-ellipse-lines") {
-          style[prop.getStyleName()] = prop.getStyleValue();
-        } else {
-          const lines = prop.value;
-          if (lines == 0) {
-            style["overflow"] = null;
-            style["text-overflow"] = null;
-            style["white-space"] = null;
-          } else if (lines == 1) {
-            style["overflow"] = "hidden";
-            style["text-overflow"] = "ellipsis";
-            style["white-space"] = "nowrap";
-          } else if (lines >= 2) {
-            style["display"] = "-webkit-box";
-            style["-webkit-box-orient"] = "vertical";
-            style["-webkit-line-clamp"] = lines;
-            style["overflow"] = "hidden";
+
+      if (props.vNodeData.styles) {
+        const keys = Object.keys(props.vNodeData.styles);
+        keys.forEach((key) => {
+          const values = Object.values(props.vNodeData.styles[key].properties);
+          values.forEach((prop: any) => {
+            if (prop.getStyleName() != "top" && prop.getStyleName() != "left" && prop.getStyleName() != "rotate") {
+              if (prop.name != "text-ellipse-lines") {
+                style[prop.getStyleName()] = prop.getStyleValue();
+              } else {
+                const lines = prop.value;
+                if (lines == 0) {
+                  style["overflow"] = null;
+                  style["text-overflow"] = null;
+                  style["white-space"] = null;
+                } else if (lines == 1) {
+                  style["overflow"] = "hidden";
+                  style["text-overflow"] = "ellipsis";
+                  style["white-space"] = "nowrap";
+                } else if (lines >= 2) {
+                  style["display"] = "-webkit-box";
+                  style["-webkit-box-orient"] = "vertical";
+                  style["-webkit-line-clamp"] = lines;
+                  style["overflow"] = "hidden";
+                }
+              }
+            }
+          });
+        });
+
+        if (props.vNodeData.styles.text && props.vNodeData.styles.text.properties["background-clip-text"]) {
+          const prop = props.vNodeData.styles.text.properties["background-clip-text"];
+          if (prop.value) {
+            style["color"] = "transparent";
+            style["-webkit-background-clip"] = "text";
+            style["background-clip"] = "text";
+            style["text-shadow"] = null;
+          } else {
+            style["-webkit-background-clip"] = null;
+            style["background-clip"] = null;
           }
         }
-      });
-
-      if (props.vNodeData.styles && props.vNodeData.styles["background-clip-text"]) {
-        const prop = props.vNodeData.styles["background-clip-text"];
-        if (prop.value) {
-          style["color"] = "transparent";
-          style["-webkit-background-clip"] = "text";
-          style["background-clip"] = "text";
-          style["text-shadow"] = null;
-        } else {
-          style["-webkit-background-clip"] = null;
-          style["background-clip"] = null;
-        }
       }
+
       return style;
     } else {
       return {};
@@ -140,11 +149,11 @@
       const realHeight = Math.ceil(spanHeight);
       const styles = props.vNodeData.styles;
       if (isAdjustingWidth) {
-        styles.width.value = realWidth;
+        styles.basic.properties.width.value = realWidth;
       }
 
       if (isAdjustingHeight) {
-        styles.height.value = realHeight;
+        styles.basic.properties.height.value = realHeight;
       }
       setEditorRefreshCompToTransFlag();
     }
@@ -167,7 +176,10 @@
   });
 
   watch(
-    [() => props.vNodeData.styles["font-size"].value, () => props.vNodeData.styles["line-height"].value],
+    [
+      () => props.vNodeData.styles.text.properties["font-size"].value,
+      () => props.vNodeData.styles.text.properties["line-height"].value,
+    ],
     () => {
       nextTick(() => {
         if (adjustingWhState == "idle" || adjustingWhState == "both") {
@@ -192,7 +204,7 @@
   );
 
   watch(
-    () => props.vNodeData.styles["width"].value,
+    () => props.vNodeData.styles.basic.properties["width"].value,
     () => {
       if (hasAdjustedWh) {
         return;
@@ -216,7 +228,7 @@
   );
 
   watch(
-    () => props.vNodeData.styles["height"].value,
+    () => props.vNodeData.styles.basic.properties["height"].value,
     () => {
       if (hasAdjustedWh) {
         return;
@@ -240,26 +252,28 @@
   );
 
   watch(
-    () => props.vNodeData.styles["text-ellipse-lines"].value,
+    () => props.vNodeData.styles.text.properties["text-ellipse-lines"].value,
     () => {
       nextTick(() => {
         if (adjustingWhState == "idle" || adjustingWhState == "ellipse") {
           adjustingWhState = "ellipse";
-          const lines = props.vNodeData.styles["text-ellipse-lines"].value;
+          const lines = props.vNodeData.styles.text.properties["text-ellipse-lines"].value;
           hasAdjustedWh = true;
           if (lines == 0) {
-            props.vNodeData.styles["width"].value = 300;
-            props.vNodeData.styles["height"].value = "auto";
+            props.vNodeData.styles.basic.properties["width"].value = 300;
+            props.vNodeData.styles.basic.properties["height"].value = "auto";
 
             nextTick(() => {
               updateWidthHeight();
             });
           } else if (lines == 1) {
-            props.vNodeData.styles["width"].value = 300;
-            props.vNodeData.styles["height"].value = props.vNodeData.styles["line-height"].value;
+            props.vNodeData.styles.basic.properties["width"].value = 300;
+            props.vNodeData.styles.basic.properties["height"].value =
+              props.vNodeData.styles.text.properties["line-height"].value;
           } else if (lines >= 2) {
-            props.vNodeData.styles["width"].value = 300;
-            props.vNodeData.styles["height"].value = props.vNodeData.styles["line-height"].value * lines;
+            props.vNodeData.styles.basic.properties["width"].value = 300;
+            props.vNodeData.styles.basic.properties["height"].value =
+              props.vNodeData.styles.text.properties["line-height"].value * lines;
           }
 
           if (adjustingTimeout) {
@@ -310,9 +324,4 @@
   // );
 </script>
 
-<style scoped>
-  .active_container {
-    outline: 1px solid rgba(235, 3, 3, 1);
-    box-shadow: 0 0 10px rgba(235, 3, 3, 0.5);
-  }
-</style>
+<style scoped></style>

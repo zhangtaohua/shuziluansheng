@@ -4,7 +4,6 @@
       <div class="row_nw_fs_ce props_lbox">
         <label class="row_nw_fs_ce props_ch_label">{{ currentStyle.labelZh }}</label>
         <label class="row_nw_fs_fe props_ogi_label">{{ currentStyle.labelEn }}</label>
-        <label v-show="currentStyle.unit" class="row_nw_fs_fe props_ogunit_label">{{ `(${currentStyle.unit})` }}</label>
       </div>
 
       <div class="row_nw_fs_ce props_input_nbox">
@@ -29,6 +28,12 @@
           />
           <div v-show="isShowArrow && currentStyle.isEnable" class="props_input_uparrow" @click="plusNumber"></div>
           <div v-show="isShowArrow && currentStyle.isEnable" class="props_input_downarrow" @click="reduceNuber"></div>
+        </div>
+        <div v-if="UnitVdata" class="row_nw_ce_ce props_input_nunit">
+          <UnitsOptionsInput :vdata="UnitVdata" @onChange="unitChangeHd"></UnitsOptionsInput>
+        </div>
+        <div v-else class="row_nw_ce_ce props_input_nunit">
+          <div class="row_nw_fs_ce props_ogunit_label">{{ currentStyle.unit }}</div>
         </div>
       </div>
     </div>
@@ -60,6 +65,8 @@
   import { ref, reactive, onMounted, computed, watch, nextTick, onBeforeMount } from "vue";
   import { useEditorComponentstore, globalEditor } from "@/stores/editorConfig";
 
+  import UnitsOptionsInput from "@/components/form/UnitsOptionsInput.vue";
+
   const props = defineProps({
     vdata: {
       type: Object,
@@ -73,10 +80,9 @@
   });
 
   const { editorComponents, setEditorRefreshTransToCompFlag } = useEditorComponentstore();
-  const id = "";
-  const name = "";
   const currentStyle = ref(null);
   const isEnable = ref(false);
+  const UnitVdata = ref(null);
 
   const rem = computed(() => {
     if (currentStyle.value) {
@@ -114,6 +120,16 @@
   function init() {
     if (props.vdata && props.vdata.id) {
       currentStyle.value = props.vdata;
+
+      if (currentStyle.value.unitOptions) {
+        UnitVdata.value = {
+          value: currentStyle.value.unit,
+          isEnable: currentStyle.value.isEnable,
+          options: currentStyle.value.unitOptions,
+        };
+      } else {
+        UnitVdata.value = null;
+      }
 
       isEnable.value = true;
     } else {
@@ -171,6 +187,13 @@
       setEditorRefreshTransToCompFlag();
     }
   }
+
+  function unitChangeHd(unit) {
+    if (currentStyle.value && currentStyle.value.isEnable) {
+      currentStyle.value.unit = unit;
+      setEditorRefreshTransToCompFlag();
+    }
+  }
 </script>
 
 <style scoped>
@@ -209,12 +232,11 @@
   }
 
   .props_ogunit_label {
-    width: max-content;
-    height: 1rem;
+    width: 100%;
+    height: 100%;
     color: rgba(200, 200, 200, 1);
     font-size: var(--czml-fs-pp-en);
     font-weight: 400;
-    margin-left: 0.25rem;
   }
 
   .props_input_nbox {
@@ -405,5 +427,11 @@
 
   .props_input_slider:disabled {
     cursor: not-allowed;
+  }
+
+  .props_input_nunit {
+    width: 1.75rem;
+    height: 100%;
+    margin-left: 0.25rem;
   }
 </style>

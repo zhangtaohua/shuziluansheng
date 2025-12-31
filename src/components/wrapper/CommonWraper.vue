@@ -160,7 +160,12 @@
       @mousemove="ctlMouseMoveHandle($event, 'mb')"
       @mouseup="ctlMouseUpHandle($event, 'mb')"
     ></div>
-    <div class="row_nw_ce_ce dw_ctx_wraper" @mousedown="ctlBodyMouseDownHandle($event, 'pan')">
+    <div
+      ref="slotWrapperRef"
+      class="row_nw_ce_ce dw_ctx_wraper"
+      :class="{ dw_ctx_helper_wrapper: isCalcShowHelperBoxStyle }"
+      @mousedown="ctlBodyMouseDownHandle($event, 'pan')"
+    >
       <slot></slot>
     </div>
   </div>
@@ -208,6 +213,9 @@
   });
 
   const divWrapperRef = ref(null);
+  const slotWrapperRef = ref(null);
+
+  const isCalcShowHelperBoxStyle = ref(false);
   const isShowContextMenu = ref(false);
 
   const isShowCtlMask = ref(false);
@@ -324,7 +332,7 @@
         isShowContextMenu.value = false;
         if (props.vNodeData.styles) {
           const styles = props.vNodeData.styles;
-          const zIndex = styles.zIndex;
+          const zIndex = styles.basic.zIndex;
           if (zIndex) {
             zIndex.value = zIndex.value + 1;
             if (zIndex.value > zIndex.max) {
@@ -343,7 +351,7 @@
         isShowContextMenu.value = false;
         if (props.vNodeData.styles) {
           const styles = props.vNodeData.styles;
-          const zIndex = styles.zIndex;
+          const zIndex = styles.basic.zIndex;
           if (zIndex) {
             zIndex.value = zIndex.value - 1;
             if (zIndex.value > zIndex.min) {
@@ -355,29 +363,30 @@
     },
   ]);
   const initCalcContainer = () => {
-    const styles = props.vNodeData.styles;
+    if (props.vNodeData.styles && props.vNodeData.styles.basic) {
+      const styles = props.vNodeData.styles.basic.properties;
 
-    currentModifyComp.value = props.vNodeData;
-    isLocked.value = props.vNodeData.isLocked;
+      currentModifyComp.value = props.vNodeData;
+      isLocked.value = props.vNodeData.isLocked;
 
-    calcContainer.top = +styles.top.value;
-    calcContainer.left = +styles.left.value;
-    calcContainer.bottom = +styles.top.value + +styles.height.value;
-    calcContainer.right = styles.left.value + +styles.width.value;
+      calcContainer.top = +styles.top.value;
+      calcContainer.left = +styles.left.value;
+      calcContainer.bottom = +styles.top.value + +styles.height.value;
+      calcContainer.right = styles.left.value + +styles.width.value;
 
-    calcContainer.rotate = +styles.rotate.value;
-    calcContainer.zIndex = +styles.zIndex.value;
+      calcContainer.rotate = +styles.rotate.value;
+      calcContainer.zIndex = +styles.zIndex.value;
 
-    nextTick(() => {
-      reCalcLimitRect();
-      isShowAlignAxis.value = true;
-      isShowBoundingBox.value = true;
-    });
+      nextTick(() => {
+        reCalcLimitRect();
+        isShowAlignAxis.value = true;
+        isShowBoundingBox.value = true;
+      });
+    }
   };
 
   const updateRestrictRect = () => {
     const vNodeData = props.vNodeData;
-    const styles = props.vNodeData.styles;
     if (vNodeData.isUseRestrictRect) {
       isShowRestrictRect.value = true;
       if (
@@ -514,16 +523,43 @@
     });
   }
 
+  function updateHelperViewBox() {
+    if (slotWrapperRef.value) {
+      const slotDoms = slotWrapperRef.value.children;
+      if (slotDoms && slotDoms.length) {
+        const slotDom = slotDoms[0];
+        const styles = window.getComputedStyle(slotDom);
+        // console.log("slotWrapperRef style", styles.getPropertyValue("background"));
+
+        const backgroundColor = styles["background-color"];
+        const borderWidth = styles["border-width"];
+        const outlineWidth = styles["outline-width"];
+        const boxShadow = styles["box-shadow"];
+        if (
+          backgroundColor == "rgba(0, 0, 0, 0)" &&
+          borderWidth == "0px" &&
+          outlineWidth == "0px" &&
+          boxShadow == "none" &&
+          props.vNodeData.type != "cesium"
+        ) {
+          isCalcShowHelperBoxStyle.value = true;
+        } else {
+          isCalcShowHelperBoxStyle.value = false;
+        }
+      }
+    }
+  }
+
   watch(
     calcContainer,
     () => {
       if (currentModifyComp.value) {
-        currentModifyComp.value.styles.top.value = calcContainer.top;
-        currentModifyComp.value.styles.left.value = calcContainer.left;
-        currentModifyComp.value.styles.width.value = calcContainer.right - calcContainer.left;
-        currentModifyComp.value.styles.height.value = calcContainer.bottom - calcContainer.top;
-        currentModifyComp.value.styles.rotate.value = calcContainer.rotate;
-        currentModifyComp.value.styles.zIndex.value = calcContainer.zIndex;
+        currentModifyComp.value.styles.basic.properties.top.value = calcContainer.top;
+        currentModifyComp.value.styles.basic.properties.left.value = calcContainer.left;
+        currentModifyComp.value.styles.basic.properties.width.value = calcContainer.right - calcContainer.left;
+        currentModifyComp.value.styles.basic.properties.height.value = calcContainer.bottom - calcContainer.top;
+        currentModifyComp.value.styles.basic.properties.rotate.value = calcContainer.rotate;
+        currentModifyComp.value.styles.basic.properties.zIndex.value = calcContainer.zIndex;
         const childComps = currentModifyComp.value.children;
         const workSpace = globalEditor.workSpace;
         if (childComps) {
@@ -582,6 +618,9 @@
       if (isActive.value) {
         initCalcContainer();
         updateBboxAlignStyle();
+        nextTick(() => {
+          updateHelperViewBox();
+        });
       }
     },
     {
@@ -948,7 +987,7 @@
     --ctl-color: rgba(40, 245, 12, 0.959);
 
     position: absolute;
-    background-color: rgba(255, 255, 255, 1);
+    background-color: transparent;
     z-index: 3;
     transform: rotate(90deg);
   }
@@ -1163,14 +1202,30 @@
   .dw_ctl_bbox {
     position: absolute;
     border: 1px dashed pink;
+    /* background: repeating-linear-gradient(135deg, transparent, transparent 3px, pink 3px, pink 8px); */
+    /* animation: shine 1s infinite linear; */
     z-index: 10;
   }
+
+  /* @keyframes shine {
+    0% {
+      background-position: -1px -1px;
+    }
+    100% {
+      background-position: -12px -12px;
+    }
+  } */
 
   .dw_ctx_wraper {
     width: 100%;
     height: 100%;
     z-index: 2;
     background-color: transparent;
+  }
+
+  .dw_ctx_helper_wrapper {
+    background: url("@/assets/images/editor/bolderSpace.svg") no-repeat center;
+    background-size: 100% 100%;
   }
 
   .dw_ctl_hline {

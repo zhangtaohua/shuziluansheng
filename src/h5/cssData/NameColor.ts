@@ -1,52 +1,66 @@
 import { nanoid } from "@/utils/common/nanoid";
 import chroma from "chroma-js";
 
-const DefaultColor = "rgba(255, 0, 0, 0.5)";
+import { cssDataType, DefaultCssColor } from "./globalCss";
 
 export class CssColorInput {
-  public id = "css_background_color_" + nanoid(10);
-  public name = "background-color";
-  public vueName = "backgroundColor";
-  public labelZh = "背景色";
-  public labelEn = "background color";
-  public tag = "ColorInput";
-  public _value = "transparent";
-  public defaultColor = DefaultColor;
-  public _isColorValue = true;
-  public _isPureColor = true;
+  public id = "css_color_" + nanoid(10);
+  public name = "color";
+  public title = "color";
+
+  public vueStyleName = "color";
+  public cssStyleName = "color";
+
+  public labelZh = "颜色";
+  public labelEn = "color";
   public description = "";
   public descriptionZh = "";
 
-  public options = [];
+  public type = cssDataType.pureValue;
+
+  public tag = "ColorInput";
+  public _value = "transparent";
+
+  public defaultColor = DefaultCssColor;
+
+  public properties = undefined;
+
   public isEnable = true;
 
   constructor(options: any) {
-    this.id = options.id ? options.id : "css_" + options.name + "_" + nanoid(10);
-    this.name = options.name;
-    this.vueName = options.vueName ? options.vueName : options.name;
-    this.labelZh = options.labelZh ? options.labelZh : options.name;
-    this.labelEn = options.labelEn ? options.labelEn : options.name;
-    this.tag = options.tag ? options.tag : "ColorInput";
-
-    if (chroma.valid(options.value)) {
-      this._value = options.value;
-
-      if (options.defaultColor) {
-        this.defaultColor = options.defaultColor;
-      } else {
-        this.defaultColor = options.value;
-      }
-    } else {
-      if (options.defaultColor) {
-        this._value = options.defaultColor;
-        this.defaultColor = options.defaultColor;
-      } else {
-        this._value = DefaultColor;
-        this.defaultColor = DefaultColor;
-      }
+    if (!options) {
+      return;
     }
 
-    this.isEnable = options.isEnable ?? true;
+    if (options.id) {
+      this.id = options.id;
+    } else if (options.name) {
+      this.id = "css_checked_" + options.name + "_" + nanoid(10);
+    }
+
+    if (options.name) {
+      this.name = options.name;
+    }
+
+    if (options.title) {
+      this.title = options.title;
+    }
+
+    if (options.vueStyleName) {
+      this.vueStyleName = options.vueStyleName;
+    }
+
+    if (options.cssStyleName) {
+      this.cssStyleName = options.cssStyleName;
+    }
+
+    if (options.labelZh) {
+      this.labelZh = options.labelZh;
+    }
+
+    if (options.labelEn) {
+      this.labelEn = options.labelEn;
+    }
 
     if (options.description) {
       this.description = options.description;
@@ -55,6 +69,38 @@ export class CssColorInput {
     if (options.descriptionZh) {
       this.descriptionZh = options.descriptionZh;
     }
+
+    if (options.type) {
+      this.type = options.type;
+    }
+
+    if (options.tag) {
+      this.tag = options.tag;
+    }
+
+    if (options.properties) {
+      this.properties = options.properties;
+    }
+
+    if (chroma.valid(options.value)) {
+      this._value = options.value;
+
+      if (options.defaultColor && chroma.valid(options.defaultColor)) {
+        this.defaultColor = options.defaultColor;
+      } else {
+        this.defaultColor = options.value;
+      }
+    } else {
+      if (options.defaultColor && chroma.valid(options.defaultColor)) {
+        this._value = options.defaultColor;
+        this.defaultColor = options.defaultColor;
+      } else {
+        this._value = DefaultCssColor;
+        this.defaultColor = DefaultCssColor;
+      }
+    }
+
+    this.isEnable = options.isEnable ?? true;
   }
 
   get value() {
@@ -65,26 +111,10 @@ export class CssColorInput {
     this._value = newValue;
   }
 
-  get isColorValue() {
-    return this._isColorValue;
-  }
-
-  set isColorValue(newValue) {
-    this._isColorValue = newValue;
-  }
-
-  get isPureColor() {
-    return this._isPureColor;
-  }
-
-  set isPureColor(newValue) {
-    this._isPureColor = newValue;
-  }
-
   getStyle(model = "vue") {
-    let name = this.name;
+    let name = this.cssStyleName;
     if (model === "vue") {
-      name = this.vueName;
+      name = this.vueStyleName;
     }
     // because ->  gradient,  so -> background!
     if (name == "background-color" || name == "backgroundColor") {
@@ -94,9 +124,9 @@ export class CssColorInput {
   }
 
   getStyleName(model = "vue") {
-    let name = this.name;
+    let name = this.cssStyleName;
     if (model === "vue") {
-      name = this.vueName;
+      name = this.vueStyleName;
     }
     if (name == "background-color" || name == "backgroundColor") {
       name = "background";
@@ -109,7 +139,7 @@ export class CssColorInput {
   }
 
   getClass() {
-    let name = this.name;
+    let name = this.cssStyleName;
     if (name == "background-color" || name == "backgroundColor") {
       name = "background";
     }
@@ -117,7 +147,7 @@ export class CssColorInput {
   }
 
   getClassName() {
-    return this.name;
+    return this.cssStyleName;
   }
 }
 
@@ -125,10 +155,10 @@ export default CssColorInput;
 
 export const CssColorOptions = {
   name: "color",
-  vueName: "color",
+  vueStyleName: "color",
   labelZh: "颜色",
   labelEn: "color",
   tag: "ColorInput",
   isEnable: true,
-  value: DefaultColor,
+  value: DefaultCssColor,
 };

@@ -11,22 +11,23 @@ import {
 } from "../cssProps/cssPixelProps";
 import { createCssBackgroundColorProp } from "../cssProps/cssColorProps";
 import { createCssBasicCombineProp, createCssBorderCombineProp } from "../cssProps/cssCombinesProps";
+import { createCssObjectFitProp } from "../cssProps/cssPureOptionsProps";
 
-export class h5DivContainer {
-  public id = "h5_div_" + nanoid(10);
+export class h5DivImage {
+  public id = "h5_image_" + nanoid(10);
   public parentId = "";
-  public name = "div";
-  public title = "div";
+  public name = "image";
+  public title = "image";
 
-  public labelZh = "盒子";
-  public labelEn = "div";
-  public description = "A div box";
+  public labelZh = "图片";
+  public labelEn = "image";
+  public description = "A image box";
   public descriptionZh = "";
 
   public type = "h5";
   public componentType = "html";
-  public componentProps = "h5#div";
-  public tag = "CommonDiv";
+  public componentProps = "h5#img";
+  public tag = "CommonDivImage";
   public h5Tag = "div";
 
   public children = undefined;
@@ -42,6 +43,16 @@ export class h5DivContainer {
   public styles = {
     basic: createCssBasicCombineProp(),
     border: createCssBorderCombineProp(),
+    image: createCssBasicCombineProp({
+      labelZh: "图片样式",
+      labelEn: "image",
+      properties: {
+        "object-fit": createCssObjectFitProp(),
+      },
+    }),
+  };
+  public data = {
+    image: "",
   };
   public restrictRect = {
     top: 0,
@@ -59,7 +70,11 @@ export class h5DivContainer {
     if (options.id) {
       this.id = options.id;
     } else if (options.name) {
-      this.id = "h5_div_" + options.name + "_" + nanoid(10);
+      this.id = "h5_image_" + options.name + "_" + nanoid(10);
+    }
+
+    if (options.image) {
+      this.data.image = options.image;
     }
 
     if (options.parentId) {
@@ -181,4 +196,4 @@ export class h5DivContainer {
   }
 }
 
-export default h5DivContainer;
+export default h5DivImage;

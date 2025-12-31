@@ -93,6 +93,7 @@
     width: max-content;
     height: 100%;
     margin-right: 0.25rem;
+    overflow: hidden;
   }
 
   .header_menu_micon {

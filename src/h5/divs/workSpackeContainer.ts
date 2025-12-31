@@ -10,6 +10,8 @@ import {
 import { createCssBackgroundColorProp } from "../cssProps/cssColorProps";
 
 import { globalEditor } from "@/stores/editorConfig";
+import { createCssBasicCombineProp } from "../cssProps/cssCombinesProps";
+import { getControlTransform } from "../cssData/globalCss";
 
 export class workspaceContainer {
   public id = "workspace_" + nanoid(10);
@@ -23,7 +25,7 @@ export class workspaceContainer {
   public descriptionZh = "工作区";
 
   public type = "workspace"; // "workspace", "h5", "cesium", "three"
-  public componentType = "html";
+  public componentType = "workspace";
   public componentProps = "h5#div";
   public tag = "CommonWorkspace";
   public h5Tag = "div";
@@ -38,6 +40,7 @@ export class workspaceContainer {
   public classNames = [];
   public styles = null;
   public restrictRect = null;
+  // public transform = null;
 
   constructor(options: any) {
     if (!options) {
@@ -56,47 +59,41 @@ export class workspaceContainer {
 
     const workSpace = globalEditor.workSpace;
     this.styles = {
-      top: createCssToptProp({
-        value: workSpace.top,
-      }),
-      left: createCssLeftProp({
-        value: workSpace.left,
-      }),
-      width: createCssWidthProp({
-        value: workSpace.width,
-      }),
-      height: createCssHeightProp({
-        value: workSpace.height,
-      }),
-      rotate: createCssRotateProp(),
-      zIndex: createCssZIndexProp({
-        value: workSpace.zIndex,
-      }),
-      backgroundColor: createCssBackgroundColorProp({
-        value: workSpace.backgroundColor,
+      basic: createCssBasicCombineProp({
+        properties: {
+          top: createCssToptProp({
+            value: workSpace.top,
+          }),
+          left: createCssLeftProp({
+            value: workSpace.left,
+          }),
+          width: createCssWidthProp({
+            value: options.width ? options.width : workSpace.width,
+          }),
+          height: createCssHeightProp({
+            value: options.height ? options.height : workSpace.height,
+          }),
+          // rotate: createCssRotateProp(),
+          zIndex: createCssZIndexProp({
+            value: workSpace.zIndex,
+            isEnable: false,
+          }),
+          backgroundColor: createCssBackgroundColorProp({
+            value: workSpace.backgroundColor,
+          }),
+        },
       }),
     };
 
     this.restrictRect = {
       top: workSpace.top,
       left: workSpace.left,
-      bottom: workSpace.bottom,
-      right: workSpace.right,
+      bottom: options.height ? workSpace.top + options.height : workSpace.bottom,
+      right: options.width ? workSpace.left + options.width : workSpace.right,
     };
 
-    if (options.width) {
-      this.styles.width = createCssWidthProp({
-        value: options.width,
-      });
-      this.restrictRect.right = this.restrictRect.left + options.width;
-    }
-
-    if (options.height) {
-      this.styles.height = createCssHeightProp({
-        value: options.height,
-      });
-      this.restrictRect.bottom = this.restrictRect.top + options.height;
-    }
+    // this.transform = getControlTransform(this.styles.basic.properties);
+    // console.log("workspace", this.transform);
 
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;

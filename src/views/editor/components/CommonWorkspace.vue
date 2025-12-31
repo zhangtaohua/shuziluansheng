@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-  import { computed } from "vue";
+  import { computed, watch } from "vue";
   import { useEditorComponentstore } from "@/stores/editorConfig";
 
   const { setEditorCurrentComp } = useEditorComponentstore();
@@ -25,10 +25,12 @@
         position: "absolute",
         overflow: "hidden",
       };
-      const values = Object.values(props.vNodeData.styles);
-      values.forEach((prop: any) => {
-        style[prop.getStyleName()] = prop.getStyleValue();
-      });
+      if (props.vNodeData.styles.basic && props.vNodeData.styles.basic.properties) {
+        const values = Object.values(props.vNodeData.styles.basic.properties);
+        values.forEach((prop: any) => {
+          style[prop.getStyleName()] = prop.getStyleValue();
+        });
+      }
       return style;
     } else {
       return {};

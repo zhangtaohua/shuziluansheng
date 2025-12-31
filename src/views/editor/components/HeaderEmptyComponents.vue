@@ -32,6 +32,9 @@
   import h5DivContainer from "@/h5/divs/divContainer";
   import h5DivText from "@/h5/divs/divText";
   import workspaceContainer from "@/h5/divs/workSpackeContainer";
+  import CzmlDataMaker from "@/czml/schema/packets/maker";
+  import h5DivCesium from "@/h5/divs/divCesium";
+  import h5DivImage from "@/h5/divs/divImage";
 
   const { editorComponents, setEditorCurrentComp, setEditorWorkSpace, addEditorComponents } = useEditorComponentstore();
 
@@ -73,12 +76,12 @@
 
   const divOptions = {
     id: "div",
-    labelZh: "空盒子",
+    labelZh: "盒子",
     labelEn: "div",
     icon: "",
     isOnlyShowIcon: false,
     action: () => {
-      console.log("adddiv", editorComponents.currentComp);
+      console.log("add 盒子", editorComponents.currentComp);
       const restrictRect = {
         top: 0,
         left: 0,
@@ -94,7 +97,9 @@
       let width = 0;
       let height = 0;
       if (editorComponents.currentComp) {
-        const cc = editorComponents.currentComp;
+        const cc = {
+          styles: editorComponents.currentComp.styles.basic.properties,
+        };
         const workSpace = globalEditor.workSpace;
         restrictRect.top = cc.styles.top.value;
         restrictRect.left = cc.styles.left.value;
@@ -158,6 +163,72 @@
     },
   };
 
+  const divImageOptions = {
+    id: "divImage",
+    labelZh: "图片",
+    labelEn: "Image",
+    icon: "",
+    isOnlyShowIcon: false,
+    action: () => {
+      console.log("add image", editorComponents.currentComp);
+      const restrictRect = {
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
+      };
+      let zIndex = 2;
+      let zIndexMin = 2;
+      // const zIndexMax = -999;
+      const zIndexMax = 300;
+      let parentId = "";
+      let id = "";
+      let width = 0;
+      let height = 0;
+      if (editorComponents.currentComp) {
+        const cc = {
+          styles: editorComponents.currentComp.styles.basic.properties,
+        };
+        const workSpace = globalEditor.workSpace;
+        restrictRect.top = cc.styles.top.value;
+        restrictRect.left = cc.styles.left.value;
+        restrictRect.right = cc.styles.left.value + cc.styles.width.value;
+        restrictRect.bottom = cc.styles.top.value + cc.styles.height.value;
+
+        zIndex = +cc.styles.zIndex.value + 1;
+        zIndexMin = zIndex;
+
+        width = cc.styles.width.value * 0.25;
+        height = cc.styles.height.value * 0.25;
+        if (cc.type == "h5") {
+          restrictRect.top = restrictRect.top + workSpace.top;
+          restrictRect.left = restrictRect.left + workSpace.left;
+          restrictRect.right = restrictRect.right + workSpace.left;
+          restrictRect.bottom = restrictRect.bottom + workSpace.top;
+
+          parentId = cc.id;
+          id = parentId + SMC + `h5_image_` + nanoid(10);
+        }
+      }
+
+      const newDivComp = new h5DivImage({
+        id,
+        parentId,
+        width,
+        height,
+        zIndex,
+        zIndexMin,
+        zIndexMax,
+        restrictRect,
+        backgroundColor: gerRandomRgbaColor(),
+        image:
+          "https://img-baofun.zhhainiao.com/pcwallpaper_ugc/static/bd26f78c344b3ad6afef7b12b1421227.jpg?x-oss-process=image%2fresize%2cm_lfit%2cw_1920%2ch_1080",
+      });
+      addEditorComponents(newDivComp);
+      setEditorCurrentComp(newDivComp);
+    },
+  };
+
   const divTextOptions = {
     id: "divText",
     labelZh: "文本",
@@ -181,7 +252,9 @@
       let width = 0;
       let height = 0;
       if (editorComponents.currentComp) {
-        const cc = editorComponents.currentComp;
+        const cc = {
+          styles: editorComponents.currentComp.styles.basic.properties,
+        };
         const workSpace = globalEditor.workSpace;
         restrictRect.top = cc.styles.top.value;
         restrictRect.left = cc.styles.left.value;
@@ -220,10 +293,92 @@
     },
   };
 
+  const divCesiumOptions = {
+    id: "cesium",
+    labelZh: "3D地图",
+    labelEn: "cesium",
+    icon: "",
+    isOnlyShowIcon: false,
+    action: () => {
+      console.log("add cesium", editorComponents.currentComp);
+      const restrictRect = {
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
+      };
+      let zIndex = 2;
+      let zIndexMin = 2;
+      // const zIndexMax = -999;
+      const zIndexMax = 300;
+      let parentId = "";
+      let id = "";
+      let width = 0;
+      let height = 0;
+      if (editorComponents.currentComp) {
+        const cc = {
+          styles: editorComponents.currentComp.styles.basic.properties,
+        };
+        const workSpace = globalEditor.workSpace;
+        restrictRect.top = cc.styles.top.value;
+        restrictRect.left = cc.styles.left.value;
+        restrictRect.right = cc.styles.left.value + cc.styles.width.value;
+        restrictRect.bottom = cc.styles.top.value + cc.styles.height.value;
+
+        zIndex = +cc.styles.zIndex.value + 1;
+        zIndexMin = zIndex;
+
+        width = cc.styles.width.value * 0.25;
+        height = cc.styles.height.value * 0.25;
+        if (cc.type == "h5") {
+          restrictRect.top = restrictRect.top + workSpace.top;
+          restrictRect.left = restrictRect.left + workSpace.left;
+          restrictRect.right = restrictRect.right + workSpace.left;
+          restrictRect.bottom = restrictRect.bottom + workSpace.top;
+
+          parentId = cc.id;
+          id = parentId + SMC + `cesium_` + nanoid(10);
+        }
+      }
+
+      const newDivComp = new h5DivCesium({
+        id,
+        parentId,
+        width,
+        height,
+        zIndex,
+        zIndexMin,
+        zIndexMax,
+        restrictRect,
+        backgroundColor: gerRandomRgbaColor(),
+      });
+      addEditorComponents(newDivComp);
+      setEditorCurrentComp(newDivComp);
+    },
+  };
+
+  const cesiumCzmlOptions = {
+    id: "czml",
+    labelZh: "czml",
+    labelEn: "czml",
+    icon: "",
+    isOnlyShowIcon: false,
+    action: () => {
+      console.log("add czml", editorComponents.currentComp);
+
+      const czmlOpt = new CzmlDataMaker({});
+      addEditorComponents(czmlOpt);
+      setEditorCurrentComp(czmlOpt);
+    },
+  };
+
   defineExpose({
     workSpaceOptions,
     divOptions,
+    divImageOptions,
     divTextOptions,
+    divCesiumOptions,
+    cesiumCzmlOptions,
   });
 </script>
 

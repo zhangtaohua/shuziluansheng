@@ -19,8 +19,8 @@ import "default-passive-events";
 import CommonWorkspace from "@/views/editor/components/CommonWorkspace.vue";
 import CommonDiv from "@/views/editor/components/CommonDiv.vue";
 import CommonDivText from "@/views/editor/components/CommonDivText.vue";
-import CommonDivImage from "@/views/editorOld/components/CommonDivImage.vue";
-import CommonDivCesium from "@/views/editorOld/components/CommonDivCesium.vue";
+import CommonDivImage from "@/views/editor/components/CommonDivImage.vue";
+import CommonDivCesium from "@/views/editor/components/CommonDivCesium.vue";
 
 // h5属性设置
 import NumberInputSlider from "@/h5/components/NumberInputSlider.vue";
