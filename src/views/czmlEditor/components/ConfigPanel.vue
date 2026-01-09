@@ -1,5 +1,5 @@
 <template>
-  <RightParamsEmbedWraper v-if="isCanShowConfigPanel" ref="RightParamsEmWraperRef">
+  <RightParamsEmbedWraper v-if="isCanShowConfigPanel" ref="RightParamsEmWraperRef" :vdata="rightWraperOptions">
     <div class="row_nw_ce_ce rparams_in_container">
       <div class="col_nw_fs_fs rparams_in_wrapper">
         <div class="col_nw_fs_fs rparams_in_header">
@@ -72,7 +72,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, watch, createApp, getCurrentInstance } from "vue";
+  import { ref, watch, createVNode, render, createApp, getCurrentInstance } from "vue";
 
   import RightParamsEmbedWraper from "@/components/wrapper/RightParamsEmbedWraper.vue";
 
@@ -88,9 +88,19 @@
 
   import { globalCzmlMapData, useCzmlMapDataConfigStore, useCzmlStateStore } from "@/stores/czmlMapDataConfig";
 
+  // 右侧参数配置面板宽度配置
+  const rightWraperOptions = {
+    width: "35rem",
+    ctlWidth: 280,
+    ctlMaxWidth: 760,
+    ctlMinWidth: 10,
+  };
+
   const { czmlState } = useCzmlStateStore();
+
   const currentVueIns = getCurrentInstance();
-  console.log("currentVueIns", currentVueIns);
+  // console.log("currentVueIns", currentVueIns);
+
   // 当前选中的Czml数据
   const currentCzmlData = ref(null);
 
@@ -190,6 +200,10 @@
   // };
 
   const createVueDom = (vNode, vdata, editor) => {
+    // const overlayInstance = createVNode(vNode, {
+    //   vdata,
+    // });
+
     const overlayInstance = createApp(vNode, {
       vdata,
     });
@@ -197,12 +211,20 @@
     const parentDom = document.createElement("div");
     parentDom.style.position = "absolute";
     parentDom.style.zIndex = "9999";
-    parentDom.style.backgroundColor = "rgba(45, 45, 45, 1)";
+    parentDom.style.backgroundColor = "rgba(26, 30, 39, 1)";
     parentDom.style.padding = "2.5rem 0.75rem 0.75rem 0.75rem";
-    parentDom.style.borderRadius = "0.5rem";
-    parentDom.style.width = "36rem";
+    parentDom.style.borderRadius = "0.25rem";
+    parentDom.style.width = "32rem";
     parentDom.style.height = "auto";
+    parentDom.style.maxHeight = "520px";
     parentDom.style.border = "1px solid rgba(255, 255, 255, 0.5)";
+    parentDom.style.overflowY = "scroll";
+    parentDom.style.scrollbarWidth = "0";
+
+    parentDom.addEventListener("wheel", (event) => {
+      event.stopPropagation();
+      event.preventDefault();
+    });
 
     const closeDom = document.createElement("div");
     closeDom.style.position = "absolute";
@@ -221,16 +243,15 @@
       });
     });
 
+    overlayInstance._context.components = currentVueIns.appContext.components;
     const overlayInstanceReal = overlayInstance.mount(parentDom); //根据模板创建一个面板
+    // const vDom = overlayInstanceReal.$el;
 
-    const vDom = overlayInstanceReal.$el;
+    // render(overlayInstance, parentDom);
     parentDom.appendChild(closeDom);
-    // this.mapDomContainner!.appendChild(parentDom);
+    // console.log("overlayInstance", overlayInstance);
 
-    return {
-      parentDom,
-      vDom,
-    };
+    return parentDom;
   };
 
   const renderCzmlEntityProp = (position: any, propertyPath: any) => {
@@ -270,11 +291,7 @@
           superMouseDown: true,
           getId: () => "monaco.editor.rj.overlay.widget",
           getDomNode: () => {
-            const { parentDom, vDom } = createVueDom(
-              currentVueIns.appContext.components[prop.tag],
-              prop,
-              codeEditorIns,
-            );
+            const parentDom = createVueDom(currentVueIns.appContext.components[prop.tag], prop, codeEditorIns);
             return parentDom;
           },
           getPosition: () => {
@@ -293,23 +310,6 @@
       }
     }
   };
-
-  function analyzeJsonPath(czmlData, targetValue, targetPath = []) {
-    for (const [key, value] of Object.entries(czmlData)) {
-      if (value === targetValue) {
-        return [...targetPath, key];
-      } else if (Array.isArray(value)) {
-        const index = value.indexOf(targetValue);
-        if (index !== -1) {
-          return [...targetPath, key, `[${index}]`];
-        }
-      } else if (typeof value === "object" && value !== null) {
-        const result = analyzeJsonPath(value, targetValue, [...targetPath, key]);
-        if (result) return result;
-      }
-    }
-    return null;
-  }
 
   function getPropertyPathSimple(model, position) {
     const lineContent = model.getLineContent(position.lineNumber);
@@ -414,9 +414,6 @@
     () => {
       if (globalCzmlMapData.currentCzmlData && globalCzmlMapData.currentCzmlChildProp) {
         currentCzmlData.value = globalCzmlMapData.currentCzmlData;
-        // czmlCodeJsObj = currentCzmlData.value.getCzmlData();
-        // console.log("getCzmlData", czmlCodeJsObj);
-        // czmlCode.value = JSON.stringify(czmlCodeJsObj, null, 2);
         isCanShowConfigPanel.value = true;
       } else {
         currentCzmlData.value = null;

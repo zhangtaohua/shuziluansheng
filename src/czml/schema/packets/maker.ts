@@ -63,7 +63,8 @@ export class CzmlDataMaker {
 
   // RJTODO
   // 1 要可以手动增加packet;
-  public packets = [new czmlDocument(), new czmlPacketV2()];
+  // public packets = [new czmlDocument(), new czmlPacketV2()];
+  public packets = [new czmlDocument()];
 
   public getCzmlData() {
     const czmlData = [];
@@ -73,6 +74,10 @@ export class CzmlDataMaker {
     }
 
     return czmlData;
+  }
+
+  public addPacket(packet: any) {
+    this.packets.push(packet);
   }
 }
 

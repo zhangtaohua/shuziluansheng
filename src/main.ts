@@ -94,9 +94,9 @@ import CzmlStringPropInput from "@/czml/components/CzmlStringPropInput.vue";
 
 import CzmlTextPropInput from "@/czml/components/CzmlTextPropInput.vue";
 
-import CzmlTimeCollectionPropInput from "./czml/components/CzmlTimeCollectionPropInput.vue";
-import CzmlTimeIntervalPropInput from "./czml/components/CzmlTimeIntervalPropInput.vue";
-import CzmlTimePurePropInput from "./czml/components/CzmlTimePurePropInput.vue";
+import CzmlTimeCollectionPropInput from "@/czml/components/CzmlTimeCollectionPropInput.vue";
+import CzmlTimeIntervalPropInput from "@/czml/components/CzmlTimeIntervalPropInput.vue";
+import CzmlTimePurePropInput from "@/czml/components/CzmlTimePurePropInput.vue";
 
 import CzmlUnitSphericalListPropInput from "@/czml/components/CzmlUnitSphericalListPropInput.vue";
 import CzmlUnitSphericalPropInput from "@/czml/components/CzmlUnitSphericalPropInput.vue";

@@ -341,7 +341,7 @@ export const czmlChildProps = {
 export const globalCzmlMapData = {
   drawData: null,
   viewDrawData: null,
-  czmlDatas: [],
+  czmlDatas: new Map(),
   currentCzmlData: null,
   currentCzmlChildProp: null,
 };
@@ -417,6 +417,7 @@ export const useCzmlMapDataConfigStore = defineStore("useCzmlMapDataConfigStore"
 export const useCzmlStateStore = defineStore("useCzmlStateStore", () => {
   const czmlState = reactive({
     currentCzmlState: "",
+    czmlDatasRefresh: 0,
     currentCzmlDataId: "",
     currentCzmlDataRefresh: 0,
     currentCzmlChildPropId: "",
@@ -425,6 +426,25 @@ export const useCzmlStateStore = defineStore("useCzmlStateStore", () => {
 
   function setCzmlCurrentCzmlState(state: string) {
     czmlState.currentCzmlState = state;
+  }
+
+  function setCzmlDatas(data: any) {
+    if (data) {
+      globalCzmlMapData.czmlDatas.set(data.id, data);
+      czmlState.czmlDatasRefresh++;
+    }
+  }
+
+  function resetCzmlDatas() {
+    globalCzmlMapData.czmlDatas.clear();
+    czmlState.czmlDatasRefresh = 0;
+  }
+
+  function removeCzmlDatas(data: any) {
+    if (data) {
+      globalCzmlMapData.czmlDatas.delete(data.id);
+      czmlState.czmlDatasRefresh++;
+    }
   }
 
   function setCurrentCzmlData(data: any) {
@@ -451,6 +471,9 @@ export const useCzmlStateStore = defineStore("useCzmlStateStore", () => {
 
   return {
     czmlState,
+    setCzmlDatas,
+    resetCzmlDatas,
+    removeCzmlDatas,
     setCzmlCurrentCzmlState,
     setCurrentCzmlData,
     setCurrentCzmlChildProp,
