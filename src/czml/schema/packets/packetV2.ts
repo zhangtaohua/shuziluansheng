@@ -15,7 +15,7 @@ import czmlPathEntity from "../entities/path.ts";
 import czmlCorridorEntity from "../entities/corridor.ts";
 import czmlCylinderEntity from "../entities/cylinder.ts";
 
-export class czmlPacket {
+export class czmlPacketV2 {
   public id = "czml_packet_" + nanoid(10);
   public name = "packet";
   public _czmlName = "packet";
@@ -133,105 +133,6 @@ export class czmlPacket {
       description:
         "A suggested camera location when viewing this object. The property is specified as a Cartesian position in the East (x), North (y), Up (z) reference frame relative to the object's position.",
     }),
-    billboard: new czmlBillboardEntity({
-      $ref: "Billboard.json",
-      description:
-        "A billboard, or viewport-aligned image, sometimes called a marker. The billboard is positioned in the scene by the `position` property.",
-    }),
-    box: new czmlBoxEntity({
-      $ref: "Box.json",
-      description:
-        "A box, which is a closed rectangular cuboid. The box is positioned and oriented using the `position` and `orientation` properties.",
-    }),
-    corridor: new czmlCorridorEntity({
-      $ref: "Corridor.json",
-      description: "A corridor, which is a shape defined by a centerline and width.",
-    }),
-    cylinder: new czmlCylinderEntity({
-      $ref: "Cylinder.json",
-      description:
-        "A cylinder, truncated cone, or cone defined by a length, top radius, and bottom radius. The cylinder is positioned and oriented using the `position` and `orientation` properties.",
-    }),
-    ellipse: {
-      $ref: "Ellipse.json",
-      description:
-        "An ellipse, which is a closed curve on the surface of the Earth. The ellipse is positioned using the `position` property.",
-    },
-    ellipsoid: {
-      $ref: "Ellipsoid.json",
-      description:
-        "An ellipsoid, which is a closed quadric surface that is a three-dimensional analogue of an ellipse. The ellipsoid is positioned and oriented using the `position` and `orientation` properties.",
-    },
-    label: new czmlLabelEntity({
-      $ref: "Label.json",
-      description: "A string of text. The label is positioned in the scene by the `position` property.",
-    }),
-    model: new czmlModelEntity({
-      $ref: "Model.json",
-      description:
-        "A 3D model. The model is positioned and oriented using the `position` and `orientation` properties.",
-    }),
-    path: new czmlPathEntity({
-      $ref: "Path.json",
-      description:
-        "A path, which is a polyline defined by the motion of an object over time. The possible vertices of the path are specified by the `position` property.",
-    }),
-    point: {
-      $ref: "Point.json",
-      description:
-        "A point, or viewport-aligned circle. The point is positioned in the scene by the `position` property.",
-    },
-    polygon: {
-      $ref: "Polygon.json",
-      description: "A polygon, which is a closed figure on the surface of the Earth.",
-    },
-    polyline: {
-      $ref: "Polyline.json",
-      description: "A polyline, which is a line in the scene composed of multiple segments.",
-    },
-    polylineVolume: {
-      $ref: "PolylineVolume.json",
-      description: "A polyline with a volume, defined as a 2D shape extruded along a polyline.",
-    },
-    rectangle: {
-      $ref: "Rectangle.json",
-      description:
-        "A cartographic rectangle, which conforms to the curvature of the globe and can be placed along the surface or at altitude.",
-    },
-    tileset: {
-      $ref: "Tileset.json",
-      description: "A 3D Tiles tileset.",
-    },
-    wall: {
-      $ref: "Wall.json",
-      description:
-        "A two-dimensional wall which conforms to the curvature of the globe and can be placed along the surface or at altitude.",
-    },
-    agi_conicSensor: {
-      $ref: "Extensions/AGI/ConicSensor.json",
-      description:
-        "A conical sensor volume taking into account occlusion of an ellipsoid, i.e., the globe. The sensor is positioned and oriented using the `position` and `orientation` properties.",
-    },
-    agi_customPatternSensor: {
-      $ref: "Extensions/AGI/CustomPatternSensor.json",
-      description:
-        "A custom sensor volume taking into account occlusion of an ellipsoid, i.e., the globe. The sensor is positioned and oriented using the `position` and `orientation` properties.",
-    },
-    agi_rectangularSensor: {
-      $ref: "Extensions/AGI/RectangularSensor.json",
-      description:
-        "A rectangular pyramid sensor volume taking into account occlusion of an ellipsoid, i.e., the globe. The sensor is positioned and oriented using the `position` and `orientation` properties.",
-    },
-    agi_fan: {
-      $ref: "Extensions/AGI/Fan.json",
-      description:
-        "Defines a fan, which starts at a point or apex and extends in a specified list of directions from the apex. Each pair of directions forms a face of the fan extending to the specified radius. The fan is positioned and oriented using the `position` and `orientation` properties.",
-    },
-    agi_vector: {
-      $ref: "Extensions/AGI/Vector.json",
-      description:
-        "Defines a graphical vector that originates at the `position` property and extends in the provided direction for the provided length. The vector is positioned using the `position` property.",
-    },
   };
   // end properties
 
@@ -264,4 +165,4 @@ export class czmlPacket {
   }
 }
 
-export default czmlPacket;
+export default czmlPacketV2;

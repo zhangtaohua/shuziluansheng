@@ -411,7 +411,7 @@
   const {
     czmlMapDataConfig,
     setCzmlMapCurrentAction,
-    setCzmlMapCurrentData,
+    setCzmlMapCurrentDrawData,
     setCzmlMapViewDrawData,
     setCzmlIsViewDrawDataPath,
   } = useCzmlMapDataConfigStore();

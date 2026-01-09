@@ -23,6 +23,7 @@ import { CssNamePixel } from "../cssData/NamePixel.ts";
 export const CssWidthOptions = {
   name: "width",
   vueStyleName: "width",
+  cssStyleName: "width",
   labelZh: "宽度",
   labelEn: "width",
   tag: "NumberInputSlider",
@@ -35,6 +36,7 @@ export const CssWidthOptions = {
 export const CssMaxWidthOptions = {
   name: "max-width",
   vueStyleName: "maxWidth",
+  cssStyleName: "max-width",
   labelZh: "最大宽度",
   labelEn: "max width",
   tag: "NumberInputSlider",
@@ -47,6 +49,7 @@ export const CssMaxWidthOptions = {
 export const CssMinWidthOptions = {
   name: "min-width",
   vueStyleName: "minWidth",
+  cssStyleName: "min-width",
   labelZh: "最小宽度",
   labelEn: "min width",
   tag: "NumberInputSlider",
@@ -59,6 +62,7 @@ export const CssMinWidthOptions = {
 export const CssHeightOptions = {
   name: "height",
   vueStyleName: "height",
+  cssStyleName: "height",
   labelZh: "高度",
   labelEn: "height",
   tag: "NumberInputSlider",
@@ -71,6 +75,7 @@ export const CssHeightOptions = {
 export const CssMaxHeightOptions = {
   name: "max-height",
   vueStyleName: "maxHeight",
+  cssStyleName: "max-height",
   labelZh: "最大高度",
   labelEn: "max height",
   tag: "NumberInputSlider",
@@ -83,6 +88,7 @@ export const CssMaxHeightOptions = {
 export const CssMinHeightOptions = {
   name: "min-height",
   vueStyleName: "minHeight",
+  cssStyleName: "min-height",
   labelZh: "最小高度",
   labelEn: "min height",
   tag: "NumberInputSlider",
@@ -95,6 +101,7 @@ export const CssMinHeightOptions = {
 export const CssFontSizeOptions = {
   name: "font-size",
   vueStyleName: "fontSize",
+  cssStyleName: "font-size",
   labelZh: "文字大小",
   labelEn: "font-size",
   tag: "NumberInputSlider",
@@ -109,6 +116,7 @@ export const CssFontSizeOptions = {
 export const CssLineHeightOptions = {
   name: "line-height",
   vueStyleName: "lineHeight",
+  cssStyleName: "line-height",
   labelZh: "行高",
   labelEn: "line height",
   tag: "NumberInputSlider",
@@ -123,6 +131,7 @@ export const CssLineHeightOptions = {
 export const CssTextEllipseLines = {
   name: "text-ellipse-lines",
   vueStyleName: "text-ellipse-lines",
+  cssStyleName: "text-ellipse-lines",
   labelZh: "文本省略行数",
   labelEn: "text ellipse lines",
   tag: "NumberInputSlider",
@@ -137,6 +146,7 @@ export const CssTextEllipseLines = {
 export const CssTopOptions = {
   name: "top",
   vueStyleName: "top",
+  cssStyleName: "top",
   labelZh: "顶部",
   labelEn: "top",
   tag: "NumberInputSlider",
@@ -151,6 +161,7 @@ export const CssTopOptions = {
 export const CssLeftOptions = {
   name: "left",
   vueStyleName: "left",
+  cssStyleName: "left",
   labelZh: "左侧",
   labelEn: "left",
   tag: "NumberInputSlider",
@@ -165,6 +176,7 @@ export const CssLeftOptions = {
 export const CssRightOptions = {
   name: "right",
   vueStyleName: "right",
+  cssStyleName: "right",
   labelZh: "右侧",
   labelEn: "right",
   tag: "NumberInputSlider",
@@ -179,6 +191,7 @@ export const CssRightOptions = {
 export const CssBottomOptions = {
   name: "bottom",
   vueStyleName: "bottom",
+  cssStyleName: "bottom",
   labelZh: "底部",
   labelEn: "bottom",
   tag: "NumberInputSlider",
@@ -193,6 +206,7 @@ export const CssBottomOptions = {
 export const CssRotateOptions = {
   name: "rotate",
   vueStyleName: "rotate",
+  cssStyleName: "rotate",
   labelZh: "旋转",
   labelEn: "rotate",
   tag: "NumberInputSlider",
@@ -205,7 +219,8 @@ export const CssRotateOptions = {
 
 export const CssZindexOptions = {
   name: "z-index",
-  vueStyleName: "z-index",
+  vueStyleName: "zIndex",
+  cssStyleName: "z-index",
   labelZh: "层级",
   labelEn: "z index",
   tag: "NumberInputSlider",
@@ -217,8 +232,9 @@ export const CssZindexOptions = {
 };
 
 export const CssBorderWidthOptions = {
-  name: "borderWidth",
+  name: "border-width",
   vueStyleName: "borderWidth",
+  cssStyleName: "border-width",
   labelZh: "边框宽度",
   labelEn: "border width",
   tag: "NumberInputSlider",
@@ -231,8 +247,9 @@ export const CssBorderWidthOptions = {
 };
 
 export const CssBorderLeftWidthOptions = {
-  name: "borderLeftWidth",
+  name: "border-left-width",
   vueStyleName: "borderLeftWidth",
+  cssStyleName: "border-left-width",
   labelZh: "边框左侧宽度",
   labelEn: "border left width",
   tag: "NumberInputSlider",
@@ -245,8 +262,9 @@ export const CssBorderLeftWidthOptions = {
 };
 
 export const CssBorderRightWidthOptions = {
-  name: "borderRightWidth",
+  name: "border-right-width",
   vueStyleName: "borderRightWidth",
+  cssStyleName: "border-right-width",
   labelZh: "边框右侧宽度",
   labelEn: "border right width",
   tag: "NumberInputSlider",
@@ -259,8 +277,9 @@ export const CssBorderRightWidthOptions = {
 };
 
 export const CssBorderTopWidthOptions = {
-  name: "borderTopWidth",
+  name: "border-top-width",
   vueStyleName: "borderTopWidth",
+  cssStyleName: "border-top-width",
   labelZh: "边框顶部宽度",
   labelEn: "border top width",
   tag: "NumberInputSlider",
@@ -273,8 +292,9 @@ export const CssBorderTopWidthOptions = {
 };
 
 export const CssBorderBottomWidthOptions = {
-  name: "borderBottomWidth",
+  name: "border-bottom-width",
   vueStyleName: "borderBottomWidth",
+  cssStyleName: "border-bottom-width",
   labelZh: "边框底部宽度",
   labelEn: "border bottom width",
   tag: "NumberInputSlider",
@@ -287,8 +307,9 @@ export const CssBorderBottomWidthOptions = {
 };
 
 export const CssBorderRadiusOptions = {
-  name: "borderRadius",
+  name: "border-radius",
   vueStyleName: "borderRadius",
+  cssStyleName: "border-radius",
   labelZh: "边框圆角",
   labelEn: "border radius",
   tag: "NumberInputSlider",
@@ -301,8 +322,9 @@ export const CssBorderRadiusOptions = {
 };
 
 export const CssBorderTopLeftRadiusOptions = {
-  name: "borderTopLeftRadius",
-  vueStyleName: "border-top-left-radius",
+  name: "border-top-left-radius",
+  vueStyleName: "borderTopLeftRadius",
+  cssStyleName: "border-top-left-radius",
   labelZh: "边框左上圆角",
   labelEn: "border top left radius",
   tag: "NumberInputSlider",
@@ -315,8 +337,9 @@ export const CssBorderTopLeftRadiusOptions = {
 };
 
 export const CssBorderBottomLeftRadiusOptions = {
-  name: "borderBottomLeftRadius",
-  vueStyleName: "border-bottom-left-radius",
+  name: "border-bottom-left-radius",
+  vueStyleName: "borderBottomLeftRadius",
+  cssStyleName: "border-bottom-left-radius",
   labelZh: "边框左下圆角",
   labelEn: "border bottom left radius",
   tag: "NumberInputSlider",
@@ -329,8 +352,9 @@ export const CssBorderBottomLeftRadiusOptions = {
 };
 
 export const CssBorderTopRightRadiusOptions = {
-  name: "borderTopRightRadius",
-  vueStyleName: "border-top-right-radius",
+  name: "border-top-right-radius",
+  vueStyleName: "borderTopRightRadius",
+  cssStyleName: "border-top-right-radius",
   labelZh: "边框右上圆角",
   labelEn: "border top right radius",
   tag: "NumberInputSlider",
@@ -343,8 +367,9 @@ export const CssBorderTopRightRadiusOptions = {
 };
 
 export const CssBorderBottomRightRadiusOptions = {
-  name: "borderBottomRightRadius",
-  vueStyleName: "border-bottom-right-radius",
+  name: "border-bottom-right-radius",
+  vueStyleName: "borderBottomRightRadius",
+  cssStyleName: "border-bottom-right-radius",
   labelZh: "边框右下圆角",
   labelEn: "border bottom right radius",
   tag: "NumberInputSlider",

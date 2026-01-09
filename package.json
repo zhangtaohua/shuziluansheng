@@ -16,6 +16,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@adobe/css-tools": "^4.4.4",
     "@cyhnkckali/vue3-color-picker": "^2.1.5",
     "@element-plus/icons-vue": "^2.3.2",
     "@scena/guides": "^0.29.2",
@@ -35,7 +36,10 @@
     "konva": "^10.0.2",
     "localforage": "^1.10.0",
     "lucide-vue-next": "^0.562.0",
+    "monaco-editor": "^0.55.1",
+    "monaco-editor-vue3": "^1.0.5",
     "nanoid": "^5.1.5",
+    "openai": "^6.15.0",
     "papaparse": "^5.5.3",
     "pinia": "^3.0.3",
     "screenfull": "^6.0.2",

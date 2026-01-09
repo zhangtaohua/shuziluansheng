@@ -528,6 +528,15 @@ export function removeCzmlGraphicLayer(options: any) {
   }
 }
 
+export function clearCzmlGraphicLayer() {
+  if (map) {
+    czmlGraphicLayerMap.forEach((layerObj) => {
+      map.removeLayer(layerObj.layer);
+    });
+    czmlGraphicLayerMap.clear();
+  }
+}
+
 let pathViewGraphics = [];
 export function addPathViewBillboradPointGraphic(cartesian3) {
   if (graphicLayer) {

@@ -46,6 +46,7 @@ export function createCssBorderCombineProp(options = {}) {
       borderTopColor: createCssColorProp({
         name: "border-top-color",
         vueStyleName: "borderTopColor",
+        cssStyleName: "border-top-color",
         labelZh: "边框顶部颜色",
         labelEn: "border top color",
       }),
@@ -54,6 +55,7 @@ export function createCssBorderCombineProp(options = {}) {
       borderRightColor: createCssColorProp({
         name: "border-right-color",
         vueStyleName: "borderRightColor",
+        cssStyleName: "border-right-color",
         labelZh: "边框右侧颜色",
         labelEn: "border right color",
       }),
@@ -63,6 +65,7 @@ export function createCssBorderCombineProp(options = {}) {
       borderBottomColor: createCssColorProp({
         name: "border-bottom-color",
         vueStyleName: "borderBottomColor",
+        cssStyleName: "border-bottom-color",
         labelZh: "边框底部颜色",
         labelEn: "border bottom color",
       }),
@@ -71,6 +74,7 @@ export function createCssBorderCombineProp(options = {}) {
       borderLeftColor: createCssColorProp({
         name: "border-left-color",
         vueStyleName: "borderLeftColor",
+        cssStyleName: "border-left-color",
         labelZh: "边框左侧颜色",
         labelEn: "border left color",
       }),

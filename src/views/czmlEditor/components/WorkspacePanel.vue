@@ -13,6 +13,7 @@
   import {
     globalCzmlMapData,
     useCzmlMapDataConfigStore,
+    useCzmlStateStore,
     MAP_DRAW_POINT,
     MAP_DRAW_LINE,
     MAP_DRAW_FREELINE,
@@ -25,7 +26,8 @@
 
   const { editorComponents } = useEditorComponentstore();
 
-  const { czmlMapDataConfig, setCzmlMapCurrentData } = useCzmlMapDataConfigStore();
+  const { czmlMapDataConfig, setCzmlMapCurrentDrawData } = useCzmlMapDataConfigStore();
+  const { czmlState } = useCzmlStateStore();
 
   let lastDrawGraphic = null;
   let keyDownCode = undefined;
@@ -269,7 +271,7 @@
 
             console.log("coordinates", coordinates);
 
-            setCzmlMapCurrentData(coordinates);
+            setCzmlMapCurrentDrawData(coordinates);
             cancelDrawAction();
           }
         } else {
@@ -304,6 +306,22 @@
         }
       } else {
         csMap.removePathViewAllGraphics();
+      }
+    },
+    {
+      deep: false,
+      immediate: false,
+    },
+  );
+
+  watch(
+    [() => czmlState.currentCzmlChildPropRefresh],
+    () => {
+      if (csMap && globalCzmlMapData.currentCzmlData && globalCzmlMapData.currentCzmlChildProp) {
+        const czmlOpt = globalCzmlMapData.currentCzmlData;
+        csMap.addCzmlGraphicLayer(czmlOpt);
+      } else {
+        csMap.clearCzmlGraphicLayer();
       }
     },
     {

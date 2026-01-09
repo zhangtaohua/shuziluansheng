@@ -121,12 +121,3 @@ export class CssCheckedInput {
 }
 
 export default CssCheckedInput;
-
-export const CssBackgroundClipTextOptions = {
-  name: "background-clip-text",
-  vueStyleName: "backgroundClipText",
-  labelZh: "文字裁剪背景",
-  labelEn: "background clip text",
-  tag: "CheckInput",
-  isEnable: true,
-};

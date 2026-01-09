@@ -156,6 +156,7 @@ export default CssColorInput;
 export const CssColorOptions = {
   name: "color",
   vueStyleName: "color",
+  cssStyleName: "color",
   labelZh: "颜色",
   labelEn: "color",
   tag: "ColorInput",

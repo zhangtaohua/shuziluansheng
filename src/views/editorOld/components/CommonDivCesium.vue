@@ -48,7 +48,7 @@
   const { editorConfig, setEditorCurrentShape, setEditorRefreshShape, setEditorCurrentParentComp } =
     useEditorConfigStore();
 
-  const { czmlMapDataConfig, setCzmlMapCurrentData } = useCzmlMapDataConfigStore();
+  const { czmlMapDataConfig, setCzmlMapCurrentDrawData } = useCzmlMapDataConfigStore();
 
   let isStopCanvasPropagation = false;
   const isControlMaping = ref(false);
@@ -389,7 +389,7 @@
 
             console.log("coordinates", coordinates);
 
-            setCzmlMapCurrentData(coordinates);
+            setCzmlMapCurrentDrawData(coordinates);
             cancelDrawAction();
           }
           isStopCanvasPropagation = false;

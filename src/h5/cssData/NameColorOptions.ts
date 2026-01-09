@@ -189,6 +189,7 @@ export default CssColorOptionsInput;
 export const CssBackgroundColorOptions = {
   name: "background-color",
   vueStyleName: "backgroundColor",
+  cssStyleName: "background-color",
   labelZh: "背景色",
   labelEn: "background color",
   tag: "ColorOptionsInput",

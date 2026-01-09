@@ -3,6 +3,7 @@ import { CssPureOptionsInput } from "../cssData/PureOptions";
 export const CssDisplayOptions = {
   name: "display",
   vueStyleName: "display",
+  cssStyleName: "display",
   labelZh: "显示",
   labelEn: "display",
   tag: "OptionsInput",
@@ -64,6 +65,7 @@ export const CssDisplayOptions = {
 export const CssPositionOptions = {
   name: "position",
   vueStyleName: "position",
+  cssStyleName: "position",
   labelZh: "位置",
   labelEn: "position",
   tag: "OptionsInput",
@@ -102,6 +104,7 @@ export const CssPositionOptions = {
 export const CssFontWeightOptions = {
   name: "font-weight",
   vueStyleName: "fontWeight",
+  cssStyleName: "font-weight",
   labelZh: "字体粗细",
   labelEn: "font weight",
   tag: "OptionsInput",
@@ -135,6 +138,7 @@ export const CssFontWeightOptions = {
 export const CssFontStyleOptions = {
   name: "font-style",
   vueStyleName: "fontStyle",
+  cssStyleName: "font-style",
   labelZh: "字体样式",
   labelEn: "font style",
   tag: "OptionsInput",
@@ -166,6 +170,7 @@ export const CssFontStyleOptions = {
 export const CssObjectFitOptions = {
   name: "object-fit",
   vueStyleName: "objectFit",
+  cssStyleName: "object-fit",
   labelZh: "自适应",
   labelEn: "object fit",
   tag: "OptionsInput",
@@ -211,6 +216,7 @@ export const CssObjectPosition = {
 export const CssBorderStyleOptions = {
   name: "border-style",
   vueStyleName: "borderStyle",
+  cssStyleName: "border-style",
   labelZh: "边框样式",
   labelEn: "border style",
   tag: "OptionsInput",
@@ -258,6 +264,7 @@ export function createCssBorderTopStyleProp(options = {}) {
     ...CssBorderStyleOptions,
     name: "border-top-style",
     vueStyleName: "borderTopStyle",
+    cssStyleName: "border-top-style",
     labelZh: "边框顶部样式",
     labelEn: "border top style",
     ...options,
@@ -269,6 +276,7 @@ export function createCssBorderBottomStyleProp(options = {}) {
     ...CssBorderStyleOptions,
     name: "border-bottom-style",
     vueStyleName: "borderBottomStyle",
+    cssStyleName: "border-bottom-style",
     labelZh: "边框底部样式",
     labelEn: "border bottom style",
     ...options,
@@ -280,6 +288,7 @@ export function createCssBorderLeftStyleProp(options = {}) {
     ...CssBorderStyleOptions,
     name: "border-left-style",
     vueStyleName: "borderLeftStyle",
+    cssStyleName: "border-left-style",
     labelZh: "边框左侧样式",
     labelEn: "border left style",
     ...options,
@@ -291,6 +300,7 @@ export function createCssBorderRightStyleProp(options = {}) {
     ...CssBorderStyleOptions,
     name: "border-right-style",
     vueStyleName: "borderRightStyle",
+    cssStyleName: "border-right-style",
     labelZh: "边框右侧样式",
     labelEn: "border right style",
     ...options,

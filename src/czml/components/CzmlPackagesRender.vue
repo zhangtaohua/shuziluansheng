@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, onMounted } from "vue";
+  import { ref, onMounted, watch } from "vue";
   import RjBooleanSwitchInput from "@/components/form/RjBooleanSwitchInput.vue";
 
   // import { getDomMaxHeight } from "@/utils/common/dom";
@@ -62,6 +62,17 @@
   onMounted(() => {
     init();
   });
+
+  watch(
+    () => props.vdata,
+    (newVal, oldVal) => {
+      init();
+    },
+    {
+      immediate: false,
+      deep: true,
+    },
+  );
 </script>
 
 <style scoped>

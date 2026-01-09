@@ -640,12 +640,12 @@
     // }
 
     if (e.code === "Space" && !isKeyCanPan) {
-      e.preventDefault();
+      // e.preventDefault();
       isKeyCanPan = true;
     }
 
     if (e.code === "KeyR" && !isKeyCanRotate) {
-      e.preventDefault();
+      // e.preventDefault();
       isKeyCanRotate = true;
     }
   };
@@ -653,12 +653,12 @@
   // 键盘释放事件处理
   const handleKeyUp = (e) => {
     if (e.code === "Space" && isKeyCanPan) {
-      e.preventDefault();
+      // e.preventDefault();
       isKeyCanPan = false;
     }
 
     if (e.code === "KeyR" && isKeyCanRotate) {
-      e.preventDefault();
+      // e.preventDefault();
       isKeyCanRotate = false;
     }
 

@@ -1,6 +1,6 @@
 import { nanoid } from "@/utils/common/nanoid";
 
-import { czmlPacket } from "./packet";
+import { czmlPacketV2 } from "./packetV2";
 import { czmlDocument } from "./document";
 import { testFakeData, TCdata, testFakeData2, testFakeData3 } from "./testFakeData1.js";
 
@@ -63,7 +63,7 @@ export class CzmlDataMaker {
 
   // RJTODO
   // 1 要可以手动增加packet;
-  public packets = [new czmlDocument(), new czmlPacket()];
+  public packets = [new czmlDocument(), new czmlPacketV2()];
 
   public getCzmlData() {
     const czmlData = [];
