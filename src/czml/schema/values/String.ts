@@ -11,7 +11,8 @@ export class czmlStringProp {
   public descriptionZh = "";
 
   public type = "property";
-  public componentType = "czml#packet#property";
+  public componentType = "czml";
+  public componentProps = "czml#packet#property";
   public tag = "CzmlStringPropInput";
   public _value = "";
   public _valueType = "string";

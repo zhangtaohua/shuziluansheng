@@ -342,8 +342,6 @@ export const globalCzmlMapData = {
   drawData: null,
   viewDrawData: null,
   czmlDatas: new Map(),
-  currentCzmlData: null,
-  currentCzmlChildProp: null,
 };
 
 export const useCzmlMapDataConfigStore = defineStore("useCzmlMapDataConfigStore", () => {
@@ -418,10 +416,12 @@ export const useCzmlStateStore = defineStore("useCzmlStateStore", () => {
   const czmlState = reactive({
     currentCzmlState: "",
     czmlDatasRefresh: 0,
-    currentCzmlDataId: "",
+    currentCzmlData: null,
     currentCzmlDataRefresh: 0,
-    currentCzmlChildPropId: "",
-    currentCzmlChildPropRefresh: 0,
+    currentCzmlDataPackageId: "",
+    currentCzmlDataPackageIdRefresh: 0,
+    currentCzmlDataPackageProp: null,
+    currentCzmlDataPackagePropRefresh: 0,
   });
 
   function setCzmlCurrentCzmlState(state: string) {
@@ -449,23 +449,31 @@ export const useCzmlStateStore = defineStore("useCzmlStateStore", () => {
 
   function setCurrentCzmlData(data: any) {
     if (data) {
-      czmlState.currentCzmlDataId = data.id;
-      globalCzmlMapData.currentCzmlData = data;
+      czmlState.currentCzmlData = data;
       czmlState.currentCzmlDataRefresh++;
     } else {
-      czmlState.currentCzmlDataId = "";
+      czmlState.currentCzmlData = null;
       czmlState.currentCzmlDataRefresh = 0;
     }
   }
 
-  function setCurrentCzmlChildProp(data: any) {
-    if (data) {
-      czmlState.currentCzmlChildPropId = data.id;
-      globalCzmlMapData.currentCzmlChildProp = data;
-      czmlState.currentCzmlChildPropRefresh++;
+  function setCurrentCzmlDataPackageId(id: string) {
+    if (id) {
+      czmlState.currentCzmlDataPackageId = id;
+      czmlState.currentCzmlDataPackageIdRefresh++;
     } else {
-      czmlState.currentCzmlChildPropId = "";
-      czmlState.currentCzmlChildPropRefresh = 0;
+      czmlState.currentCzmlDataPackageId = "";
+      czmlState.currentCzmlDataPackageIdRefresh = 0;
+    }
+  }
+
+  function setCurrentCzmlDataPackageProp(data: any) {
+    if (data) {
+      czmlState.currentCzmlDataPackageProp = data;
+      czmlState.currentCzmlDataPackagePropRefresh++;
+    } else {
+      czmlState.currentCzmlDataPackageProp = null;
+      czmlState.currentCzmlDataPackagePropRefresh = 0;
     }
   }
 
@@ -476,7 +484,8 @@ export const useCzmlStateStore = defineStore("useCzmlStateStore", () => {
     removeCzmlDatas,
     setCzmlCurrentCzmlState,
     setCurrentCzmlData,
-    setCurrentCzmlChildProp,
+    setCurrentCzmlDataPackageId,
+    setCurrentCzmlDataPackageProp,
   };
 });
 

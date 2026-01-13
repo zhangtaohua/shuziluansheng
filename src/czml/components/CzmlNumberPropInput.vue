@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isEnable" class="col_nw_fs_fs props_container">
+  <div v-if="isEnable" :id="currentProp.id" class="col_nw_fs_fs props_container">
     <div class="row_nw_sb_ce props_title_box">
       <el-tooltip placement="top" effect="dark">
         <template #content>
@@ -19,7 +19,7 @@
       </el-tooltip>
 
       <div class="row_nw_fs_ce props_timecol_isusedbox">
-        <RjBooleanSwitchInput v-model="currentProp.isUsed"></RjBooleanSwitchInput>
+        <RjBooleanSwitchInput v-model="currentProp.isUsed" :disabled="!currentProp.isEnable"></RjBooleanSwitchInput>
       </div>
     </div>
     <div class="col_nw_fs_fs props_radiobox">

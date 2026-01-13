@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isEnable" class="col_nw_fs_fs props_container">
+  <div v-if="isEnable" :id="currentProp.id" class="col_nw_fs_fs props_container">
     <div
       v-if="isShowOp && currentProp.options && currentProp.options.length"
       class="row_nw_fs_ce props_options_mask"
@@ -25,7 +25,7 @@
         </el-tooltip>
 
         <div class="row_nw_fs_ce props_timecol_isusedbox">
-          <RjBooleanSwitchInput v-model="currentProp.isUsed"></RjBooleanSwitchInput>
+          <RjBooleanSwitchInput v-model="currentProp.isUsed" :disabled="!currentProp.isEnable"></RjBooleanSwitchInput>
         </div>
       </div>
     </div>

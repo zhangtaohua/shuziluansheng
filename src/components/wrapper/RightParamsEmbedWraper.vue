@@ -33,10 +33,25 @@
   // const vueInstance = getCurrentInstance();
   const isExpanded = ref(true);
   const isResize = ref(false);
-  const defaultWidth = "40rem";
+  // const defaultWidth = "40rem";
   const defaultMinWidth = "1rem";
+
+  const props = defineProps({
+    vdata: {
+      type: Object,
+      default() {
+        return {
+          width: "40rem",
+          ctlWidth: 280,
+          ctlMaxWidth: 760,
+          ctlMinWidth: 10,
+        };
+      },
+    },
+  });
+
   const leftStyle = reactive({
-    width: defaultWidth,
+    width: props.vdata.width,
     transition: null,
   });
 
@@ -66,16 +81,18 @@
       const clientX = Math.abs(bodyClientWidth - clientXTemp);
 
       // console.log("body", bodyClientWidth, clientXTemp, clientX)
+      const { ctlWidth, ctlMaxWidth, ctlMinWidth } = props.vdata;
+
       if (Math.abs(clientX - moveX) > offset) {
-        if (clientX > 480) {
+        if (clientX > ctlWidth) {
           leftStyle.width = clientX + "px";
           leftStyle.transition = null;
-          if (clientX > 760) {
-            leftStyle.width = "760px";
+          if (clientX > ctlMaxWidth) {
+            leftStyle.width = ctlMaxWidth + "px";
           }
         } else {
-          if (clientX > 10) {
-            leftStyle.width = "480px";
+          if (clientX > ctlMinWidth) {
+            leftStyle.width = ctlWidth + "px";
             isExpanded.value = true;
           } else {
             leftStyle.width = defaultMinWidth;
@@ -96,7 +113,7 @@
         isExpanded.value = false;
       });
     } else {
-      leftStyle.width = defaultWidth;
+      leftStyle.width = props.vdata.width;
       isExpanded.value = true;
 
       setTimeout(() => {

@@ -1,7 +1,7 @@
 <template>
   <div class="row_nw_fe_ce bool_switchcontainer">
     <div class="row_nw_fs_ce bool_switchinput_box">
-      <input type="checkbox" class="row_nw_fs_fs bool_switchinput" v-model="modelValue" />
+      <input type="checkbox" class="row_nw_fs_fs bool_switchinput" :disabled="props.disabled" v-model="modelValue" />
     </div>
     <div class="row_nw_fs_ce wh_auto_100p">
       <label class="row_nw_fs_ce bool_switchch_label">{{ props.vdata.labelZh }}</label>
@@ -20,6 +20,10 @@
           labelEn: "use?",
         };
       },
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     },
   });
 

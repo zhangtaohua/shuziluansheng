@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isEnable" class="col_nw_fs_fs czml_props_container">
+  <div v-if="isEnable" :id="currentPackets.id" class="col_nw_fs_fs czml_props_container">
     <div v-for="packet in currentPackets.packets" :id="packet.id" :key="packet.id" class="col_nw_fs_ce config_czml_box">
       <div class="row_nw_fs_ce czml_packet_tbox">
         <div class="row_nw_fs_ce wh_auto_100p">

@@ -86,9 +86,9 @@ export class czmlTimeCollectionProp {
       this._value = options.value;
     }
 
-    if (options.default) {
-      this.default = options.default;
-    }
+    // if (options.default) {
+    //   this.default = options.default;
+    // }
 
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isEnable" class="col_nw_fs_fs czml_props_container">
+  <div v-if="isEnable" :id="currentProp.id" class="col_nw_fs_fs czml_props_container">
     <div class="col_nw_fs_ce czml_combine_box">
       <div class="row_nw_sb_ce czml_combine_tbox">
         <el-tooltip placement="top" effect="dark">
@@ -29,7 +29,7 @@
         </el-tooltip>
 
         <div class="row_nw_fs_ce props_timecol_isusedbox">
-          <RjBooleanSwitchInput v-model="currentProp.isUsed"></RjBooleanSwitchInput>
+          <RjBooleanSwitchInput v-model="currentProp.isUsed" :disabled="!currentProp.isEnable"></RjBooleanSwitchInput>
         </div>
       </div>
       <div class="czml_combine_topgap"></div>

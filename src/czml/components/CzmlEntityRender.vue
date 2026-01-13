@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isEnable" class="col_nw_fs_fs czml_entity_props_container">
+  <div v-if="isEnable" :id="currentEntity.id" class="col_nw_fs_fs czml_entity_props_container">
     <div v-if="currentEntity.isEntity" class="col_nw_fs_ce czml_entity_box">
       <div class="row_nw_fs_ce czml_entity_tbox">
         <div class="row_nw_fs_ce wh_auto_100p">

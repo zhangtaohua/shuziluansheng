@@ -1,10 +1,10 @@
 <template>
-  <RightParamsEmbedWraper v-if="isCanShowConfigPanel" ref="RightParamsEmWraperRef" :vdata="rightWraperOptions">
+  <RightParamsEmbedFixedWraper v-if="isCanShowConfigPanel" ref="RightParamsEmWraperRef">
     <div class="row_nw_ce_ce rparams_in_container">
       <div class="col_nw_fs_fs rparams_in_wrapper">
         <div class="col_nw_fs_fs rparams_in_header">
           <div class="row_nw_sb_ce rparams_in_header_tbox">
-            <div class="row_nw_fs_ce rparams_in_header_title">参数配置</div>
+            <HeaderPanel></HeaderPanel>
             <div class="row_nw_fs_ce rparams_in_header_cimg">
               <el-icon class="rparams_in_header_cicon" size="1.25rem" @click="unExpandClickHd">
                 <CircleClose />
@@ -25,9 +25,9 @@
           </div>
         </div>
 
-        <div class="grave_gap"></div>
+        <div class="grave_gap" ref="uiGapLineRef"></div>
 
-        <div class="col_nw_fs_ce rparams_in_body">
+        <div class="col_nw_fs_ce rparams_in_body" ref="uiConfigBodyRef">
           <div v-show="currentTabName == htmlTabNames[0].value" class="rparams_in_body_code">
             <CodeEditor
               ref="codeEditorRef"
@@ -39,8 +39,32 @@
               @change="editorChangeHd"
             />
           </div>
-          <div v-show="currentTabName == htmlTabNames[1].value" class="col_nw_fs_fs rparams_in_body_wraper">
-            <CzmlPackagesRender :vdata="currentCzmlData"></CzmlPackagesRender>
+          <div v-show="currentTabName == htmlTabNames[1].value" class="row_nw_fs_fs rparams_in_body_wraper">
+            <!-- <CzmlPackagesRender :vdata="currentCzmlData"></CzmlPackagesRender> -->
+
+            <div class="row_nw_fs_fs rparams_in_body_cbox" v-if="currentCzmlDataPackageProp">
+              <component :is="currentCzmlDataPackageProp.tag" :vdata="currentCzmlDataPackageProp"></component>
+            </div>
+            <div class="rparams_in_body_gap" :style="pppPlcStyle"></div>
+
+            <div
+              v-if="currentCzmlDataPackageProp && currentCzmlDataPackageProp.properties"
+              class="row_nw_fs_fs rparams_in_body_ppbox"
+              :style="pppStyle"
+              ref="uiPPPQuickBoxRef"
+            >
+              <div class="col_nw_fs_fs rparams_opt_props_ctxbox">
+                <div
+                  v-for="prop in currentCzmlDataPackageProp.properties"
+                  :key="prop.id"
+                  class="row_nw_fs_ce rparams_opt_props_ctxlabels"
+                >
+                  <el-button size="small" plain @click="czmlDataPackagePropPropChangeHd(prop)">
+                    {{ prop.czmlName }}
+                  </el-button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -68,13 +92,14 @@
         </div>
       </div>
     </div>
-  </RightParamsEmbedWraper>
+  </RightParamsEmbedFixedWraper>
 </template>
 
 <script setup lang="ts">
-  import { ref, watch, createVNode, render, createApp, getCurrentInstance } from "vue";
+  import { ref, watch, createVNode, render, createApp, getCurrentInstance, reactive, nextTick } from "vue";
 
-  import RightParamsEmbedWraper from "@/components/wrapper/RightParamsEmbedWraper.vue";
+  import RightParamsEmbedFixedWraper from "@/components/wrapper/RightParamsEmbedFixedWraper.vue";
+  import HeaderPanel from "@/views/czmlEditor/components/HeaderPanel.vue";
 
   import { Position, Microphone } from "@element-plus/icons-vue";
 
@@ -88,14 +113,6 @@
 
   import { globalCzmlMapData, useCzmlMapDataConfigStore, useCzmlStateStore } from "@/stores/czmlMapDataConfig";
 
-  // 右侧参数配置面板宽度配置
-  const rightWraperOptions = {
-    width: "35rem",
-    ctlWidth: 280,
-    ctlMaxWidth: 760,
-    ctlMinWidth: 10,
-  };
-
   const { czmlState } = useCzmlStateStore();
 
   const currentVueIns = getCurrentInstance();
@@ -104,10 +121,31 @@
   // 当前选中的Czml数据
   const currentCzmlData = ref(null);
 
+  const uiConfigBodyRef = ref(null);
+  const uiPPPQuickBoxRef = ref(null);
+  const uiGapLineRef = ref(null);
+  const currentCzmlDataPackageProp = ref(null);
+
+  const pppPlcStyle = reactive({
+    width: "1rem",
+  });
+
+  const pppStyle = reactive({
+    top: "1rem",
+  });
+
+  // const uiControlScrollHd = () => {
+  //   if (uiConfigBodyRef.value) {
+  //     pppStyle.marginTop = `${uiConfigBodyRef.value.scrollTop}px`;
+  //   } else {
+  //     pppStyle.marginTop = "0px";
+  //   }
+  // };
+
   // 右侧参数配置面板
   const RightParamsEmWraperRef = ref(null);
   // 是否显示右侧参数配置面板
-  const isCanShowConfigPanel = ref(false);
+  const isCanShowConfigPanel = ref(true);
 
   const askQuestion = ref("");
   const questionList = ref([]);
@@ -151,6 +189,20 @@
   function unExpandClickHd() {
     if (RightParamsEmWraperRef.value) {
       RightParamsEmWraperRef.value.unExpandClickHd();
+    }
+  }
+
+  function czmlDataPackagePropPropChangeHd(prop: any) {
+    const id = prop.id;
+    if (id) {
+      const propDom = document.getElementById(id);
+      if (propDom) {
+        propDom.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+          inline: "center",
+        });
+      }
     }
   }
 
@@ -214,12 +266,12 @@
     parentDom.style.backgroundColor = "rgba(26, 30, 39, 1)";
     parentDom.style.padding = "2.5rem 0.75rem 0.75rem 0.75rem";
     parentDom.style.borderRadius = "0.25rem";
-    parentDom.style.width = "32rem";
+    parentDom.style.width = "46vw";
     parentDom.style.height = "auto";
     parentDom.style.maxHeight = "520px";
     parentDom.style.border = "1px solid rgba(255, 255, 255, 0.5)";
     parentDom.style.overflowY = "scroll";
-    parentDom.style.scrollbarWidth = "0";
+    parentDom.style.scrollbarWidth = "thin";
 
     parentDom.addEventListener("wheel", (event) => {
       event.stopPropagation();
@@ -258,7 +310,7 @@
     if (codeEditorIns) {
       const { id, path } = propertyPath;
       console.log("currentCzmlData", currentCzmlData.value);
-      const packets = currentCzmlData.value.packets;
+      const packets = Object.values(currentCzmlData.value.packets);
       if (!packets || packets.length === 0) {
         ElMessage.error("Czml数据中没有包含任何包");
         return;
@@ -410,10 +462,10 @@
   };
 
   watch(
-    [() => czmlState.currentCzmlChildPropRefresh],
+    [() => czmlState.currentCzmlDataRefresh],
     () => {
-      if (globalCzmlMapData.currentCzmlData && globalCzmlMapData.currentCzmlChildProp) {
-        currentCzmlData.value = globalCzmlMapData.currentCzmlData;
+      if (czmlState.currentCzmlData) {
+        currentCzmlData.value = czmlState.currentCzmlData;
         isCanShowConfigPanel.value = true;
       } else {
         currentCzmlData.value = null;
@@ -427,11 +479,44 @@
   );
 
   watch(
+    () => czmlState.currentCzmlDataPackageProp,
+    () => {
+      if (czmlState.currentCzmlData && czmlState.currentCzmlDataPackageProp) {
+        currentTabName.value = htmlTabNames[1].value;
+        console.log("czmlState.currentCzmlDataPackageProp", czmlState.currentCzmlDataPackageProp);
+        currentCzmlDataPackageProp.value = czmlState.currentCzmlDataPackageProp;
+        if (uiGapLineRef.value) {
+          const rect = uiGapLineRef.value.getBoundingClientRect();
+          // console.log("gap rect", rect);
+          pppStyle.top = `${rect.top + 32}px`;
+        } else {
+          pppStyle.top = "1rem";
+        }
+        nextTick(() => {
+          if (uiPPPQuickBoxRef.value) {
+            pppPlcStyle.width = `${uiPPPQuickBoxRef.value.clientWidth + 24}px`;
+          } else {
+            pppPlcStyle.width = "1rem";
+          }
+        });
+      } else {
+        currentCzmlDataPackageProp.value = null;
+        pppStyle.top = "1rem";
+        pppPlcStyle.width = "1rem";
+      }
+    },
+    {
+      deep: true,
+      immediate: false,
+    },
+  );
+
+  watch(
     currentCzmlData,
     () => {
       if (currentCzmlData.value) {
         czmlCodeJsObj = currentCzmlData.value.getCzmlData();
-        console.log("getCzmlData", czmlCodeJsObj);
+        console.log("getCzmlData", currentCzmlData.value, czmlCodeJsObj);
         czmlCode.value = JSON.stringify(czmlCodeJsObj, null, 2);
       } else {
         czmlCode.value = "";
@@ -569,7 +654,7 @@
   .rparams_in_container {
     width: 100%;
     height: 100%;
-    background-color: rgba(26, 30, 39, 1);
+    background-color: rgba(0, 0, 0, 1);
     overflow: hidden;
     border-top-left-radius: 0.75rem;
     border-bottom-left-radius: 0.75rem;
@@ -581,17 +666,20 @@
 
   .rparams_in_wrapper {
     width: calc(100% - 1.5rem);
-    height: calc(100% - 3rem);
+    height: calc(100% - 2rem);
   }
 
   .rparams_in_header {
     width: 100%;
     height: auto;
+    flex-grow: 0;
+    flex-shrink: 0;
   }
 
   .rparams_in_header_tbox {
+    position: relative;
     width: 100%;
-    height: 2rem;
+    height: auto;
   }
 
   .rparams_in_header_title {
@@ -604,8 +692,11 @@
   }
 
   .rparams_in_header_cimg {
-    width: 1.25rem;
+    position: absolute;
+    width: 2rem;
     height: 2rem;
+    top: 0rem;
+    right: 0rem;
   }
 
   .rparams_in_header_cicon {
@@ -630,18 +721,17 @@
 
   .rparams_in_body {
     width: 100%;
-    height: calc(100% - 18rem);
-    flex-shrink: 1;
-    overflow-y: scroll;
+    height: auto;
+    flex-grow: 1;
+    overflow-y: auto;
     margin-bottom: 1rem;
     container-name: rparamsBody;
     container-type: inline-size;
+    scrollbar-width: thin;
   }
 
-  .rparams_in_body::-webkit-scrollbar {
-    display: none;
-    width: 0px;
-  }
+  /* .rparams_in_body::-webkit-scrollbar {
+  } */
 
   .rparams_in_body_code {
     width: 100%;
@@ -649,12 +739,48 @@
   }
 
   .rparams_in_body_wraper {
+    position: relative;
     width: 100%;
     height: auto;
     margin-bottom: 1rem;
-    background-color: rgba(25, 25, 25, 1);
+    background-color: rgba(26, 30, 39, 1);
     padding: 1rem 0.25rem 1rem 0.5rem;
     border-radius: 0.25rem;
+  }
+
+  .rparams_in_body_cbox {
+    width: max-content;
+    height: auto;
+    flex-grow: 1;
+  }
+
+  .rparams_in_body_gap {
+    width: auto;
+    height: 100%;
+  }
+
+  .rparams_in_body_ppbox {
+    position: fixed;
+    top: 1rem;
+    right: 2.5rem;
+    width: max-content;
+    height: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+  }
+
+  .rparams_opt_props_ctxbox {
+    width: max-content;
+    height: auto;
+  }
+
+  .rparams_opt_props_ctxlabels {
+    width: max-content;
+    height: 1.5rem;
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 1);
+    margin-bottom: 0.5rem;
   }
 
   .rparams_in_aibox {

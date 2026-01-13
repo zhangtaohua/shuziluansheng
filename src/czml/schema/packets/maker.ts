@@ -1,6 +1,5 @@
 import { nanoid } from "@/utils/common/nanoid";
 
-import { czmlPacketV2 } from "./packetV2";
 import { czmlDocument } from "./document";
 import { testFakeData, TCdata, testFakeData2, testFakeData3 } from "./testFakeData1.js";
 
@@ -15,15 +14,24 @@ export class CzmlDataMaker {
   public title = "Czml";
   public description = "A czml data.";
   public descriptionZh = "";
-  public type = "czml";
-  public componentType = "czml"; // 是 czml html three(3d)
+
+  public type = "czmlRoot"; // czmlRoot, czmlPacket, czmlEntity, czmlProperty
+  public componentType = "czml"; // 是 czml html three(3d) 还是 czml 2d
+  public componentProps = "czml";
+
   public flyTo = true;
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
   public isShowUsed = true;
   public isExpand = true; // for UI
 
+  public packets = {};
+
   constructor(options: any) {
+    this.packets = {};
+    const doc = new czmlDocument();
+    this.packets[doc.id] = doc;
+
     if (!options) {
       return;
     }
@@ -63,13 +71,11 @@ export class CzmlDataMaker {
 
   // RJTODO
   // 1 要可以手动增加packet;
-  // public packets = [new czmlDocument(), new czmlPacketV2()];
-  public packets = [new czmlDocument()];
+  // public packets = [new czmlDocument(), new czmlPacket()];
 
   public getCzmlData() {
     const czmlData = [];
-    for (let i = 0; i < this.packets.length; i++) {
-      const packet = this.packets[i];
+    for (const packet of Object.values(this.packets)) {
       czmlData.push(packet.getCzmlData());
     }
 
@@ -77,7 +83,7 @@ export class CzmlDataMaker {
   }
 
   public addPacket(packet: any) {
-    this.packets.push(packet);
+    this.packets[packet.id] = packet;
   }
 }
 

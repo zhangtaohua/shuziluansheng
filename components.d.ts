@@ -39,6 +39,7 @@ declare module 'vue' {
     OffLineTip: typeof import('./src/components/common/OffLineTip.vue')['default']
     OptionsInputProps: typeof import('./src/components/form/OptionsInputProps.vue')['default']
     PureOptionsInput: typeof import('./src/components/form/PureOptionsInput.vue')['default']
+    RightParamsEmbedFixedWraper: typeof import('./src/components/wrapper/RightParamsEmbedFixedWraper.vue')['default']
     RightParamsEmbedWraper: typeof import('./src/components/wrapper/RightParamsEmbedWraper.vue')['default']
     RightParamsWraper: typeof import('./src/components/wrapper/RightParamsWraper.vue')['default']
     RjBooleanSwitchInput: typeof import('./src/components/form/RjBooleanSwitchInput.vue')['default']

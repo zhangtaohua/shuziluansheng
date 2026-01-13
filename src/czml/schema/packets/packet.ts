@@ -24,8 +24,11 @@ export class czmlPacket {
   public title = "Packet";
   public description = "Describes the graphical properties of a single object in a scene, such as a single aircraft.";
   public descriptionZh = "";
-  public type = "packet";
-  public componentType = "czml#packet";
+
+  public type = "czmlPacket";
+  public componentType = "czml";
+  public componentProps = "czml#packet";
+
   public isEnable = true; // for can edit
   public isUsed = true; // for can used
   public isShowUsed = true;
