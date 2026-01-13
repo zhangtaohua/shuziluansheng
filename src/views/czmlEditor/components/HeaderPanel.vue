@@ -107,6 +107,8 @@
   const { czmlState, setCzmlDatas, setCurrentCzmlData, setCurrentCzmlDataPackageId, setCurrentCzmlDataPackageProp } =
     useCzmlStateStore();
 
+  const emit = defineEmits(["tabChange"]);
+
   const currentCzmlDataShowId = ref("");
   const currentCzmlPackageShowId = ref("");
   const currentCzmlDataPackagePropShowId = ref("");
@@ -186,6 +188,7 @@
         nextTick(() => {
           setCurrentCzmlDataPackageProp(prop);
           currentCzmlDataPackagePropShowId.value = prop.id;
+          emit("tabChange");
         });
       }
     }
@@ -196,6 +199,7 @@
     nextTick(() => {
       setCurrentCzmlDataPackageProp(prop);
       currentCzmlDataPackagePropShowId.value = prop.id;
+      emit("tabChange");
     });
   }
 </script>

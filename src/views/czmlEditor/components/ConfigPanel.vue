@@ -4,7 +4,7 @@
       <div class="col_nw_fs_fs rparams_in_wrapper">
         <div class="col_nw_fs_fs rparams_in_header">
           <div class="row_nw_sb_ce rparams_in_header_tbox">
-            <HeaderPanel></HeaderPanel>
+            <HeaderPanel @tabChange="changeTabName(htmlTabNames[1])"></HeaderPanel>
             <div class="row_nw_fs_ce rparams_in_header_cimg">
               <el-icon class="rparams_in_header_cicon" size="1.25rem" @click="unExpandClickHd">
                 <CircleClose />
@@ -42,7 +42,7 @@
           <div v-show="currentTabName == htmlTabNames[1].value" class="row_nw_fs_fs rparams_in_body_wraper">
             <!-- <CzmlPackagesRender :vdata="currentCzmlData"></CzmlPackagesRender> -->
 
-            <div class="row_nw_fs_fs rparams_in_body_cbox" v-if="currentCzmlDataPackageProp">
+            <div class="row_nw_fs_fs rparams_in_body_cbox" v-if="currentCzmlDataPackageProp && refreshPackagePropFlag">
               <component :is="currentCzmlDataPackageProp.tag" :vdata="currentCzmlDataPackageProp"></component>
             </div>
             <div class="rparams_in_body_gap" :style="pppPlcStyle"></div>
@@ -125,6 +125,7 @@
   const uiPPPQuickBoxRef = ref(null);
   const uiGapLineRef = ref(null);
   const currentCzmlDataPackageProp = ref(null);
+  const refreshPackagePropFlag = ref(true);
 
   const pppPlcStyle = reactive({
     width: "1rem",
@@ -455,7 +456,7 @@
   // 这个是应该不会触发的，因为readOnly 是只读的，不会触发change事件
   const editorChangeHd = (editorCtx: string, event) => {
     if (codeEditorRef.value) {
-      console.log("codeEditorRef.value", codeEditorRef.value, editorCtx, event);
+      console.log("editorChangeHd", codeEditorRef.value, editorCtx, event);
       if (editorCtx) {
       }
     }
@@ -482,7 +483,6 @@
     () => czmlState.currentCzmlDataPackageProp,
     () => {
       if (czmlState.currentCzmlData && czmlState.currentCzmlDataPackageProp) {
-        currentTabName.value = htmlTabNames[1].value;
         console.log("czmlState.currentCzmlDataPackageProp", czmlState.currentCzmlDataPackageProp);
         currentCzmlDataPackageProp.value = czmlState.currentCzmlDataPackageProp;
         if (uiGapLineRef.value) {
@@ -518,6 +518,12 @@
         czmlCodeJsObj = currentCzmlData.value.getCzmlData();
         console.log("getCzmlData", currentCzmlData.value, czmlCodeJsObj);
         czmlCode.value = JSON.stringify(czmlCodeJsObj, null, 2);
+        if (currentTabName.value == htmlTabNames[0].value) {
+          refreshPackagePropFlag.value = false;
+          nextTick(() => {
+            refreshPackagePropFlag.value = true;
+          });
+        }
       } else {
         czmlCode.value = "";
       }
