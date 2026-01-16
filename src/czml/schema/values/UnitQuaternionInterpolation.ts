@@ -35,7 +35,9 @@ export class czmlUnitQuaternionInterpolationProp {
   public _oldSecondsValue = [[0, 0, 0, 0, 0]];
   public _oldTimestringValue = [[dayjs().format(defaultTimeFormatStr), 0, 0, 0, 0]];
   public default = [0, 0, 0, 0];
-  public isEnable = true; // for can edit
+  public isRequired = false;
+  public isEnable = true;
+  // for can edit
   public isUsed = true; // for can used
   public isShowUsed = true;
   public isExpand = true; // for UI
@@ -105,6 +107,7 @@ export class czmlUnitQuaternionInterpolationProp {
       this.default = options.default;
     }
 
+    this.isRequired = options.isRequired ?? false;
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
     this.isShowUsed = options.isShowUsed ?? true;

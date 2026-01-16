@@ -24,7 +24,9 @@ export class czmlPathEntity {
   public type = "entity";
   public componentType = "czml#packet#entity";
   public tag = "CzmlEntityRender";
-  public isEnable = true; // for can edit
+  public isRequired = false;
+  public isEnable = true;
+  // for can edit
   public isUsed = true; // for can used
   public isShowUsed = true;
   public isExpand = true; // for UI
@@ -75,6 +77,7 @@ export class czmlPathEntity {
       this.tag = options.tag;
     }
 
+    this.isRequired = options.isRequired ?? false;
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
     this.isShowUsed = options.isShowUsed ?? true;
@@ -88,32 +91,38 @@ export class czmlPathEntity {
       default: true,
     }),
     leadTime: createLeadTimeDoubleProp({
+      isUsed: false,
       $ref: "Double.json",
       description:
         "The time ahead of the animation time, in seconds, to show the path. The time will be limited to not exceed the object's availability. By default, the value is unlimited, which effectively results in drawing the entire available path of the object.",
     }),
     trailTime: createTrailTimeDoubleProp({
+      isUsed: false,
       $ref: "Double.json",
       description:
         "The time behind the animation time, in seconds, to show the path. The time will be limited to not exceed the object's availability. By default, the value is unlimited, which effectively results in drawing the entire available path of the object.",
     }),
     width: createWidthDoubleProp({
+      isUsed: false,
       $ref: "Double.json",
       description: "The width of the path line.",
       default: 1.0,
     }),
     resolution: createResolutionDoubleProp({
+      isUsed: false,
       $ref: "Double.json",
       description:
         "The maximum step-size, in seconds, used to sample the path. If the `position` property has data points farther apart than resolution specifies, additional samples will be computed, creating a smoother path.",
       default: 60.0,
     }),
     material: createPolylineMaterialProp({
+      isUsed: false,
       $ref: "PolylineMaterial.json",
       description: "The material to use to draw the path.",
       default: "solid white",
     }),
     distanceDisplayCondition: createDistanceDisplayConditionProp({
+      isUsed: false,
       $ref: "DistanceDisplayCondition.json",
       description: "The display condition specifying at what distance from the camera this path will be displayed.",
     }),

@@ -34,7 +34,7 @@
             <div class="row_nw_fs_ce props_it_tbox">
               <span class="row_nw_fs_ce props_it_tlabel">key:</span>
               <div class="row_nw_fs_ce props_it_tinputbox">
-                <el-input v-model="inval.key" placeholder="key" />
+                <el-input v-model="inval.key" placeholder="key" :disabled="inval.isJson" />
               </div>
             </div>
 
@@ -198,7 +198,7 @@
     intervalsValues,
     () => {
       if (currentProp.value) {
-        console.log("intervalsValues", intervalsValues.value);
+        // console.log("intervalsValues", intervalsValues.value);
         currentProp.value.value = intervalsValues.value;
       }
     },

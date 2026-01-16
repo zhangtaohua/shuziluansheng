@@ -23,10 +23,6 @@
     width: 100vw;
     height: 100vh;
     z-index: 2;
-  }
-
-  .editor_ctxbox {
-    width: 100vw;
-    height: 100vh;
+    overflow: hidden;
   }
 </style>

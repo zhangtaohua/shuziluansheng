@@ -29,6 +29,7 @@ export class CssColorOptionsInput {
   public _isPureColor = true;
 
   public options = [];
+  public isRequired = false;
   public isEnable = true;
 
   constructor(options: any) {
@@ -117,6 +118,7 @@ export class CssColorOptionsInput {
       this.options = options.options;
     }
 
+    this.isRequired = options.isRequired ?? false;
     this.isEnable = options.isEnable ?? true;
   }
 

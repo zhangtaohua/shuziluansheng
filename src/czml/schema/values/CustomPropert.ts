@@ -30,7 +30,9 @@ export class czmlCustomPropertiesProp {
       isJson: false,
     },
   ];
-  public isEnable = true; // for can edit
+  public isRequired = false;
+  public isEnable = true;
+  // for can edit
   public isUsed = true; // for can used
   public isShowUsed = true;
   public isExpand = true; // for UI
@@ -89,6 +91,7 @@ export class czmlCustomPropertiesProp {
       this.default = options.default;
     }
 
+    this.isRequired = options.isRequired ?? false;
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
     this.isShowUsed = options.isShowUsed ?? true;
@@ -145,21 +148,25 @@ export class czmlCustomPropertiesProp {
         const propKey = prop.key;
         let propValue = prop.value;
         try {
-          if (prop.isJson) {
+          if (prop.isJson && prop.value) {
             propValue = JSON.parse(prop.value);
           }
         } catch (error) {
-          ElMessage({
-            type: "warning",
-            showClose: true,
-            duration: 3000,
-            offset: 96,
-            message: "自定义属性，JSON解析失败",
-          });
-          console.error(this.name + "Json parse error", error);
+          // ElMessage({
+          //   type: "warning",
+          //   showClose: true,
+          //   duration: 3000,
+          //   offset: 96,
+          //   message: "自定义属性，JSON解析失败",
+          // });
+          // console.error(this.name + "Json parse error", error);
         }
-        if (propKey && propValue) {
-          czmlData[propKey] = propValue;
+        if (prop.isJson && propValue) {
+          Object.assign(czmlData, propValue);
+        } else {
+          if (propKey && propValue) {
+            czmlData[propKey] = propValue;
+          }
         }
       }
 

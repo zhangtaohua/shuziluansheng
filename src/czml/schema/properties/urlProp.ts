@@ -35,3 +35,20 @@ export function createGltfProp(options = {}) {
     ...options,
   });
 }
+
+export function createUriProp(options = {}) {
+  return new czmlUriProp({
+    id: "czml_prop_uri_" + nanoid(10),
+    name: "uri",
+    czmlName: "uri",
+    labelZh: "链接",
+    labelEn: "uri",
+    value: "",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    description: "",
+    descriptionZh: "",
+    ...options,
+  });
+}

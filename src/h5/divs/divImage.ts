@@ -32,7 +32,9 @@ export class h5DivImage {
 
   public children = undefined;
 
+  public isRequired = false;
   public isEnable = true;
+
   public isUsed = true;
   public isShowUsed = true;
   public isExpand = true;
@@ -159,6 +161,7 @@ export class h5DivImage {
       });
     }
 
+    this.isRequired = options.isRequired ?? false;
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
     this.isShowUsed = options.isShowUsed ?? true;

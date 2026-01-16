@@ -110,3 +110,39 @@ export function createCartesianListMapProp(options = {}) {
     ...options,
   });
 }
+
+export function createSphericalProp(options = {}) {
+  return new czmlCartesian3PixelProp({
+    name: "spherical",
+    czmlName: "spherical",
+    labelZh: "球面坐标(C)",
+    labelEn: "spherical3(C)",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    tag: "CzmlSphericalPropInput",
+    default: [0.0, 0.0, 0.0],
+    $ref: "Values/SphericalValue.json",
+    description:
+      "The property specified as a spherical value `[Clock, Cone, Magnitude]`. The clock angle is measured in the XY plane from the positive X axis toward the positive Y axis. The cone angle is the angle from the positive Z axis toward the negative Z axis.",
+    ...options,
+  });
+}
+
+export function createSphericalListProp(options = {}) {
+  return new czmlCartesian3PixelListProp({
+    name: "spherical",
+    czmlName: "spherical",
+    labelZh: "球面坐标(C)",
+    labelEn: "spherical3(C)",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    tag: "CzmlSphericalPropInput",
+    default: [0.0, 0.0, 0.0],
+    $ref: "Values/SphericalListValue.json",
+    description:
+      "The property specified as a spherical value `[Clock, Cone, Magnitude]`. The clock angle is measured in the XY plane from the positive X axis toward the positive Y axis. The cone angle is the angle from the positive Z axis toward the negative Z axis.",
+    ...options,
+  });
+}

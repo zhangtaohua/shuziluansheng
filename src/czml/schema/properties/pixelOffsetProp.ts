@@ -8,7 +8,7 @@ export function createPixelOffsetProp(options = {}) {
     id: "czml_prop_pixelOffset_" + nanoid(10),
     name: "pixelOffset",
     czmlName: "pixelOffset",
-    labelZh: "背景填充",
+    labelZh: "像素偏移",
     labelEn: "pixel offset",
     isEnable: true,
     isUsed: true,

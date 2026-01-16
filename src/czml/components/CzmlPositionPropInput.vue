@@ -56,8 +56,8 @@
         :class="{ czml_combine_bigpropbox: currentProp.isExpand }"
       >
         <div v-for="childProp in currentProp.properties" :key="childProp.id" class="col_nw_ce_ce props_ic_box">
-          <component v-if="childProp.isUsed" :is="childProp.tag" :vdata="childProp"></component>
-          <div v-if="childProp.isUsed" class="props_ic_gap"></div>
+          <component v-if="childProp.isShowUsed" :is="childProp.tag" :vdata="childProp"></component>
+          <div v-if="childProp.isShowUsed" class="props_ic_gap"></div>
         </div>
         <div class="props_ic_gap"></div>
       </div>
@@ -107,7 +107,10 @@
     if (currentProp.value.properties) {
       currentProp.value.currentProperty = key;
       currentProp.value.properties[oldCompKey].isUsed = false;
+      currentProp.value.properties[oldCompKey].isShowUsed = false;
+
       currentProp.value.properties[key].isUsed = true;
+      currentProp.value.properties[key].isShowUsed = true;
       oldCompKey = key;
     }
   }

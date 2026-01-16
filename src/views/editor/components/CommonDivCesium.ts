@@ -34,6 +34,7 @@ export const MapDrawActionPopupOptions = {
   vNode: MapDrawActionPopup,
   vNodeData: {},
   position: [0, 0, 0],
+  offset: [0, 16],
 };
 
 let isEntityGraphic = true;
@@ -164,6 +165,7 @@ export function updateGraphicStyle(graphic: any, newStyle = null, useDefault = t
 
 export async function drawPoint(clampToGround = true) {
   if (graphicLayer) {
+    console.log("drawPoint", graphicLayer);
     const graphic = await graphicLayer.startDraw({
       type: isEntityGraphic ? "point" : "pointP",
       style: {

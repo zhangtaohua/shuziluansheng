@@ -1,6 +1,6 @@
 <template>
-  <div class="row_nw_ce_ce ws_container">
-    <div class="row_nw_ce_ce cesium_map_container" id="czml_editor_cesium_id"></div>
+  <div class="row_nw_ce_ce ws_container" :class="{ ws_halfcontainer: czmlState.isShowCzmlCodePreviewPanel }">
+    <div id="czml_editor_cesium_id" class="row_nw_ce_ce cesium_map_container"></div>
   </div>
 </template>
 
@@ -314,18 +314,45 @@
     },
   );
 
+  const reloadCzmlData = () => {
+    if (csMap && czmlState.currentCzmlData) {
+      console.log("重新加载czml数据", czmlState.currentCzmlData.data);
+      const czmlOpt = czmlState.currentCzmlData;
+      const czmlData = {
+        ...czmlOpt,
+        data: czmlOpt.data,
+      };
+      csMap.removeCzmlGraphicLayer(czmlData);
+      csMap.addCzmlGraphicLayer(czmlData);
+    } else {
+      csMap.clearCzmlGraphicLayer();
+    }
+  };
+
+  // 监听czml数据变化，重新加载czml数据 实时渲染
+
   watch(
-    [() => czmlState.currentCzmlChildPropRefresh],
+    () => czmlState.currentCzmlData,
     () => {
-      if (csMap && globalCzmlMapData.currentCzmlData && globalCzmlMapData.currentCzmlChildProp) {
-        const czmlOpt = globalCzmlMapData.currentCzmlData;
-        csMap.addCzmlGraphicLayer(czmlOpt);
-      } else {
-        csMap.clearCzmlGraphicLayer();
+      if (czmlState.isReloadCzmlData) {
+        console.log("实时 加载czml数据");
+        reloadCzmlData();
       }
     },
     {
-      deep: false,
+      deep: true,
+      immediate: false,
+    },
+  );
+
+  watch(
+    () => czmlState.reloadCzmlDataRefresh,
+    () => {
+      console.log("手工 加载czml数据");
+      reloadCzmlData();
+    },
+    {
+      deep: true,
       immediate: false,
     },
   );
@@ -334,15 +361,14 @@
     console.log("map 鼠标单击", event);
     if (event.czmObject) {
       // event.stopPropagation();
-      isControlMaping.value = true;
       const layer = event.layer;
       if (layer instanceof mars3d.layer.CzmlLayer) {
         const options = layer.options;
         const id = options.id;
         if (id) {
           const layerObj = csMap.getCzmlGraphicLayerById(id);
+          // 得到了当前正点击的czml layer对象
           if (layerObj) {
-            setEditorCurrentComp(layerObj.options);
           }
         }
       }
@@ -390,11 +416,13 @@
     flex-grow: 1;
   }
 
+  .ws_halfcontainer {
+    height: 50vh;
+  }
+
   .cesium_map_container {
     position: relative;
     width: 100%;
     height: 100%;
-    top: 0;
-    left: 0;
   }
 </style>

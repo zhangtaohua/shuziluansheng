@@ -262,6 +262,6 @@
 
   .props_ic_gap {
     width: 100%;
-    height: 0.875rem;
+    height: 1rem;
   }
 </style>

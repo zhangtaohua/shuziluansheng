@@ -214,16 +214,24 @@
   );
 
   watch(
-    pureValue,
+    () => pureValue,
     () => {
       if (currentProp.value) {
-        console.log("pureValue", pureValue.value);
+        // console.log("pureValue", pureValue.value);
         currentProp.value.value = pureValue.value;
+        if (currentProp.value.xyzUnitType == CZMLCARTESIAN3METERTYPE) {
+          currentProp.value.allValues.cartesian = pureValue.value;
+          currentProp.value.allValues.meter = pureValue.value;
+        } else if (currentProp.value.xyzUnitType == CZMLCARTESIAN3DEGREESTYPE) {
+          currentProp.value.allValues.degrees = pureValue.value;
+        } else if (currentProp.value.xyzUnitType == CZMLCARTESIAN3RADIANSTYPE) {
+          currentProp.value.allValues.radians = pureValue.value;
+        }
       }
     },
     {
       immediate: false,
-      deep: false,
+      deep: true,
     },
   );
 

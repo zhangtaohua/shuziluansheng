@@ -21,7 +21,9 @@ export class czmlMaterialProp {
   public type = "property";
   public componentType = "czml#packet#property";
   public tag = "CzmlMaterialPropInput";
-  public isEnable = true; // for can edit
+  public isRequired = false;
+  public isEnable = true;
+  // for can edit
   public isUsed = true; // for can used
   public isShowUsed = true;
   public isExpand = true; // for UI
@@ -102,6 +104,7 @@ export class czmlMaterialProp {
       this.currentProperty = options.currentProperty;
     }
 
+    this.isRequired = options.isRequired ?? false;
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
     this.isShowUsed = options.isShowUsed ?? true;

@@ -252,7 +252,9 @@ export const testFakeData3 = [
       cartographicDegrees: [116.69536591018894, 24.780408830621177, -11.217640780775888],
     },
     billboard: {
-      show: true,
+      show: {
+        boolean: true,
+      },
       image: [
         {
           interval: "2025-12-10T03:58:33.000Z/2025-12-10T04:02:33.000Z",

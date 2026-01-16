@@ -16,7 +16,9 @@ export class czmlTextProp {
   public _value = "";
   public _valueType = "string";
   public default = "";
-  public isEnable = true; // for can edit
+  public isRequired = false;
+  public isEnable = true;
+  // for can edit
   public isUsed = true; // for can used
   public isShowUsed = false;
   public isExpand = true; // for UI
@@ -75,6 +77,7 @@ export class czmlTextProp {
       this.default = options.default;
     }
 
+    this.isRequired = options.isRequired ?? false;
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
     this.isShowUsed = options.isShowUsed ?? false;

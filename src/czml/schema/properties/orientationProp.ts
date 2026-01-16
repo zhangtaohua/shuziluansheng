@@ -22,7 +22,6 @@ export function createOrientationProp(options = {}) {
     descriptionZh: "",
     ...options,
     properties: {
-      interpolate: createInterpolatableProp(),
       unitQuaternion: createUnitQuaternionProp({
         $ref: "Values/UnitQuaternionValue.json",
         description:
@@ -40,6 +39,7 @@ export function createOrientationProp(options = {}) {
         description:
           "The orientation specified as the normalized velocity vector of a position property. The reference must be to a `position` property.",
       }),
+      interpolate: createInterpolatableProp(),
     },
   });
 }

@@ -61,6 +61,7 @@ body {
   width: 100vw;
   margin: 0;
   font-size: 16px;
+  overflow: auto;
   font-family:
     "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
 
@@ -69,6 +70,11 @@ body {
   /* user-select: none; */
   -webkit-tap-highlight-color: transparent;
   /* webkit是苹果浏览器引擎，tap点击，highlight背景高亮，color颜色，颜色用数值调节 */
+}
+
+body::-webkit-scrollbar {
+  display: none;
+  width: 0px;
 }
 
 * {

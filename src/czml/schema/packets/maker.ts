@@ -20,7 +20,9 @@ export class CzmlDataMaker {
   public componentProps = "czml";
 
   public flyTo = true;
-  public isEnable = true; // for can edit
+  public isRequired = false;
+  public isEnable = true;
+  // for can edit
   public isUsed = true; // for can used
   public isShowUsed = true;
   public isExpand = true; // for UI
@@ -66,8 +68,12 @@ export class CzmlDataMaker {
     return;
   }
 
-  // RJTODO 后期要用 set 实现
-  public data = testFakeData2;
+  // RJTODO
+  // 这样好像也是不能识别有 data 这个属性
+  get data() {
+    // return testFakeData2;
+    return this.getCzmlData();
+  }
 
   // RJTODO
   // 1 要可以手动增加packet;

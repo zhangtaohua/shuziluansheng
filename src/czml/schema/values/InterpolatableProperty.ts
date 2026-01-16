@@ -27,7 +27,9 @@ export class czmlInterpolatableProp {
   public type = "property";
   public componentType = "czml#packet#property";
   public tag = "CzmlInterpolationPropInput";
-  public isEnable = true; // for can edit
+  public isRequired = false;
+  public isEnable = true;
+  // for can edit
   public isUsed = true; // for can used
   public isShowUsed = true;
   public isExpand = true; // for UI
@@ -101,6 +103,7 @@ export class czmlInterpolatableProp {
       this.tag = options.tag;
     }
 
+    this.isRequired = options.isRequired ?? false;
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
     this.isShowUsed = options.isShowUsed ?? true;

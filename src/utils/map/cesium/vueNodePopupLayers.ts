@@ -55,7 +55,8 @@ export default class CsVueNodePopup {
       if (vDom && vDom.dataset.customdrag && vDom.dataset.customdrag != 0) {
         return;
       }
-      const canvasHeight = this.viewer.scene.canvas.height;
+      const devicePixelRatio = window.devicePixelRatio || 1;
+      const canvasHeight = this.viewer.scene.canvas.height / devicePixelRatio;
       const windowPosition = new Cesium.Cartesian2();
       Cesium.SceneTransforms.worldToWindowCoordinates(this.viewer.scene, position, windowPosition);
       // console.log("windowPosition", windowPosition, canvasHeight, this.viewer.scene.canvas.offsetTop, heightOrg);
@@ -68,12 +69,12 @@ export default class CsVueNodePopup {
         let offsetBottom = 0;
         const boundingRect = this.mapRootDom.getBoundingClientRect();
 
-        const offsetHeight = boundingRect.height;
-        const offsetTop = boundingRect.top;
-        const windowHeight = document.body.offsetHeight;
+        const offsetHeight = boundingRect.height / devicePixelRatio;
+        const offsetTop = boundingRect.top / devicePixelRatio;
+        const windowHeight = document.body.offsetHeight / devicePixelRatio;
 
         offsetBottom = windowHeight - offsetTop - offsetHeight;
-        // console.log(offsetBottom);
+        // console.log("boundingRect", boundingRect);
         bottom = bottom + offsetBottom;
 
         left = left + boundingRect.left;

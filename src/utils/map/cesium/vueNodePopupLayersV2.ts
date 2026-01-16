@@ -4,7 +4,7 @@ import lodash from "lodash";
 import { createApp } from "vue";
 
 import CesiumBase from "./base";
-import { VueNodeOptions } from "./vueNodePopupLayersTypes";
+import type { VueNodeOptions } from "./vueNodePopupLayersTypes";
 
 export default class CsVueNodePopup {
   public csBaseHandle: CesiumBase | null = null;
@@ -109,6 +109,9 @@ export default class CsVueNodePopup {
 
     const closeFunc = () => {
       this.hiddenPopupByID(options.id);
+      if (options.destroy) {
+        options.destroy();
+      }
       console.log("closeFunc", options.id);
     };
 

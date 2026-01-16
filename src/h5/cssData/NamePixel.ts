@@ -29,6 +29,7 @@ export class CssNamePixel {
   private _step = 1;
   private _retainDecimalPlaces = 0;
 
+  public isRequired = false;
   public isEnable = true;
 
   constructor(options: any) {
@@ -112,6 +113,7 @@ export class CssNamePixel {
       this._retainDecimalPlaces = +options.retainDecimalPlaces;
     }
 
+    this.isRequired = options.isRequired ?? false;
     this.isEnable = options.isEnable ?? true;
   }
 

@@ -34,7 +34,9 @@ export class czmlModelEntity {
   public type = "entity";
   public componentType = "czml#packet#entity";
   public tag = "CzmlEntityRender";
-  public isEnable = true; // for can edit
+  public isRequired = false;
+  public isEnable = true;
+  // for can edit
   public isUsed = true; // for can used
   public isShowUsed = true;
   public isExpand = true; // for UI
@@ -85,6 +87,7 @@ export class czmlModelEntity {
       this.tag = options.tag;
     }
 
+    this.isRequired = options.isRequired ?? false;
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
     this.isShowUsed = options.isShowUsed ?? true;
@@ -104,70 +107,84 @@ export class czmlModelEntity {
       czmlRequiredForDisplay: true,
     }),
     scale: createScaleDoubleProp({
+      isUsed: false,
       $ref: "Double.json",
       description: "The scale of the model.",
       default: 1.0,
     }),
     minimumPixelSize: createMiniMumPixelSizeDoubleProp({
+      isUsed: false,
       $ref: "Double.json",
       description: "The approximate minimum pixel size of the model regardless of zoom.",
       default: 0.0,
     }),
     maximumScale: createMaximumScaleDoubleProp({
+      isUsed: false,
       $ref: "Double.json",
       description: "The maximum scale size of the model. This is used as an upper limit for `minimumPixelSize`.",
     }),
     incrementallyLoadTextures: createIncrementallyLoadTexturesProp({
+      isUsed: false,
       $ref: "Boolean.json",
       description: "Whether or not the model can be rendered before all textures have loaded.",
       default: true,
     }),
     runAnimations: createRunAnimationsProp({
+      isUsed: false,
       $ref: "Boolean.json",
       description: "Whether or not to run all animations defined in the glTF model.",
       default: true,
     }),
     shadows: createShadowsProp({
+      isUsed: false,
       $ref: "ShadowMode.json",
       description: "Whether or not the model casts or receives shadows.",
       default: "ENABLED",
     }),
     heightReference: createHeightReferenceProp({
+      isUsed: false,
       $ref: "HeightReference.json",
       description: "The height reference of the model, which indicates if the position is relative to terrain or not.",
       default: "NONE",
     }),
     silhouetteColor: createSilhouetteColorProp({
+      isUsed: false,
       $ref: "Color.json",
       description: "The color of the silhouette drawn around the model.",
       default: "red",
     }),
     silhouetteSize: createSilhouetteSizeDoubleProp({
+      isUsed: false,
       $ref: "Double.json",
       description: "The size, in pixels, of the silhouette drawn around the model.",
       default: 0.0,
     }),
     color: createColorProp({
+      isUsed: false,
       $ref: "Color.json",
       description: "The color to blend with the model's rendered color.",
       default: "white",
     }),
     colorBlendMode: createColorBlendModeProp({
+      isUsed: false,
       $ref: "ColorBlendMode.json",
       description: "The mode to use for blending between `color` and the model's color.",
       default: "HIGHLIGHT",
     }),
     colorBlendAmount: createColorBlendAmountDoubleProp({
+      isUsed: false,
       $ref: "Double.json",
       description:
         "The color strength when `colorBlendMode` is `MIX`. A value of 0.0 results in the model's rendered color while a value of 1.0 results in a solid color, with any value in-between resulting in a mix of the two.",
       default: 0.5,
     }),
     distanceDisplayCondition: createDistanceDisplayConditionProp({
+      isUsed: false,
       $ref: "DistanceDisplayCondition.json",
       description: "The display condition specifying at what distance from the camera this model will be displayed.",
     }),
     nodeTransformations: createNodeTransformationsProp({
+      isUsed: false,
       nodeArrays: [
         {
           nodeName: "testnode1",
@@ -180,6 +197,7 @@ export class czmlModelEntity {
       czmlExamples: ["Examples/ModelNodeTransformations.json"],
     }),
     articulations: createArticulationsProp({
+      isUsed: false,
       $ref: "Articulations.json",
       czmlExamples: ["Examples/ModelArticulations.json"],
     }),

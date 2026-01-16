@@ -35,7 +35,9 @@ export class czmlPositionProp {
   public type = "property";
   public componentType = "czml#packet#property";
   public tag = "CzmlPositionPropInput";
-  public isEnable = true; // for can edit
+  public isRequired = false;
+  public isEnable = true;
+  // for can edit
   public isUsed = true; // for can used
   public isShowUsed = true;
   public isExpand = true; // for UI
@@ -47,26 +49,21 @@ export class czmlPositionProp {
     { label: "cartesian 笛卡尔", value: "cartesian" },
     { label: "cartographicDegrees wgs84经纬度", value: "cartographicDegrees" },
     { label: "cartographicRadians wgs84弧度", value: "cartographicRadians" },
+    { label: "cartesianVelocity 笛卡尔速度", value: "cartesianVelocity" },
     { label: "references 参考值", value: "references" },
   ];
 
   public currentProperty = "cartesian";
 
   public properties = {
-    referenceFrame: createReferenceFrameProp({
-      descriptionZh:
-        "用于指定笛卡尔坐标位置的参考系。可选值为“FIXED”和“INERTIAL”。如果选择“INERTIAL”，请设置与插值相关的属性。",
-      description:
-        'The reference frame in which cartesian positions are specified. Possible values are "FIXED" and "INERTIAL".If you select INERTIAL, please set the interpolation-related properties.',
-      type: "string",
-      default: "FIXED",
-    }),
-    interpolate: createInterpolatableProp(),
     cartesian: createCartesianMapProp({
       czmlName: "cartesian",
+      labelZh: "XYZ坐标(C)",
+      labelEn: "cartesian3(C)",
       isEnable: true,
       isFixedXyzUnitType: true,
       isUsed: true,
+      isShowUsed: true,
       xyzUnitType: CZMLCARTESIAN3METERTYPE,
       $ref: "Values/Cartesian3Value.json",
       description:
@@ -74,9 +71,12 @@ export class czmlPositionProp {
     }),
     cartographicRadians: createCartesianMapProp({
       czmlName: "cartographicRadians",
+      labelZh: "经纬度弧度(C)",
+      labelEn: "cartographic radians3(C)",
       isEnable: true,
       isFixedXyzUnitType: true,
       isUsed: false,
+      isShowUsed: false,
       xyzUnitType: CZMLCARTESIAN3RADIANSTYPE,
       $ref: "Values/CartographicRadiansValue.json",
       description:
@@ -85,9 +85,12 @@ export class czmlPositionProp {
     }),
     cartographicDegrees: createCartesianMapProp({
       czmlName: "cartographicDegrees",
+      labelZh: "经纬度度(C)",
+      labelEn: "cartographic degrees3(C)",
       isEnable: true,
       isFixedXyzUnitType: true,
       isUsed: false,
+      isShowUsed: false,
       xyzUnitType: CZMLCARTESIAN3DEGREESTYPE,
       $ref: "Values/CartographicDegreesValue.json",
       description:
@@ -96,13 +99,30 @@ export class czmlPositionProp {
     }),
     cartesianVelocity: createCartesianVelocityProp({
       isUsed: false,
+      isShowUsed: false,
       $ref: "Values/Cartesian3VelocityValue.json",
       description:
         "The position and velocity specified as a three-dimensional Cartesian value and its derivative, `[X, Y, Z, dX, dY, dZ]`, in meters relative to the `referenceFrame`.",
     }),
     references: createReferencesProp({
+      isUsed: false,
+      isShowUsed: false,
       $ref: "Values/ReferenceValue.json",
       description: "The position specified as a reference to another property.",
+    }),
+    referenceFrame: createReferenceFrameProp({
+      isUsed: false,
+      isShowUsed: true,
+      descriptionZh:
+        "用于指定笛卡尔坐标位置的参考系。可选值为“FIXED”和“INERTIAL”。如果选择“INERTIAL”，请设置与插值相关的属性。",
+      description:
+        'The reference frame in which cartesian positions are specified. Possible values are "FIXED" and "INERTIAL".If you select INERTIAL, please set the interpolation-related properties.',
+      type: "string",
+      default: "FIXED",
+    }),
+    interpolate: createInterpolatableProp({
+      isUsed: false,
+      isShowUsed: true,
     }),
   };
 
@@ -149,6 +169,7 @@ export class czmlPositionProp {
       this.tag = options.tag;
     }
 
+    this.isRequired = options.isRequired ?? false;
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
     this.isShowUsed = options.isShowUsed ?? true;

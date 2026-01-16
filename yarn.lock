@@ -3254,6 +3254,11 @@ sass@^1.92.1:
   optionalDependencies:
     "@parcel/watcher" "^2.4.1"
 
+satellite.js@^6.0.2:
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/satellite.js/-/satellite.js-6.0.2.tgz#9722607e5911bbfb80921a430d6a665e5c4cda7b"
+  integrity sha512-XWKxtqVF5xiJ1xAeiYeT/oSSzsukoCLWvk6nO/WFy4un0M3g4djAU9TAtOCqJLtYW9vxx9pkPJ1L9ITOc607GA==
+
 screenfull@^6.0.2:
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/screenfull/-/screenfull-6.0.2.tgz#3dbe4b8c4f8f49fb8e33caa8f69d0bca730ab238"

@@ -24,7 +24,9 @@ export class czmlBoxEntity {
   public type = "entity";
   public componentType = "czml#packet#entity";
   public tag = "CzmlEntityRender";
-  public isEnable = true; // for can edit
+  public isRequired = false;
+  public isEnable = true;
+  // for can edit
   public isUsed = true; // for can used
   public isShowUsed = true;
   public isExpand = true; // for UI
@@ -75,6 +77,7 @@ export class czmlBoxEntity {
       this.tag = options.tag;
     }
 
+    this.isRequired = options.isRequired ?? false;
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
     this.isShowUsed = options.isShowUsed ?? true;
@@ -88,47 +91,56 @@ export class czmlBoxEntity {
       default: true,
     }),
     dimensions: createBoxDimensionsProp({
+      isRequired: true,
       $ref: "BoxDimensions.json",
       description: "The dimensions of the box.",
       czmlRequiredForDisplay: true,
     }),
     heightReference: createHeightReferenceProp({
+      isUsed: false,
       $ref: "HeightReference.json",
       description:
         "The height reference of the billboard, which indicates if the position is relative to terrain or not.",
       default: "NONE",
     }),
     fill: createFillProp({
+      isUsed: false,
       $ref: "Boolean.json",
       description: "Whether or not the box is filled.",
       default: true,
     }),
     material: createMaterialProp({
+      isUsed: false,
       $ref: "Material.json",
       description: "The material to display on the surface of the box.",
       default: "solid white",
     }),
     outline: createOutlineProp({
+      isUsed: false,
       $ref: "Boolean.json",
       description: "Whether or not the box is outlined.",
       default: false,
     }),
     outlineColor: createOutlineColorProp({
+      isUsed: false,
       $ref: "Color.json",
       description: "The color of the box outline.",
       default: "black",
     }),
     outlineWidth: createOutlineWidthDoubleProp({
+      isUsed: false,
       $ref: "Double.json",
       description: "The width of the box outline.",
       default: 1.0,
     }),
     shadows: createShadowsProp({
+      isUsed: false,
       $ref: "ShadowMode.json",
       description: "Whether or not the box casts or receives shadows.",
       default: "DISABLED",
     }),
     distanceDisplayCondition: createDistanceDisplayConditionProp({
+      isUsed: false,
       $ref: "DistanceDisplayCondition.json",
       description: "The display condition specifying the distance from the camera at which this box will be displayed.",
     }),

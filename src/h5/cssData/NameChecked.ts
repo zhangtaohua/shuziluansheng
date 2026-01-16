@@ -21,6 +21,7 @@ export class CssCheckedInput {
 
   public properties = undefined;
 
+  public isRequired = false;
   public isEnable = true;
 
   constructor(options: any) {
@@ -80,6 +81,7 @@ export class CssCheckedInput {
 
     this._value = options.value ?? false;
 
+    this.isRequired = options.isRequired ?? false;
     this.isEnable = options.isEnable ?? true;
   }
 

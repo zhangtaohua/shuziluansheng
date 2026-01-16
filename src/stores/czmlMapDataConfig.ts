@@ -422,6 +422,9 @@ export const useCzmlStateStore = defineStore("useCzmlStateStore", () => {
     currentCzmlDataPackageIdRefresh: 0,
     currentCzmlDataPackageProp: null,
     currentCzmlDataPackagePropRefresh: 0,
+    isShowCzmlCodePreviewPanel: false,
+    reloadCzmlDataRefresh: 0,
+    isReloadCzmlData: false,
   });
 
   function setCzmlCurrentCzmlState(state: string) {
@@ -477,6 +480,18 @@ export const useCzmlStateStore = defineStore("useCzmlStateStore", () => {
     }
   }
 
+  function setIsShowCzmlCodePreviewPanel(isShow: boolean) {
+    czmlState.isShowCzmlCodePreviewPanel = isShow;
+  }
+
+  function setReloadCzmlData(isReload: boolean = true) {
+    czmlState.reloadCzmlDataRefresh = isReload ? czmlState.reloadCzmlDataRefresh + 1 : 0;
+  }
+
+  function setIsReloadCzmlData(isReload: boolean = true) {
+    czmlState.isReloadCzmlData = isReload;
+  }
+
   return {
     czmlState,
     setCzmlDatas,
@@ -486,9 +501,14 @@ export const useCzmlStateStore = defineStore("useCzmlStateStore", () => {
     setCurrentCzmlData,
     setCurrentCzmlDataPackageId,
     setCurrentCzmlDataPackageProp,
+    setIsShowCzmlCodePreviewPanel,
+    setReloadCzmlData,
+    setIsReloadCzmlData,
   };
 });
 
+// RJTODO
+// 如果没有用，后期删除
 export const czmlPropNameToComponent = {
   clock: {},
   billboard: "Billboard",

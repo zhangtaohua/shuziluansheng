@@ -17,7 +17,9 @@ export class czmlCombineProp {
   public componentType = "czml#packet#property";
   // public tag = "CzmlCombinePropInput";
   public tag = "CzmlCombineSmPropInput";
-  public isEnable = true; // for can edit
+  public isRequired = false;
+  public isEnable = true;
+  // for can edit
   public isUsed = true; // for can used
   public isShowUsed = true;
   public isExpand = true; // for UI
@@ -74,6 +76,7 @@ export class czmlCombineProp {
       this.tag = options.tag;
     }
 
+    this.isRequired = options.isRequired ?? false;
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
     this.isShowUsed = options.isShowUsed ?? true;

@@ -58,7 +58,7 @@ export function createUnitSphericalListProp(options = {}) {
     isEnable: true,
     isUsed: false,
     isShowUsed: true,
-    tag: "CzmlUnitSphericalPropInput", // 注意这里
+    tag: "CzmlUnitSphericalListPropInput", // 注意这里
     $ref: "Values/UnitSphericalListValue.json",
     description:
       "The list of directions specified as unit spherical values `[Clock, Cone, Clock, Cone, ...]`, in radians. The clock angle is measured in the XY plane from the positive X axis toward the positive Y axis. The cone angle is the angle from the positive Z axis toward the negative Z axis.",

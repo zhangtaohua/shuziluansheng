@@ -22,6 +22,7 @@ export class CssPureOptionsInput {
   public properties = undefined;
 
   public options = [];
+  public isRequired = false;
   public isEnable = true;
 
   constructor(options: any) {
@@ -85,6 +86,7 @@ export class CssPureOptionsInput {
 
     this._value = options.value ?? "";
 
+    this.isRequired = options.isRequired ?? false;
     this.isEnable = options.isEnable ?? true;
   }
 

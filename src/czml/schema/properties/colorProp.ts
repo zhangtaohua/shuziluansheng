@@ -1,6 +1,7 @@
 import { nanoid } from "@/utils/common/nanoid";
 import czmlColorCombineProp from "../values/ColorCombine";
 import czmlColorProp from "../values/Color";
+import { CZMLCOLORRGBAFTYPE } from "../values/commondata";
 
 export function createRgbaColorProp(options = {}) {
   return new czmlColorProp({
@@ -29,6 +30,7 @@ export function createRgbafColorProp(options = {}) {
     isEnable: true,
     isUsed: false,
     isShowUsed: true,
+    colorType: CZMLCOLORRGBAFTYPE,
     $ref: "Values/RgbafValue.json",
     description:
       "The color specified as an array of color components `[Red, Green, Blue, Alpha]` where each component is a double in the range 0.0-1.0.",
@@ -170,6 +172,78 @@ export function createGapColorProp(options = {}) {
     czmlName: "gapColor",
     labelZh: "间隔颜色",
     labelEn: "gap color",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    $ref: "Color.json",
+    description: "The color of the gaps between dashes on the line.",
+    descriptionZh: "",
+    default: "white",
+    ...options,
+  });
+}
+
+export function createIntersectionColorProp(options = {}) {
+  return new czmlColorCombineProp({
+    id: "czml_prop_intersectionColor_" + nanoid(10),
+    name: "intersectionColor",
+    czmlName: "intersectionColor",
+    labelZh: "相交颜色",
+    labelEn: "intersection color",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    $ref: "Color.json",
+    description: "The color of the gaps between dashes on the line.",
+    descriptionZh: "",
+    default: "white",
+    ...options,
+  });
+}
+
+export function createEnvironmentIntersectionColorProp(options = {}) {
+  return new czmlColorCombineProp({
+    id: "czml_prop_environmentIntersectionColor_" + nanoid(10),
+    name: "environmentIntersectionColor",
+    czmlName: "environmentIntersectionColor",
+    labelZh: "环境相交颜色",
+    labelEn: "environment intersection color",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    $ref: "Color.json",
+    description: "The color of the gaps between dashes on the line.",
+    descriptionZh: "",
+    default: "white",
+    ...options,
+  });
+}
+
+export function createViewshedVisibleColorProp(options = {}) {
+  return new czmlColorCombineProp({
+    id: "czml_prop_viewshedVisibleColor_" + nanoid(10),
+    name: "viewshedVisibleColor",
+    czmlName: "viewshedVisibleColor",
+    labelZh: "视图可见颜色",
+    labelEn: "viewshed visible color",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    $ref: "Color.json",
+    description: "The color of the gaps between dashes on the line.",
+    descriptionZh: "",
+    default: "white",
+    ...options,
+  });
+}
+
+export function createViewshedOccludedColorProp(options = {}) {
+  return new czmlColorCombineProp({
+    id: "czml_prop_viewshedOccludedColor_" + nanoid(10),
+    name: "viewshedOccludedColor",
+    czmlName: "viewshedOccludedColor",
+    labelZh: "视图不可见颜色",
+    labelEn: "viewshed occluded color",
     isEnable: true,
     isUsed: true,
     isShowUsed: true,

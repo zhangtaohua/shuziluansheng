@@ -14,7 +14,7 @@ export function createIntegerValueProp(options = {}) {
     isEnable: true,
     isUsed: true,
     isShowUsed: true,
-    value: 255,
+    value: [255],
     max: 99999999999,
     min: 0,
     setp: 1,
@@ -106,6 +106,72 @@ export function createSlicesIntegerProp(options = {}) {
     $ref: "Integer.json",
     description: "The number of edges around the perimeter of the cylinder.",
     default: 128,
+    ...options,
+  });
+}
+
+export function createStackPartitionsIntegerProp(options = {}) {
+  return createIntegerProp({
+    name: "stackPartitions",
+    czmlName: "stackPartitions",
+    labelZh: "栈分区数",
+    labelEn: "stack partitions",
+    $ref: "Integer.json",
+    description: "The number of times to partition the ellipsoid into stacks.",
+    default: 64,
+    ...options,
+  });
+}
+
+export function createSlicePartitionsIntegerProp(options = {}) {
+  return createIntegerProp({
+    name: "slicePartitions",
+    czmlName: "slicePartitions",
+    labelZh: "切片分区数",
+    labelEn: "slice partitions",
+    $ref: "Integer.json",
+    description: "The number of times to partition the ellipsoid into radial slices.",
+    default: 64,
+    ...options,
+  });
+}
+
+export function createSubdivisionsIntegerProp(options = {}) {
+  return createIntegerProp({
+    name: "subdivisions",
+    czmlName: "subdivisions",
+    labelZh: "子分区数",
+    labelEn: "subdivisions",
+    $ref: "Integer.json",
+    description: "The number of samples per outline ring, determining the granularity of the curvature.",
+    default: 128,
+    ...options,
+  });
+}
+
+export function createViewshedResolutionIntegerProp(options = {}) {
+  return createIntegerProp({
+    name: "viewshedResolution",
+    czmlName: "viewshedResolution",
+    labelZh: "视图hed分辨率",
+    labelEn: "viewshed resolution",
+    $ref: "Integer.json",
+    description: "The number of samples per outline ring, determining the granularity of the curvature.",
+    default: 2048,
+    ...options,
+  });
+}
+
+export function createNumberOfRingsIntegerProp(options = {}) {
+  return createIntegerProp({
+    name: "numberOfRings",
+    czmlName: "numberOfRings",
+    labelZh: "轮廓环数",
+    labelEn: "number of rings",
+    $ref: "Integer.json",
+    description:
+      "The number of outline rings to draw, starting from the outer edge and equidistantly spaced towards the center.",
+    default: 6,
     ...options,
   });
 }

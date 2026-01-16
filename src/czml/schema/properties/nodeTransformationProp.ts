@@ -22,16 +22,19 @@ export function createNodeTransformationProp(options = {}) {
     ...options,
     properties: {
       translation: createTranslationProp({
+        isUsed: false,
         $ref: "Translation.json",
         description: "The translation to apply to the model node.",
         default: [0.0, 0.0, 0.0],
       }),
       rotation: createRotationProp({
+        isUsed: false,
         $ref: "Rotation.json",
         description: "The rotation to apply to the model node.",
         default: [0.0, 0.0, 0.0, 1.0],
       }),
       scale: createScaleProp({
+        isUsed: false,
         $ref: "Scale.json",
         description: "The scaling to apply to the model node.",
         default: [1.0, 1.0, 1.0],

@@ -20,7 +20,10 @@
         </el-tooltip>
 
         <div v-if="currentProp.isShowUsed" class="row_nw_fs_ce props_timecol_isusedbox">
-          <RjBooleanSwitchInput v-model="currentProp.isUsed" :disabled="!currentProp.isEnable"></RjBooleanSwitchInput>
+          <RjBooleanSwitchInput
+            v-model="currentProp.isUsed"
+            :disabled="!currentProp.isEnable || currentProp.isRequired"
+          ></RjBooleanSwitchInput>
         </div>
       </div>
     </div>

@@ -47,7 +47,7 @@ export function createWidthDoubleProp(options = {}) {
     isEnable: true,
     isUsed: true,
     isShowUsed: true,
-    value: 20,
+    value: [20],
     max: 200,
     min: 0,
     $ref: "Double.json",
@@ -90,7 +90,7 @@ export function createHeightDoubleProp(options = {}) {
     isEnable: true,
     isUsed: true,
     isShowUsed: true,
-    value: 20,
+    value: [20],
     max: 200,
     min: 0,
     $ref: "Double.json",
@@ -130,7 +130,7 @@ export function createScaleDoubleProp(options = {}) {
     czmlName: "scale",
     labelZh: "比例",
     labelEn: "scale",
-    value: 1.0,
+    value: [1.0],
     max: 200,
     min: 0,
     setp: 0.1,
@@ -154,7 +154,7 @@ export function createDisableDepthTestDistanceDoubleProp(options = {}) {
     czmlName: "disableDepthTestDistance",
     labelZh: "禁止深度测试距离",
     labelEn: "disable depth test distance",
-    value: 0.0,
+    value: [0.0],
     max: 999999999999999999999999, // Infinity,
     min: 0,
     setp: 0.05,
@@ -180,7 +180,28 @@ export function createRotationDoubleProp(options = {}) {
     isEnable: true,
     isUsed: true,
     isShowUsed: true,
-    value: 0.0,
+    value: [0.0],
+    max: Math.PI,
+    min: 0,
+    setp: 0.05,
+    $ref: "Double.json",
+    description: "The rotation of the billboard, in radians, counter-clockwise from the alignedAxis.",
+    descriptionZh: "",
+    ...options,
+  });
+}
+
+export function createStRotationDoubleProp(options = {}) {
+  return new czmlDoubleProp({
+    id: "czml_prop_stRotation_" + nanoid(10),
+    name: "stRotation",
+    czmlName: "stRotation",
+    labelZh: "旋转角度",
+    labelEn: "stRotation",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    value: [0.0],
     max: Math.PI,
     min: 0,
     setp: 0.05,
@@ -223,7 +244,7 @@ export function createOutlineWidthDoubleProp(options = {}) {
     isEnable: true,
     isUsed: true,
     isShowUsed: true,
-    value: 1.0,
+    value: [1.0],
     default: 1.0,
     max: Math.PI,
     min: 0,
@@ -236,13 +257,14 @@ export function createOutlineWidthDoubleProp(options = {}) {
 }
 
 export function createClockMultiplierDoublePureProp(options = {}) {
-  return new czmlDoubleProp({
+  return new czmlDoublePureProp({
     id: "czml_prop_multiplier_" + nanoid(10),
     name: "multiplier",
     czmlName: "multiplier",
     labelZh: "乘数",
     labelEn: "multiplier",
     tag: "CzmlNumberSliderPurePropInput",
+    isRequired: true,
     isEnable: true,
     isUsed: true,
     isShowUsed: true,
@@ -258,7 +280,7 @@ export function createClockMultiplierDoublePureProp(options = {}) {
 }
 
 export function createInterpolationDegreeDoublePureProp(options = {}) {
-  return new czmlDoubleProp({
+  return new czmlDoublePureProp({
     id: "czml_prop_interpolationDegree_" + nanoid(10),
     name: "interpolationDegree",
     czmlName: "interpolationDegree",
@@ -281,7 +303,7 @@ export function createInterpolationDegreeDoublePureProp(options = {}) {
 }
 
 export function createForwardExtrapolationDurationDoublePureProp(options = {}) {
-  return new czmlDoubleProp({
+  return new czmlDoublePureProp({
     id: "czml_prop_forwardExtrapolationDuration_" + nanoid(10),
     name: "forwardExtrapolationDuration",
     czmlName: "forwardExtrapolationDuration",
@@ -305,7 +327,7 @@ export function createForwardExtrapolationDurationDoublePureProp(options = {}) {
 }
 
 export function createBackwardExtrapolationDurationDoublePureProp(options = {}) {
-  return new czmlDoubleProp({
+  return new czmlDoublePureProp({
     id: "czml_prop_backwardExtrapolationDuration_" + nanoid(10),
     name: "backwardExtrapolationDuration",
     czmlName: "backwardExtrapolationDuration",
@@ -339,7 +361,7 @@ export function createCellAlphaDoubleProp(options = {}) {
     isEnable: true,
     isUsed: true,
     isShowUsed: true,
-    value: 1.0,
+    value: [1.0],
     max: 200,
     min: 0,
     setp: 0.1,
@@ -362,7 +384,7 @@ export function createOffsetDoubleProp(options = {}) {
     isEnable: true,
     isUsed: true,
     isShowUsed: true,
-    value: 0.0,
+    value: [0.0],
     max: 200,
     min: 0,
     setp: 0.1,
@@ -385,7 +407,7 @@ export function createRepeatDoubleProp(options = {}) {
     isEnable: true,
     isUsed: true,
     isShowUsed: true,
-    value: 0.0,
+    value: [0.0],
     max: 200,
     min: 0,
     setp: 0.1,
@@ -407,7 +429,7 @@ export function createMiniMumPixelSizeDoubleProp(options = {}) {
     isEnable: true,
     isUsed: true,
     isShowUsed: true,
-    value: 0.0,
+    value: [0.0],
     max: 200,
     min: 0,
     setp: 0.1,
@@ -429,7 +451,7 @@ export function createMaximumScaleDoubleProp(options = {}) {
     isEnable: true,
     isUsed: true,
     isShowUsed: true,
-    value: 0.0,
+    value: [0.0],
     max: 300,
     min: 0,
     setp: 1,
@@ -451,10 +473,98 @@ export function createSilhouetteSizeDoubleProp(options = {}) {
     isEnable: true,
     isUsed: true,
     isShowUsed: true,
-    value: 0.0,
+    value: [0.0],
     max: 300,
     min: 0,
     setp: 1,
+    $ref: "Double.json",
+    description: "",
+    descriptionZh: "",
+    ...options,
+  });
+}
+
+export function createMinimumClockDoubleProp(options = {}) {
+  return new czmlDoubleProp({
+    id: "czml_prop_minimumClock_" + nanoid(10),
+    name: "minimumClock",
+    czmlName: "minimumClock",
+    labelZh: "最小时钟值",
+    labelEn: "minimum clock",
+    type: "number",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    value: [0.0],
+    max: Math.PI * 2,
+    min: -Math.PI * 2,
+    setp: 0.01,
+    $ref: "Double.json",
+    description: "",
+    descriptionZh: "",
+    ...options,
+  });
+}
+
+export function createMaximumClockDoubleProp(options = {}) {
+  return new czmlDoubleProp({
+    id: "czml_prop_maximumClock_" + nanoid(10),
+    name: "maximumClock",
+    czmlName: "maximumClock",
+    labelZh: "最大时钟值",
+    labelEn: "maximum clock",
+    type: "number",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    value: [Math.PI * 2],
+    max: Math.PI * 2,
+    min: -Math.PI * 2,
+    setp: 0.01,
+    $ref: "Double.json",
+    description: "",
+    descriptionZh: "",
+    ...options,
+  });
+}
+
+export function createMinimumConeDoubleProp(options = {}) {
+  return new czmlDoubleProp({
+    id: "czml_prop_minimumCone_" + nanoid(10),
+    name: "minimumCone",
+    czmlName: "minimumCone",
+    labelZh: "最小圆锥值",
+    labelEn: "minimum cone",
+    type: "number",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    value: [0.0],
+    max: Math.PI,
+    min: -Math.PI,
+    setp: 0.01,
+    $ref: "Double.json",
+    description: "",
+    descriptionZh: "",
+    ...options,
+  });
+}
+
+export function createMaximumConeDoubleProp(options = {}) {
+  return new czmlDoubleProp({
+    id: "czml_prop_maximumCone_" + nanoid(10),
+    name: "maximumCone",
+    czmlName: "maximumCone",
+    labelZh: "最大圆锥值",
+    labelEn: "maximum cone",
+    type: "number",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    value: [Math.PI],
+    max: Math.PI,
+    min: -Math.PI,
+    setp: 0.01,
     $ref: "Double.json",
     description: "",
     descriptionZh: "",
@@ -473,7 +583,7 @@ export function createColorBlendAmountDoubleProp(options = {}) {
     isEnable: true,
     isUsed: true,
     isShowUsed: true,
-    value: 0.5,
+    value: [0.5],
     max: 300,
     min: 0,
     setp: 1,
@@ -496,7 +606,7 @@ export function createLeadTimeDoubleProp(options = {}) {
     isEnable: true,
     isUsed: true,
     isShowUsed: true,
-    value: 0.5,
+    value: [0.5],
     max: 99999999999,
     min: 0,
     setp: 1,
@@ -519,7 +629,30 @@ export function createTrailTimeDoubleProp(options = {}) {
     isEnable: true,
     isUsed: true,
     isShowUsed: true,
-    value: 0.5,
+    value: [0.5],
+    max: 99999999999,
+    min: 0,
+    setp: 1,
+    $ref: "Double.json",
+    description: "",
+    descriptionZh: "",
+    ...options,
+  });
+}
+
+export function createPixelSizeDoubleProp(options = {}) {
+  return new czmlDoubleProp({
+    id: "czml_prop_pixelSize_" + nanoid(10),
+    name: "pixelSize",
+    czmlName: "pixelSize",
+    labelZh: "像素大小",
+    labelEn: "pixel size",
+    type: "number",
+    unit: "meters",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    value: [1.0],
     max: 99999999999,
     min: 0,
     setp: 1,
@@ -542,7 +675,7 @@ export function createResolutionDoubleProp(options = {}) {
     isEnable: true,
     isUsed: true,
     isShowUsed: true,
-    value: 0.5,
+    value: [0.5],
     max: 99999999999,
     min: 0,
     setp: 1,
@@ -565,7 +698,7 @@ export function createDashLengthDoubleProp(options = {}) {
     isEnable: true,
     isUsed: true,
     isShowUsed: true,
-    value: 0.5,
+    value: [0.5],
     max: 99999999999,
     min: 0,
     setp: 1,
@@ -588,7 +721,7 @@ export function createExtrudedHeightDoubleProp(options = {}) {
     isEnable: true,
     isUsed: true,
     isShowUsed: true,
-    value: 0.5,
+    value: [0.5],
     max: 99999999999,
     min: 0,
     setp: 1,
@@ -611,7 +744,7 @@ export function createGranularityDoubleProp(options = {}) {
     isEnable: true,
     isUsed: true,
     isShowUsed: true,
-    value: 0.5,
+    value: [0.5],
     max: 99999999999,
     min: 0,
     setp: 1,
@@ -634,7 +767,7 @@ export function createLengthDoubleProp(options = {}) {
     isEnable: true,
     isUsed: true,
     isShowUsed: true,
-    value: 0.5,
+    value: [1.0],
     max: 99999999999,
     min: 0,
     setp: 1,
@@ -657,7 +790,7 @@ export function createTopRadiusDoubleProp(options = {}) {
     isEnable: true,
     isUsed: true,
     isShowUsed: true,
-    value: 0.5,
+    value: [0.5],
     max: 99999999999,
     min: 0,
     setp: 1,
@@ -680,7 +813,7 @@ export function createBottomRadiusDoubleProp(options = {}) {
     isEnable: true,
     isUsed: true,
     isShowUsed: true,
-    value: 0.5,
+    value: [0.5],
     max: 99999999999,
     min: 0,
     setp: 1,
@@ -703,7 +836,7 @@ export function createGlowPowerDoubleProp(options = {}) {
     isEnable: true,
     isUsed: true,
     isShowUsed: true,
-    value: 0.25,
+    value: [0.25],
     max: 99999999999,
     min: 0,
     setp: 1,
@@ -726,7 +859,352 @@ export function createTaperPowerDoubleProp(options = {}) {
     isEnable: true,
     isUsed: true,
     isShowUsed: true,
-    value: 1.0,
+    value: [1.0],
+    max: 99999999999,
+    min: 0,
+    setp: 1,
+    $ref: "Double.json",
+    description: "",
+    descriptionZh: "",
+    ...options,
+  });
+}
+
+export function createSemiMajorAxisDoubleProp(options = {}) {
+  return new czmlDoubleProp({
+    id: "czml_prop_semiMajorAxis_" + nanoid(10),
+    name: "semiMajorAxis",
+    czmlName: "semiMajorAxis",
+    labelZh: "半长轴",
+    labelEn: "semi major axis",
+    type: "number",
+    unit: "meters",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    value: [1.0],
+    max: 99999999999,
+    min: 0,
+    setp: 1,
+    $ref: "Double.json",
+    description: "",
+    descriptionZh: "",
+    ...options,
+  });
+}
+
+export function createSemiMinorAxisDoubleProp(options = {}) {
+  return new czmlDoubleProp({
+    id: "czml_prop_semiMinorAxis_" + nanoid(10),
+    name: "semiMinorAxis",
+    czmlName: "semiMinorAxis",
+    labelZh: "半短轴",
+    labelEn: "semi minor axis",
+    type: "number",
+    unit: "meters",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    value: [1.0],
+    max: 99999999999,
+    min: 0,
+    setp: 1,
+    $ref: "Double.json",
+    description: "",
+    descriptionZh: "",
+    ...options,
+  });
+}
+
+export function createMinimumHeightsDoubleProp(options = {}) {
+  return new czmlDoubleProp({
+    id: "czml_prop_minimumHeights_" + nanoid(10),
+    name: "minimumHeights",
+    czmlName: "minimumHeights",
+    labelZh: "最小高度",
+    labelEn: "minimum heights",
+    type: "number",
+    unit: "meters",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    value: [1.0],
+    max: 99999999999,
+    min: 0,
+    setp: 1,
+    $ref: "Double.json",
+    description: "",
+    descriptionZh: "",
+    ...options,
+  });
+}
+
+export function createMaximumHeightsDoubleProp(options = {}) {
+  return new czmlDoubleProp({
+    id: "czml_prop_maximumHeights_" + nanoid(10),
+    name: "maximumHeights",
+    czmlName: "maximumHeights",
+    labelZh: "最大高度",
+    labelEn: "maximum heights",
+    type: "number",
+    unit: "meters",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    value: [1.0],
+    max: 99999999999,
+    min: 0,
+    setp: 1,
+    $ref: "Double.json",
+    description: "",
+    descriptionZh: "",
+    ...options,
+  });
+}
+
+export function createMaximumScreenSpaceErrorDoubleProp(options = {}) {
+  return new czmlDoubleProp({
+    id: "czml_prop_maximumScreenSpaceError_" + nanoid(10),
+    name: "maximumScreenSpaceError",
+    czmlName: "maximumScreenSpaceError",
+    labelZh: "最大屏幕空间误差",
+    labelEn: "maximum screen space error",
+    type: "number",
+    unit: "meters",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    value: [1.0],
+    max: 99999999999,
+    min: 0,
+    setp: 1,
+    $ref: "Double.json",
+    description: "",
+    descriptionZh: "",
+    ...options,
+  });
+}
+
+export function createInnerHalfAngleDoubleProp(options = {}) {
+  return new czmlDoubleProp({
+    id: "czml_prop_innerHalfAngle_" + nanoid(10),
+    name: "innerHalfAngle",
+    czmlName: "innerHalfAngle",
+    labelZh: "内半角",
+    labelEn: "inner half angle",
+    type: "number",
+    unit: "radians",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    value: [1.0],
+    max: 2 * Math.PI,
+    min: -2 * Math.PI,
+    setp: 0.01,
+    $ref: "Double.json",
+    description: "",
+    descriptionZh: "",
+    ...options,
+  });
+}
+
+export function createOuterHalfAngleDoubleProp(options = {}) {
+  return new czmlDoubleProp({
+    id: "czml_prop_outerHalfAngle_" + nanoid(10),
+    name: "outerHalfAngle",
+    czmlName: "outerHalfAngle",
+    labelZh: "外半角",
+    labelEn: "outer half angle",
+    type: "number",
+    unit: "radians",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    value: [Math.PI],
+    max: 2 * Math.PI,
+    min: -2 * Math.PI,
+    setp: 0.01,
+    $ref: "Double.json",
+    description: "",
+    descriptionZh: "",
+    ...options,
+  });
+}
+
+export function createMinimumClockAngleDoubleProp(options = {}) {
+  return new czmlDoubleProp({
+    id: "czml_prop_minimumClockAngle_" + nanoid(10),
+    name: "minimumClockAngle",
+    czmlName: "minimumClockAngle",
+    labelZh: "最小时钟角",
+    labelEn: "minimum clock angle",
+    type: "number",
+    unit: "radians",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    value: [0],
+    max: 2 * Math.PI,
+    min: -2 * Math.PI,
+    setp: 0.01,
+    $ref: "Double.json",
+    description: "",
+    descriptionZh: "",
+    ...options,
+  });
+}
+
+export function createMaximumClockAngleDoubleProp(options = {}) {
+  return new czmlDoubleProp({
+    id: "czml_prop_maximumClockAngle_" + nanoid(10),
+    name: "maximumClockAngle",
+    czmlName: "maximumClockAngle",
+    labelZh: "最大时钟角",
+    labelEn: "maximum clock angle",
+    type: "number",
+    unit: "radians",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    value: [2 * Math.PI],
+    max: 2 * Math.PI,
+    min: -2 * Math.PI,
+    setp: 0.01,
+    $ref: "Double.json",
+    description: "",
+    descriptionZh: "",
+    ...options,
+  });
+}
+
+export function createRadiusDoubleProp(options = {}) {
+  return new czmlDoubleProp({
+    id: "czml_prop_radius_" + nanoid(10),
+    name: "radius",
+    czmlName: "radius",
+    labelZh: "半径",
+    labelEn: "radius",
+    type: "number",
+    unit: "meters",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    value: [0.5],
+    max: 99999999999,
+    min: 0,
+    setp: 1,
+    $ref: "Double.json",
+    description: "",
+    descriptionZh: "",
+    ...options,
+  });
+}
+
+export function createIntersectionWidthDoubleProp(options = {}) {
+  return new czmlDoubleProp({
+    id: "czml_prop_intersectionWidth_" + nanoid(10),
+    name: "intersectionWidth",
+    czmlName: "intersectionWidth",
+    labelZh: "交点宽度",
+    labelEn: "intersection width",
+    type: "number",
+    unit: "meters",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    value: [1.0],
+    max: 99999999999,
+    min: 0,
+    setp: 1,
+    $ref: "Double.json",
+    description: "",
+    descriptionZh: "",
+    ...options,
+  });
+}
+
+export function createEnvironmentIntersectionWidthDoubleProp(options = {}) {
+  return new czmlDoubleProp({
+    id: "czml_prop_environmentIntersectionWidth_" + nanoid(10),
+    name: "environmentIntersectionWidth",
+    czmlName: "environmentIntersectionWidth",
+    labelZh: "环境交点宽度",
+    labelEn: "environment intersection width",
+    type: "number",
+    unit: "meters",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    value: [5.0],
+    max: 99999999999,
+    min: 0,
+    setp: 1,
+    $ref: "Double.json",
+    description: "",
+    descriptionZh: "",
+    ...options,
+  });
+}
+
+export function createXHalfAngleDoubleProp(options = {}) {
+  return new czmlDoubleProp({
+    id: "czml_prop_xHalfAngle_" + nanoid(10),
+    name: "xHalfAngle",
+    czmlName: "xHalfAngle",
+    labelZh: "X半角",
+    labelEn: "x half angle",
+    type: "number",
+    unit: "meters",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    value: [Math.PI / 2],
+    max: Math.PI * 2,
+    min: -Math.PI * 2,
+    setp: 0.01,
+    $ref: "Double.json",
+    description: "",
+    descriptionZh: "",
+    ...options,
+  });
+}
+
+export function createYHalfAngleDoubleProp(options = {}) {
+  return new czmlDoubleProp({
+    id: "czml_prop_yHalfAngle_" + nanoid(10),
+    name: "yHalfAngle",
+    czmlName: "yHalfAngle",
+    labelZh: "Y半角",
+    labelEn: "y half angle",
+    type: "number",
+    unit: "meters",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    value: [Math.PI / 2],
+    max: Math.PI * 2,
+    min: -Math.PI * 2,
+    setp: 0.01,
+    $ref: "Double.json",
+    description: "",
+    descriptionZh: "",
+    ...options,
+  });
+}
+
+export function createMinimumLengthInPixelsDoubleProp(options = {}) {
+  return new czmlDoubleProp({
+    id: "czml_prop_minimumLengthInPixels_" + nanoid(10),
+    name: "minimumLengthInPixels",
+    czmlName: "minimumLengthInPixels",
+    labelZh: "最小像素长度",
+    labelEn: "minimum length in pixels",
+    type: "number",
+    unit: "meters",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    value: [0.0],
     max: 99999999999,
     min: 0,
     setp: 1,

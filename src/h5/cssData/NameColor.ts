@@ -25,6 +25,7 @@ export class CssColorInput {
 
   public properties = undefined;
 
+  public isRequired = false;
   public isEnable = true;
 
   constructor(options: any) {
@@ -100,6 +101,7 @@ export class CssColorInput {
       }
     }
 
+    this.isRequired = options.isRequired ?? false;
     this.isEnable = options.isEnable ?? true;
   }
 

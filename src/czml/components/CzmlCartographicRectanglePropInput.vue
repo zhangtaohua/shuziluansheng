@@ -74,22 +74,42 @@
             <div class="row_nw_fs_ce props_qtinput_line1">
               <div class="row_nw_fs_ce props_qtinput_itemlabelleft">WLng(L):</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
-                <el-input v-model="pureValueShow[0]" placeholder="Please input" type="number" />
+                <el-input
+                  v-model="pureValueShow[0]"
+                  placeholder="Please input"
+                  type="number"
+                  @change="pureValueChangedHd"
+                />
               </div>
               <div class="row_nw_fs_ce props_qtinput_itemlabelright">SLat(B):</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
-                <el-input v-model="pureValueShow[1]" placeholder="Please input" type="number" />
+                <el-input
+                  v-model="pureValueShow[1]"
+                  placeholder="Please input"
+                  type="number"
+                  @change="pureValueChangedHd"
+                />
               </div>
             </div>
 
             <div class="row_nw_fs_ce props_qtinput_line2">
               <div class="row_nw_fs_ce props_qtinput_itemlabelleft">ELng(R):</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
-                <el-input v-model="pureValueShow[2]" placeholder="Please input" type="number" />
+                <el-input
+                  v-model="pureValueShow[2]"
+                  placeholder="Please input"
+                  type="number"
+                  @change="pureValueChangedHd"
+                />
               </div>
               <div class="row_nw_fs_ce props_qtinput_itemlabelright">NLat(T):</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
-                <el-input v-model="pureValueShow[2]" placeholder="Please input" type="number" />
+                <el-input
+                  v-model="pureValueShow[3]"
+                  placeholder="Please input"
+                  type="number"
+                  @change="pureValueChangedHd"
+                />
               </div>
             </div>
           </div>
@@ -124,7 +144,7 @@
             <div class="row_nw_fs_ce props_qtinput_linetime">
               <div class="row_nw_fs_ce props_qtinput_linetimelabel">秒 seconds:</div>
               <div class="row_nw_fs_ce props_qtinput_linetimeinputbox">
-                <el-input v-model="inval[0]" placeholder="Please input" type="number" />
+                <el-input v-model="inval[0]" placeholder="Please input" type="number" @change="intervalsChangedHd" />
               </div>
 
               <div class="row_nw_fs_ce props_qtinput_linetimeindex">SN:{{ index + 1 }}</div>
@@ -132,22 +152,22 @@
             <div class="row_nw_fs_ce props_qtinput_line1">
               <div class="row_nw_fs_ce props_qtinput_itemlabelleft">WLng(L):</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
-                <el-input v-model="inval[1]" placeholder="Please input" type="number" />
+                <el-input v-model="inval[1]" placeholder="Please input" type="number" @change="intervalsChangedHd" />
               </div>
               <div class="row_nw_fs_ce props_qtinput_itemlabelright">SLat(B):</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
-                <el-input v-model="inval[2]" placeholder="Please input" type="number" />
+                <el-input v-model="inval[2]" placeholder="Please input" type="number" @change="intervalsChangedHd" />
               </div>
             </div>
 
             <div class="row_nw_fs_ce props_qtinput_line2">
               <div class="row_nw_fs_ce props_qtinput_itemlabelleft">ELng(R):</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
-                <el-input v-model="inval[3]" placeholder="Please input" type="number" />
+                <el-input v-model="inval[3]" placeholder="Please input" type="number" @change="intervalsChangedHd" />
               </div>
               <div class="row_nw_fs_ce props_qtinput_itemlabelright">NLat(T):</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
-                <el-input v-model="inval[4]" placeholder="Please input" type="number" />
+                <el-input v-model="inval[4]" placeholder="Please input" type="number" @change="intervalsChangedHd" />
               </div>
             </div>
           </div>
@@ -252,6 +272,7 @@
                   placeholder="Select start datetime"
                   :format="defaultTimeFormatStr"
                   :value-format="defaultTimeFormatStr"
+                  @change="timesIntervalsChangedHd"
                 />
               </div>
               <div class="row_nw_fs_ce props_qtinput_linetimeindex">SN:{{ index2 + 1 }}</div>
@@ -259,22 +280,42 @@
             <div class="row_nw_fs_ce props_qtinput_line1">
               <div class="row_nw_fs_ce props_qtinput_itemlabelleft">WLng(L):</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
-                <el-input v-model="inval[1]" placeholder="Please input" type="number" />
+                <el-input
+                  v-model="inval[1]"
+                  placeholder="Please input"
+                  type="number"
+                  @change="timesIntervalsChangedHd"
+                />
               </div>
               <div class="row_nw_fs_ce props_qtinput_itemlabelright">SLat(B):</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
-                <el-input v-model="inval[2]" placeholder="Please input" type="number" />
+                <el-input
+                  v-model="inval[2]"
+                  placeholder="Please input"
+                  type="number"
+                  @change="timesIntervalsChangedHd"
+                />
               </div>
             </div>
 
             <div class="row_nw_fs_ce props_qtinput_line2">
               <div class="row_nw_fs_ce props_qtinput_itemlabelleft">ELng(R):</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
-                <el-input v-model="inval[3]" placeholder="Please input" type="number" />
+                <el-input
+                  v-model="inval[3]"
+                  placeholder="Please input"
+                  type="number"
+                  @change="timesIntervalsChangedHd"
+                />
               </div>
               <div class="row_nw_fs_ce props_qtinput_itemlabelright">NLat(T):</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
-                <el-input v-model="inval[4]" placeholder="Please input" type="number" />
+                <el-input
+                  v-model="inval[4]"
+                  placeholder="Please input"
+                  type="number"
+                  @change="timesIntervalsChangedHd"
+                />
               </div>
             </div>
           </div>
@@ -415,6 +456,8 @@
     setCzmlMapViewDrawData,
     setCzmlIsViewDrawDataPath,
   } = useCzmlMapDataConfigStore();
+
+  let isHumanInputModify = false;
 
   const id = nanoid(10);
   const currentProp = ref({});
@@ -613,9 +656,73 @@
     }
   }
 
+  function pureValueChangedHd() {
+    isHumanInputModify = true;
+    if (xyzUnitType.value == CZMLCARTESIAN3METERTYPE) {
+      pureValue.value = pureValueShow.value;
+    } else if (xyzUnitType.value == CZMLCARTESIAN3DEGREESTYPE) {
+      pureValue.value = pureValueShow.value;
+    } else if (xyzUnitType.value == CZMLCARTESIAN3RADIANSTYPE) {
+      pureValue.value = [
+        Cesium.Math.toDegrees(pureValueShow.value[0]),
+        Cesium.Math.toDegrees(pureValueShow.value[1]),
+        Cesium.Math.toDegrees(pureValueShow.value[2]),
+        Cesium.Math.toDegrees(pureValueShow.value[3]),
+      ];
+    }
+  }
+
+  function intervalsChangedHd() {
+    isHumanInputModify = true;
+    if (xyzUnitType.value == CZMLCARTESIAN3METERTYPE) {
+      intervalsValues.value = intervalsValuesShow.value;
+    } else if (xyzUnitType.value == CZMLCARTESIAN3DEGREESTYPE) {
+      intervalsValues.value = intervalsValuesShow.value;
+    } else if (xyzUnitType.value == CZMLCARTESIAN3RADIANSTYPE) {
+      const positions = [];
+      for (let i = 0; i < intervalsValuesShow.value.length; i++) {
+        const vtemp = intervalsValuesShow.value[i];
+        positions.push([
+          vtemp[0],
+          Cesium.Math.toDegrees(vtemp[1]),
+          Cesium.Math.toDegrees(vtemp[2]),
+          Cesium.Math.toDegrees(vtemp[3]),
+          Cesium.Math.toDegrees(vtemp[4]),
+        ]);
+      }
+      intervalsValues.value = positions;
+    }
+  }
+
+  function timesIntervalsChangedHd() {
+    isHumanInputModify = true;
+
+    if (xyzUnitType.value == CZMLCARTESIAN3METERTYPE) {
+      timestrIntervalsValues.value = timestrIntervalsValuesShow.value;
+    } else if (xyzUnitType.value == CZMLCARTESIAN3DEGREESTYPE) {
+      timestrIntervalsValues.value = timestrIntervalsValuesShow.value;
+    } else if (xyzUnitType.value == CZMLCARTESIAN3RADIANSTYPE) {
+      const positions = [];
+      for (let i = 0; i < timestrIntervalsValuesShow.value.length; i++) {
+        const vtemp = timestrIntervalsValuesShow.value[i];
+        positions.push([
+          vtemp[0],
+          Cesium.Math.toDegrees(vtemp[1]),
+          Cesium.Math.toDegrees(vtemp[2]),
+          Cesium.Math.toDegrees(vtemp[3]),
+          Cesium.Math.toDegrees(vtemp[4]),
+        ]);
+      }
+      timestrIntervalsValues.value = positions;
+    }
+  }
+
   watch(
     [xyzUnitType, pureValue],
     () => {
+      if (isHumanInputModify) {
+        return;
+      }
       if (xyzUnitType.value == CZMLCARTESIAN3METERTYPE) {
         pureValueShow.value = pureValue.value;
       } else if (xyzUnitType.value == CZMLCARTESIAN3DEGREESTYPE) {
@@ -638,6 +745,9 @@
   watch(
     [xyzUnitType, intervalsValues],
     () => {
+      if (isHumanInputModify) {
+        return;
+      }
       if (xyzUnitType.value == CZMLCARTESIAN3METERTYPE) {
         intervalsValuesShow.value = intervalsValues.value;
       } else if (xyzUnitType.value == CZMLCARTESIAN3DEGREESTYPE) {
@@ -666,6 +776,9 @@
   watch(
     [xyzUnitType, timestrIntervalsValues],
     () => {
+      if (isHumanInputModify) {
+        return;
+      }
       if (xyzUnitType.value == CZMLCARTESIAN3METERTYPE) {
         timestrIntervalsValuesShow.value = timestrIntervalsValues.value;
       } else if (xyzUnitType.value == CZMLCARTESIAN3DEGREESTYPE) {
@@ -695,6 +808,7 @@
     () => czmlMapDataConfig.currentDataRefresh,
     () => {
       if (czmlMapDataConfig.currentDataRefresh) {
+        isHumanInputModify = false;
         if (czmlMapDataConfig.currentDataId == rectDataKeyId) {
           console.log("解析获取值", globalCzmlMapData.drawData);
           const data = globalCzmlMapData.drawData;
@@ -791,6 +905,8 @@
   watch(
     () => currentProp.value.timeType,
     () => {
+      isHumanInputModify = false;
+
       nextTick(() => {
         console.log("currentProp.valueType", currentProp.value);
         if (currentProp.value.timeType == CZMLPUREVALUE) {

@@ -30,7 +30,9 @@ export class workspaceContainer {
   public tag = "CommonWorkspace";
   public h5Tag = "div";
 
+  public isRequired = false;
   public isEnable = true;
+
   public isUsed = true;
   public isShowUsed = true;
   public isExpand = true;
@@ -95,6 +97,7 @@ export class workspaceContainer {
     // this.transform = getControlTransform(this.styles.basic.properties);
     // console.log("workspace", this.transform);
 
+    this.isRequired = options.isRequired ?? false;
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
     this.isShowUsed = options.isShowUsed ?? true;

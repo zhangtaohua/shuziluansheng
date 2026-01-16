@@ -294,6 +294,101 @@ export function createMaterialProp(options = {}) {
   });
 }
 
+export function createLateralSurfaceMaterialProp(options = {}) {
+  return new czmlMaterialProp({
+    id: "czml_prop_lateralSurfaceMaterial_" + nanoid(10),
+    name: "lateralSurfaceMaterial",
+    czmlName: "lateralSurfaceMaterial",
+    labelZh: "侧面材料",
+    labelEn: "lateral surface material",
+    tag: "CzmlMaterialPropInput",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    $ref: "Material.json",
+    description: "The material to display on the surface of the box.",
+    descriptionZh: "",
+    default: "solid white",
+    ...options,
+  });
+}
+
+export function createEllipsoidSurfaceMaterialProp(options = {}) {
+  return new czmlMaterialProp({
+    id: "czml_prop_ellipsoidSurfaceMaterial_" + nanoid(10),
+    name: "ellipsoidSurfaceMaterial",
+    czmlName: "ellipsoidSurfaceMaterial",
+    labelZh: "椭球材料",
+    labelEn: "ellipsoid surface material",
+    tag: "CzmlMaterialPropInput",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    $ref: "Material.json",
+    description: "The material to display on the surface of the box.",
+    descriptionZh: "",
+    default: "solid white",
+    ...options,
+  });
+}
+
+export function createEllipsoidHorizonSurfaceMaterialProp(options = {}) {
+  return new czmlMaterialProp({
+    id: "czml_prop_ellipsoidHorizonSurfaceMaterial_" + nanoid(10),
+    name: "ellipsoidHorizonSurfaceMaterial",
+    czmlName: "ellipsoidHorizonSurfaceMaterial",
+    labelZh: "椭球水平材料",
+    labelEn: "ellipsoid horizon surface material",
+    tag: "CzmlMaterialPropInput",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    $ref: "Material.json",
+    description: "The material to display on the surface of the box.",
+    descriptionZh: "",
+    default: "solid white",
+    ...options,
+  });
+}
+
+export function createDomeSurfaceMaterialProp(options = {}) {
+  return new czmlMaterialProp({
+    id: "czml_prop_domeSurfaceMaterial_" + nanoid(10),
+    name: "domeSurfaceMaterial",
+    czmlName: "domeSurfaceMaterial",
+    labelZh: "半球材料",
+    labelEn: "dome surface material",
+    tag: "CzmlMaterialPropInput",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    $ref: "Material.json",
+    description: "The material to display on the surface of the box.",
+    descriptionZh: "",
+    default: "solid white",
+    ...options,
+  });
+}
+
+export function createEnvironmentOcclusionMaterialProp(options = {}) {
+  return new czmlMaterialProp({
+    id: "czml_prop_environmentOcclusionMaterial_" + nanoid(10),
+    name: "environmentOcclusionMaterial",
+    czmlName: "environmentOcclusionMaterial",
+    labelZh: "环境遮挡材料",
+    labelEn: "environment occlusion material",
+    tag: "CzmlMaterialPropInput",
+    isEnable: true,
+    isUsed: true,
+    isShowUsed: true,
+    $ref: "Material.json",
+    description: "The material to display on the surface of the box.",
+    descriptionZh: "",
+    default: "solid white",
+    ...options,
+  });
+}
+
 export function createPolylineMaterialProp(options = {}) {
   return new czmlMaterialProp({
     id: "czml_prop_material_" + nanoid(10),
@@ -368,6 +463,17 @@ export function createPolylineMaterialProp(options = {}) {
         description: "A material that fills the line with a checkerboard pattern.",
       }),
     },
+    ...options,
+  });
+}
+
+export function createDepthFailMaterialProp(options = {}) {
+  return createPolylineMaterialProp({
+    id: "czml_prop_depthFailMaterial_" + nanoid(10),
+    name: "depthFailMaterial",
+    czmlName: "depthFailMaterial",
+    labelZh: "深度失败材质",
+    labelEn: "depth fail material",
     ...options,
   });
 }

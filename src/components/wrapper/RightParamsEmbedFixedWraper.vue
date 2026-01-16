@@ -12,7 +12,7 @@
       </div>
     </div>
 
-    <div v-if="isExpanded" class="row_nw_ce_ce rparams_wrapper">
+    <div v-show="isExpanded" class="row_nw_ce_ce rparams_wrapper">
       <slot></slot>
     </div>
   </div>

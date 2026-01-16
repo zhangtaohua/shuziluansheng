@@ -22,6 +22,66 @@
             >
               {{ htmlTab.labelZh }}
             </el-button>
+
+            <div class="row_nw_ce_ce rparams_in_header_tabactbox">
+              <el-tooltip placement="bottom" effect="dark">
+                <template #content>
+                  <div class="col_nw_fs_ce rparams_in_header_tabactbox_tipbox">
+                    <p class="tab_ch_tiplabel">加载 czml 数据</p>
+                    <p class="tab_ogi_tiplabel">Load czml data</p>
+                  </div>
+                </template>
+                <el-button
+                  size="small"
+                  type="primary"
+                  :icon="Odometer"
+                  circle
+                  @click="reloadCzmlDataRefreshHd"
+                ></el-button>
+              </el-tooltip>
+
+              <el-tooltip placement="bottom" effect="dark">
+                <template #content>
+                  <div class="col_nw_fs_ce rparams_in_header_tabactbox_tipbox">
+                    <p class="tab_ch_tiplabel">代码实时预览</p>
+                    <p class="tab_ogi_tiplabel">Real-time code preview</p>
+                  </div>
+                </template>
+                <el-button
+                  size="small"
+                  :type="czmlState.isShowCzmlCodePreviewPanel ? 'primary' : 'default'"
+                  :icon="Platform"
+                  circle
+                  @click="toggleShowCzmlCodePreviewPanelHd"
+                ></el-button>
+              </el-tooltip>
+
+              <el-tooltip placement="bottom" effect="dark">
+                <template #content>
+                  <div class="col_nw_fs_ce rparams_in_header_tabactbox_tipbox">
+                    <p class="tab_ch_tiplabel">czml实时预览</p>
+                    <p class="tab_ogi_tiplabel">Real-time load czml data</p>
+                  </div>
+                </template>
+                <el-button
+                  size="small"
+                  :type="czmlState.isReloadCzmlData ? 'primary' : 'default'"
+                  :icon="Refresh"
+                  circle
+                  @click="setIsReloadCzmlDataHd(!czmlState.isReloadCzmlData)"
+                ></el-button>
+              </el-tooltip>
+
+              <el-tooltip placement="bottom" effect="dark">
+                <template #content>
+                  <div class="col_nw_fs_ce rparams_in_header_tabactbox_tipbox">
+                    <p class="tab_ch_tiplabel">导出 czml 数据</p>
+                    <p class="tab_ogi_tiplabel">Export czml data</p>
+                  </div>
+                </template>
+                <el-button size="small" type="primary" :icon="Download" circle @click="downloadCzmlDataHd"></el-button>
+              </el-tooltip>
+            </div>
           </div>
         </div>
 
@@ -92,6 +152,10 @@
         </div>
       </div>
     </div>
+
+    <div v-if="czmlState.isShowCzmlCodePreviewPanel" class="row_nw_ce_ce rparams_in_codepreviewbox">
+      <CodeEditor v-model:value="czmlCode" language="json" theme="vs-dark" :options="editorOptions" />
+    </div>
   </RightParamsEmbedFixedWraper>
 </template>
 
@@ -101,7 +165,7 @@
   import RightParamsEmbedFixedWraper from "@/components/wrapper/RightParamsEmbedFixedWraper.vue";
   import HeaderPanel from "@/views/czmlEditor/components/HeaderPanel.vue";
 
-  import { Position, Microphone } from "@element-plus/icons-vue";
+  import { Position, Microphone, Platform, Odometer, Orange, Refresh, Download } from "@element-plus/icons-vue";
 
   import { CodeEditor } from "monaco-editor-vue3";
   import * as monaco from "monaco-editor";
@@ -112,8 +176,12 @@
   import OpenAI from "openai";
 
   import { globalCzmlMapData, useCzmlMapDataConfigStore, useCzmlStateStore } from "@/stores/czmlMapDataConfig";
+  import { remToPx } from "@/hooks/useWindowSize";
+  import { downloadJson } from "@/utils/common/download";
+  import { useWindowResize } from "@/hooks/useWindowSize";
 
-  const { czmlState } = useCzmlStateStore();
+  const { czmlState, setIsShowCzmlCodePreviewPanel, setReloadCzmlData, setIsReloadCzmlData } = useCzmlStateStore();
+  const { windowSize } = useWindowResize();
 
   const currentVueIns = getCurrentInstance();
   // console.log("currentVueIns", currentVueIns);
@@ -126,6 +194,7 @@
   const uiGapLineRef = ref(null);
   const currentCzmlDataPackageProp = ref(null);
   const refreshPackagePropFlag = ref(true);
+  // let isRenderCodeEditorWidget = false;
 
   const pppPlcStyle = reactive({
     width: "1rem",
@@ -133,6 +202,7 @@
 
   const pppStyle = reactive({
     top: "1rem",
+    height: "auto",
   });
 
   // const uiControlScrollHd = () => {
@@ -171,10 +241,6 @@
 
   const currentTabName = ref(htmlTabNames[1].value);
 
-  const changeTabName = (tab: any) => {
-    currentTabName.value = tab.value;
-  };
-
   const editorOptions = {
     fontSize: 14,
     minimap: { enabled: false },
@@ -190,6 +256,51 @@
   function unExpandClickHd() {
     if (RightParamsEmWraperRef.value) {
       RightParamsEmWraperRef.value.unExpandClickHd();
+    }
+  }
+
+  const changeTabName = (tab: any) => {
+    currentTabName.value = tab.value;
+    if (currentTabName.value == htmlTabNames[1].value) {
+      // 关闭代码编辑面板
+      if (codeEditorIns) {
+        codeEditorIns.removeContentWidget({
+          getId: () => "monaco.editor.rj.overlay.widget",
+        });
+      }
+    }
+  };
+
+  function toggleShowCzmlCodePreviewPanelHd() {
+    setIsShowCzmlCodePreviewPanel(!czmlState.isShowCzmlCodePreviewPanel);
+  }
+
+  function reloadCzmlDataRefreshHd() {
+    setReloadCzmlData();
+  }
+
+  function setIsReloadCzmlDataHd(isReload: boolean = true) {
+    setIsReloadCzmlData(isReload);
+  }
+
+  function downloadCzmlDataHd() {
+    if (globalCzmlMapData.czmlDatas && globalCzmlMapData.czmlDatas.size > 0) {
+      globalCzmlMapData.czmlDatas.forEach((czmlData) => {
+        const filename = czmlData.id + ".json";
+        const cdata = czmlData.data;
+        downloadJson(cdata, {
+          filename: filename,
+          formatted: true,
+          space: 2,
+          // autoBom: true,
+          // onSuccess: (result) => {
+          //   ElMessage.success(`导出成功: ${result.filename}`);
+          // },
+          // onError: (error) => {
+          //   ElMessage.error(`导出失败: ${error.error}`);
+          // },
+        });
+      });
     }
   }
 
@@ -271,12 +382,12 @@
     parentDom.style.height = "auto";
     parentDom.style.maxHeight = "520px";
     parentDom.style.border = "1px solid rgba(255, 255, 255, 0.5)";
-    parentDom.style.overflowY = "scroll";
+    parentDom.style.overflowY = "auto";
     parentDom.style.scrollbarWidth = "thin";
 
     parentDom.addEventListener("wheel", (event) => {
       event.stopPropagation();
-      event.preventDefault();
+      // event.preventDefault();
     });
 
     const closeDom = document.createElement("div");
@@ -291,6 +402,12 @@
     closeDom.innerHTML = "×";
 
     closeDom.addEventListener("click", () => {
+      if (vdata.isRequired) {
+        if (!vdata.value) {
+          ElMessage.error(`${vdata.czmlName}必填项`);
+          return;
+        }
+      }
       editor.removeContentWidget({
         getId: () => "monaco.editor.rj.overlay.widget",
       });
@@ -310,7 +427,7 @@
   const renderCzmlEntityProp = (position: any, propertyPath: any) => {
     if (codeEditorIns) {
       const { id, path } = propertyPath;
-      console.log("currentCzmlData", currentCzmlData.value);
+      console.log("renderCzmlEntityProp", currentCzmlData.value);
       const packets = Object.values(currentCzmlData.value.packets);
       if (!packets || packets.length === 0) {
         ElMessage.error("Czml数据中没有包含任何包");
@@ -328,6 +445,7 @@
         ElMessage.error("未找到对应的Czml数据");
         return;
       } else {
+        // isRenderCodeEditorWidget = true;
         let prop = packet.properties[path[0]];
         for (let i = 1; i < path.length; i++) {
           prop = prop.properties[path[i]];
@@ -360,6 +478,10 @@
             };
           },
         });
+
+        // setTimeout(() => {
+        //   isRenderCodeEditorWidget = false;
+        // }, 1000);
       }
     }
   };
@@ -480,21 +602,32 @@
   );
 
   watch(
-    () => czmlState.currentCzmlDataPackageProp,
+    [() => czmlState.currentCzmlDataPackageProp, currentTabName, () => windowSize.width],
     () => {
-      if (czmlState.currentCzmlData && czmlState.currentCzmlDataPackageProp) {
+      if (
+        czmlState.currentCzmlData &&
+        czmlState.currentCzmlDataPackageProp &&
+        currentTabName.value == htmlTabNames[1].value // 这个是为了能在code editor 中渲染出控件来,不然会一直死循环
+      ) {
         console.log("czmlState.currentCzmlDataPackageProp", czmlState.currentCzmlDataPackageProp);
         currentCzmlDataPackageProp.value = czmlState.currentCzmlDataPackageProp;
         if (uiGapLineRef.value) {
           const rect = uiGapLineRef.value.getBoundingClientRect();
+          const bRect = uiConfigBodyRef.value.getBoundingClientRect();
+          const gap = remToPx(2);
+          const height = bRect.height - gap;
           // console.log("gap rect", rect);
-          pppStyle.top = `${rect.top + 32}px`;
+          pppStyle.top = `${rect.top + gap}px`;
+          pppStyle.height = `${height}px`;
         } else {
           pppStyle.top = "1rem";
+          pppStyle.height = "auto";
         }
         nextTick(() => {
           if (uiPPPQuickBoxRef.value) {
-            pppPlcStyle.width = `${uiPPPQuickBoxRef.value.clientWidth + 24}px`;
+            const gapWidth = remToPx(2);
+
+            pppPlcStyle.width = `${uiPPPQuickBoxRef.value.clientWidth + gapWidth}px`;
           } else {
             pppPlcStyle.width = "1rem";
           }
@@ -503,6 +636,7 @@
         currentCzmlDataPackageProp.value = null;
         pppStyle.top = "1rem";
         pppPlcStyle.width = "1rem";
+        pppStyle.height = "auto";
       }
     },
     {
@@ -515,9 +649,11 @@
     currentCzmlData,
     () => {
       if (currentCzmlData.value) {
+        // if (!isRenderCodeEditorWidget) {
         czmlCodeJsObj = currentCzmlData.value.getCzmlData();
         console.log("getCzmlData", currentCzmlData.value, czmlCodeJsObj);
         czmlCode.value = JSON.stringify(czmlCodeJsObj, null, 2);
+        // }
         if (currentTabName.value == htmlTabNames[0].value) {
           refreshPackagePropFlag.value = false;
           nextTick(() => {
@@ -668,6 +804,7 @@
     border-top: 1px solid rgba(255, 255, 255, 0.2);
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: -0.25rem 0 0.25rem rgba(255, 255, 255, 0.2);
+    z-index: 9999;
   }
 
   .rparams_in_wrapper {
@@ -712,9 +849,18 @@
   }
 
   .rparams_in_header_tabbox {
+    position: relative;
     width: 100%;
     height: 2rem;
     margin-top: 0.5rem;
+  }
+
+  .rparams_in_header_tabactbox {
+    position: absolute;
+    width: max-content;
+    height: 100%;
+    top: 0rem;
+    right: 0.5rem;
   }
 
   .grave_gap {
@@ -768,12 +914,14 @@
   .rparams_in_body_ppbox {
     position: fixed;
     top: 1rem;
-    right: 2.5rem;
+    right: 2rem;
     width: max-content;
     height: auto;
     background-color: rgba(0, 0, 0, 0.5);
     border-radius: 0.5rem;
     padding: 0.75rem;
+    overflow-y: auto;
+    scrollbar-width: thin;
   }
 
   .rparams_opt_props_ctxbox {
@@ -815,6 +963,17 @@
     height: 1.5rem;
     bottom: 0.5rem;
     right: 0.5rem;
+  }
+
+  .rparams_in_codepreviewbox {
+    position: fixed;
+    width: 45vw;
+    height: 50vh;
+    top: 50vh;
+    left: 0;
+    background-color: rgba(255, 255, 255, 0.01);
+    box-shadow: 0 -0.25rem 0.25rem rgba(255, 255, 255, 0.2);
+    padding-right: 0.5rem;
   }
 
   @container rparamsBody (max-width: 280px) {

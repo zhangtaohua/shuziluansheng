@@ -43,7 +43,9 @@ export class czmlDoubleFixedNumberProp {
   private _step = 0.1;
   private _retainDecimalPlaces = 3;
 
-  public isEnable = true; // for can edit
+  public isRequired = false;
+  public isEnable = true;
+  // for can edit
   public isUsed = true; // for can used
   public isShowUsed = true;
   public isExpand = true; // for UI
@@ -137,6 +139,7 @@ export class czmlDoubleFixedNumberProp {
       this.default = options.default;
     }
 
+    this.isRequired = options.isRequired ?? false;
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
     this.isShowUsed = options.isShowUsed ?? true;

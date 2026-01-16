@@ -87,7 +87,7 @@
                 size="small"
                 @click="czmlDataPackagePropChangeHd(prop)"
               >
-                {{ prop.labelEn }}
+                {{ prop.czmlName }}
               </el-button>
             </el-tooltip>
           </div>

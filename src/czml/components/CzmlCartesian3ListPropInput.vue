@@ -36,6 +36,8 @@
       </div>
     </div>
 
+    <CzmlTlePathInput @generatePath="generatePathHd"></CzmlTlePathInput>
+
     <div v-if="!currentProp.isFixedXyzUnitType" class="col_nw_fs_fs props_radiobox">
       <div class="row_nw_fs_ce props_radiobox_title">
         <label class="row_nw_fs_ce props_radioch_label">XYZ 单位</label>
@@ -58,18 +60,18 @@
             <div class="row_nw_fs_ce props_qtinput_line1">
               <div class="row_nw_fs_ce props_qtinput_itemlabelleft">X:</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
-                <el-input v-model="inval[0]" placeholder="Please input" type="number" />
+                <el-input v-model="inval[0]" placeholder="Please input" type="number" @change="intervalsChangedHd" />
               </div>
               <div class="row_nw_fs_ce props_qtinput_itemlabelright">Y:</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
-                <el-input v-model="inval[1]" placeholder="Please input" type="number" />
+                <el-input v-model="inval[1]" placeholder="Please input" type="number" @change="intervalsChangedHd" />
               </div>
             </div>
 
             <div class="row_nw_fs_ce props_qtinput_line2">
               <div class="row_nw_fs_ce props_qtinput_itemlabelleft">Z:</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
-                <el-input v-model="inval[2]" placeholder="Please input" type="number" />
+                <el-input v-model="inval[2]" placeholder="Please input" type="number" @change="intervalsChangedHd" />
               </div>
 
               <div class="row_nw_fs_ce props_qtinput_linetimeindex">SN:{{ index + 1 }}</div>
@@ -157,6 +159,7 @@
 
   import { ref, onMounted, watch } from "vue";
   import RjBooleanSwitchInput from "@/components/form/RjBooleanSwitchInput.vue";
+  import CzmlTlePathInput from "@/czml/components/CzmlTlePathInput.vue";
 
   import { nanoid } from "@/utils/common/nanoid";
   import { cartesian3ToWgs84, cartesian3ToDegrees, cartesian3ToRadians } from "@/utils/map/cesium/csTools";
@@ -196,6 +199,8 @@
 
   const { czmlMapDataConfig, setCzmlMapCurrentAction, setCzmlMapViewDrawData, setCzmlIsViewDrawDataPath } =
     useCzmlMapDataConfigStore();
+
+  let isHumanInputModify = false;
 
   const id = nanoid(10);
   const currentProp = ref({});
@@ -327,9 +332,34 @@
     }
   }
 
+  function intervalsChangedHd() {
+    isHumanInputModify = true;
+    if (xyzUnitType.value == CZMLCARTESIAN3METERTYPE) {
+      intervalsValues.value = intervalsValuesShow.value;
+    } else if (xyzUnitType.value == CZMLCARTESIAN3DEGREESTYPE) {
+      intervalsValues.value = intervalsValuesShow.value;
+    } else if (xyzUnitType.value == CZMLCARTESIAN3RADIANSTYPE) {
+      const positions = [];
+      for (let i = 0; i < intervalsValuesShow.value.length; i++) {
+        const vtemp = intervalsValuesShow.value[i];
+        positions.push([
+          vtemp[0],
+          Cesium.Math.toDegrees(vtemp[1]),
+          Cesium.Math.toDegrees(vtemp[2]),
+          Cesium.Math.toDegrees(vtemp[3]),
+          Cesium.Math.toDegrees(vtemp[4]),
+        ]);
+      }
+      intervalsValues.value = positions;
+    }
+  }
+
   watch(
     [xyzUnitType, intervalsValues],
     () => {
+      if (isHumanInputModify) {
+        return;
+      }
       if (xyzUnitType.value == CZMLCARTESIAN3METERTYPE) {
         intervalsValuesShow.value = intervalsValues.value;
       } else if (xyzUnitType.value == CZMLCARTESIAN3DEGREESTYPE) {
@@ -362,6 +392,8 @@
     () => czmlMapDataConfig.currentDataRefresh,
     () => {
       if (czmlMapDataConfig.currentDataRefresh) {
+        isHumanInputModify = false;
+
         console.log("解析获取值", globalCzmlMapData.drawData);
         if (czmlMapDataConfig.currentDataId == pointDataKeyId) {
           // 解析获取值
@@ -420,6 +452,47 @@
       immediate: false,
     },
   );
+
+  function generatePathHd(data) {
+    isHumanInputModify = false;
+    const { lnglatDatas } = data;
+
+    if (lnglatDatas && isArray(lnglatDatas) && lnglatDatas.length) {
+      if (isArray(intervalsValues.value)) {
+        const length = intervalsValues.value.length;
+        let isNeedModifyFirset = false;
+        if (
+          length == 1 &&
+          intervalsValues.value[0][0] == 0 &&
+          intervalsValues.value[0][1] == 0 &&
+          intervalsValues.value[0][2] == 0
+        ) {
+          isNeedModifyFirset = true;
+          const cartesian3 = Cesium.Cartesian3.fromDegrees(
+            lnglatDatas[0].longitude,
+            lnglatDatas[0].latitude,
+            lnglatDatas[0].altitude,
+          );
+          intervalsValues.value[0][0] = cartesian3.x;
+          intervalsValues.value[0][1] = cartesian3.y;
+          intervalsValues.value[0][2] = cartesian3.z;
+        }
+
+        let index = 0;
+        if (isNeedModifyFirset) {
+          index = 1;
+        }
+        for (let i = index; i < lnglatDatas.length; i++) {
+          const cartesian3 = Cesium.Cartesian3.fromDegrees(
+            lnglatDatas[i].longitude,
+            lnglatDatas[i].latitude,
+            lnglatDatas[i].altitude,
+          );
+          intervalsValues.value.push([cartesian3.x, cartesian3.y, cartesian3.z]);
+        }
+      }
+    }
+  }
 
   onMounted(() => {
     init();

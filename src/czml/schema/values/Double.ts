@@ -15,6 +15,7 @@ import {
   defaultTimeFormatStr,
   propValuesTimeTypeOptions,
 } from "./commondata.ts";
+import { isArray } from "es-toolkit/compat";
 
 export class czmlDoubleProp {
   public id = "czml_prop_double_" + nanoid(10);
@@ -43,7 +44,9 @@ export class czmlDoubleProp {
   private _max = 50;
   private _step = 0.1;
   private _retainDecimalPlaces = 3;
-  public isEnable = true; // for can edit
+  public isRequired = false;
+  public isEnable = true;
+  // for can edit
   public isUsed = true; // for can used
   public isShowUsed = true;
   public isExpand = true; // for UI
@@ -102,13 +105,22 @@ export class czmlDoubleProp {
     }
 
     if (options.value) {
-      this._value = options.value;
+      if (isArray(options.value)) {
+        options.value = [options.value];
+      }
+      const _valNumber = +options.value[0];
+      this._value = [_valNumber];
     }
 
     if (options.default) {
-      this.default = options.default;
+      if (isArray(options.default)) {
+        options.default = [options.default];
+      }
+      const _valNumber = +options.default[0];
+      this.default = [_valNumber];
     }
 
+    this.isRequired = options.isRequired ?? false;
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
     this.isShowUsed = options.isShowUsed ?? true;
@@ -263,7 +275,7 @@ export class czmlDoubleProp {
   public getCzmlData() {
     if (this.isUsed) {
       return {
-        [this.czmlName]: this._value,
+        [this.czmlName]: this.getCzmlValue(),
       };
     } else {
       return null;

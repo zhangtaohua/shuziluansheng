@@ -21,7 +21,9 @@ export class czmlDocument {
   public type = "packet";
   public componentType = "czml#packet";
 
-  public isEnable = true; // for can edit
+  public isRequired = true;
+  public isEnable = true;
+  // for can edit
   public isUsed = true; // for can used
   public isShowUsed = true;
   public isExpand = true; // for UI
@@ -64,7 +66,7 @@ export class czmlDocument {
     }),
     name: createNameProp(),
     version: createVersionProp({
-      value: 1.0,
+      value: "1.0",
     }),
     description: createDescriptionProp({
       value: this.description,
@@ -81,12 +83,12 @@ export class czmlDocument {
       description: "The clock settings for the entire data set. Only valid on the document object.",
     }),
     availability: createAvailabilityProp({
+      isEnable: true,
+      isUsed: false,
       $ref: "Values/TimeIntervalCollectionValue.json",
       description:
         "The set of time intervals over which data for an object is available. The property can be a single string specifying a single interval, or an array of strings representing intervals. A later CZML packet can update this availability if it changes or is found to be incorrect. For example, an SGP4 propagator may initially report availability for all time, but then later the propagator throws an exception and the availability can be adjusted to end at that time. If this optional property is not present, the object is assumed to be available for all time. Availability is scoped to a particular CZML stream, so two different streams can list different availability for a single object. Within a single stream, the last availability stated for an object is the one in effect and any availabilities in previous packets are ignored. If an object is not available at a time, the client will not draw that object.",
-      default: "0000-00-00T00:00:00Z/9999-12-31T24:00:00Z",
-      isEnable: true,
-      isUsed: false,
+      // default: "0000-00-00T00:00:00Z/9999-12-31T24:00:00Z",
     }),
   };
   // end properties
@@ -107,7 +109,7 @@ export class czmlDocument {
     for (let i = 0; i < keys.length; i++) {
       const key = keys[i];
       const prop = this.properties[key];
-      if (prop.getCzmlName) {
+      if (prop.getCzmlName && prop.isUsed) {
         const propKey = prop.getCzmlName();
         const propValue = prop.getCzmlValue();
         if (propKey && propValue) {

@@ -36,6 +36,8 @@
       </div>
     </div>
 
+    <CzmlTlePathInput @generatePath="generatePathHd"></CzmlTlePathInput>
+
     <div v-if="!currentProp.isFixedXyzUnitType" class="col_nw_fs_fs props_radiobox_pp">
       <div class="row_nw_fs_ce props_radiobox_title">
         <label class="row_nw_fs_ce props_radioch_label">XYZ 单位</label>
@@ -74,18 +76,33 @@
             <div class="row_nw_fs_ce props_qtinput_line1">
               <div class="row_nw_fs_ce props_qtinput_itemlabelleft">X:</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
-                <el-input v-model="pureValueShow[0]" placeholder="Please input" type="number" />
+                <el-input
+                  v-model="pureValueShow[0]"
+                  placeholder="Please input"
+                  type="number"
+                  @change="pureValueChangedHd"
+                />
               </div>
               <div class="row_nw_fs_ce props_qtinput_itemlabelright">Y:</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
-                <el-input v-model="pureValueShow[1]" placeholder="Please input" type="number" />
+                <el-input
+                  v-model="pureValueShow[1]"
+                  placeholder="Please input"
+                  type="number"
+                  @change="pureValueChangedHd"
+                />
               </div>
             </div>
 
             <div class="row_nw_fs_ce props_qtinput_line2">
               <div class="row_nw_fs_ce props_qtinput_itemlabelleft">Z:</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
-                <el-input v-model="pureValueShow[2]" placeholder="Please input" type="number" />
+                <el-input
+                  v-model="pureValueShow[2]"
+                  placeholder="Please input"
+                  type="number"
+                  @change="pureValueChangedHd"
+                />
               </div>
             </div>
           </div>
@@ -120,7 +137,7 @@
             <div class="row_nw_fs_ce props_qtinput_linetime">
               <div class="row_nw_fs_ce props_qtinput_linetimelabel">秒 seconds:</div>
               <div class="row_nw_fs_ce props_qtinput_linetimeinputbox">
-                <el-input v-model="inval[0]" placeholder="Please input" type="number" />
+                <el-input v-model="inval[0]" placeholder="Please input" type="number" @change="intervalsChangedHd" />
               </div>
 
               <div class="row_nw_fs_ce props_qtinput_linetimeindex">SN:{{ index + 1 }}</div>
@@ -128,18 +145,18 @@
             <div class="row_nw_fs_ce props_qtinput_line1">
               <div class="row_nw_fs_ce props_qtinput_itemlabelleft">X:</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
-                <el-input v-model="inval[1]" placeholder="Please input" type="number" />
+                <el-input v-model="inval[1]" placeholder="Please input" type="number" @change="intervalsChangedHd" />
               </div>
               <div class="row_nw_fs_ce props_qtinput_itemlabelright">Y:</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
-                <el-input v-model="inval[2]" placeholder="Please input" type="number" />
+                <el-input v-model="inval[2]" placeholder="Please input" type="number" @change="intervalsChangedHd" />
               </div>
             </div>
 
             <div class="row_nw_fs_ce props_qtinput_line2">
               <div class="row_nw_fs_ce props_qtinput_itemlabelleft">Z:</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
-                <el-input v-model="inval[3]" placeholder="Please input" type="number" />
+                <el-input v-model="inval[3]" placeholder="Please input" type="number" @change="intervalsChangedHd" />
               </div>
             </div>
           </div>
@@ -244,6 +261,7 @@
                   placeholder="Select start datetime"
                   :format="defaultTimeFormatStr"
                   :value-format="defaultTimeFormatStr"
+                  @change="timesIntervalsChangedHd"
                 />
               </div>
               <div class="row_nw_fs_ce props_qtinput_linetimeindex">SN:{{ index2 + 1 }}</div>
@@ -251,18 +269,33 @@
             <div class="row_nw_fs_ce props_qtinput_line1">
               <div class="row_nw_fs_ce props_qtinput_itemlabelleft">X:</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
-                <el-input v-model="inval[1]" placeholder="Please input" type="number" />
+                <el-input
+                  v-model="inval[1]"
+                  placeholder="Please input"
+                  type="number"
+                  @change="timesIntervalsChangedHd"
+                />
               </div>
               <div class="row_nw_fs_ce props_qtinput_itemlabelright">Y:</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
-                <el-input v-model="inval[2]" placeholder="Please input" type="number" />
+                <el-input
+                  v-model="inval[2]"
+                  placeholder="Please input"
+                  type="number"
+                  @change="timesIntervalsChangedHd"
+                />
               </div>
             </div>
 
             <div class="row_nw_fs_ce props_qtinput_line2">
               <div class="row_nw_fs_ce props_qtinput_itemlabelleft">Z:</div>
               <div class="row_nw_fs_ce props_qtinput_itembox">
-                <el-input v-model="inval[3]" placeholder="Please input" type="number" />
+                <el-input
+                  v-model="inval[3]"
+                  placeholder="Please input"
+                  type="number"
+                  @change="timesIntervalsChangedHd"
+                />
               </div>
             </div>
           </div>
@@ -342,6 +375,7 @@
   import RjRadioTabInput from "@/components/form/RjRadioTabInput.vue";
   import RjRadioInput from "@/components/form/RjRadioInput.vue";
   import RjBooleanSwitchInput from "@/components/form/RjBooleanSwitchInput.vue";
+  import CzmlTlePathInput from "@/czml/components/CzmlTlePathInput.vue";
 
   import { nanoid } from "@/utils/common/nanoid";
   import { cartesian3ToWgs84, cartesian3ToDegrees, cartesian3ToRadians } from "@/utils/map/cesium/csTools";
@@ -392,6 +426,8 @@
     setCzmlMapViewDrawData,
     setCzmlIsViewDrawDataPath,
   } = useCzmlMapDataConfigStore();
+
+  let isHumanInputModify = false;
 
   const id = nanoid(10);
   const currentProp = ref({});
@@ -610,9 +646,73 @@
     }
   }
 
+  function pureValueChangedHd() {
+    isHumanInputModify = true;
+    if (xyzUnitType.value == CZMLCARTESIAN3METERTYPE) {
+      pureValue.value = pureValueShow.value;
+    } else if (xyzUnitType.value == CZMLCARTESIAN3DEGREESTYPE) {
+      pureValue.value = pureValueShow.value;
+    } else if (xyzUnitType.value == CZMLCARTESIAN3RADIANSTYPE) {
+      pureValue.value = [
+        Cesium.Math.toDegrees(pureValueShow.value[0]),
+        Cesium.Math.toDegrees(pureValueShow.value[1]),
+        Cesium.Math.toDegrees(pureValueShow.value[2]),
+        Cesium.Math.toDegrees(pureValueShow.value[3]),
+      ];
+    }
+  }
+
+  function intervalsChangedHd() {
+    isHumanInputModify = true;
+    if (xyzUnitType.value == CZMLCARTESIAN3METERTYPE) {
+      intervalsValues.value = intervalsValuesShow.value;
+    } else if (xyzUnitType.value == CZMLCARTESIAN3DEGREESTYPE) {
+      intervalsValues.value = intervalsValuesShow.value;
+    } else if (xyzUnitType.value == CZMLCARTESIAN3RADIANSTYPE) {
+      const positions = [];
+      for (let i = 0; i < intervalsValuesShow.value.length; i++) {
+        const vtemp = intervalsValuesShow.value[i];
+        positions.push([
+          vtemp[0],
+          Cesium.Math.toDegrees(vtemp[1]),
+          Cesium.Math.toDegrees(vtemp[2]),
+          Cesium.Math.toDegrees(vtemp[3]),
+          Cesium.Math.toDegrees(vtemp[4]),
+        ]);
+      }
+      intervalsValues.value = positions;
+    }
+  }
+
+  function timesIntervalsChangedHd() {
+    isHumanInputModify = true;
+
+    if (xyzUnitType.value == CZMLCARTESIAN3METERTYPE) {
+      timestrIntervalsValues.value = timestrIntervalsValuesShow.value;
+    } else if (xyzUnitType.value == CZMLCARTESIAN3DEGREESTYPE) {
+      timestrIntervalsValues.value = timestrIntervalsValuesShow.value;
+    } else if (xyzUnitType.value == CZMLCARTESIAN3RADIANSTYPE) {
+      const positions = [];
+      for (let i = 0; i < timestrIntervalsValuesShow.value.length; i++) {
+        const vtemp = timestrIntervalsValuesShow.value[i];
+        positions.push([
+          vtemp[0],
+          Cesium.Math.toDegrees(vtemp[1]),
+          Cesium.Math.toDegrees(vtemp[2]),
+          Cesium.Math.toDegrees(vtemp[3]),
+          Cesium.Math.toDegrees(vtemp[4]),
+        ]);
+      }
+      timestrIntervalsValues.value = positions;
+    }
+  }
+
   watch(
     [xyzUnitType, pureValue],
     () => {
+      if (isHumanInputModify) {
+        return;
+      }
       if (xyzUnitType.value == CZMLCARTESIAN3METERTYPE) {
         pureValueShow.value = pureValue.value;
       } else if (xyzUnitType.value == CZMLCARTESIAN3DEGREESTYPE) {
@@ -632,6 +732,9 @@
   watch(
     [xyzUnitType, intervalsValues],
     () => {
+      if (isHumanInputModify) {
+        return;
+      }
       if (xyzUnitType.value == CZMLCARTESIAN3METERTYPE) {
         intervalsValuesShow.value = intervalsValues.value;
       } else if (xyzUnitType.value == CZMLCARTESIAN3DEGREESTYPE) {
@@ -663,6 +766,9 @@
   watch(
     [xyzUnitType, timestrIntervalsValues],
     () => {
+      if (isHumanInputModify) {
+        return;
+      }
       if (xyzUnitType.value == CZMLCARTESIAN3METERTYPE) {
         timestrIntervalsValuesShow.value = timestrIntervalsValues.value;
       } else if (xyzUnitType.value == CZMLCARTESIAN3DEGREESTYPE) {
@@ -695,6 +801,7 @@
     () => czmlMapDataConfig.currentDataRefresh,
     () => {
       if (czmlMapDataConfig.currentDataRefresh) {
+        isHumanInputModify = false;
         console.log("解析获取值", globalCzmlMapData.drawData);
         if (czmlMapDataConfig.currentDataId == pointDataKeyId) {
           // 解析获取值
@@ -803,6 +910,108 @@
     },
   );
 
+  function generatePathHd(data) {
+    console.log("generatePathHd", data);
+    isHumanInputModify = false;
+    if (currentProp.value.timeType == CZMLPUREVALUE) {
+      currentProp.value.timeType = CZMLTIMESTRING;
+    }
+    setTimeout(() => {
+      const { count, startTime, endTime, timeInterval, lnglatDatas } = data;
+
+      if (currentProp.value.timeType == CZMLTIMESECONDS) {
+        if (lnglatDatas && isArray(lnglatDatas) && lnglatDatas.length) {
+          if (isArray(intervalsValues.value)) {
+            const length = intervalsValues.value.length;
+            const { secondsStart, secondsStep, secondsOnceAddCount } = currentProp.value;
+            const last = length - 1;
+            let isNeedModifyFirset = false;
+            if (
+              length == 1 &&
+              intervalsValues.value[0][1] == 0 &&
+              intervalsValues.value[0][2] == 0 &&
+              intervalsValues.value[0][3] == 0
+            ) {
+              isNeedModifyFirset = true;
+              const cartesian3 = Cesium.Cartesian3.fromDegrees(
+                lnglatDatas[0].longitude,
+                lnglatDatas[0].latitude,
+                lnglatDatas[0].altitude,
+              );
+              intervalsValues.value[0][0] = +secondsStart;
+              intervalsValues.value[0][1] = cartesian3.x;
+              intervalsValues.value[0][2] = cartesian3.y;
+              intervalsValues.value[0][3] = cartesian3.z;
+            }
+
+            const lastItem = intervalsValues.value[last];
+            const secondsStepNumber = +timeInterval;
+            let nextSeconds = +lastItem[0];
+
+            let index = 0;
+            if (isNeedModifyFirset) {
+              index = 1;
+            }
+            for (let i = index; i < lnglatDatas.length; i++) {
+              nextSeconds = nextSeconds + secondsStepNumber;
+              const cartesian3 = Cesium.Cartesian3.fromDegrees(
+                lnglatDatas[i].longitude,
+                lnglatDatas[i].latitude,
+                lnglatDatas[i].altitude,
+              );
+              intervalsValues.value.push([nextSeconds, cartesian3.x, cartesian3.y, cartesian3.z]);
+            }
+          }
+        }
+      } else if (currentProp.value.timeType == CZMLTIMESTRING) {
+        if (lnglatDatas && isArray(lnglatDatas) && lnglatDatas.length) {
+          if (isArray(timestrIntervalsValues.value)) {
+            const length = timestrIntervalsValues.value.length;
+            const last = length - 1;
+            let isNeedModifyFirset = false;
+            if (
+              length == 1 &&
+              timestrIntervalsValues.value[0][1] == 0 &&
+              timestrIntervalsValues.value[0][2] == 0 &&
+              timestrIntervalsValues.value[0][3] == 0
+            ) {
+              isNeedModifyFirset = true;
+              timestrIntervalsValues.value[0][0] = dayjs(startTime).format(defaultTimeFormatStr);
+              const cartesian3 = Cesium.Cartesian3.fromDegrees(
+                lnglatDatas[0].longitude,
+                lnglatDatas[0].latitude,
+                lnglatDatas[0].altitude,
+              );
+              timestrIntervalsValues.value[0][1] = cartesian3.x;
+              timestrIntervalsValues.value[0][2] = cartesian3.y;
+              timestrIntervalsValues.value[0][3] = cartesian3.z;
+            }
+
+            let index = 0;
+            if (isNeedModifyFirset) {
+              index = 1;
+            }
+            for (let i = index; i < lnglatDatas.length; i++) {
+              const cartesian3 = Cesium.Cartesian3.fromDegrees(
+                lnglatDatas[i].longitude,
+                lnglatDatas[i].latitude,
+                lnglatDatas[i].altitude,
+              );
+              timestrIntervalsValues.value.push([
+                dayjs(startTime)
+                  .add(i * timeInterval, "seconds")
+                  .format(defaultTimeFormatStr),
+                cartesian3.x,
+                cartesian3.y,
+                cartesian3.z,
+              ]);
+            }
+          }
+        }
+      }
+    }, 300);
+  }
+
   onMounted(() => {
     init();
   });
@@ -810,6 +1019,7 @@
   watch(
     () => currentProp.value.timeType,
     () => {
+      isHumanInputModify = false;
       nextTick(() => {
         console.log("currentProp.valueType", currentProp.value);
         if (currentProp.value.timeType == CZMLPUREVALUE) {

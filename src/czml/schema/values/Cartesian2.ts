@@ -46,7 +46,9 @@ export class czmlCartesian2Prop {
 
   public default = [0, 0];
 
-  public isEnable = true; // for can edit
+  public isRequired = false;
+  public isEnable = true;
+  // for can edit
   public isUsed = true; // for can used
   public isShowUsed = true;
   public isExpand = true; // for UI
@@ -145,6 +147,7 @@ export class czmlCartesian2Prop {
     }
 
     this.isFixedXyzUnitType = options.isFixedXyzUnitType ?? true;
+    this.isRequired = options.isRequired ?? false;
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
     this.isShowUsed = options.isShowUsed ?? true;

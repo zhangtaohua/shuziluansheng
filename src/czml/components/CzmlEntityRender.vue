@@ -1,13 +1,32 @@
 <template>
   <div v-if="isEnable" :id="currentEntity.id" class="col_nw_fs_fs czml_entity_props_container">
     <div v-if="currentEntity.isEntity" class="col_nw_fs_ce czml_entity_box">
-      <div class="row_nw_fs_ce czml_entity_tbox">
-        <div class="row_nw_fs_ce wh_auto_100p">
-          <img src="@/assets/images/icons/entity.svg" alt="icon" class="czml_entity_icon" />
-          <label class="row_nw_fs_ce czml_entitych_label">{{ currentEntity.labelZh }}</label>
-          <label class="row_nw_fs_ce czml_entityogi_label">{{ currentEntity.labelEn }}</label>
+      <div class="row_nw_sb_ce czml_entity_tbox">
+        <el-tooltip placement="top" effect="dark">
+          <template #content>
+            <div class="col_nw_fs_ce czml_title_tipbox">
+              <p v-if="currentEntity.descriptionZh" class="props_ch_tiplabel">
+                {{ currentEntity.descriptionZh }}
+              </p>
+              <p class="props_ogi_tiplabel">
+                {{ currentEntity.description }}
+              </p>
+            </div>
+          </template>
+          <div class="row_nw_fs_ce czml_entity_lefttbox">
+            <img src="@/assets/images/icons/entity.svg" alt="icon" class="czml_entity_icon" />
+            <label class="row_nw_fs_ce czml_entitych_label">{{ currentEntity.labelZh }}</label>
+            <label class="row_nw_fs_ce czml_entityogi_label">{{ currentEntity.labelEn }}</label>
+          </div>
+          <div class="row_nw_ce_ce czml_entity_downarrow"></div>
+        </el-tooltip>
+
+        <div class="row_nw_fs_ce props_timecol_isusedbox">
+          <RjBooleanSwitchInput
+            v-model="currentEntity.isUsed"
+            :disabled="!currentEntity.isEnable"
+          ></RjBooleanSwitchInput>
         </div>
-        <div class="row_nw_ce_ce czml_entity_downarrow"></div>
       </div>
       <div class="czml_entity_topgap"></div>
       <div v-for="entityProp in currentEntity.properties" :key="entityProp.id" class="col_nw_ce_ce czml_entity_propbox">
@@ -82,12 +101,24 @@
 
   .czml_entity_tbox {
     position: absolute;
-    width: max-content;
+    width: 100%;
     height: 2.5rem;
     top: -1.25rem;
-    left: 0.5rem;
-    background-color: rgba(26, 30, 39, 1);
+    left: 0rem;
     padding: 0rem 1rem;
+  }
+
+  .czml_title_tipbox {
+    width: auto;
+    max-width: 30rem;
+    height: auto;
+  }
+
+  .czml_entity_lefttbox {
+    width: auto;
+    height: 100%;
+    background-color: rgba(26, 30, 39, 1);
+    padding: 0 0.875rem;
   }
 
   .czml_entity_icon {
@@ -137,6 +168,14 @@
 
   .czml_entity_arrowdown_show {
     transform: rotate(0deg);
+  }
+
+  .props_timecol_isusedbox {
+    width: 10rem;
+    height: 100%;
+    background-color: rgba(26, 30, 39, 1);
+    margin-right: 0.25rem;
+    padding: 0 0.875rem 0 1rem;
   }
 
   .czml_entity_topgap {

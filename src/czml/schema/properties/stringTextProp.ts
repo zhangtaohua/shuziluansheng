@@ -2,6 +2,23 @@ import { nanoid } from "@/utils/common/nanoid";
 import czmlStringProp from "../values/String";
 import czmlTextProp from "../values/Text";
 
+export function createStringProp(options = {}) {
+  return new czmlStringProp({
+    id: "czml_prop_string_" + nanoid(10),
+    name: "string",
+    czmlName: "string",
+    labelZh: "字符串",
+    labelEn: "string",
+    value: "",
+    isEnable: true,
+    isUsed: false,
+    isShowUsed: true,
+    description: `The property specified as a string.`,
+    descriptionZh: "",
+    ...options,
+  });
+}
+
 export function createIdProp(options = {}) {
   return new czmlStringProp({
     id: "czml_prop_id_" + nanoid(10),
@@ -10,6 +27,7 @@ export function createIdProp(options = {}) {
     labelZh: "标示",
     labelEn: "id",
     value: "id",
+    isRequired: true,
     isEnable: false,
     isUsed: true,
     isShowUsed: true,
@@ -27,6 +45,7 @@ export function createNameProp(options = {}) {
     labelZh: "名称",
     labelEn: "name",
     value: "document_init" + nanoid(10),
+    isRequired: true,
     isEnable: true,
     isUsed: true,
     isShowUsed: true,

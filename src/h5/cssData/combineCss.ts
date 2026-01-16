@@ -20,6 +20,7 @@ export class CssBasicCombineInput {
 
   public properties = undefined;
 
+  public isRequired = false;
   public isEnable = true;
 
   constructor(options: any) {
@@ -75,6 +76,7 @@ export class CssBasicCombineInput {
 
     this._value = options.value ?? false;
 
+    this.isRequired = options.isRequired ?? false;
     this.isEnable = options.isEnable ?? true;
   }
 
@@ -163,7 +165,9 @@ export class CssBorderCombineInput {
 
   public properties = undefined;
 
+  public isRequired = false;
   public isEnable = true;
+
   public isUsed = true;
   public isShowUsed = true;
   public isExpand = true;
@@ -224,6 +228,7 @@ export class CssBorderCombineInput {
       this.properties = options.properties;
     }
 
+    this.isRequired = options.isRequired ?? false;
     this.isEnable = options.isEnable ?? true;
     this.isUsed = options.isUsed ?? true;
     this.isShowUsed = options.isShowUsed ?? true;
